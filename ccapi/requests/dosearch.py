@@ -27,3 +27,6 @@ class DoSearchResult:
         self.name = result['Name']
         self.sku = result['SKU']
         self.thumbnail = result['Thumbnail']
+
+    def __repr__(self):
+        return self.name

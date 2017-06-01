@@ -17,7 +17,8 @@ class CloudCommerceAPISession:
     def api_request(cls, request):
         url = urljoin(cls.domain, request.uri)
         response = cls.session.post(
-            url, params=request.params, data=request.data)
+            url, headers=request.headers, params=request.params,
+            data=request.data)
         return response
 
 
@@ -25,6 +26,7 @@ class APIRequest:
     uri = None
 
     def __new__(self):
+        self.headers = self.get_headers(self)
         self.data = self.get_data(self)
         self.params = self.get_params(self)
         response = CloudCommerceAPISession.api_request(self)
@@ -34,6 +36,9 @@ class APIRequest:
         return {}
 
     def get_params(self):
+        return {}
+
+    def get_headers(self):
         return {}
 
     def process_response(self, response):
