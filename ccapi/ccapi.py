@@ -22,3 +22,8 @@ class CCAPI:
 
     def get_product_options(self):
         return requests.GetOptions()
+
+    def update_product_stock_level(
+            self, product_id, new_stock_level, old_stock_level):
+        requests.UpdateProductStockLevel(
+            str(product_id), new_stock_level, old_stock_level)

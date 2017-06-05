@@ -17,3 +17,6 @@ class UpdateProductStockLevel(APIRequest):
             'newStockLevel': self.new_stock_level,
             'oldStockLevel': self.old_stock_level
         }
+
+    def process_response(self, response):
+        pass
