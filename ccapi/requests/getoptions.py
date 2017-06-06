@@ -5,7 +5,6 @@ class GetOptions(APIRequest):
     uri = 'Handlers/ProductOption/getOptions.ashx'
 
     def process_response(self, response):
-        print(response.text)
         results = response.json()
         return [GetOptionsResult(item) for item in results]
 
@@ -16,6 +15,7 @@ class GetOptions(APIRequest):
 
 
 class GetOptionsResult:
+
     def __init__(self, result):
         self.json = result
         self.id = result['ID']
