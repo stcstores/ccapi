@@ -32,6 +32,10 @@ class CCAPI:
         return requests.GetOptions()
 
     @staticmethod
+    def get_option_values(option_id):
+        return requests.GetOptionData(option_id)
+
+    @staticmethod
     def update_product_stock_level(
             product_id, new_stock_level, old_stock_level):
         requests.UpdateProductStockLevel(
