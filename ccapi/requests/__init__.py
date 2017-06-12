@@ -12,3 +12,4 @@ from . addnewrange import AddNewRange  # noqa
 from . addoptionvalue import AddOptionValue  # noqa
 from . getproductsforrange import GetProductsForRange  # noqa
 from . getproductdata import GetProductData  # noqa
+from . addproduct import AddProduct  # noqa

@@ -89,3 +89,15 @@ class CCAPI:
     @staticmethod
     def get_range(range_id):
         return requests.GetProductsForRange(range_id)
+
+    @classmethod
+    def create_product(
+            cls, range_id, name, barcode, sku=None, description=None,
+            vat_rate_id=5):
+        if sku is None:
+            sku = cls.get_sku(range_sku=False)
+        if description is None:
+            description = name
+        response = requests.AddProduct(
+            range_id, name, barcode, sku, description, vat_rate_id)
+        return response.replace('Success^^', '')
