@@ -1,0 +1,62 @@
+from . ccapisession import APIRequest
+from .. inventoryitems import ProductOptions, ProductOption
+
+
+class GetProductData(APIRequest):
+    uri = 'Handlers/ProductOption/getProductData.ashx'
+
+    def __new__(self, range_id, channel_id=0):
+        self.range_id = range_id
+        self.channel_id = channel_id
+        return super().__new__(self)
+
+    def get_data(self):
+        return {
+            'RangeID': self.range_id,
+            'channelID': self.channel_id,
+            'brandID': '341'}
+
+    def process_response(self, response):
+        results = response.json()
+        return GetProductDataResult(results)
+
+
+class GetProductDataResult:
+
+    def __init__(self, data):
+        self.name = data['Name']
+        self.group_by = data['GroupBy']
+        self.sales_channel_type = data['SalesChannelType']
+        self.shop_options = [
+            ShopOptions(option) for option in data['ShopOptions']]
+        self.options = ProductOptions(
+            [ProductDataOption(option) for option in data['ProductOptions']])
+
+
+class ProductDataOption(ProductOption):
+
+    def __init__(self, data):
+        self.id = data['OptionID']
+        self.option_name = data['OptionName']
+        self.option_type = data['OptionType']
+        self.is_web_shop_group_by = data['IsWebShopGroupBy']
+        self.is_web_shop_select = data['IsWebShopSelect']
+        self.is_web_shop_filter = data['IsWebShopFilter']
+        self.is_ebay_option = data['IsEbayOption']
+        self.is_ebay_image_option = data['IsEbayImageOption']
+        self.is_amazon_option = data['IsAmazonOption']
+        self.is_amazon_select = data['IsAmazonSelect']
+        self.hidden = data['Hidden']
+        self.pre_select_on_create_range = data['PreSelectOnCreateRange']
+
+
+class ShopOptions:
+
+    def __init__(self, data):
+        self.id = data['OptionID']
+        self.name = data['OptionName']
+        self.type = data['OptionType']
+        self.is_master = data['IsMaster']
+        self.is_used_by_product = data['IsUsedByProduct']
+        self.hidden = data['Hidden']
+        self.pre_select_on_create_range = data['PreSelectOnCreateRange']

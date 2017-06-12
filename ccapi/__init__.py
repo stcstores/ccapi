@@ -1,1 +1,2 @@
-from . ccapi import CCAPI
+from . ccapi import CCAPI  # noqa
+from . inventoryitems import ProductOptions  # noqa

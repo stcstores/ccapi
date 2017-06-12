@@ -1,4 +1,5 @@
 from . ccapisession import APIRequest
+from .. inventoryitems import Product, ProductOptions, ProductOption
 
 
 class FindProductSelectedOptionsOnly(APIRequest):
@@ -22,110 +23,7 @@ class FindProductSelectedOptionsOnlyResult:
     def __init__(self, data):
         self.stock_level = data['StockLevel']
         self.fba_stock_level = data['FBAStockLevel']
-        self.product = Product(data['product'])
-        self.options = [Option(option) for option in data['options']]
-
-
-class Product:
-
-    def __init__(self, data):
-        self.is_checked = data['isChecked']
-        self.is_listed = data['isListed']
-        self.supplier_sku = data['SupplierSKU']
-        self.id = data['ID']
-        self.name = data['Name']
-        self.full_name = data['FullName']
-        self.options = data['Options']
-        self.description = data['Description']
-        self.manufacturer_sku = data['ManufacturerSKU']
-        self.base_price = data['BasePrice']
-        self.vat_rate_id = data['VatRateID']
-        self.vat_rate = data['VatRate']
-        self.barcode = data['Barcode']
-        self.range_id = data['RangeID']
-        self.range_name = data['RangeName']
-        self.pre_order = data['PreOrder']
-        self.end_of_line = data['EndOfLine']
-        self.stock_level = data['StockLevel']
-        self.pseudo_stock_type = data['PseudoStockType']
-        self.pseudo_stock_level = data['PseudoStockLevel']
-        self.status_id = data['StatusID']
-        self.product_type = data['ProductType']
-        self.length_mm = data['LengthMM']
-        self.width_mm = data['WidthMM']
-        self.height_mm = data['HeightMM']
-        self.length_cm = data['LengthCM']
-        self.width_cm = data['WidthCM']
-        self.height_cm = data['HeightCM']
-        self.large_letter_compatible = data['LargeLetterCompatible']
-        self.external_product_id = data['ExternalProductId']
-        self.additional_shipping_label = data['AdditionalShippingLabel']
-        self.default_image_url = data['defaultImageUrl']
-        self.delivery_lead_time = data['DeliveryLeadTimeDays']
-        self.product_template_id = data['ProductTemplateId']
-        self.product_template_mode = data['ProductTemplateMode']
-        self.additional_barcodes = data['AdditionalBarcodes']
-        self.locations = [Location(location) for location in data['Locations']]
-        self.dimensions = data['Dimensions']
-
-
-class Location:
-
-    def __init__(self, data):
-        self.id = data['ID']
-        self.warehouse_id = data['WarehouseID']
-        self.name = data['Name']
-        self.bay_number = data['BayNumber']
-        self.aisle = data['Aisle']
-        self.shelf = data['Shelf']
-        self.available_stock = data['AvailableStock']
-        self.warehouse_bay_type = data['WarehouseBayType']
-        self.warehouse_bay_type_enum = data['WarehouseBayTypeEnum']
-        self.status_id = data['StatusId']
-        self.status_id_enum = data['StatusIdEnum']
-
-    def __repr__(self):
-        return self.name
-
-
-class Option:
-
-    def __init__(self, data):
-        self.id = data['ID']
-        self.option_name = data['OptionName']
-        self.option_ebay_name = data['OptionEbayName']
-        self.option_amazon_name = data['OptionAmazonName']
-        self.option_pretty_name = data['OptionPrettyName']
-        self.option_web_name = data['OptionWebName']
-        self.option_sort_order = data['OptionSortOrder']
-        self.option_type = data['OptionType']
-        self.master = data['Master']
-        self.hidden = data['Hidden']
-        self.pre_select_on_create_range = data['PreSelectOnCreateRange']
-        self.status = data['Statusw']
-        self.exclude_amazon = data['excludeAmazon']
-        self.exclude_ebay = data['excludeEbay']
-        self.exclude_market_place = data['excludeMarketPlace']
-        self.exclude_epos = data['excludeEpos']
-        self.exclude_magento = data['excludeMagento']
-        self.exclude_woo_commerce = data['excludeWooCommerce']
-        self.exclude_shopify = data['excludeShopify']
-        self.exclude_tesco = data['excludeTesco']
-        self.exclude_google = data['excludeGoogle']
-        self.selected = data['Selected']
-        self.option_values = [
-            OptionValues(option) for option in data['optionValues']]
-
-
-class OptionValues:
-
-    def __init__(self, data):
-        self.id = data['ID']
-        self.brand_id = data['BrandID']
-        self.option_id = data['OptionID']
-        self.option_value = data['OptionValue']
-        self.option_value_trans = data['OptionValueTrans']
-        self.option_sort_order = data['OptionsortOrder']
-        self.selected = data['Selected']
-        self.product_count = data['ProductCount']
-        self.option_name = data['OptionName']
+        if data['product'] is not None:
+            self.product = Product(data['product'])
+        self.options = ProductOptions(
+            [ProductOption(option) for option in data['options']])
