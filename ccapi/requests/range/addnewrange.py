@@ -4,7 +4,7 @@ AddNewRange request.
 Creates a new product range.
 """
 
-from .. ccapisession import APIRequest
+from .. apirequest import APIRequest
 
 
 class AddNewRange(APIRequest):

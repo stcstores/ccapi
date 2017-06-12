@@ -1,7 +1,7 @@
 """AddOptionValue Request."""
 
 
-from .. ccapisession import APIRequest
+from .. apirequest import APIRequest
 
 
 class AddOptionValue(APIRequest):

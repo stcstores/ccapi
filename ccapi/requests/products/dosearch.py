@@ -4,7 +4,7 @@ DoSearch request.
 Searches for products.
 """
 
-from .. ccapisession import APIRequest
+from .. apirequest import APIRequest
 
 
 class DoSearch(APIRequest):

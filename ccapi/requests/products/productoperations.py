@@ -1,6 +1,6 @@
 """ProductOperations request."""
 
-from .. ccapisession import APIRequest
+from .. apirequest import APIRequest
 
 
 class ProductOperations(APIRequest):

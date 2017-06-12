@@ -3,7 +3,7 @@
 Changes stock level for given product to a given quantity.
 """
 
-from .. ccapisession import APIRequest
+from .. apirequest import APIRequest
 
 
 class UpdateProductStockLevel(APIRequest):

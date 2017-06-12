@@ -3,7 +3,7 @@
 Creates a new product within a given range.
 """
 
-from .. ccapisession import APIRequest
+from .. apirequest import APIRequest
 
 
 class AddProduct(APIRequest):

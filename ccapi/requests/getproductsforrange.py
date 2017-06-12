@@ -1,4 +1,4 @@
-from . ccapisession import APIRequest
+from . apirequest import APIRequest
 from .. inventoryitems import ProductRange
 
 

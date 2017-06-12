@@ -2,6 +2,7 @@
 
 
 from . ccapisession import CloudCommerceAPISession  # noqa
+from . apirequest import APIRequest  # noqa
 from . getproductsforrange import GetProductsForRange  # noqa
 from . productoption import *  # noqa
 from . products import *  # noqa

@@ -3,7 +3,7 @@
 Gets product options assigned to given range.
 """
 
-from .. ccapisession import APIRequest
+from .. apirequest import APIRequest
 from ccapi.inventoryitems import ProductOptions, ProductOption
 
 
