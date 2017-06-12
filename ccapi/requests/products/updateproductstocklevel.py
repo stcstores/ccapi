@@ -1,4 +1,4 @@
-from . ccapisession import APIRequest
+from .. ccapisession import APIRequest
 
 
 class UpdateProductStockLevel(APIRequest):

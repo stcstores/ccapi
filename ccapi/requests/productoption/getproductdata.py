@@ -1,5 +1,5 @@
-from . ccapisession import APIRequest
-from .. inventoryitems import ProductOptions, ProductOption
+from .. ccapisession import APIRequest
+from ccapi.inventoryitems import ProductOptions, ProductOption
 
 
 class GetProductData(APIRequest):

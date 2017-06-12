@@ -1,5 +1,5 @@
-from . ccapisession import APIRequest
-from .. inventoryitems import Product, ProductOptions, ProductOption
+from .. ccapisession import APIRequest
+from ccapi.inventoryitems import Product, ProductOptions, ProductOption
 
 
 class FindProductSelectedOptionsOnly(APIRequest):
