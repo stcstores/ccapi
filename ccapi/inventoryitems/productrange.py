@@ -2,7 +2,7 @@
 
 from ccapi import ccapi
 from . product import Product
-from . productoptions import ProductOption
+from . productoptions import ProductOptions, ProductOption
 
 
 class ProductRange:
@@ -63,7 +63,7 @@ class ProductRange:
         if isinstance(option, ProductOption):
             option_id = option.id
         else:
-            option_id = option
+            option_id = ProductOptions[option].id
         ccapi.CCAPI.add_option_to_product(self.id, option_id)
         self._options = None
 
@@ -77,7 +77,7 @@ class ProductRange:
         if isinstance(option, ProductOption):
             option_id = option.id
         else:
-            option_id = option
+            option_id = self.options[option].id
         ccapi.CCAPI.remove_option_from_product(self.id, option_id)
         self._options = None
 
