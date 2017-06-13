@@ -1,13 +1,22 @@
+"""This module contains the Product class."""
+
 from ccapi import ccapi
 from . location import Location
 
 
 class Product:
+    """Product class containing data and methods for working with Products."""
 
     _options = None
     locations = None
 
     def __init__(self, data):
+        """
+        Create Product object.
+
+        Args:
+            data: Cloud Commerce Product JSON object.
+        """
         self.is_checked = data['isChecked']
         self.is_listed = data['isListed']
         self.supplier_sku = data['SupplierSKU']
@@ -50,6 +59,12 @@ class Product:
 
     @property
     def options(self):
+        """
+        Product Options for this Product.
+
+        ccapi.inventoryitems.ProductOptions object with the Product Options
+        applied to this Product.
+        """
         if self._options is None:
             self._options = ccapi.CCAPI.get_options_for_product(self.id)
         return self._options

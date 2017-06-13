@@ -1,6 +1,16 @@
+"""This module contains the Location class."""
+
+
 class Location:
+    """Contains data and methods for working with Product Locations."""
 
     def __init__(self, data):
+        """
+        Create Location object.
+
+        Args:
+            data: Cloud Commerce location JSON object.
+        """
         self.id = data['ID']
         self.warehouse_id = data['WarehouseID']
         self.name = data['Name']

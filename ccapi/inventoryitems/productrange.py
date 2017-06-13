@@ -1,12 +1,22 @@
+"""This module contains the ProductRange class."""
+
 from ccapi import ccapi
 from . product import Product
 from . productoptions import ProductOption
 
 
 class ProductRange:
+    """Class containing data and methods for working with ProductRanges."""
+
     _options = None
 
     def __init__(self, result):
+        """
+        Create Product Range object.
+
+        Args:
+            result: Cloud Commerce Product Range JSON object.
+        """
         self.json = result
         self.id = result['ID']
         self.name = result['Name']
@@ -44,6 +54,12 @@ class ProductRange:
         return self.name
 
     def add_product_option(self, option):
+        """
+        Add Product Option to Product Range.
+
+        Args:
+            option: ProductOption object or (str) Product Option ID.
+        """
         if isinstance(option, ProductOption):
             option_id = option.id
         else:
@@ -52,6 +68,12 @@ class ProductRange:
         self._options = None
 
     def remove_product_option(self, option):
+        """
+        Remove Product Option from Product Range.
+
+        Args:
+            option: ProductOption object or (str) Product Option ID.
+        """
         if isinstance(option, ProductOption):
             option_id = option.id
         else:
@@ -61,6 +83,12 @@ class ProductRange:
 
     @property
     def options(self):
+        """
+        Product Options for this Product Range.
+
+        ccapi.inventoryitems.ProductOptions object with the Product Options
+        applied to this Product Range.
+        """
         if self._options is None:
             self._options = ccapi.CCAPI.get_options_for_range(self.id)
         return self._options
