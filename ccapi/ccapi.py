@@ -160,6 +160,8 @@ class CCAPI:
         if sku is None:
             sku = cls.get_sku(range_sku=True)
         new_range_id = requests.AddNewRange(range_name, sku)
+        if str(new_range_id) == '0':
+            raise Exception('Range not created')
         return cls.get_range(new_range_id)
 
     @staticmethod
