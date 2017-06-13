@@ -124,7 +124,7 @@ class ProductOption:
 
     def load_value_names(self):
         """Return dict organising Values by name."""
-        return {value.name: value for value in self.values}
+        return {value.value: value for value in self.values}
 
     def reload_values(self):
         """Get Product Option Values for this Product Option."""
