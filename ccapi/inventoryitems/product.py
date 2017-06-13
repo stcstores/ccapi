@@ -159,3 +159,17 @@ class Product:
     def set_base_price(self, price):
         """Set Product base price."""
         ccapi.CCAPI.set_product_base_price(self.id, price)
+
+    def set_handling_time(self, handling_time, update_channels=True):
+        """
+        Set handling time for product.
+
+        Args:
+            handling_time: New handling time.
+
+        Kwargs:
+            update_channels: If True will update handling time on channels.
+                Default: True.
+        """
+        ccapi.CCAPI.set_product_handling_time(
+            self.id, handling_time, update_channels=update_channels)

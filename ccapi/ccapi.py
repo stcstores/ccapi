@@ -326,3 +326,18 @@ class CCAPI:
             price: New base price for Product.
         """
         requests.UpdateProductBasePrice(product_id, price)
+
+    def set_product_handling_time(
+            product_id, handling_time, update_channels=True):
+        """
+        Set handling time for product.
+
+        Args:
+            product_id: ID of Product to update.
+            handling_time: New handling time.
+
+        Kwargs:
+            update_channels: If True will update handling time on channels.
+                Default: True.
+        """
+        requests.SaveHandlingTime(product_id, handling_time, update_channels)
