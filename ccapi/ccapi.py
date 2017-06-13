@@ -66,14 +66,15 @@ class CCAPI:
         return sku
 
     @staticmethod
-    def get_variation_by_id(variation_id):
+    def get_product_by_id(product_id):
         """
-        Get details for variation by varitaion ID.
+        Get details for Product by ID.
 
         Args:
-            variation_id: ID of varitaion.
+            product_id: ID of Product.
         """
-        return requests.FindProductSelectedOptionsOnly(variation_id)
+        response = requests.FindProductSelectedOptionsOnly(product_id)
+        return response.product
 
     @staticmethod
     def get_options_for_product(product_id):
