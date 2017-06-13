@@ -60,6 +60,7 @@ class ProductOption:
     """Wrapper for Product Options."""
 
     _values = None
+    _value_names = None
 
     def __init__(self, result):
         """
@@ -119,7 +120,7 @@ class ProductOption:
     def value_names(self):
         """Return dict organising Values by name."""
         if self._value_names is None:
-            self.load_value_names()
+            self._value_names = self.load_value_names()
         return self._value_names
 
     def load_value_names(self):
