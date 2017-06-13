@@ -68,3 +68,7 @@ class Product:
         if self._options is None:
             self._options = ccapi.CCAPI.get_options_for_product(self.id)
         return self._options
+
+    def get_range(self):
+        """Return ProductRange for Range to which this Product belongs."""
+        return ccapi.CCAPI.get_ragne(self.range_id)
