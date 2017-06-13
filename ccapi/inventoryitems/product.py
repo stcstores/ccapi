@@ -155,3 +155,7 @@ class Product:
     def set_external_id(self, external_id):
         """Set Product External ID."""
         self.set_product_scope(external_id=external_id)
+
+    def set_base_price(self, price):
+        """Set Product base price."""
+        ccapi.CCAPI.set_product_base_price(self.id, price)

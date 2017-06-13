@@ -4,4 +4,5 @@ from . findproductselectedoptionsonly import FindProductSelectedOptionsOnly  # n
 from . productoperations import ProductOperations   # noqa
 from . setproductoptionvalue import SetProductOptionValue  # noqa
 from . setproductscope import SetProductScope  # noqa
+from . updateproductbaseprice import UpdateProductBasePrice  # noqa
 from . updateproductstocklevel import UpdateProductStockLevel  # noqa

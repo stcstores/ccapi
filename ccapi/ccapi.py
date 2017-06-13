@@ -315,3 +315,14 @@ class CCAPI:
         requests.SetProductScope(
             product_id, weight, height, lenght, width, large_letter_compatible,
             external_id)
+
+    @staticmethod
+    def set_product_base_price(product_id, price):
+        """
+        Set base price for product.
+
+        Args:
+            product_id: ID of Product to update.
+            price: New base price for Product.
+        """
+        requests.UpdateProductBasePrice(product_id, price)
