@@ -104,3 +104,54 @@ class Product:
                     raise
             value_id = value.id
         ccapi.CCAPI.set_product_option_value((self.id, ), option_id, value_id)
+
+    def set_product_scope(
+            self, weight=None, height=None, length=None, width=None,
+            large_letter_compatible=None, external_id=None):
+        """
+        Set several attributes for Product.
+
+        Sets weight, height, length, width, large letter compatibilty and
+        external ID.
+
+        Kwargs:
+            weight: If not None sets Product weight in grams.
+            height: If not None sets Product height in mm.
+            length: If not None sets Product lenght in mm.
+            width: If not None sets Product width in mm.
+            large_letter_compatible: If not None sets Product large letter
+                compatibility.
+            external_id: If not None sets External ID of product.
+        """
+        if weight is not None:
+            self.weight = weight
+        if height is not None:
+            self.height_mm = height
+        if length is not None:
+            self.length_mm = length
+        if width is not None:
+            self.width_mm = width
+        if large_letter_compatible is not None:
+            self.large_letter_compatible = large_letter_compatible
+        if external_id is not None:
+            self.external_product_id = external_id
+        ccapi.CCAPI.set_product_scope(
+            self.id, self.weight, self.height_mm, self.length_mm,
+            self.width_mm, self.large_letter_compatible,
+            self.external_product_id)
+
+    def set_weight(self, weight):
+        """Set weight for Product in grams."""
+        self.set_product_scope(weight=weight)
+
+    def set_dimensions(self, height, length, width):
+        """Set height, lenght and width of Product in milimeters."""
+        self.set_product_scope(height=height, length=length, width=width)
+
+    def set_large_letter_compatible(self, compatible):
+        """Set weather product is large letter compatible."""
+        self.set_product_scope(large_letter_compatible=compatible)
+
+    def set_external_id(self, external_id):
+        """Set Product External ID."""
+        self.set_product_scope(external_id=external_id)

@@ -280,6 +280,7 @@ class CCAPI:
             range_id, name, barcode, sku, description, vat_rate_id)
         return response.replace('Success^^', '')
 
+    @staticmethod
     def set_product_option_value(product_ids, option_id, value_id):
         """
         Create setProductOptionValue request.
@@ -290,3 +291,27 @@ class CCAPI:
             value_id: ID of Product Option Value to set.
         """
         return requests.SetProductOptionValue(product_ids, option_id, value_id)
+
+    @staticmethod
+    def set_product_scope(
+            product_id, weight, height, lenght, width, large_letter_compatible,
+            external_id):
+        """
+        Create setProductScope request.
+
+        Sets weight, height, length, width, large letter compatibilty and
+        external ID.
+
+        Args:
+            product_id: ID of Product to update.
+            weight: Product weight in grams.
+            height: Product height in mm.
+            length: Product lenght in mm.
+            width: Product width in mm.
+            large_letter_compatible: (bool) Item can be shipped as Large
+                Letter.
+            external_id: External ID of product.
+        """
+        requests.SetProductScope(
+            product_id, weight, height, lenght, width, large_letter_compatible,
+            external_id)
