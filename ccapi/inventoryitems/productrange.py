@@ -113,6 +113,6 @@ class ProductRange:
 
         """
         product_id = ccapi.CCAPI.create_product(
-            self.id, name, sku=sku, description=description,
+            self.id, name, barcode, sku=sku, description=description,
             vat_rate_id=vat_rate_id)
         return ccapi.CCAPI.get_product(product_id)
