@@ -33,11 +33,10 @@ class SetProductOptionValue(APIRequest):
 
     def get_data(self):
         """Get data for request."""
-        data = {
+        return {
             'prodids': ','.join(self.product_ids),
-            'OptionID': self.option_id,
-            'OptionValueID': self.value_id}
-        return data
+            'OptionID': int(self.option_id),
+            'OptionValueID': int(self.value_id)}
 
     def get_params(self):
         """Get parameters for get request."""
