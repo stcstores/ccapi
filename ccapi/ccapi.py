@@ -279,3 +279,14 @@ class CCAPI:
         response = requests.AddProduct(
             range_id, name, barcode, sku, description, vat_rate_id)
         return response.replace('Success^^', '')
+
+    def set_product_option_value(product_ids, option_id, value_id):
+        """
+        Create setProductOptionValue request.
+
+        Args:
+            product_ids: Tuple of products to which the value will be applied.
+            option_id: ID of Product Option to set.
+            value_id: ID of Product Option Value to set.
+        """
+        return requests.SetProductOptionValue(product_ids, option_id, value_id)
