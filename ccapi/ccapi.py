@@ -66,7 +66,7 @@ class CCAPI:
         return sku
 
     @staticmethod
-    def get_product_by_id(product_id):
+    def get_product(product_id):
         """
         Get details for Product by ID.
 

@@ -92,3 +92,27 @@ class ProductRange:
         if self._options is None:
             self._options = ccapi.CCAPI.get_options_for_range(self.id)
         return self._options
+
+    def add_product(
+            self, name, barcode, sku=None, description=None, vat_rate_id=5):
+        """
+        Add new Product to this Product Range.
+
+        Args:
+            name: Name of new product.
+            barcode: Barcode for new product.
+
+        Kwargs:
+            sku: SKU of new product. If None a new SKU will be generated.
+                Default: None.
+            description: Description of new product. If None name will be used.
+                Default: None.
+            vat_rate_id: ID of VAT rate for product. Default: 5.
+
+        Returns: (ccapi.inventoryitems.Product) New Product.
+
+        """
+        product_id = ccapi.CCAPI.create_product(
+            self.id, name, sku=sku, description=description,
+            vat_rate_id=vat_rate_id)
+        return ccapi.CCAPI.get_product(product_id)
