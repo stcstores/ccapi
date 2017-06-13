@@ -130,7 +130,7 @@ class ProductOption:
     def reload_values(self):
         """Get Product Option Values for this Product Option."""
         self._values = ccapi.CCAPI.get_option_values(self.id)
-        self.load_value_names()
+        self._value_names = self.load_value_names()
 
     def add_value(self, value):
         """
@@ -146,9 +146,9 @@ class ProductOption:
             raise Exception(
                 'Option Value {} already exists for product option {}'.format(
                     self.option_name, value))
-        new_value_id = ccapi.CCAPI.create_option_value(value)
+        ccapi.CCAPI.create_option_value(self.id, value)
         self.reload_values()
-        return new_value_id
+        return self.value_names[value]
 
     def get_value(self, value, create=False):
         """
@@ -164,8 +164,8 @@ class ProductOption:
         Returns: (str) ID of Product Option Value or None.
 
         """
-        if value in self._value_names:
-            return self._value_names[value]
+        if value in self.value_names:
+            return self.value_names[value]
         if create is True:
             self.add_value(value)
             self.reload_values()

@@ -2,6 +2,7 @@
 
 from ccapi import ccapi
 from . location import Location
+from . productoptions import ProductOption, ProductOptionValue
 
 
 class Product:
@@ -72,3 +73,34 @@ class Product:
     def get_range(self):
         """Return ProductRange for Range to which this Product belongs."""
         return ccapi.CCAPI.get_ragne(self.range_id)
+
+    def set_option_value(self, option, value, create=False):
+        """
+        Set Value for Product Option for this product.
+
+        Args:
+            option: Option for which value will be set. Can be ProductOption or
+                (str) option name.
+            value: Value to set. Can be ProductOptionValue or (str) value.
+
+        Kwargs:
+            create: If True Value will be created if it does not already exist.
+                Default: False.
+        """
+        if isinstance(option, ProductOption):
+            option_id = option.id
+        else:
+            option = self.options[option]
+            option_id = option.id
+        if isinstance(value, ProductOptionValue):
+            value_id = value.id
+        else:
+            try:
+                value = option[value]
+            except KeyError:
+                if create is True:
+                    value = option.add_value(value)
+                else:
+                    raise
+            value_id = value.id
+        ccapi.CCAPI.set_product_option_value((self.id, ), option_id, value_id)
