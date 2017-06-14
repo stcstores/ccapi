@@ -173,3 +173,19 @@ class Product:
         """
         ccapi.CCAPI.set_product_handling_time(
             self.id, handling_time, update_channels=update_channels)
+
+    def set_stock_level(self, new_stock_level, old_stock_level=None):
+        """
+        Set stock level for product.
+
+        Args:
+            new_stock_level: New stock level for product.
+
+        Kwargs:
+            old_stock_level: Stock level before update. If None
+                self.stock_level will be used. Default: None.
+        """
+        if old_stock_level is None:
+            old_stock_level = self.stock_level
+        ccapi.CCAPI.update_product_stock_level(
+            self.id, new_stock_level, old_stock_level)
