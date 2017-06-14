@@ -25,7 +25,7 @@ class Product:
         self.name = data['Name']
         self.full_name = data['FullName']
         self.description = data['Description']
-        self.manufacturer_sku = data['ManufacturerSKU']
+        self.sku = data['ManufacturerSKU']
         self.base_price = data['BasePrice']
         self.vat_rate_id = data['VatRateID']
         self.vat_rate = data['VatRate']
