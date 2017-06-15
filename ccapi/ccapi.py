@@ -327,6 +327,7 @@ class CCAPI:
         """
         requests.UpdateProductBasePrice(product_id, price)
 
+    @staticmethod
     def set_product_handling_time(
             product_id, handling_time, update_channels=True):
         """
@@ -341,3 +342,43 @@ class CCAPI:
                 Default: True.
         """
         requests.SaveHandlingTime(product_id, handling_time, update_channels)
+
+    @staticmethod
+    def get_warehouses():
+        """Return Warehouses object containing all Warehouses."""
+        return requests.FindWarehouse()
+
+    @staticmethod
+    def get_bays_for_warehouse(warehouse_id):
+        """Return list of Warehouse Bays for Warehouse."""
+        return requests.FindWarehouseBay(
+            warehouse_id=warehouse_id, prog_type='normal')
+
+    @staticmethod
+    def get_bays_for_product(product_id):
+        """Return list of Warehouse Bays for Product."""
+        return requests.FindWarehouseBay(
+            product_id=product_id, operation='productbays')
+
+    @staticmethod
+    def add_warehouse_bay_to_product(product_id, bay_id):
+        """Add Warehouse Bay to Product."""
+        return requests.FindWarehouseBay(
+            product_id=product_id, warehouse_bay_id=bay_id,
+            operation='addlocation')
+
+    @staticmethod
+    def remove_warehouse_bay_from_product(product_id, bay_id):
+        """Remove Warehouse Bay from Product."""
+        return requests.FindWarehouseBay(
+            product_id=product_id, warehouse_bay_id=bay_id,
+            operation='removelocation')
+
+    @staticmethod
+    def add_bay_to_warehouse(
+            warehouse_id, bay, bay_number=0, aisle='', shelf='',
+            warehouse_bay_type='Default'):
+        """Add bay to warehouse."""
+        requests.SaveWarehouseBay(
+            warehouse_id, bay, bay_number=bay_number, aisle=aisle, shelf=shelf,
+            warehouse_bay_type=warehouse_bay_type)

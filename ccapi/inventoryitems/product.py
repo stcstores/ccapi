@@ -1,7 +1,7 @@
 """This module contains the Product class."""
 
 from ccapi import ccapi
-from . location import Location
+from . warehouse import WarehouseBay
 from . productoptions import ProductOption, ProductOptionValue
 
 
@@ -9,7 +9,7 @@ class Product:
     """Product class containing data and methods for working with Products."""
 
     _options = None
-    locations = None
+    bays = None
 
     def __init__(self, data):
         """
@@ -54,8 +54,8 @@ class Product:
         self.product_template_mode = data['ProductTemplateMode']
         self.additional_barcodes = data['AdditionalBarcodes']
         if data['Locations'] is not None:
-            self.locations = [
-                Location(location) for location in data['Locations']]
+            self.bays = [
+                WarehouseBay(bay) for bay in data['Locations']]
         self.dimensions = data['Dimensions']
 
     @property
@@ -189,3 +189,19 @@ class Product:
             old_stock_level = self.stock_level
         ccapi.CCAPI.update_product_stock_level(
             self.id, new_stock_level, old_stock_level)
+
+    def add_bay(self, bay):
+        """Add product to Warehouse Bay."""
+        if isinstance(bay, WarehouseBay):
+            bay_id = bay.id
+        else:
+            bay_id = bay
+        ccapi.CCAPI.add_warehouse_bay_to_product(self.id, bay_id)
+
+    def remove_bay(self, bay):
+        """Remove product from Warehouse Bay."""
+        if isinstance(bay, WarehouseBay):
+            bay_id = bay.id
+        else:
+            bay_id = bay
+        ccapi.CCAPI.remove_warehouse_bay_from_product(self.id, bay_id)

@@ -6,4 +6,6 @@ from . apirequest import APIRequest  # noqa
 from . getproductsforrange import GetProductsForRange  # noqa
 from . productoption import *  # noqa
 from . products import *  # noqa
+from . warehouse import *  # noqa
+from . warehousebay import *  # noqa
 from . range import *  # noqa
