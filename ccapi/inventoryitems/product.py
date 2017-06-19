@@ -18,6 +18,7 @@ class Product:
         Args:
             data: Cloud Commerce Product JSON object.
         """
+        self.json = data
         self.is_checked = data['isChecked']
         self.is_listed = data['isListed']
         self.supplier_sku = data['SupplierSKU']
