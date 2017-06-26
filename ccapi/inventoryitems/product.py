@@ -59,6 +59,9 @@ class Product:
                 WarehouseBay(bay) for bay in data['Locations']]
         self.dimensions = data['Dimensions']
 
+    def __repr__(self):
+        return self.full_name
+
     @property
     def options(self):
         """
