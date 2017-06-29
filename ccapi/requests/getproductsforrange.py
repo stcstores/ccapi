@@ -24,7 +24,7 @@ class GetProductsForRange(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
-        result = response.json()
+        result = super().process_response(self, response)
         return ProductRange(result)
 
     def get_data(self):

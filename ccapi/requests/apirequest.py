@@ -3,6 +3,8 @@
 This is the base class for Cloud Commerce Pro API requests.
 """
 
+import json
+
 from . ccapisession import CloudCommerceAPISession
 
 
@@ -33,4 +35,15 @@ class APIRequest:
 
     def process_response(self, response):
         """Handle request response."""
-        return response.json()
+        try:
+            data = response.json()
+        except json.decoder.JSONDecodeError:
+            raise NonJSONResponse(response.text)
+        return data
+
+
+class NonJSONResponse(Exception):
+
+    def __init__(self, response_text):
+        self.response_text = response_text
+        print(response_text)
