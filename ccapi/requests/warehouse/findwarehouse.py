@@ -5,7 +5,7 @@ Creates a new product range.
 """
 
 from .. apirequest import APIRequest
-from ccapi.inventoryitems import Warehouse
+from ccapi.inventoryitems import Warehouses, Warehouse
 
 
 class FindWarehouse(APIRequest):
@@ -21,7 +21,8 @@ class FindWarehouse(APIRequest):
     def process_response(self, response):
         """Handle request response."""
         if response.json() is not None:
-            return [Warehouse(warehouse) for warehouse in response.json()]
+            return Warehouses(
+                [Warehouse(warehouse) for warehouse in response.json()])
 
     def get_data(self):
         """Get data for request."""
