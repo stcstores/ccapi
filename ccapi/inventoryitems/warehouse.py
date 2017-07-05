@@ -131,7 +131,7 @@ class Warehouse:
         Returns: (str) ID of new Warehouse Bay.
 
         """
-        if bay in self._bay_names:
+        if bay in self.bay_names:
             raise Exception(
                 'Warehouse Bay {} already exists in Warehouse {}'.format(
                     bay, self.name))
