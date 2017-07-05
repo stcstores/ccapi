@@ -45,15 +45,15 @@ class Warehouses(metaclass=MetaWarehouses):
         self.warehouse_names = {
             warehouse.name: warehouse for warehouse in self.warehouses}
 
-        def __iter__(self):
-            for warehouse in self.warehouses:
-                yield warehouse
+    def __iter__(self):
+        for warehouse in self.warehouses:
+            yield warehouse
 
-        def __getitem__(self, index):
-            return self.warehouse_names[index]
+    def __getitem__(self, index):
+        return self.warehouse_names[index]
 
-        def __repr__(self):
-            return '{} Warehouses'.format(len(self.warehouses))
+    def __repr__(self):
+        return '{} Warehouses'.format(len(self.warehouses))
 
 
 class Warehouse:
