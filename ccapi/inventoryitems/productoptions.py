@@ -198,3 +198,8 @@ class ProductOptionValue:
 
     def __repr__(self):
         return self.value
+
+    def delete(self):
+        """Delete this Product Option Value."""
+        ccapi.CCAPI.delete_product_option_value(self.id)
+        del self

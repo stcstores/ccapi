@@ -382,3 +382,8 @@ class CCAPI:
         requests.SaveWarehouseBay(
             warehouse_id, bay, bay_number=bay_number, aisle=aisle, shelf=shelf,
             warehouse_bay_type=warehouse_bay_type)
+
+    @staticmethod
+    def delete_product_option_value(option_value_id):
+        """Delete Product Option Value."""
+        requests.DeleteOptionValue(option_value_id)
