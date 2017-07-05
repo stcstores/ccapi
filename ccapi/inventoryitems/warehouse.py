@@ -138,6 +138,8 @@ class Warehouse:
         ccapi.CCAPI.add_bay_to_warehouse(
             self.id, bay, bay_number=bay_number, aisle=aisle, shelf=shelf,
             warehouse_bay_type=warehouse_bay_type)
+        self.reload_bays()
+        return self.bay_names[bay].id
 
     def get_bay(self, bay, create=False):
         """

@@ -379,7 +379,7 @@ class CCAPI:
             warehouse_id, bay, bay_number=0, aisle='', shelf='',
             warehouse_bay_type='Default'):
         """Add bay to warehouse."""
-        requests.SaveWarehouseBay(
+        return requests.SaveWarehouseBay(
             warehouse_id, bay, bay_number=bay_number, aisle=aisle, shelf=shelf,
             warehouse_bay_type=warehouse_bay_type)
 
