@@ -312,7 +312,7 @@ class CCAPI:
                 Letter.
             external_id: External ID of product.
         """
-        requests.SetProductScope(
+        return requests.SetProductScope(
             product_id, weight, height, lenght, width, large_letter_compatible,
             external_id)
 

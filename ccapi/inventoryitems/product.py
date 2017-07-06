@@ -139,7 +139,7 @@ class Product:
             self.large_letter_compatible = large_letter_compatible
         if external_id is not None:
             self.external_product_id = external_id
-        ccapi.CCAPI.set_product_scope(
+        return ccapi.CCAPI.set_product_scope(
             self.id, self.weight, self.height_mm, self.length_mm,
             self.width_mm, self.large_letter_compatible,
             self.external_product_id)
