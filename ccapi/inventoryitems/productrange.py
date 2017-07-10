@@ -53,18 +53,24 @@ class ProductRange:
     def __repr__(self):
         return self.name
 
-    def add_product_option(self, option):
+    def add_product_option(self, option, drop_down=False):
         """
         Add Product Option to Product Range.
 
         Args:
             option: ProductOption object or (str) Product Option ID.
+
+        Kwargs:
+            drop_down: If True option will be set as a drop down.
+            Default: False.
         """
         if isinstance(option, ProductOption):
             option_id = option.id
         else:
             option_id = ProductOptions[option].id
         ccapi.CCAPI.add_option_to_product(self.id, option_id)
+        if drop_down is True:
+            self.set_option_drop_down(option_id, True)
         self._options = None
 
     def remove_product_option(self, option):
@@ -80,6 +86,19 @@ class ProductRange:
             option_id = self.options[option].id
         ccapi.CCAPI.remove_option_from_product(self.id, option_id)
         self._options = None
+
+    def set_option_drop_down(self, option, value):
+        """Set weather a Product Option is a drop down for this Product Range.
+
+        Args:
+            option: ProductOption or ID of Product Option.
+            value: (Bool) Product Option is a drop down.
+        """
+        if isinstance(option, ProductOption):
+            option_id = option.id
+        else:
+            option_id = option
+        ccapi.CCAPI.set_range_option_drop_down(self.id, option_id, value)
 
     @property
     def options(self):
