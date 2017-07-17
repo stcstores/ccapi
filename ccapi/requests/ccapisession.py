@@ -11,7 +11,7 @@ class CloudCommerceAPISession:
 
     domain = 'http://seatontradingcompany.cloudcommercepro.com'
     login_url = domain
-    timeout = timedelta(hours=12)
+    timeout = timedelta(hours=1)
 
     @classmethod
     def get_session(cls, username, password):
