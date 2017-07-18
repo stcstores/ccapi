@@ -398,3 +398,43 @@ class CCAPI:
             value: (Bool) Product Option is a drop down.
         """
         requests.SetOptionSelect(range_id, option_id, value)
+
+    @classmethod
+    def get_products(cls, *args, **kwargs):
+        """
+        Search for products matching criteria.
+
+        Kwargs:
+            search_text: Text to find in title or SKU.
+            option_matches_id: Option Value ID to match.
+
+        Returns: list containing ccapi.Product.
+
+        """
+        products = []
+        for product_range in cls.get_ranges(*args, **kwargs):
+            products += product_range.products
+        return products
+
+    @classmethod
+    def get_ranges(cls, *args, **kwargs):
+        """
+        Search for products matching criteria.
+
+        Kwargs:
+            search_text: Text to find in title or SKU.
+            option_matches_id: Option Value ID to match.
+
+        Returns: list containing ccapi.Range.
+
+        """
+        kwargs['skip_records'] = 0
+        products = []
+        while True:
+            data = requests.GetProducts(*args, **kwargs)
+            if len(data) == 0:
+                range_ids = list(set([
+                    product['RangeId'] for product in products]))
+                return [cls.get_range(range_id) for range_id in range_ids]
+            products += data
+            kwargs['skip_records'] = len(products)

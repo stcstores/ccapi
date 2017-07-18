@@ -9,3 +9,4 @@ from . products import *  # noqa
 from . warehouse import *  # noqa
 from . warehousebay import *  # noqa
 from . range import *  # noqa
+from . productmanager import *  # noqa

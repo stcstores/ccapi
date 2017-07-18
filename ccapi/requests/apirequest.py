@@ -43,7 +43,9 @@ class APIRequest:
 
 
 class NonJSONResponse(Exception):
+    """Attempted to JSON decode string which was not valid JSON."""
 
     def __init__(self, response_text):
+        """Create NonJSONResponse."""
         self.response_text = response_text
         print(response_text)
