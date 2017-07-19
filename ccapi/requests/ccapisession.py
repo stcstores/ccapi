@@ -14,10 +14,18 @@ class CloudCommerceAPISession:
     timeout = timedelta(hours=1)
 
     @classmethod
-    def get_session(cls, username, password):
-        """Create logged in session with Cloud Commerce."""
+    def credentials(cls, username, password):
+        """Set username and password."""
         cls.username = username
         cls.password = password
+
+    @classmethod
+    def get_session(cls, username=None, password=None):
+        """Create logged in session with Cloud Commerce."""
+        if username is not None:
+            cls.username = username
+        if password is not None:
+            cls.password = password
         cls.session = requests.Session()
         login_post_data = {
             'usernameInput': username, 'passwordInput': password}
@@ -36,7 +44,14 @@ class CloudCommerceAPISession:
         return response
 
     @classmethod
+    def is_logged_in(cls):
+        """Check current session is valid."""
+        if cls.last_login and cls.last_login + cls.timeout > datetime.now():
+            return True
+        return False
+
+    @classmethod
     def check_login(cls):
         """Get new session if current session has expired."""
-        if cls.last_login + cls.timeout < datetime.now():
+        if not cls.is_logged_in():
             cls.get_session(cls.username, cls.password)
