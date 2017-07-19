@@ -34,6 +34,21 @@ class CCAPI:
         CloudCommerceAPISession.get_session(username, password)
 
     @staticmethod
+    def credentials(username, password):
+        """Set username and password."""
+        CloudCommerceAPISession.credentials(username, password)
+
+    @staticmethod
+    def is_logged_in():
+        """Check current session is valid."""
+        return CloudCommerceAPISession.is_logged_in()
+
+    @staticmethod
+    def check_login():
+        """Get new session if current session has expired."""
+        CloudCommerceAPISession.check_login()
+
+    @staticmethod
     def search_products(search_text):
         """
         Perform text search for products.
