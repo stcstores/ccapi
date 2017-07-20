@@ -20,7 +20,7 @@ class GetProducts(APIRequest):
             channel_identifier='', name='', price_from=0, price_to=0,
             product_type=-1, sort_by='', skip_records=0, take_records=100,
             take_exact_match=False, channel_type=-1, channel_id=0,
-            sort_desc=False, id_list=None, option_matches_id=None,
+            sort_desc=False, id_list=None, option_matches_id=0,
             multi_listings=True):
         """Create GetProductsForRange request.
 
@@ -53,6 +53,8 @@ class GetProducts(APIRequest):
         self.sort_desc = sort_desc
         self.id_list = id_list
         self.option_matches_id = option_matches_id
+        if self.option_matches_id is None:
+            self.option_matches_id = 0
         self.multi_listings = multi_listings
         return super().__new__(self)
 
@@ -84,8 +86,6 @@ class GetProducts(APIRequest):
             "OptionMatchesId": self.option_matches_id,
             "MultiListings": self.multi_listings
         }
-        if self.option_matches_id is not None:
-            search_options['OptionMatchesId'] = self.option_matches_id
         data = {'SearchOptions': json.dumps(search_options)}
         return data
 
