@@ -5,7 +5,7 @@ Gets selected product options for given product.
 """
 
 from .. apirequest import APIRequest
-from ccapi.inventoryitems import Product, ProductOptions, ProductOption
+from ccapi.inventoryitems import Product, AppliedProductOptions
 
 
 class FindProductSelectedOptionsOnly(APIRequest):
@@ -44,5 +44,4 @@ class FindProductSelectedOptionsOnlyResult:
         if data['product'] is not None:
             self.product = Product(data['product'])
             self.product.stock_level = self.stock_level
-        self.options = ProductOptions(
-            [ProductOption(option) for option in data['options']])
+        self.options = AppliedProductOptions(data['options'])

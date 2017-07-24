@@ -95,6 +95,10 @@ class ProductOption:
             'google': result['excludeGoogle']
         }
         self.selected = result['Selected']
+        self.set_value(result)
+
+    def set_value(self, result):
+        """Set Option Values."""
         if 'optionValues' in result:
             self._values = [
                 ProductOptionValue(value) for value in result['optionValues']]
@@ -176,7 +180,7 @@ class ProductOption:
 
 
 class ProductOptionValue:
-    """class for working with Product Option Values."""
+    """Class for working with Product Option Values."""
 
     def __init__(self, result):
         """
@@ -203,3 +207,47 @@ class ProductOptionValue:
         """Delete this Product Option Value."""
         ccapi.CCAPI.delete_product_option_value(self.id)
         del self
+
+
+class AppliedProductOptions(ProductOptions):
+    """Container for AppliedProductOptions."""
+
+    def __init__(self, options):
+        """Create AppliedProductOptions object.
+
+        Args:
+            options: list containg ProductOption objects.
+        """
+        self.options = [
+            AppliedProductOption(option_data) for option_data in options]
+        self.option_names = {
+            option.option_name: option for option in self.options}
+
+    def __repr__(self):
+        return(str(self.options))
+
+
+class AppliedProductOption(ProductOption):
+    """Wrapper for Product Options applied to a Product."""
+
+    def set_value(self, option_data):
+        """Set Option Values."""
+        if len(option_data['optionValues']) > 0:
+            self.value = AppliedProductOptionValue(
+                option_data['optionValues'][0])
+        else:
+            self.value = None
+
+    def __repr__(self):
+        return '{}: {}'.format(self.option_name, self.value)
+
+
+class AppliedProductOptionValue(ProductOptionValue):
+    """Container for Product Option values applied to a product."""
+
+    def __repr__(self):
+        return self.value
+
+    def delete(self):
+        """Product Option Values should not be deleted from here."""
+        raise NotImplementedError
