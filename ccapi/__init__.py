@@ -1,3 +1,3 @@
 from . ccapi import CCAPI  # noqa
-from . inventoryitems import ProductOptions  # noqa
+from . inventoryitems import ProductOptions, Warehouses  # noqa
 from . urls import URLs  # noqa
