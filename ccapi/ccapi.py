@@ -453,3 +453,9 @@ class CCAPI:
                 return [cls.get_range(range_id) for range_id in range_ids]
             products += data
             kwargs['skip_records'] = len(products)
+
+    @staticmethod
+    def delete_bay(bay_id):
+        """Delete Warehouse Bay."""
+        return requests.FindWarehouseBay(
+            warehouse_bay_id=bay_id, operation='removebay')

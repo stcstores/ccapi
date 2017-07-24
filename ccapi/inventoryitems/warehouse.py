@@ -191,3 +191,6 @@ class WarehouseBay:
 
     def __repr__(self):
         return self.name
+
+    def delete(self):
+        ccapi.CCAPI.delete_bay(self.id)

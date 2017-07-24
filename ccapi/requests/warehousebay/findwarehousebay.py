@@ -27,7 +27,10 @@ class FindWarehouseBay(APIRequest):
     def process_response(self, response):
         """Handle request response."""
         if len(response.text) > 0:
-            return [WarehouseBay(bay) for bay in response.json()]
+            json = response.json()
+            if isinstance(json, list):
+                return [WarehouseBay(bay) for bay in json]
+            return json
 
     def get_data(self):
         """Get data for request."""
