@@ -459,3 +459,15 @@ class CCAPI:
         """Delete Warehouse Bay."""
         return requests.FindWarehouseBay(
             warehouse_bay_id=bay_id, operation='removebay')
+
+    @classmethod
+    def get_bay_id(cls, bay_name, warehouse_name, create=False):
+        """Get ID for Warehouse Bay."""
+        warehouses = cls.get_warehouses()
+        warehouse = warehouses[warehouse_name]
+        if bay_name in warehouse.bay_names:
+            return warehouse[bay_name].id
+        if create is True:
+            bay_id = warehouse.add_bay(bay_name)
+            return bay_id
+        return None
