@@ -31,7 +31,7 @@ class CCAPI:
             username: Login username.
             password: Login password.
         """
-        CloudCommerceAPISession.get_session(username, password)
+        return CloudCommerceAPISession.get_session(username, password)
 
     @staticmethod
     def credentials(username, password):
