@@ -471,3 +471,8 @@ class CCAPI:
             bay_id = warehouse.add_bay(bay_name)
             return bay_id
         return None
+
+    @staticmethod
+    def get_print_queue():
+        """Return the current contents of the Print Queue."""
+        return requests.FindPrintQueue()
