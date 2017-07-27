@@ -8,6 +8,6 @@ setup(
     description='Wrapper for Cloud Commerce Pro API',
     author='Luke Shiner',
     author_email='luke@lukeshiner.com',
-    install_requires=['requests'],
+    install_requires=['requests', 'beautifulsoup4'],
     packages=find_packages(),
     )
