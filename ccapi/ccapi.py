@@ -476,3 +476,8 @@ class CCAPI:
     def get_print_queue():
         """Return the current contents of the Print Queue."""
         return requests.FindPrintQueue()
+
+    @staticmethod
+    def get_users(search_string=''):
+        """Return system users."""
+        return requests.PreEmployee(search_string=search_string)

@@ -4,6 +4,7 @@
 from . ccapisession import CloudCommerceAPISession  # noqa
 from . apirequest import APIRequest  # noqa
 from . getproductsforrange import GetProductsForRange  # noqa
+from . preemployee import PreEmployee  # noqa
 from . productoption import *  # noqa
 from . products import *  # noqa
 from . warehouse import *  # noqa
