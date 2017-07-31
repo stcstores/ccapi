@@ -135,3 +135,7 @@ class ProductRange:
             self.id, name, barcode, sku=sku, description=description,
             vat_rate_id=vat_rate_id)
         return ccapi.CCAPI.get_product(product_id)
+
+    def delete(self):
+        """Delete this Product Range."""
+        ccapi.CCAPI.delete_range(self.id)

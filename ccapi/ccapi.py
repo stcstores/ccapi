@@ -481,3 +481,8 @@ class CCAPI:
     def get_users(search_string=''):
         """Return system users."""
         return requests.PreEmployee(search_string=search_string)
+
+    @staticmethod
+    def delete_range(range_id):
+        """Delete Product Range."""
+        return requests.DeleteProductRange(range_id)
