@@ -73,7 +73,7 @@ class PrintQueueItem:
             self.date_completed = self.to_datetime(data['DateCompleted'])
         else:
             self.date_completed = None
-        self.custoemr_order_dispatch_id = data['CustomerOrderDispatchId']
+        self.customer_order_dispatch_id = data['CustomerOrderDispatchId']
 
     def to_datetime(self, date_time_string):
         """Convert Cloud Commerce date time string to datetime.datetime."""
