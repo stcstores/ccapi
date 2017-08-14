@@ -204,7 +204,7 @@ class CCAPI:
         """
         options = cls.get_product_options()
         for option in options:
-            if option.option_name == option_name:
+            if option.option_name.lower() == option_name.lower().strip():
                 return option.id
 
     @classmethod
