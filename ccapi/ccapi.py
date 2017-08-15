@@ -206,6 +206,7 @@ class CCAPI:
         for option in options:
             if option.option_name.lower() == option_name.lower().strip():
                 return option.id
+        return None
 
     @classmethod
     def get_option_value_id(cls, option_id, value, create=False):
@@ -225,10 +226,11 @@ class CCAPI:
         """
         values = cls.get_option_values(option_id)
         for option_value in values:
-            if option_value.value == value:
-                return value.id
+            if option_value.value.strip().lower() == value.strip().lower():
+                return option_value.id
         if create is True:
             return cls.create_option_value(option_id, value)
+        return None
 
     @staticmethod
     def add_option_to_product(product_id, option_id):
