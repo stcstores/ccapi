@@ -94,19 +94,16 @@ class Product:
         if isinstance(option, ProductOption):
             option_id = option.id
         else:
-            option = self.options[option]
-            option_id = option.id
+            option_id = ccapi.CCAPI.get_product_option_id(option)
         if isinstance(value, ProductOptionValue):
             value_id = value.id
         else:
-            try:
-                value = option[value]
-            except KeyError:
+            value_id = ccapi.CCAPI.get_option_value_id(option_id, value)
+            if value_id is None:
                 if create is True:
                     value = option.add_value(value)
                 else:
-                    raise
-            value_id = value.id
+                    raise Exception('Product Option Value does not exist.')
         ccapi.CCAPI.set_product_option_value((self.id, ), option_id, value_id)
 
     def set_product_scope(

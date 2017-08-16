@@ -147,14 +147,14 @@ class ProductOption:
         Returns: (str) ID of new Product Option Value.
 
         """
-        if value in self._value_names:
+        if ccapi.CCAPI.get_option_value_id(self.id, value) is not None:
             raise Exception(
                 'Option Value {} already exists for product option {}'.format(
                     self.option_name, value))
         ccapi.CCAPI.create_option_value(self.id, value)
         time.sleep(0.5)
         self.reload_values()
-        return self.value_names[value]
+        return ccapi.CCAPI.get_product_option_id(value)
 
     def get_value(self, value, create=False):
         """
