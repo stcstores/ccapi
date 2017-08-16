@@ -1,7 +1,6 @@
 """This module contains classes for working with Product Options."""
 
 from ccapi import ccapi
-import time
 
 
 class MetaProductOptions(type):
@@ -152,7 +151,6 @@ class ProductOption:
                 'Option Value {} already exists for product option {}'.format(
                     self.option_name, value))
         ccapi.CCAPI.create_option_value(self.id, value)
-        time.sleep(0.5)
         self.reload_values()
         return ccapi.CCAPI.get_product_option_id(value)
 
