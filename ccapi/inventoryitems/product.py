@@ -101,10 +101,11 @@ class Product:
             value_id = ccapi.CCAPI.get_option_value_id(option_id, value)
             if value_id is None:
                 if create is True:
-                    value = option.add_value(value)
+                    value_id = ccapi.CCAPI.create_option_value(
+                        option_id, value_id)
                 else:
                     raise Exception('Product Option Value does not exist.')
-        ccapi.CCAPI.set_product_option_value((self.id, ), option_id, value_id)
+        ccapi.CCAPI.set_product_option_value([self.id], option_id, value_id)
 
     def set_product_scope(
             self, weight=None, height=None, length=None, width=None,
