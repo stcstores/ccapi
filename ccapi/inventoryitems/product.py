@@ -76,7 +76,7 @@ class Product:
 
     def get_range(self):
         """Return ProductRange for Range to which this Product belongs."""
-        return ccapi.CCAPI.get_ragne(self.range_id)
+        return ccapi.CCAPI.get_range(self.range_id)
 
     def set_option_value(self, option, value, create=False):
         """
@@ -94,15 +94,17 @@ class Product:
         if isinstance(option, ProductOption):
             option_id = option.id
         else:
-            option_id = ccapi.CCAPI.get_product_option_id(option)
+            option = self.options[option]
+            option_id = option.id
         if isinstance(value, ProductOptionValue):
             value_id = value.id
         else:
-            value_id = ccapi.CCAPI.get_option_value_id(option_id, value)
-            if value_id is None:
+            try:
+                value_id = option[value].id
+            except KeyError:
                 if create is True:
                     value_id = ccapi.CCAPI.create_option_value(
-                        option_id, value_id)
+                        option_id, value)
                 else:
                     raise Exception('Product Option Value does not exist.')
         ccapi.CCAPI.set_product_option_value([self.id], option_id, value_id)

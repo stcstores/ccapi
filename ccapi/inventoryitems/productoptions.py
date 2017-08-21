@@ -11,7 +11,7 @@ class MetaProductOptions(type):
             yield option
 
     def __getitem__(self, index):
-        return self.option_names[index]
+        return self.option_names[index.strip().lower()]
 
     @property
     def options(self):
@@ -25,7 +25,8 @@ class MetaProductOptions(type):
         """Return dict organising Product Options by name."""
         if self._option_names is None:
             self._option_names = {
-                option.option_name: option for option in self.options}
+                option.option_name.strip().lower(): option for option in
+                self.options}
         return self._option_names
 
 
@@ -111,7 +112,7 @@ class ProductOption:
         if isinstance(index, int):
             return self.values[index]
         else:
-            return self.value_names[index]
+            return self.value_names[index.strip().lower()]
 
     @property
     def values(self):
@@ -129,7 +130,7 @@ class ProductOption:
 
     def load_value_names(self):
         """Return dict organising Values by name."""
-        return {value.value: value for value in self.values}
+        return {value.value.strip().lower(): value for value in self.values}
 
     def reload_values(self):
         """Get Product Option Values for this Product Option."""
