@@ -12,3 +12,5 @@ from . warehousebay import *  # noqa
 from . range import *  # noqa
 from . productmanager import *  # noqa
 from . printqueue import *  # noqa
+from . orderdetails import *  # noqa
+from . orderhandlers import *  # noqa

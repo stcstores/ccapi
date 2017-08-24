@@ -493,3 +493,8 @@ class CCAPI:
     def get_order_addresses(order_id, customer_id):
         """Get addresses for order."""
         return requests.GetOrderAddresses(order_id, customer_id)
+
+    @staticmethod
+    def get_orders_for_dispatch(*args, **kwargs):
+        """Get orders for dispatch."""
+        return requests.GetOrdersForDispatch(*args, **kwargs)

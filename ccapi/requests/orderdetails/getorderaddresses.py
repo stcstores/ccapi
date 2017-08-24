@@ -42,8 +42,18 @@ class GetOrderAddresses(APIRequest):
 
 
 class Addresses:
+    """Container for addresses associated with an order."""
 
     def __init__(self, **kwargs):
+        """
+        Create Adresses object.
+
+        Kwargs:
+            DeliveryAddress: dict containing information about a
+                delivery address.
+            BillingAddress: dict containing information about a
+                billing address.
+        """
         if 'DeliveryAddress' in kwargs:
             self.delivery_address = Address(data=kwargs['DeliveryAddress'])
         if 'BillingAddress' in kwargs:
@@ -51,12 +61,20 @@ class Addresses:
 
 
 class Address:
+    """Container for an address associated with an order."""
 
     def __init__(self, data=None):
+        """
+        Create Address object.
+
+        Kwargs:
+            data: dict containing information about an address.
+        """
         if data is not None:
             self.load_from_request(data)
 
     def load_from_request(self, data):
+        """Set attributes from request response."""
         self.json = data
         self.id = data['ID']
         self.address_id = data['AddressID']
