@@ -54,6 +54,7 @@ class Product:
         self.product_template_id = data['ProductTemplateId']
         self.product_template_mode = data['ProductTemplateMode']
         self.additional_barcodes = data['AdditionalBarcodes']
+        self.weight = data['WeightGM']
         if data['Locations'] is not None:
             self.bays = [
                 WarehouseBay(bay) for bay in data['Locations']]
