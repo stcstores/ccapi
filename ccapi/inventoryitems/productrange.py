@@ -27,12 +27,12 @@ class ProductRange:
         self.brand_company_name = result['BrandCompanyName']
         self.brand_trading_name = result['BrandTradingName']
         self.neck_shape = result['NeckShape']
-        self.pre_order = result['PreOrder']
-        self.end_of_line = result['EndOfLine']
+        self.pre_order = bool(result['PreOrder'])
+        self.end_of_line = bool(result['EndOfLine'])
         self.last_stock_check = result['LastStockCheck']
         self.thumb_nail = result['ThumbNail']
         self.linked = result['Linked']
-        self.grouped = result['Grouped']
+        self.grouped = bool(result['Grouped'])
         self.on_sales_channel = result['OnSalesChannel']
         self.season_id = result['SeasonID']
         self.season_name = result['SeasonName']
@@ -139,3 +139,61 @@ class ProductRange:
     def delete(self):
         """Delete this Product Range."""
         ccapi.CCAPI.delete_range(self.id)
+
+    def update_range_settings(
+            self, name=None, sku=None, end_of_line=None, pre_order=None,
+            grouped=None, channels=[]):
+        """
+        Update Range Settings.
+
+        Update Name, SKU, End of Line, Pre Order and Group Items
+        for Product Range.
+        """
+        if name is None:
+            name = self.name
+        else:
+            self.name = name
+        if sku is None:
+            sku = self.sku
+        else:
+            self.sku = sku
+        if end_of_line is None:
+            end_of_line = self.end_of_line
+        if pre_order is None:
+            pre_order = self.pre_order
+        if grouped is None:
+            grouped = self.grouped
+        ccapi.CCAPI.update_range_settings(
+            self.id,
+            current_name=self.name,
+            current_sku=self.sku,
+            current_end_of_line=self.end_of_line,
+            current_pre_order=self.pre_order,
+            current_group_items=self.grouped,
+            new_name=name,
+            new_sku=sku,
+            new_end_of_line=end_of_line,
+            new_pre_order=pre_order,
+            new_group_items=grouped,
+            channels=channels)
+        self.name = name
+        self.sku = sku
+        self.end_of_line = end_of_line
+        self.pre_order = pre_order
+        self.grouped = grouped
+
+    def set_name(self, name):
+        """Set Name of Product Range."""
+        self.update_range_settings(name=name)
+
+    def set_sku(self, sku):
+        """Set SKU for Product Range."""
+        self.update_range_settings(sku=sku)
+
+    def set_end_of_line(self, end_of_line):
+        """Set End Of Line status for Product Range."""
+        self.update_range_settings(end_of_line=end_of_line)
+
+    def set_grouped(self, grouped):
+        """Set Grouped status for Product Range."""
+        self.update_range_settings(grouped=grouped)

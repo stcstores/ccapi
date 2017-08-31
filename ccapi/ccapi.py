@@ -498,3 +498,25 @@ class CCAPI:
     def get_orders_for_dispatch(*args, **kwargs):
         """Get orders for dispatch."""
         return requests.GetOrdersForDispatch(*args, **kwargs)
+
+    @staticmethod
+    def update_range_settings(
+            range_id, current_name='', current_sku='',
+            current_end_of_line='', current_pre_order='',
+            current_group_items='', new_name='', new_sku='',
+            new_end_of_line='', new_pre_order='', new_group_items='',
+            channels=[]):
+        """
+        Update Range Settings.
+
+        Update Name, SKU, End of Line, Pre Order and Group Items
+        for Product Range.
+        """
+        return requests.UpdateRangeSettings(
+            range_id, current_name=current_name, current_sku=current_sku,
+            current_end_of_line=current_end_of_line,
+            current_pre_order=current_pre_order,
+            current_group_items=current_group_items, new_name=new_name,
+            new_sku=new_sku, new_end_of_line=new_end_of_line,
+            new_pre_order=new_pre_order, new_group_items=new_group_items,
+            channels=channels)
