@@ -80,3 +80,6 @@ class ShopOptions:
         self.is_used_by_product = data['IsUsedByProduct']
         self.hidden = data['Hidden']
         self.pre_select_on_create_range = data['PreSelectOnCreateRange']
+
+    def __repr__(self):
+        return 'Shop Option: {}'.format(self.name)

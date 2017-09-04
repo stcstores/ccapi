@@ -120,6 +120,20 @@ class CCAPI:
         return response.options
 
     @staticmethod
+    def get_shop_options_for_range(range_id):
+        """
+        Get Shop Options for given Product Range.
+
+        Args:
+            range_id: ID of product range.
+
+        Returns ccapi.inventoryitems.productoptions.ShopOptions.
+
+        """
+        response = requests.GetProductData(range_id)
+        return response.shop_options
+
+    @staticmethod
     def get_product_options():
         """
         Get all available Product Options.
