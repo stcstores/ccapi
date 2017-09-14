@@ -195,6 +195,9 @@ class Product:
         ccapi.CCAPI.update_product_stock_level(
             self.id, new_stock_level, old_stock_level)
 
+    def set_description(self, description):
+        ccapi.CCAPI.set_product_description(description, [self.id])
+
     def add_bay(self, bay):
         """Add product to Warehouse Bay."""
         if isinstance(bay, WarehouseBay):

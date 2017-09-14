@@ -556,3 +556,7 @@ class CCAPI:
             range_id: ID of Product Range.
         """
         return requests.CheckRangesOnSalesChannel(range_id)
+
+    @staticmethod
+    def set_product_description(description, product_ids):
+        return requests.SaveDescription(description, product_ids)

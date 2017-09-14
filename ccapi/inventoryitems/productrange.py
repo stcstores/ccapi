@@ -210,3 +210,7 @@ class ProductRange:
     def set_grouped(self, grouped):
         """Set Grouped status for Product Range."""
         self.update_range_settings(grouped=grouped)
+
+    def set_description(self, description):
+        product_ids = [p.id for p in self.products]
+        ccapi.CCAPI.set_product_description(description, product_ids)
