@@ -534,3 +534,25 @@ class CCAPI:
             new_sku=new_sku, new_end_of_line=new_end_of_line,
             new_pre_order=new_pre_order, new_group_items=new_group_items,
             channels=channels)
+
+    @staticmethod
+    def update_range_on_sales_channel(*args, **kwargs):
+        """Update Product Range settings on sales channel.
+
+        Args:
+            range_id: ID of Product Range.
+
+        Kwargs:
+            option_id: ID of Product Option.
+            value: (Bool) Product Option is a drop down.
+        """
+        return requests.UpdateOnSalesChannel(*args, **kwargs)
+
+    @staticmethod
+    def get_sales_channels_for_range(range_id):
+        """Create checkRangesOnSalesChannel request.
+
+        Args:
+            range_id: ID of Product Range.
+        """
+        return requests.CheckRangesOnSalesChannel(range_id)

@@ -53,6 +53,14 @@ class ProductRange:
     def __repr__(self):
         return self.name
 
+    def get_sales_channels(self):
+        """Get Sales Channels for this Product Range."""
+        return ccapi.CCAPI.get_sales_channels_for_range(self.id)
+
+    def get_sales_channel_ids(self):
+        """Get IDs of Sales Channels on which this Product Range is listed."""
+        return [channel.id for channel in self.get_sales_channels()]
+
     def add_product_option(self, option, drop_down=False):
         """
         Add Product Option to Product Range.
@@ -87,7 +95,7 @@ class ProductRange:
         ccapi.CCAPI.remove_option_from_product(self.id, option_id)
         self._options = None
 
-    def set_option_drop_down(self, option, value):
+    def set_option_drop_down(self, option, value, update_channels=False):
         """Set weather a Product Option is a drop down for this Product Range.
 
         Args:
@@ -99,6 +107,11 @@ class ProductRange:
         else:
             option_id = option
         ccapi.CCAPI.set_range_option_drop_down(self.id, option_id, value)
+        if update_channels is True:
+            channel_ids = self.get_sales_channel_ids()
+            ccapi.CCAPI.update_range_on_sales_channel(
+                self.id, request_type='select', act='update', value=value,
+                option_id=option_id, channel_ids=channel_ids)
 
     @property
     def options(self):
