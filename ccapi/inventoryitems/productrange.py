@@ -211,6 +211,11 @@ class ProductRange:
         """Set Grouped status for Product Range."""
         self.update_range_settings(grouped=grouped)
 
-    def set_description(self, description):
+    def set_description(self, description, update_channels=False):
         product_ids = [p.id for p in self.products]
         ccapi.CCAPI.set_product_description(description, product_ids)
+        if update_channels is True:
+            ccapi.CCAPI.update_product_on_sales_channel(
+                'desc', self.id, product_ids=[p.id for p in self.products],
+                value_1=description,
+                channels=[c.id for c in self.get_sales_channels()])

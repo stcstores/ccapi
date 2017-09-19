@@ -546,7 +546,24 @@ class CCAPI:
             option_id: ID of Product Option.
             value: (Bool) Product Option is a drop down.
         """
-        return requests.UpdateOnSalesChannel(*args, **kwargs)
+        return requests.UpdateRangeOnSalesChannel(*args, **kwargs)
+
+    @staticmethod
+    def update_product_on_sales_channel(*args, **kwargs):
+        """Update Product settings on sales channel.
+
+        Args:
+            request_type: Setting to change on channel.
+            range_id: ID of Product Range to update.
+
+        Kwargs:
+            product_ids: List containing IDs of products to update.
+            act: Act.
+            value_1: First updated value.
+            value_2: Second updated value.
+            channels: List containing IDs of channels to be updated.
+        """
+        return requests.UpdateProductOnSalesChannel(*args, **kwargs)
 
     @staticmethod
     def get_sales_channels_for_range(range_id):

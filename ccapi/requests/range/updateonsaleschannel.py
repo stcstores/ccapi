@@ -7,7 +7,7 @@ Update Product Range settings on sales channel.
 from .. apirequest import APIRequest
 
 
-class UpdateOnSalesChannel(APIRequest):
+class UpdateRangeOnSalesChannel(APIRequest):
     """setOptionSelect request."""
 
     uri = '/Handlers/Range/updateOnSalesChannel.ashx'
