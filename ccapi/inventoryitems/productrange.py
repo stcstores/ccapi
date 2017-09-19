@@ -164,12 +164,8 @@ class ProductRange:
         """
         if name is None:
             name = self.name
-        else:
-            self.name = name
         if sku is None:
             sku = self.sku
-        else:
-            self.sku = sku
         if end_of_line is None:
             end_of_line = self.end_of_line
         if pre_order is None:
