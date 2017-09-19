@@ -212,6 +212,7 @@ class ProductRange:
         self.update_range_settings(grouped=grouped)
 
     def set_description(self, description, update_channels=True):
+        """Set description for Product Range."""
         product_ids = [p.id for p in self.products]
         ccapi.CCAPI.set_product_description(description, product_ids)
         if update_channels is True:

@@ -4,6 +4,7 @@ from . findproductselectedoptionsonly import FindProductSelectedOptionsOnly  # n
 from . productoperations import ProductOperations   # noqa
 from . savedescription import SaveDescription  # noqa
 from . savehandlingtime import SaveHandlingTime  # noqa
+from . saveproductname import SaveProductName  # noqa
 from . setproductoptionvalue import SetProductOptionValue  # noqa
 from . setproductscope import SetProductScope  # noqa
 from . updateproductbaseprice import UpdateProductBasePrice  # noqa

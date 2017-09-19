@@ -63,6 +63,14 @@ class Product:
     def __repr__(self):
         return self.full_name
 
+    def get_sales_channels(self):
+        """Get Sales Channels for this Product Range."""
+        return ccapi.CCAPI.get_sales_channels_for_range(self.range_id)
+
+    def get_sales_channel_ids(self):
+        """Get IDs of Sales Channels on which this Product Range is listed."""
+        return [channel.id for channel in self.get_sales_channels()]
+
     @property
     def options(self):
         """
@@ -195,7 +203,15 @@ class Product:
         ccapi.CCAPI.update_product_stock_level(
             self.id, new_stock_level, old_stock_level)
 
+    def set_name(self, name):
+        """Set name of Product."""
+        ccapi.CCAPI.set_product_name(name, [self.id])
+        ccapi.CCAPI.update_product_on_sales_channel(
+            range_id=self.range_id, product_ids=[self.id], request_type='name',
+            value_1=name, channels=self.get_sales_channel_ids())
+
     def set_description(self, description):
+        """Set description for Product."""
         ccapi.CCAPI.set_product_description(description, [self.id])
 
     def add_bay(self, bay):
