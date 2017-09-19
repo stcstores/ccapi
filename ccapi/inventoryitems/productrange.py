@@ -95,7 +95,7 @@ class ProductRange:
         ccapi.CCAPI.remove_option_from_product(self.id, option_id)
         self._options = None
 
-    def set_option_drop_down(self, option, value, update_channels=False):
+    def set_option_drop_down(self, option, value, update_channels=True):
         """Set weather a Product Option is a drop down for this Product Range.
 
         Args:
@@ -155,7 +155,7 @@ class ProductRange:
 
     def update_range_settings(
             self, name=None, sku=None, end_of_line=None, pre_order=None,
-            grouped=None, channels=[]):
+            grouped=None, channels=True):
         """
         Update Range Settings.
 
@@ -176,6 +176,10 @@ class ProductRange:
             pre_order = self.pre_order
         if grouped is None:
             grouped = self.grouped
+        if channels is True:
+            channels = self.get_sales_channel_ids()
+        else:
+            channels = []
         ccapi.CCAPI.update_range_settings(
             self.id,
             current_name=self.name,
@@ -211,11 +215,11 @@ class ProductRange:
         """Set Grouped status for Product Range."""
         self.update_range_settings(grouped=grouped)
 
-    def set_description(self, description, update_channels=False):
+    def set_description(self, description, update_channels=True):
         product_ids = [p.id for p in self.products]
         ccapi.CCAPI.set_product_description(description, product_ids)
         if update_channels is True:
             ccapi.CCAPI.update_product_on_sales_channel(
                 'desc', self.id, product_ids=[p.id for p in self.products],
                 value_1=description,
-                channels=[c.id for c in self.get_sales_channels()])
+                channels=self.get_sales_channel_ids())
