@@ -10,3 +10,4 @@ from . setproductscope import SetProductScope  # noqa
 from . updateproductbaseprice import UpdateProductBasePrice  # noqa
 from . updateonsaleschannel import UpdateProductOnSalesChannel  # noqa
 from . updateproductstocklevel import UpdateProductStockLevel  # noqa
+from . updateproductvatrate import UpdateProductVatRate  # noqa

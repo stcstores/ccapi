@@ -583,3 +583,8 @@ class CCAPI:
     def set_product_name(name, product_ids):
         """Set name for Product."""
         requests.SaveProductName(name, product_ids)
+
+    @staticmethod
+    def set_product_vat_rate(product_ids, vat_rate_id):
+        """Set VAT rate for products."""
+        return requests.UpdateProductVatRate(product_ids, vat_rate_id)
