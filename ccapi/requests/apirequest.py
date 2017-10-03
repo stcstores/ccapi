@@ -48,4 +48,3 @@ class NonJSONResponse(Exception):
     def __init__(self, response_text):
         """Create NonJSONResponse."""
         self.response_text = response_text
-        print(response_text)

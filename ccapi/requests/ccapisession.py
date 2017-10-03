@@ -30,7 +30,6 @@ class CloudCommerceAPISession:
         cls.session = requests.Session()
         login_post_data = {
             'usernameInput': username, 'passwordInput': password}
-        print('Getting Cloud Commerce Session')
         cls.session.post(cls.login_url, data=login_post_data)
         cls.last_login = datetime.now()
         return cls.session
