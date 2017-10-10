@@ -243,3 +243,8 @@ class Product:
         """Add image to Product."""
         return ccapi.CCAPI.upload_image(
             product_ids=[self.id], channel_ids=channel_ids, image_file=image)
+
+    def set_image_order(self, image_ids=[]):
+        """Set order of Product Images."""
+        return ccapi.CCAPI.set_image_order(
+            product_id=self.id, image_ids=image_ids)

@@ -8,12 +8,12 @@ from ..apirequest import APIRequest
 
 
 class UploadImage(APIRequest):
-    """deleteImage request."""
+    """uploadImage request."""
 
     uri = 'Handlers/Products/uploadImage.ashx'
 
     def __new__(self, product_ids=[], channel_ids=[], image_file=None):
-        """Create deleteImage request.
+        """Create uploadImage request.
 
         Kwargs:
             product_ids: IDs of products to add image to.

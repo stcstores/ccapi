@@ -620,3 +620,14 @@ class CCAPI:
         return requests.UploadImage(
             product_ids=product_ids, channel_ids=channel_ids,
             image_file=image_file)
+
+    @staticmethod
+    def set_image_order(product_id=None, image_ids=[]):
+        """Create setImageOrder request.
+
+        Kwargs:
+            product_id: ID of Product for which Images will be ordered.
+            image_order: List containing IDs of images in updated order.
+        """
+        return requests.SetImageOrder(
+            product_id=product_id, image_ids=image_ids)
