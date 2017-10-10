@@ -18,6 +18,7 @@ class APIRequest:
         self.headers = self.get_headers(self)
         self.data = self.get_data(self)
         self.params = self.get_params(self)
+        self.files = self.get_files(self)
         response = CloudCommerceAPISession.api_request(self)
         return self.process_response(self, response)
 
@@ -40,6 +41,10 @@ class APIRequest:
         except json.decoder.JSONDecodeError:
             raise NonJSONResponse(response.text)
         return data
+
+    def get_files(self):
+        """Get file for request."""
+        return {}
 
 
 class NonJSONResponse(Exception):

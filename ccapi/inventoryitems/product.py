@@ -1,8 +1,9 @@
 """This module contains the Product class."""
 
 from ccapi import ccapi
-from . warehouse import WarehouseBay
-from . productoptions import ProductOption, ProductOptionValue
+
+from .productoptions import ProductOption, ProductOptionValue
+from .warehouse import WarehouseBay
 
 
 class Product:
@@ -233,3 +234,7 @@ class Product:
         else:
             bay_id = bay
         ccapi.CCAPI.remove_warehouse_bay_from_product(self.id, bay_id)
+
+    def get_images(self):
+        """Get images for Product."""
+        return ccapi.CCAPI.get_product_images(self.range_id, self.id)

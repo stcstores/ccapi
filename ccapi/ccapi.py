@@ -1,8 +1,8 @@
 """This module contains the main CCAPI class for ccapi."""
 
 
-from . requests import CloudCommerceAPISession
 from . import requests
+from .requests import CloudCommerceAPISession
 
 
 class CCAPI:
@@ -588,3 +588,35 @@ class CCAPI:
     def set_product_vat_rate(product_ids, vat_rate_id):
         """Set VAT rate for products."""
         return requests.UpdateProductVatRate(product_ids, vat_rate_id)
+
+    @staticmethod
+    def get_product_images(range_id, product_id):
+        """Get images for product.
+
+        Args:
+            range_id: ID of Product Range.
+            product_id: ID of Product.
+        """
+        return requests.GetImages(range_id=range_id, product_id=product_id)
+
+    @staticmethod
+    def delete_image(image_id):
+        """Delete Product Image.
+
+        Args:
+            image_id: ID of Product Image to delete.
+        """
+        return requests.DeleteImage(image_id)
+
+    @staticmethod
+    def upload_image(product_ids=[], channel_ids=[], image_file=None):
+        """Add image to products.
+
+        Kwargs:
+            product_ids: IDs of products to add image to.
+            channel_ids: IDs of channels to add image to.
+            image_file: File to upload.
+        """
+        return requests.UploadImage(
+            product_ids=product_ids, channel_ids=channel_ids,
+            image_file=image_file)

@@ -14,3 +14,4 @@ from . productmanager import *  # noqa
 from . printqueue import *  # noqa
 from . orderdetails import *  # noqa
 from . orderhandlers import *  # noqa
+from . getimages import GetImages  # noqa

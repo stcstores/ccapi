@@ -1,4 +1,5 @@
 from . addproduct import AddProduct  # noqa
+from . deleteimage import DeleteImage  # noqa
 from . dosearch import DoSearch  # noqa
 from . findproductselectedoptionsonly import FindProductSelectedOptionsOnly  # noqa
 from . productoperations import ProductOperations   # noqa
@@ -11,3 +12,4 @@ from . updateproductbaseprice import UpdateProductBasePrice  # noqa
 from . updateonsaleschannel import UpdateProductOnSalesChannel  # noqa
 from . updateproductstocklevel import UpdateProductStockLevel  # noqa
 from . updateproductvatrate import UpdateProductVatRate  # noqa
+from . uploadimage import UploadImage  # noqa

@@ -1,6 +1,5 @@
 from . productrange import ProductRange  # noqa
 from . product import Product  # noqa
 from . warehouse import Warehouses, Warehouse, WarehouseBay  # noqa
-from . productoptions import ProductOptions, ProductOption, \
-    ProductOptionValue, AppliedProductOptions, AppliedProductOption, \
-    AppliedProductOptionValue  # noqa
+from . productoptions import *  # noqa
+from . productimage import ProductImage  # noqa

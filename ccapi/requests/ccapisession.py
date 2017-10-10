@@ -41,7 +41,7 @@ class CloudCommerceAPISession:
         url = urljoin(cls.domain, request.uri)
         response = cls.session.post(
             url, headers=request.headers, params=request.params,
-            data=request.data)
+            data=request.data, files=request.files)
         return response
 
     @classmethod
