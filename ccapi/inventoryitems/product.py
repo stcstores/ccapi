@@ -238,3 +238,8 @@ class Product:
     def get_images(self):
         """Get images for Product."""
         return ccapi.CCAPI.get_product_images(self.range_id, self.id)
+
+    def add_image(self, image, channel_ids=[]):
+        """Add image to Product."""
+        return ccapi.CCAPI.upload_image(
+            product_ids=[self.id], channel_ids=channel_ids, image_file=image)
