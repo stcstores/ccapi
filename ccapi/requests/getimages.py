@@ -28,6 +28,8 @@ class GetImages(APIRequest):
     def process_response(self, response):
         """Handle request response."""
         html = response.text
+        if 'NoRecFound' in html:
+            return []
         soup = BeautifulSoup(html, 'html.parser')
         images = []
         image_divs = soup.findAll("div", {"class": "galleryImageContainer"})
