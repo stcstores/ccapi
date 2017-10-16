@@ -124,8 +124,8 @@ class DispatchOrder:
         self.login_id = data['LoginID']
         self.company_name = data['CompanyName']
         self.trading_name = data['TradingName']
-        self.date_recieved = data['DateReceived']
-        self.dispatch_date = data['DispatchDate']
+        self.date_recieved = self.to_datetime(data['DateReceived'])
+        self.dispatch_date = self.to_datetime(data['DispatchDate'])
         self.note = data['Note']
         self.pick_list_printed = data['PickListPrinted']
         self.total_gross = data['TotalGross']
@@ -173,6 +173,14 @@ class DispatchOrder:
         self.tracking_code = data['TrackingCode']
         self.assigned_to_warehouse_id = data['AssignedToWarehouseId']
         self.item_summary = data['ItemSummary']
+
+    def to_datetime(self, date_time_string):
+        date, time = date_time_string.split(' ')
+        day, month, year = date.split('/')
+        hour, minute = time.split(':')
+        return datetime.datetime(
+            day=int(day), month=int(month), year=int(year), hour=int(hour),
+            minute=int(minute))
 
 
 class DispatchOrderProduct:
