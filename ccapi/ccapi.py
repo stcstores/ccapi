@@ -511,7 +511,19 @@ class CCAPI:
     @staticmethod
     def get_orders_for_dispatch(*args, **kwargs):
         """Get orders for dispatch."""
-        return requests.GetOrdersForDispatch(*args, **kwargs)
+        kwargs['skip_records'] = 0
+        kwargs['take_limit'] = 200
+        orders = []
+        while True:
+            new_orders = requests.GetOrdersForDispatch(*args, **kwargs)
+            new_orders = [
+                o for o in new_orders if o.order_id not in
+                (o.order_id for o in orders)]
+            orders += new_orders
+            if len(new_orders) > 0:
+                kwargs['skip_records'] += kwargs['take_limit']
+            else:
+                return orders
 
     @staticmethod
     def update_range_settings(
