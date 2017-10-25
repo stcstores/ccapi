@@ -27,7 +27,10 @@ class UpdateRangeOnSalesChannel(APIRequest):
         self.range_id = range_id
         self.request_type = request_type
         self.act = act
-        self.value = str(int(value))
+        if isinstance(value, bool):
+            self.value = str(int(value))
+        else:
+            self.value = str(value)
         self.option_id = option_id
         self.channel_ids = channel_ids
         return super().__new__(self)

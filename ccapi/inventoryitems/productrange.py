@@ -61,7 +61,8 @@ class ProductRange:
         """Get IDs of Sales Channels on which this Product Range is listed."""
         return [channel.id for channel in self.get_sales_channels()]
 
-    def add_product_option(self, option, drop_down=False):
+    def add_product_option(
+            self, option, drop_down=False, update_channels=True):
         """
         Add Product Option to Product Range.
 
@@ -80,8 +81,10 @@ class ProductRange:
         if drop_down is True:
             self.set_option_drop_down(option_id, True)
         self._options = None
+        if update_channels:
+            self.update_of_sales_channel(option_id, 'option', 'add')
 
-    def remove_product_option(self, option):
+    def remove_product_option(self, option, update_channels=True):
         """
         Remove Product Option from Product Range.
 
@@ -94,9 +97,12 @@ class ProductRange:
             option_id = self.options[option].id
         ccapi.CCAPI.remove_option_from_product(self.id, option_id)
         self._options = None
+        if update_channels:
+            self.update_of_sales_channel(option_id, 'option', 'remove')
 
     def set_option_drop_down(self, option, value, update_channels=True):
-        """Set weather a Product Option is a drop down for this Product Range.
+        """
+        Set weather a Product Option is a drop down for this Product Range.
 
         Args:
             option: ProductOption or ID of Product Option.
@@ -108,10 +114,14 @@ class ProductRange:
             option_id = option
         ccapi.CCAPI.set_range_option_drop_down(self.id, option_id, value)
         if update_channels is True:
-            channel_ids = self.get_sales_channel_ids()
-            ccapi.CCAPI.update_range_on_sales_channel(
-                self.id, request_type='select', act='update', value=value,
-                option_id=option_id, channel_ids=channel_ids)
+            self.update_of_sales_channel(option_id, 'option', 'remove', value)
+
+    def update_of_sales_channel(
+            self, option_id, request_type, act, value=''):
+        channel_ids = self.get_sales_channel_ids()
+        ccapi.CCAPI.update_range_on_sales_channel(
+            self.id, request_type=request_type, act=act, value=value,
+            option_id=option_id, channel_ids=channel_ids)
 
     @property
     def options(self):
