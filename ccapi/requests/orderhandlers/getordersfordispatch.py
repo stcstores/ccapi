@@ -6,7 +6,7 @@ Get orders ready for dispatch.
 
 import datetime
 
-from .. apirequest import APIRequest
+from ..apirequest import APIRequest
 
 
 class GetOrdersForDispatch(APIRequest):
@@ -22,7 +22,7 @@ class GetOrdersForDispatch(APIRequest):
             country='', warehouse=0, sales_channel_id='0', id_list='',
             include_products=True, search_term='', order_by='',
             order_by_direction='', first_run=False, manual_fetch=True,
-            take_limit=200, skip_records=0):
+            take_limit=200, skip_records=0, issue_orders=False):
         """Create getOrdersForDispatch request."""
         if date is None:
             self.date = datetime.datetime.now()
@@ -53,10 +53,13 @@ class GetOrdersForDispatch(APIRequest):
         self.manual_fetch = manual_fetch
         self.take_limit = take_limit
         self.skip_records = skip_records
+        self.issue_orders = issue_orders
         return super().__new__(self)
 
     def get_data(self):
         """Get data for request."""
+        if self.issue_orders:
+            return {}
         data = {
             'Date': self.date.strftime('%d/%m/%Y'),
             'OrderType': self.order_type,
@@ -87,9 +90,12 @@ class GetOrdersForDispatch(APIRequest):
 
     def get_headers(self):
         """Get headers for request."""
-        return {
+        headers = {
             'TakeLimit': str(self.take_limit),
             'SkipRecords': str(self.skip_records)}
+        if self.issue_orders:
+            headers['requestmode'] = 'issueorders'
+        return headers
 
     def get_params(self):
         """Get parameters for get request."""
