@@ -3,37 +3,8 @@
 from ccapi import ccapi
 
 
-class MetaWarehouses(type):
-    """Meta class for Warehouse class."""
-
-    def __iter__(self):
-        for warehouse in self.warehouses:
-            yield warehouse
-
-    def __getitem__(self, index):
-        return self.warehouse_names[index]
-
-    @property
-    def warehouses(self):
-        """Return all warehouses."""
-        if self._warehouses is None:
-            self._warehouses = ccapi.CCAPI.get_warehouses()
-        return self._warehouses
-
-    @property
-    def warehouse_names(self):
-        """Return dict oranising Warehouses by name."""
-        if self._warehouse_names is None:
-            self._warehouse_names = {
-                warehouse.name: warehouse for warehouse in self.warehouses}
-        return self._warehouse_names
-
-
-class Warehouses(metaclass=MetaWarehouses):
+class Warehouses():
     """Class for working with groups of warehouses."""
-
-    _warehouses = None
-    _warehouse_names = None
 
     def __init__(self, warehouses):
         """Create Warehouses object.
