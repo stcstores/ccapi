@@ -4,8 +4,9 @@ FindWarehouseBay request.
 Creates a new product range.
 """
 
-from .. apirequest import APIRequest
 from ccapi.inventoryitems import WarehouseBay
+
+from ..apirequest import APIRequest
 
 
 class FindWarehouseBay(APIRequest):
@@ -28,6 +29,8 @@ class FindWarehouseBay(APIRequest):
         """Handle request response."""
         if len(response.text) > 0:
             json = response.json()
+            if isinstance(json, dict) and json['Data'] is None:
+                return []
             if 'Data' in json and isinstance(json['Data'], list):
                 return [WarehouseBay(bay) for bay in json['Data']]
             return [WarehouseBay(bay) for bay in json]
