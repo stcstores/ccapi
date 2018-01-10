@@ -643,3 +643,11 @@ class CCAPI:
         """
         return requests.SetImageOrder(
             product_id=product_id, image_ids=image_ids)
+
+    @staticmethod
+    def get_courier_rules():
+        return requests.ShippingRules()
+
+    @staticmethod
+    def get_dispatch_methods_for_order(order_id, analyse=True):
+        return requests.GetDispatchMethodsForOrder(order_id, analyse=analyse)

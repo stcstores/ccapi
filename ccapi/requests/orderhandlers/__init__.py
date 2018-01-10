@@ -1,1 +1,2 @@
-from . getordersfordispatch import GetOrdersForDispatch  # noqa
+from . getordersfordispatch import GetOrdersForDispatch  # NOQA
+from . getdispatchmethodsfororder import GetDispatchMethodsForOrder  # NOQA
