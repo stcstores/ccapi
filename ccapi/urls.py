@@ -70,3 +70,10 @@ class URLs:
             'ProductID': product_id,
             'ChannelID': channel_id}
         return cls.get_url(subdomain=subdomain, uri=uri, params=params)
+
+    @classmethod
+    def order_url(cls, subdomain, order_id, customer_id):
+        """Return URL of Order."""
+        uri = ('Admin', 'OrderDetails')
+        params = {'OrderID': order_id, 'CustomerID': customer_id}
+        return cls.get_url(subdomain=subdomain, uri=uri, params=params)
