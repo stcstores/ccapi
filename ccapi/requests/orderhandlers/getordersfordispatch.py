@@ -135,7 +135,7 @@ class DispatchOrder:
         self.note = data['Note']
         self.pick_list_printed = data['PickListPrinted']
         self.total_gross = data['TotalGross']
-        self.total_gross = data['TotalGrossGBP']
+        self.total_gross_gbp = data['TotalGrossGBP']
         self.default_cs_rule_id = data['DefaultCSRuleId']
         self.default_rule_cost_gbp = data['DefaultCSRuleCostGBP']
         self.default_cs_rule_name = data['DefaultCSRuleName']
