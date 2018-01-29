@@ -29,14 +29,14 @@ class FindWarehouseBay(APIRequest):
     def process_response(self, response):
         """Handle request response."""
         if len(response.text) > 0:
-            if not self.products:
-                return self.parse_bay_html(None, response.text)
-            json = response.json()
-            if isinstance(json, dict) and json['Data'] is None:
+            if self.operation is None and not self.products:
+                return self.parse_bay_html(self, response.text)
+            data = response.json()
+            if isinstance(data, dict) and data['Data'] is None:
                 return []
-            if 'Data' in json and isinstance(json['Data'], list):
-                return [WarehouseBay(bay) for bay in json['Data']]
-            return [WarehouseBay(bay) for bay in json]
+            if 'Data' in data and isinstance(data['Data'], list):
+                return [WarehouseBay(bay) for bay in data['Data']]
+            return [WarehouseBay(bay) for bay in data]
 
     def parse_bay_html(self, html):
         """Create WarehouseBay objects from HTML response."""
@@ -50,7 +50,7 @@ class FindWarehouseBay(APIRequest):
 
     def get_data(self):
         """Get data for request."""
-        data = {'BrandID': "341"}
+        data = {}
         if self.prog_type is not None:
             data['ProgType'] = self.prog_type
         if self.operation is not None:
@@ -64,11 +64,10 @@ class FindWarehouseBay(APIRequest):
         return data
 
     def get_headers(self):
-        if self.products:
-            raise Exception('PAGINATE')
-        else:
+        if self.products is False and self.operation is None:
             return {'template': 'WarehouseBay.List'}
+        return {}
 
     def get_params(self):
         """Get parameters for get request."""
-        return {'d': '57'}
+        return {}
