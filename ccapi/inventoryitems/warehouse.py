@@ -1,5 +1,6 @@
 """This module contains classes for working with Warehouses."""
 
+
 from ccapi import ccapi
 
 
@@ -147,18 +148,22 @@ class WarehouseBay:
         Args:
             data: Cloud Commerce Warehouse Bay JSON object.
         """
+        self.load_json(data)
+
+    def load_json(self, data):
+        """Load data from dict."""
         self.json = data
-        self.id = data['ID']
-        self.name = data['Name']
-        self.warehouse_id = data['WarehouseID']
-        self.bay_number = data['BayNumber']
-        self.aisle = data['Aisle']
-        self.shelf = data['Shelf']
-        self.available_stock = data['AvailableStock']
-        self.warehouse_bay_type = data['WarehouseBayType']
-        self.warehouse_bay_type_enum = data['WarehouseBayTypeEnum']
-        self.status_id = data['StatusId']
-        self.statud_id_enum = data['StatusIdEnum']
+        self.id = data.get('ID', None)
+        self.name = data.get('Name', None)
+        self.warehouse_id = data.get('WarehouseID', None)
+        self.bay_number = data.get('BayNumber', None)
+        self.aisle = data.get('Aisle', None)
+        self.shelf = data.get('Shelf', None)
+        self.available_stock = data.get('AvailableStock', None)
+        self.warehouse_bay_type = data.get('WarehouseBayType', None)
+        self.warehouse_bay_type_enum = data.get('WarehouseBayTypeEnum', None)
+        self.status_id = data.get('StatusId', None)
+        self.statud_id_enum = data.get('StatusIdEnum', None)
 
     def __repr__(self):
         return self.name
