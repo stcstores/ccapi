@@ -30,8 +30,14 @@ class Product:
         self.description = data['Description']
         self.sku = data['ManufacturerSKU']
         self.base_price = data['BasePrice']
-        self.vat_rate_id = data['VatRateID']
-        self.vat_rate = VatRates.get_vat_rate_by_id(self.vat_rate_id)
+        if int(data['VatRateID']) == 0:
+            self.vat_rate_id = None
+        else:
+            self.vat_rate_id = int(data['VatRateID'])
+        if self.vat_rate_id is not None:
+            self.vat_rate = VatRates.get_vat_rate_by_id(self.vat_rate_id)
+        else:
+            self.vat_rate = None
         self.barcode = data['Barcode']
         self.range_id = data['RangeID']
         self.range_name = data['RangeName']

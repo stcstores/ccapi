@@ -1,8 +1,9 @@
 """This module contains the ProductRange class."""
 
 from ccapi import ccapi
-from . product import Product
-from . productoptions import ProductOptions, ProductOption
+
+from .product import Product
+from .productoptions import ProductOption, ProductOptions
 
 
 class ProductRange:
@@ -136,7 +137,7 @@ class ProductRange:
         return self._options
 
     def add_product(
-            self, name, barcode, sku=None, description=None, vat_rate_id=5):
+            self, name, barcode, sku=None, description=None, vat_rate=20):
         """
         Add new Product to this Product Range.
 
@@ -156,7 +157,7 @@ class ProductRange:
         """
         product_id = ccapi.CCAPI.create_product(
             self.id, name, barcode, sku=sku, description=description,
-            vat_rate_id=vat_rate_id)
+            vat_rate=vat_rate)
         return ccapi.CCAPI.get_product(product_id)
 
     def delete(self):

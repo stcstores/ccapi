@@ -10,9 +10,9 @@ class VatRates:
     @classmethod
     def get_vat_rate_by_id(cls, vat_rate_id):
         """Return VAT rate for given VAT rate ID."""
-        return cls.vat_rate_ids[vat_rate_id]
+        return cls.vat_rate_ids[int(vat_rate_id)]
 
     @classmethod
     def get_vat_rate_id_by_rate(cls, vat_rate):
         """Return VAT rate ID for given VAT rate."""
-        return cls.vat_rates[vat_rate]
+        return cls.vat_rates[int(vat_rate)]
