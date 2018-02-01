@@ -2,6 +2,7 @@
 
 
 from . import requests
+from .inventoryitems import VatRates
 from .requests import CloudCommerceAPISession
 
 
@@ -284,7 +285,7 @@ class CCAPI:
     @classmethod
     def create_product(
             cls, range_id, name, barcode, sku=None, description=None,
-            vat_rate_id=5):
+            vat_rate=20):
         """
         Add new Product to a Product Range.
 
@@ -298,7 +299,7 @@ class CCAPI:
                 Default: None.
             description: Description of new product. If None name will be used.
                 Default: None.
-            vat_rate_id: ID of VAT rate for product. Default: 5.
+            vat_rate: Percentage of VAT. Default: 20.
 
         Returns: (str) ID of new Product.
 
@@ -307,6 +308,7 @@ class CCAPI:
             sku = cls.get_sku(range_sku=False)
         if description is None:
             description = name
+        vat_rate_id = VatRates.get_vat_rate_id_by_rate(vat_rate)
         response = requests.AddProduct(
             range_id, name, barcode, sku, description, vat_rate_id)
         return response.replace('Success^^', '')
@@ -597,8 +599,9 @@ class CCAPI:
         requests.SaveProductName(name, product_ids)
 
     @staticmethod
-    def set_product_vat_rate(product_ids, vat_rate_id):
+    def set_product_vat_rate(product_ids, vat_rate):
         """Set VAT rate for products."""
+        vat_rate_id = VatRates.get_vat_rate_id_by_rate(vat_rate)
         return requests.UpdateProductVatRate(product_ids, vat_rate_id)
 
     @staticmethod

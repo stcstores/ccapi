@@ -3,6 +3,7 @@
 from ccapi import ccapi
 
 from .productoptions import ProductOption, ProductOptionValue
+from .vatrates import VatRates
 from .warehouse import WarehouseBay
 
 
@@ -30,7 +31,7 @@ class Product:
         self.sku = data['ManufacturerSKU']
         self.base_price = data['BasePrice']
         self.vat_rate_id = data['VatRateID']
-        self.vat_rate = data['VatRate']
+        self.vat_rate = VatRates.get_vat_rate_by_id(self.vat_rate_id)
         self.barcode = data['Barcode']
         self.range_id = data['RangeID']
         self.range_name = data['RangeName']
@@ -174,9 +175,9 @@ class Product:
         """Set Product base price."""
         ccapi.CCAPI.set_product_base_price(self.id, price)
 
-    def set_vat_rate(self, vat_rate_id):
+    def set_vat_rate(self, vat_rate):
         """Set VAT rate for product."""
-        return ccapi.CCAPI.set_product_vat_rate([self.id], vat_rate_id)
+        return ccapi.CCAPI.set_product_vat_rate([self.id], vat_rate)
 
     def set_handling_time(self, handling_time, update_channels=True):
         """

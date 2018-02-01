@@ -4,3 +4,4 @@ from . warehouse import Warehouses, Warehouse, WarehouseBay  # noqa
 from . productoptions import *  # noqa
 from . productimage import ProductImage  # noqa
 from . courierrule import CourierRule  # NOQA
+from . vatrates import VatRates  # NOQA
