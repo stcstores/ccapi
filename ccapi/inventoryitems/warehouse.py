@@ -165,13 +165,16 @@ class WarehouseBay:
         self.status_id = data.get('StatusId', None)
         self.statud_id_enum = data.get('StatusIdEnum', None)
         if 'Products' in data and data['Products'] is not None:
-            if data['Products'][0]['ManufacturerSKU'] == 'Warning':
-                self.too_many_products = True
-            else:
-                self.too_many_products = False
-                self.products = [
-                    BayProduct(d) for d in data['Products']
-                    if d['ManufacturerSKU'] != 'Warning']
+            self.too_many_products = False
+            self.products = []
+            products = data['Products']
+            if len(products) > 0:
+                if products[0]['ManufacturerSKU'] == 'Warning':
+                    self.too_many_products = True
+                else:
+                    self.products = [
+                        BayProduct(d) for d in products
+                        if d['ManufacturerSKU'] != 'Warning']
 
     def __repr__(self):
         return self.name

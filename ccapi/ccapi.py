@@ -390,7 +390,7 @@ class CCAPI:
         skip_records = 0
         ids = []
         bays = []
-        take_limit = 500
+        take_limit = 100
         skip_records = 0
         request = 1
         while True:

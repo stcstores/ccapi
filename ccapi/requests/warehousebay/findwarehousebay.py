@@ -17,7 +17,7 @@ class FindWarehouseBay(APIRequest):
     def __new__(
             self, prog_type=None, operation=None, warehouse_id=None,
             product_id=None, warehouse_bay_id=None, products=False,
-            skip_records=0, take_limit=300):
+            skip_records=0, take_limit=100):
         """Create FindWarehouseBay request."""
         self.prog_type = prog_type
         self.operation = operation
