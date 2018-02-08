@@ -164,9 +164,38 @@ class WarehouseBay:
         self.warehouse_bay_type_enum = data.get('WarehouseBayTypeEnum', None)
         self.status_id = data.get('StatusId', None)
         self.statud_id_enum = data.get('StatusIdEnum', None)
+        if 'Products' in data and data['Products'] is not None:
+            if data['Products'][0]['ManufacturerSKU'] == 'Warning':
+                self.too_many_products = True
+            else:
+                self.too_many_products = False
+                self.products = [
+                    BayProduct(d) for d in data['Products']
+                    if d['ManufacturerSKU'] != 'Warning']
 
     def __repr__(self):
         return self.name
 
     def delete(self):
         ccapi.CCAPI.delete_bay(self.id)
+
+    @property
+    def empty(self):
+        return self.too_many_products is False and len(self.products) == 0
+
+
+class BayProduct:
+
+    def __init__(self, data):
+        self.load_json(data)
+
+    def load_json(self, data):
+        self.json = data
+        self.image_url = data['ProductImage']
+        self.id = data['ID']
+        self.end_of_line = bool(data['EndOfLine'])
+        self.sku = data['ManufacturerSKU']
+        self.name = data['Name']
+
+    def __repr__(self):
+        return '{} - {}'.format(self.sku, self.name)

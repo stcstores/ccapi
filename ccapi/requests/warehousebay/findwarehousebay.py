@@ -16,7 +16,8 @@ class FindWarehouseBay(APIRequest):
 
     def __new__(
             self, prog_type=None, operation=None, warehouse_id=None,
-            product_id=None, warehouse_bay_id=None, products=False):
+            product_id=None, warehouse_bay_id=None, products=False,
+            skip_records=0, take_limit=300):
         """Create FindWarehouseBay request."""
         self.prog_type = prog_type
         self.operation = operation
@@ -24,6 +25,8 @@ class FindWarehouseBay(APIRequest):
         self.product_id = product_id
         self.warehouse_bay_id = warehouse_bay_id
         self.products = products
+        self.skip_records = skip_records
+        self.take_limit = take_limit
         return super().__new__(self)
 
     def process_response(self, response):
@@ -66,6 +69,10 @@ class FindWarehouseBay(APIRequest):
     def get_headers(self):
         if self.products is False and self.operation is None:
             return {'template': 'WarehouseBay.List'}
+        if self.products is True:
+            return {
+                'TakeLimit': str(self.take_limit),
+                'SkipRecords': str(self.skip_records)}
         return {}
 
     def get_params(self):

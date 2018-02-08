@@ -382,10 +382,29 @@ class CCAPI:
         return requests.FindWarehouse()
 
     @staticmethod
-    def get_bays_for_warehouse(warehouse_id):
+    def get_bays_for_warehouse(warehouse_id, products=False):
         """Return list of Warehouse Bays for Warehouse."""
-        return requests.FindWarehouseBay(
-            warehouse_id=warehouse_id, prog_type='normal')
+        if products is False:
+            return requests.FindWarehouseBay(
+                warehouse_id=warehouse_id, prog_type='normal', products=False)
+        skip_records = 0
+        ids = []
+        bays = []
+        take_limit = 500
+        skip_records = 0
+        request = 1
+        while True:
+            print('Request: {}'.format(request))
+            data = requests.FindWarehouseBay(
+                warehouse_id=warehouse_id, prog_type='normal', products=True,
+                skip_records=skip_records, take_limit=take_limit)
+            request += 1
+            skip_records += take_limit
+            for bay in data:
+                if bay.id in ids:
+                    return bays
+                ids.append(bay.id)
+                bays.append(bay)
 
     @staticmethod
     def get_bays_for_product(product_id):
