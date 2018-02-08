@@ -5,7 +5,8 @@ Advanced Product search.
 """
 
 import json
-from .. apirequest import APIRequest
+
+from ..apirequest import APIRequest
 
 
 class GetProducts(APIRequest):
@@ -14,7 +15,7 @@ class GetProducts(APIRequest):
     uri = '/Handlers/ProductManager/GetProducts.ashx'
 
     def __new__(
-            self, search_text='-', master_category_id=0, search_type=0,
+            self, search_text='', master_category_id=0, search_type=0,
             main_products=True, clones=True, only_in_stock=False,
             listing_status=0, product_id=0, product_range_id=0,
             channel_identifier='', name='', price_from=0, price_to=0,
@@ -28,8 +29,6 @@ class GetProducts(APIRequest):
             search_text: Text to find in title or SKU.
             option_matches_id: Option Value ID to match.
         """
-        if search_text.strip() == '':
-            search_text = '-'
         self.search_text = search_text
         self.master_category_id = master_category_id
         self.search_type = search_type
@@ -79,7 +78,7 @@ class GetProducts(APIRequest):
             "SkipRecords": self.skip_records,
             "TakeRecords": self.take_records,
             "TakeExactMatch": self.take_exact_match,
-            "ChannelType": self.channel_type,
+            "ChannelType": str(self.channel_type),
             "ChannelId": self.channel_id,
             "SortDesc": self.sort_desc,
             "idList": self.id_list,
@@ -91,7 +90,7 @@ class GetProducts(APIRequest):
 
     def get_params(self):
         """Get parameters for get request."""
-        return {'d': '57'}
+        return {'d': '484'}
 
     def process_response(self, response):
         """Handle request response."""
