@@ -27,6 +27,11 @@ class Warehouses():
     def __repr__(self):
         return '{} Warehouses'.format(len(self.warehouses))
 
+    def get_bay(self, warehouse_name, bay_name, create=False):
+        """Get Warehouse Bay by warehouse name and bay name."""
+        return self.warehouse_names[warehouse_name].get_bay(
+            bay_name, create=create)
+
 
 class Warehouse:
     """Wrapper for Warehouses."""
