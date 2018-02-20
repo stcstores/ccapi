@@ -682,3 +682,46 @@ class CCAPI:
     @staticmethod
     def get_dispatch_methods_for_order(order_id, analyse=True):
         return requests.GetDispatchMethodsForOrder(order_id, analyse=analyse)
+
+    @staticmethod
+    def get_factories():
+        """Get factories list."""
+        return requests.FindFactories()
+
+    @classmethod
+    def create_factory(cls, name):
+        """Create new Factory."""
+        new_factory_id = requests.Factory(
+            name=name, factory_id=0, prog_type=requests.Factory.UPDATE_FACTORY)
+        factories = cls.get_factories()
+        return factories.ids[new_factory_id]
+
+    @staticmethod
+    def delete_product_factory_links(factory_id):
+        """Remove product links from factory."""
+        return requests.DeleteAllProductFactoryLink(factory_id)
+
+    @staticmethod
+    def delete_factory(factory_id):
+        """Delete Factory."""
+        return requests.Factory(
+            prog_type=requests.Factory.DELETE_FACTORY, factory_id=factory_id)
+
+    @staticmethod
+    def get_product_factory_links(product_id):
+        """Get factory links for product."""
+        return requests.FindProductFactoryLinks(product_id)
+
+    @staticmethod
+    def update_product_factory_link(
+            product_id=None, factory_id=None, dropship=False, supplier_sku='',
+            price=0):
+        """Create or update Product Factory Link."""
+        return requests.UpdProductFactoryLink(
+            product_id=product_id, factory_id=factory_id, dropship=dropship,
+            supplier_sku=supplier_sku, price=price)
+
+    @staticmethod
+    def delete_product_factory_link(factory_link_id):
+        """Delete Product Facotry link."""
+        return requests.DeleteProductFactoryLink(factory_link_id)

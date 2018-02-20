@@ -1,6 +1,9 @@
 from . addproduct import AddProduct  # noqa
+from . deleteallproductfactorylink import DeleteAllProductFactoryLink  # NOQA
 from . deleteimage import DeleteImage  # noqa
+from . deleteproductfactorylink import DeleteProductFactoryLink  # NOQA
 from . dosearch import DoSearch  # noqa
+from . findproductfactorylinks import FindProductFactoryLinks  # NOQA
 from . findproductselectedoptionsonly import FindProductSelectedOptionsOnly  # noqa
 from . productoperations import ProductOperations   # noqa
 from . savedescription import SaveDescription  # noqa

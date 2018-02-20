@@ -255,3 +255,14 @@ class Product:
         """Set order of Product Images."""
         return ccapi.CCAPI.set_image_order(
             product_id=self.id, image_ids=image_ids)
+
+    def get_factory_links(self):
+        """Get factory links."""
+        return ccapi.CCAPI.get_product_factory_links(self.id)
+
+    def update_factory_link(
+            self, factory_id, dropship=False, supplier_sku='', price=0):
+        """Update or create Factory link."""
+        return ccapi.CCAPI.update_product_factory_link(
+            product_id=self.id, factory_id=factory_id, dropship=dropship,
+            supplier_sku=supplier_sku, price=price)
