@@ -4,6 +4,8 @@ env/*
 passenger_wsgi.py
 public/
 
+ccapi_test.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
