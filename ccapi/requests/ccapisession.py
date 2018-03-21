@@ -1,9 +1,9 @@
 """This module contains the CloudCommerceAPISession class."""
 
 from datetime import datetime, timedelta
+from urllib.parse import urljoin
 
 import requests
-from urllib.parse import urljoin
 
 
 class CloudCommerceAPISession:
@@ -13,12 +13,15 @@ class CloudCommerceAPISession:
     login_url = domain
     last_login = datetime.now() - timedelta(days=5)
     timeout = timedelta(hours=1)
+    verbose = False
 
     @classmethod
-    def credentials(cls, username, password):
+    def credentials(cls, username, password, verbose=False):
         """Set username and password."""
         cls.username = username
         cls.password = password
+        cls.request_count = 0
+        cls.verbose = verbose
 
     @classmethod
     def get_session(cls, username=None, password=None):
@@ -39,6 +42,9 @@ class CloudCommerceAPISession:
         """Perform API request."""
         cls.check_login()
         url = urljoin(cls.domain, request.uri)
+        cls.request_count += 1
+        if cls.verbose:
+            print('CCAPI Request {}: {}'.format(cls.request_count, url))
         response = cls.session.post(
             url, headers=request.headers, params=request.params,
             data=request.data, files=request.files)

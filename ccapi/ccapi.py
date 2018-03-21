@@ -35,9 +35,10 @@ class CCAPI:
         return CloudCommerceAPISession.get_session(username, password)
 
     @staticmethod
-    def credentials(username, password):
+    def credentials(username, password, verbose=False):
         """Set username and password."""
-        CloudCommerceAPISession.credentials(username, password)
+        CloudCommerceAPISession.credentials(
+            username, password, verbose=verbose)
 
     @staticmethod
     def is_logged_in():

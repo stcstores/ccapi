@@ -4,8 +4,9 @@ GetOptionData request.
 Gets values for a given product option.
 """
 
-from .. apirequest import APIRequest
 from ccapi.inventoryitems import ProductOptionValue
+
+from ..apirequest import APIRequest
 
 
 class GetOptionData(APIRequest):
@@ -20,6 +21,7 @@ class GetOptionData(APIRequest):
             option_id: ID of option
         """
         self.option_id = option_id
+        raise Exception()
         return super().__new__(self)
 
     def process_response(self, response):
