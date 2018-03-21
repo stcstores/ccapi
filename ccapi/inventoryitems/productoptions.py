@@ -3,34 +3,7 @@
 from ccapi import ccapi
 
 
-class MetaProductOptions(type):
-    """Meta class for ProductOptions class."""
-
-    def __iter__(self):
-        for option in self.options:
-            yield option
-
-    def __getitem__(self, index):
-        return self.option_names[index.strip().lower()]
-
-    @property
-    def options(self):
-        """Return all Product Options."""
-        if self._options is None:
-            self._options = ccapi.CCAPI.get_product_options()
-        return self._options
-
-    @property
-    def option_names(self):
-        """Return dict organising Product Options by name."""
-        if self._option_names is None:
-            self._option_names = {
-                option.option_name.strip().lower(): option for option in
-                self.options}
-        return self._option_names
-
-
-class ProductOptions(metaclass=MetaProductOptions):
+class ProductOptions:
     """Class for working with groups of Product Options."""
 
     _options = None
@@ -51,7 +24,9 @@ class ProductOptions(metaclass=MetaProductOptions):
             yield option
 
     def __getitem__(self, index):
-        return self.option_names[index]
+        if isinstance(index, str):
+            return self.option_names[index]
+        return self.options[index]
 
     def __repr__(self):
         return '{} product options'.format(len(self.options))
@@ -96,14 +71,11 @@ class ProductOption:
             'google': result['excludeGoogle']
         }
         self.selected = result['Selected']
-        self.set_value(result)
 
     def set_value(self, result):
         """Set Option Values."""
         if 'optionValues' in result:
-            self._values = [
-                ProductOptionValue(value) for value in result['optionValues']]
-            self.reload_values()
+            self.reload_values(values=result)
 
     def __repr__(self):
         return self.option_name
@@ -132,9 +104,13 @@ class ProductOption:
         """Return dict organising Values by name."""
         return {value.value.strip().lower(): value for value in self.values}
 
-    def reload_values(self):
+    def reload_values(self, values=None):
         """Get Product Option Values for this Product Option."""
-        self._values = ccapi.CCAPI.get_option_values(self.id)
+        if values:
+            self._values = [
+                ProductOptionValue(value) for value in values['optionValues']]
+        else:
+            self._values = ccapi.CCAPI.get_option_values(self.id)
         self._value_names = self.load_value_names()
 
     def add_value(self, value):

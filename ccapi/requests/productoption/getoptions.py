@@ -3,8 +3,9 @@
 Gets list of available product options.
 """
 
-from .. apirequest import APIRequest
-from ccapi.inventoryitems import ProductOption
+from ccapi.inventoryitems import ProductOption, ProductOptions
+
+from ..apirequest import APIRequest
 
 
 class GetOptions(APIRequest):
@@ -15,7 +16,7 @@ class GetOptions(APIRequest):
     def process_response(self, response):
         """Handle request response."""
         results = response.json()
-        return [ProductOption(item) for item in results]
+        return ProductOptions([ProductOption(item) for item in results])
 
     def get_data(self):
         """Get data for request."""

@@ -21,7 +21,6 @@ class GetOptionData(APIRequest):
             option_id: ID of option
         """
         self.option_id = option_id
-        raise Exception()
         return super().__new__(self)
 
     def process_response(self, response):
