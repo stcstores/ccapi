@@ -14,6 +14,7 @@ class CloudCommerceAPISession:
     last_login = datetime.now() - timedelta(days=5)
     timeout = timedelta(hours=1)
     verbose = False
+    request_count = 0
 
     @classmethod
     def credentials(cls, username, password, verbose=False):
