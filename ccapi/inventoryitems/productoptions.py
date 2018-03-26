@@ -207,6 +207,10 @@ class AppliedProductOptions(ProductOptions):
 class AppliedProductOption(ProductOption):
     """Wrapper for Product Options applied to a Product."""
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.set_value(self.json)
+
     def set_value(self, option_data):
         """Set Option Values."""
         if len(option_data['optionValues']) > 0:
