@@ -97,6 +97,8 @@ class Warehouse:
     def reload_bays(self):
         """Get Bays for this Warehouse."""
         self._bays = ccapi.CCAPI.get_bays_for_warehouse(self.id)
+        for bay in self._bays:
+            bay.warehouse = self
         self._bay_names = self.load_bay_names()
 
     def add_bay(
