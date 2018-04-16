@@ -32,6 +32,9 @@ class Warehouses():
         return self.warehouse_names[warehouse_name].get_bay(
             bay_name, create=create)
 
+    def items(self):
+        return self.warehouse_names.items()
+
 
 class Warehouse:
     """Wrapper for Warehouses."""
