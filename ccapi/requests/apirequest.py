@@ -3,7 +3,10 @@
 This is the base class for Cloud Commerce Pro API requests.
 """
 
+import http
 import json
+
+from ccapi import exceptions
 
 from .ccapisession import CloudCommerceAPISession
 
@@ -19,7 +22,10 @@ class APIRequest:
         self.data = self.get_data(self)
         self.params = self.get_params(self)
         self.files = self.get_files(self)
-        response = CloudCommerceAPISession.api_request(self)
+        try:
+            response = CloudCommerceAPISession.api_request(self)
+        except http.client.RemoteDisconnected as e:
+            raise exceptions.CloudCommerceNoResponseError from e
         return self.process_response(self, response)
 
     def get_data(self):
