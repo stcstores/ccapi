@@ -42,6 +42,6 @@ class FindProductSelectedOptionsOnlyResult:
         self.stock_level = data['StockLevel']
         self.fba_stock_level = data['FBAStockLevel']
         if data['product'] is not None:
+            data['product']['StockLevel'] = data['StockLevel']
             self.product = Product(data['product'])
-            self.product.stock_level = self.stock_level
         self.options = AppliedProductOptions(data['options'])
