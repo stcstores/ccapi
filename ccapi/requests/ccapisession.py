@@ -11,6 +11,7 @@ class CloudCommerceAPISession:
 
     domain = 'http://seatontradingcompany.cloudcommercepro.com'
     login_url = domain
+    login_handler_uri = '/Handlers/loginHandler.ashx'
     last_login = datetime.now() - timedelta(days=5)
     timeout = timedelta(hours=1)
     verbose = False
@@ -35,8 +36,17 @@ class CloudCommerceAPISession:
         login_post_data = {
             'usernameInput': username, 'passwordInput': password}
         cls.session.post(cls.login_url, data=login_post_data)
+        cls.login_handler(username, password)
         cls.last_login = datetime.now()
         return cls.session
+
+    @classmethod
+    def login_handler(cls, username, password):
+        """Perform login handler request to set session parameters."""
+        login_handler_url = cls.domain + cls.login_handler_uri
+        params = {'uName': username, 'pWord': password}
+        response = cls.session.get(login_handler_url, params=params)
+        response.raise_for_status()
 
     @classmethod
     def api_request(cls, request):
