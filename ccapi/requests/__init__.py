@@ -1,19 +1,22 @@
 """This module contains classes for Cloud Commerce API requests."""
 
-
-from . ccapisession import CloudCommerceAPISession  # noqa
-from . apirequest import APIRequest  # noqa
-from . configuration import *  # NOQA
-from . factory import *  # NOQA
-from . getproductsforrange import GetProductsForRange  # noqa
-from . preemployee import PreEmployee  # noqa
-from . productoption import *  # noqa
-from . products import *  # noqa
-from . warehouse import *  # noqa
-from . warehousebay import *  # noqa
-from . range import *  # noqa
-from . productmanager import *  # noqa
-from . printqueue import *  # noqa
-from . orderdetails import *  # noqa
-from . orderhandlers import *  # noqa
-from . getimages import GetImages  # noqa
+from .ccapisession import CloudCommerceAPISession  # NOQA
+from .apirequest import APIRequest  # NOQA
+from .accounts import *  # NOQA
+from .configuration import *  # NOQA
+from .factory import *  # NOQA
+from .getproductsforrange import GetProductsForRange  # NOQA
+from .preemployee import PreEmployee  # NOQA
+from .productoption import *  # NOQA
+from .products import *  # NOQA
+from .warehouse import *  # NOQA
+from .warehousebay import *  # NOQA
+from .range import *  # NOQA
+from .productmanager import *  # NOQA
+from .printqueue import *  # NOQA
+from .orderdetails import *  # NOQA
+from .orderhandlers import *  # NOQA
+from .getimages import GetImages  # NOQA
+from .addcustomer import AddCustomer  # NOQA
+from .customer import Customer  # NOQA
+from .createorder import CreateOrder  # NOQA

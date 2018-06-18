@@ -684,10 +684,12 @@ class CCAPI:
 
     @staticmethod
     def get_courier_rules():
+        """Return shipping rules."""
         return requests.ShippingRules()
 
     @staticmethod
     def get_dispatch_methods_for_order(order_id, analyse=True):
+        """Return dispatch methods for order."""
         return requests.GetDispatchMethodsForOrder(order_id, analyse=analyse)
 
     @staticmethod
@@ -732,3 +734,47 @@ class CCAPI:
     def delete_product_factory_link(factory_link_id):
         """Delete Product Facotry link."""
         return requests.DeleteProductFactoryLink(factory_link_id)
+
+    @staticmethod
+    def add_customer(*args, **kwargs):
+        """Add a customer to Cloud Commerce."""
+        return requests.AddCustomer(*args, **kwargs)
+
+    @staticmethod
+    def create_order(*args, **kwargs):
+        """Create a new order."""
+        return requests.CreateOrder(*args, **kwargs)
+
+    @staticmethod
+    def create_payment(*args, **kwargs):
+        """Create a payment for an order."""
+        return requests.CreatePayment(*args, **kwargs)
+
+    @staticmethod
+    def add_address(
+            customer_id, address_type='Delivery', company_name='',
+            first_name='', last_name='', address_1='', address_2='',
+            post_code='', town='', region='', country='', telephone_number='',
+            fax_number='', mobile_number='', address_id='0',
+            customer_add_link_id='0'):
+        """Add address to customer and return it's ID."""
+        kwargs = {
+            'CustID': customer_id,
+            'CustAddLinkID': customer_add_link_id,
+            'AddressID': address_id,
+            'AddTitle': address_type,
+            'CompanyName': company_name,
+            'FirstName': first_name,
+            'LastName': last_name,
+            'Address1': address_1,
+            'Address2': address_2,
+            'Postcode': post_code,
+            'Town': town,
+            'Region': region,
+            'Country': country,
+            'TelNo': telephone_number,
+            'FaxNo': fax_number,
+            'MobNo': mobile_number,
+        }
+        response = requests.Customer('UpdCustAddr', **kwargs)
+        return response.text.split('^^')[2]
