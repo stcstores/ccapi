@@ -64,8 +64,7 @@ class Product:
         self.additional_barcodes = data['AdditionalBarcodes']
         self.weight = data['WeightGM']
         if data['Locations'] is not None:
-            self.bays = [
-                WarehouseBay(bay) for bay in data['Locations']]
+            self.bays = [WarehouseBay(bay) for bay in data['Locations']]
         self.dimensions = data['Dimensions']
 
     def __repr__(self):
@@ -127,8 +126,13 @@ class Product:
         ccapi.CCAPI.set_product_option_value([self.id], option_id, value_id)
 
     def set_product_scope(
-            self, weight=None, height=None, length=None, width=None,
-            large_letter_compatible=None, external_id=None):
+            self,
+            weight=None,
+            height=None,
+            length=None,
+            width=None,
+            large_letter_compatible=None,
+            external_id=None):
         """
         Set several attributes for Product.
 
@@ -219,8 +223,11 @@ class Product:
         """Set name of Product."""
         ccapi.CCAPI.set_product_name(name, [self.id])
         ccapi.CCAPI.update_product_on_sales_channel(
-            range_id=self.range_id, product_ids=[self.id], request_type='name',
-            value_1=name, channels=self.get_sales_channel_ids())
+            range_id=self.range_id,
+            product_ids=[self.id],
+            request_type='name',
+            value_1=name,
+            channels=self.get_sales_channel_ids())
 
     def set_description(self, description):
         """Set description for Product."""
@@ -264,5 +271,8 @@ class Product:
             self, factory_id, dropship=False, supplier_sku='', price=0):
         """Update or create Factory link."""
         return ccapi.CCAPI.update_product_factory_link(
-            product_id=self.id, factory_id=factory_id, dropship=dropship,
-            supplier_sku=supplier_sku, price=price)
+            product_id=self.id,
+            factory_id=factory_id,
+            dropship=dropship,
+            supplier_sku=supplier_sku,
+            price=price)

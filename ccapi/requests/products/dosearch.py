@@ -4,7 +4,7 @@ DoSearch request.
 Searches for products.
 """
 
-from .. apirequest import APIRequest
+from ..apirequest import APIRequest
 
 
 class DoSearch(APIRequest):
@@ -29,11 +29,7 @@ class DoSearch(APIRequest):
 
     def get_data(self):
         """Get data for request."""
-        return {
-            'brandid': '341',
-            'text': self.text,
-            'type': 'range'
-        }
+        return {'brandid': '341', 'text': self.text, 'type': 'range'}
 
 
 class DoSearchResult:

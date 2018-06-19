@@ -1,6 +1,5 @@
 """updateOnSalesChannel Request."""
 
-
 from ..apirequest import APIRequest
 
 
@@ -14,8 +13,14 @@ class UpdateProductOnSalesChannel(APIRequest):
     uri = 'Handlers/Products/updateOnSalesChannel.ashx'
 
     def __new__(
-            self, request_type, range_id, product_ids=[], act='', value_1='',
-            value_2='', channels=[]):
+            self,
+            request_type,
+            range_id,
+            product_ids=[],
+            act='',
+            value_1='',
+            value_2='',
+            channels=[]):
         """
         Create updateOnSalesChannel request.
 
@@ -53,7 +58,8 @@ class UpdateProductOnSalesChannel(APIRequest):
             'act': self.act,
             'val1': self.value_1,
             'val2': self.value_2,
-            'chans': ','.join([str(x) for x in self.channels])}
+            'chans': ','.join([str(x) for x in self.channels])
+        }
 
     def get_params(self):
         """Get parameters for get request."""

@@ -4,7 +4,7 @@ AddRemProductOption request.
 Adds or removes product options from ranges.
 """
 
-from .. apirequest import APIRequest
+from ..apirequest import APIRequest
 
 
 class AddRemProductOption(APIRequest):

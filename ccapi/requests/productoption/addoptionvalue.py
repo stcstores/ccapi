@@ -1,7 +1,6 @@
 """AddOptionValue Request."""
 
-
-from .. apirequest import APIRequest
+from ..apirequest import APIRequest
 
 
 class AddOptionValue(APIRequest):
@@ -27,7 +26,4 @@ class AddOptionValue(APIRequest):
 
     def get_data(self):
         """Get data for request."""
-        return {
-            'optid': self.option_id,
-            'val': self.value,
-            'brandID': '341'}
+        return {'optid': self.option_id, 'val': self.value, 'brandID': '341'}

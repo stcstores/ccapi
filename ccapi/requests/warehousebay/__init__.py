@@ -1,2 +1,4 @@
-from . findwarehousebay import FindWarehouseBay  # noqa
-from . savewarehousebay import SaveWarehouseBay  # noqa
+"""Requests for Warehouse Bays."""
+
+from .findwarehousebay import FindWarehouseBay  # NOQA
+from .savewarehousebay import SaveWarehouseBay  # NOQA

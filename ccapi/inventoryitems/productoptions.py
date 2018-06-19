@@ -17,7 +17,9 @@ class ProductOptions:
         """
         self.options = options
         self.option_names = {
-            option.option_name: option for option in self.options}
+            option.option_name: option
+            for option in self.options
+        }
 
     def __iter__(self):
         for option in self.options:
@@ -108,7 +110,8 @@ class ProductOption:
         """Get Product Option Values for this Product Option."""
         if values:
             self._values = [
-                ProductOptionValue(value) for value in values['optionValues']]
+                ProductOptionValue(value) for value in values['optionValues']
+            ]
         else:
             self._values = ccapi.CCAPI.get_option_values(self.id)
         self._value_names = self.load_value_names()
@@ -196,18 +199,22 @@ class AppliedProductOptions(ProductOptions):
             options: list containg ProductOption objects.
         """
         self.options = [
-            AppliedProductOption(option_data) for option_data in options]
+            AppliedProductOption(option_data) for option_data in options
+        ]
         self.option_names = {
-            option.option_name: option for option in self.options}
+            option.option_name: option
+            for option in self.options
+        }
 
     def __repr__(self):
-        return(str(self.options))
+        return (str(self.options))
 
 
 class AppliedProductOption(ProductOption):
     """Wrapper for Product Options applied to a Product."""
 
     def __init__(self, *args, **kwargs):
+        """Set option value."""
         super().__init__(*args, **kwargs)
         self.set_value(self.json)
 

@@ -1,1 +1,3 @@
-from . getorderaddresses import GetOrderAddresses  # noqa
+"""Order Details requests."""
+
+from .getorderaddresses import GetOrderAddresses  # NOQA

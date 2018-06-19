@@ -4,8 +4,9 @@ FindSelectedOptionsOnly request.
 Gets selected product options for given product.
 """
 
-from .. apirequest import APIRequest
-from ccapi.inventoryitems import Product, AppliedProductOptions
+from ccapi.inventoryitems import AppliedProductOptions, Product
+
+from ..apirequest import APIRequest
 
 
 class FindProductSelectedOptionsOnly(APIRequest):

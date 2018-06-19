@@ -117,12 +117,16 @@ class ProductRange:
         if update_channels is True:
             self.update_of_sales_channel(option_id, 'option', 'remove', value)
 
-    def update_of_sales_channel(
-            self, option_id, request_type, act, value=''):
+    def update_of_sales_channel(self, option_id, request_type, act, value=''):
+        """Update this range's info on selling channels."""
         channel_ids = self.get_sales_channel_ids()
         ccapi.CCAPI.update_range_on_sales_channel(
-            self.id, request_type=request_type, act=act, value=value,
-            option_id=option_id, channel_ids=channel_ids)
+            self.id,
+            request_type=request_type,
+            act=act,
+            value=value,
+            option_id=option_id,
+            channel_ids=channel_ids)
 
     @property
     def options(self):
@@ -156,7 +160,11 @@ class ProductRange:
 
         """
         product_id = ccapi.CCAPI.create_product(
-            self.id, name, barcode, sku=sku, description=description,
+            self.id,
+            name,
+            barcode,
+            sku=sku,
+            description=description,
             vat_rate=vat_rate)
         return ccapi.CCAPI.get_product(product_id)
 
@@ -165,8 +173,13 @@ class ProductRange:
         ccapi.CCAPI.delete_range(self.id)
 
     def update_range_settings(
-            self, name=None, sku=None, end_of_line=None, pre_order=None,
-            grouped=None, channels=True):
+            self,
+            name=None,
+            sku=None,
+            end_of_line=None,
+            pre_order=None,
+            grouped=None,
+            channels=True):
         """
         Update Range Settings.
 
@@ -228,6 +241,8 @@ class ProductRange:
         ccapi.CCAPI.set_product_description(description, product_ids)
         if update_channels is True:
             ccapi.CCAPI.update_product_on_sales_channel(
-                'desc', self.id, product_ids=[p.id for p in self.products],
+                'desc',
+                self.id,
+                product_ids=[p.id for p in self.products],
                 value_1=description,
                 channels=self.get_sales_channel_ids())

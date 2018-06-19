@@ -1,6 +1,5 @@
 """setProductScope Request."""
 
-
 from ..apirequest import APIRequest
 
 
@@ -54,7 +53,8 @@ class SetProductScope(APIRequest):
             'Length': self.length,
             'Width': self.width,
             'LargeLetterCompatible': int(bool(self.large_letter_compatible)),
-            'ExternalID': self.external_id}
+            'ExternalID': self.external_id
+        }
 
     def get_params(self):
         """Get parameters for get request."""

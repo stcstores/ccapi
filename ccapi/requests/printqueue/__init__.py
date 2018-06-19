@@ -1,1 +1,3 @@
-from . findprintqueue import FindPrintQueue  # noqa
+"""Print Queue requests."""
+
+from .findprintqueue import FindPrintQueue  # NOQA

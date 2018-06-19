@@ -1,2 +1,4 @@
-from . getordersfordispatch import GetOrdersForDispatch  # NOQA
-from . getdispatchmethodsfororder import GetDispatchMethodsForOrder  # NOQA
+"""Order Handlers requests."""
+
+from .getordersfordispatch import GetOrdersForDispatch  # NOQA
+from .getdispatchmethodsfororder import GetDispatchMethodsForOrder  # NOQA

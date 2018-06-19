@@ -14,29 +14,30 @@ class CreateOrder(APIRequest):
 
     uri = '/Handlers/OrderFromStock/CreateOrder.ashx'
 
-    def __new__(self,
-                items,
-                customer_id=None,
-                login_id=None,
-                season_id=0,
-                channel_id=None,
-                reference='',
-                order_id=0,
-                prep='0',
-                delivery_date=None,
-                order_note='',
-                send_email='0',
-                postage_override='',
-                carriage_net=0,
-                carriage_vat=0,
-                total_net=None,
-                total_vat=None,
-                total_gross=None,
-                discount_net=None,
-                free_of_charge=False,
-                delivery_address_id=None,
-                billing_address_id=None,
-                shipping_rule_id=None):
+    def __new__(
+            self,
+            items,
+            customer_id=None,
+            login_id=None,
+            season_id=0,
+            channel_id=None,
+            reference='',
+            order_id=0,
+            prep='0',
+            delivery_date=None,
+            order_note='',
+            send_email='0',
+            postage_override='',
+            carriage_net=0,
+            carriage_vat=0,
+            total_net=None,
+            total_vat=None,
+            total_gross=None,
+            discount_net=None,
+            free_of_charge=False,
+            delivery_address_id=None,
+            billing_address_id=None,
+            shipping_rule_id=None):
         """Create CreateOrder request."""
         self.items = items
         self.customer_id = customer_id
@@ -100,19 +101,20 @@ class CreateOrder(APIRequest):
 class NewOrderItem:
     """Continer for items for CreateOrder requests."""
 
-    def __init__(self,
-                 product_id,
-                 quantity=1,
-                 currency='£',
-                 item_net=0,
-                 item_gross=0,
-                 item_vat_rate=5,
-                 item_discount_net=0,
-                 item_discount_gross=0,
-                 total_net=0,
-                 total_gross=0,
-                 parent_product_id='0',
-                 product_type='0'):
+    def __init__(
+            self,
+            product_id,
+            quantity=1,
+            currency='£',
+            item_net=0,
+            item_gross=0,
+            item_vat_rate=5,
+            item_discount_net=0,
+            item_discount_gross=0,
+            total_net=0,
+            total_gross=0,
+            parent_product_id='0',
+            product_type='0'):
         """Initialise with data."""
         self.product_id = product_id
         self.quantity = quantity
@@ -163,8 +165,8 @@ class CreateOrderResponse:
         self.reference = response_data['Reference']
         self.total_gross = response_data['TotalGross']
         if self.error != '':
-            raise ValueError('Order creation returned error: {}'.format(
-                self.error))
+            raise ValueError(
+                'Order creation returned error: {}'.format(self.error))
         if self.order_id == 0:
             raise ValueError(
                 'CreateOrder request did not return a valid order ID')

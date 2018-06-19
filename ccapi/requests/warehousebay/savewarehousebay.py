@@ -1,6 +1,6 @@
 """SaveWarehouseBay request."""
 
-from .. apirequest import APIRequest
+from ..apirequest import APIRequest
 
 
 class SaveWarehouseBay(APIRequest):
@@ -13,8 +13,15 @@ class SaveWarehouseBay(APIRequest):
     uri = 'Handlers/WarehouseBay/SaveWarehouseBay.ashx'
 
     def __new__(
-            self, warehouse_id, name, aisle='', bay_number=0, shelf='',
-            warehouse_bay_type='Default', status_id=1, bay_id=0,
+            self,
+            warehouse_id,
+            name,
+            aisle='',
+            bay_number=0,
+            shelf='',
+            warehouse_bay_type='Default',
+            status_id=1,
+            bay_id=0,
             add_object=True):
         """
         Create FindWarehouseBay request.
@@ -49,7 +56,8 @@ class SaveWarehouseBay(APIRequest):
             'WarehouseBayType': self.warehouse_bay_type,
             'StatusId': self.status_id,
             'id': self.bay_id,
-            'addObject': self.add_object}
+            'addObject': self.add_object
+        }
 
     def get_params(self):
         """Get parameters for get request."""

@@ -4,7 +4,7 @@ deleteOptionValue request.
 Deletes Product Option Value.
 """
 
-from .. apirequest import APIRequest
+from ..apirequest import APIRequest
 
 
 class DeleteOptionValue(APIRequest):

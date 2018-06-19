@@ -4,8 +4,8 @@ GetProductsForRange request.
 Gets information about a given product range.
 """
 
-from . apirequest import APIRequest
-from .. inventoryitems import ProductRange
+from ..inventoryitems import ProductRange
+from .apirequest import APIRequest
 
 
 class GetProductsForRange(APIRequest):
@@ -29,9 +29,7 @@ class GetProductsForRange(APIRequest):
 
     def get_data(self):
         """Get data for request."""
-        return {
-            'ProdRangeID': self.product_id,
-            'salesChannelID': "0"}
+        return {'ProdRangeID': self.product_id, 'salesChannelID': "0"}
 
     def get_params(self):
         """Get parameters for get request."""

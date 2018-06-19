@@ -1,3 +1,6 @@
+"""Containers for Shipping Rules."""
+
+
 class CourierRule:
     """Courier Rule."""
 
@@ -19,7 +22,8 @@ class CourierRule:
             self.active_rules = []
         else:
             self.active_rules = [
-                ActiveRule(data=r) for r in data['ActiveRules']]
+                ActiveRule(data=r) for r in data['ActiveRules']
+            ]
         self.selected = data['Selected']
         self.rule_applied = data['RuleApplied']
         self.label_type_enum = data['LabelTypeEnum']
@@ -60,6 +64,7 @@ class CourierRule:
 
 
 class ActiveRule:
+    """Container for active Cloud Commerce shipping rules."""
 
     def __init__(self, data=None):
         """

@@ -4,7 +4,7 @@ saveProductName request.
 Set name of Product.
 """
 
-from .. apirequest import APIRequest
+from ..apirequest import APIRequest
 
 
 class SaveProductName(APIRequest):

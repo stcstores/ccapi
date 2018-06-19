@@ -30,5 +30,4 @@ class GetOptionData(APIRequest):
 
     def get_data(self):
         """Get data for request."""
-        return {
-            'optid': self.option_id}
+        return {'optid': self.option_id}

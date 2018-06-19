@@ -3,7 +3,7 @@
 Set VAT rate for Product.
 """
 
-from .. apirequest import APIRequest
+from ..apirequest import APIRequest
 
 
 class UpdateProductVatRate(APIRequest):

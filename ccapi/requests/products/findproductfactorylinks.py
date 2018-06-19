@@ -15,6 +15,7 @@ class FindProductFactoryLinks(APIRequest):
     uri = '/Handlers/Products/FindProductFactoryLinks.ashx'
 
     def __new__(self, product_id):
+        """Make FindProductFactoryLinks request."""
         self.product_id = product_id
         return super().__new__(self)
 

@@ -35,7 +35,8 @@ class URLs:
     def get_get(cls, params):
         """Return get request string from dict of key, value pairs."""
         param_strings = [
-            '{}={}'.format(key, value) for key, value in params.items()]
+            '{}={}'.format(key, value) for key, value in params.items()
+        ]
         return '?{}'.format('&'.join(param_strings))
 
     @classmethod
@@ -51,8 +52,7 @@ class URLs:
         """
         if subdomain is None:
             return 'http://{}'.format(cls.cloud_commerce_domain)
-        return 'http://{}.{}'.format(
-            subdomain, cls.cloud_commerce_domain)
+        return 'http://{}.{}'.format(subdomain, cls.cloud_commerce_domain)
 
     @classmethod
     def range_url(cls, subdomain, range_id):
@@ -68,7 +68,8 @@ class URLs:
         params = {
             'ProdRangeID': range_id,
             'ProductID': product_id,
-            'ChannelID': channel_id}
+            'ChannelID': channel_id
+        }
         return cls.get_url(subdomain=subdomain, uri=uri, params=params)
 
     @classmethod

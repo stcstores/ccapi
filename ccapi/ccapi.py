@@ -1,6 +1,5 @@
 """This module contains the main CCAPI class for ccapi."""
 
-
 from . import requests
 from .inventoryitems import VatRates
 from .requests import CloudCommerceAPISession
@@ -403,8 +402,11 @@ class CCAPI:
         while True:
             print('Request: {}'.format(request))
             data = requests.FindWarehouseBay(
-                warehouse_id=warehouse_id, prog_type='normal', products=True,
-                skip_records=skip_records, take_limit=take_limit)
+                warehouse_id=warehouse_id,
+                prog_type='normal',
+                products=True,
+                skip_records=skip_records,
+                take_limit=take_limit)
             request += 1
             skip_records += take_limit
             for bay in data:
@@ -423,23 +425,33 @@ class CCAPI:
     def add_warehouse_bay_to_product(product_id, bay_id):
         """Add Warehouse Bay to Product."""
         return requests.FindWarehouseBay(
-            product_id=product_id, warehouse_bay_id=bay_id,
+            product_id=product_id,
+            warehouse_bay_id=bay_id,
             operation='addlocation')
 
     @staticmethod
     def remove_warehouse_bay_from_product(product_id, bay_id):
         """Remove Warehouse Bay from Product."""
         return requests.FindWarehouseBay(
-            product_id=product_id, warehouse_bay_id=bay_id,
+            product_id=product_id,
+            warehouse_bay_id=bay_id,
             operation='removelocation')
 
     @staticmethod
     def add_bay_to_warehouse(
-            warehouse_id, bay, bay_number=0, aisle='', shelf='',
+            warehouse_id,
+            bay,
+            bay_number=0,
+            aisle='',
+            shelf='',
             warehouse_bay_type='Default'):
         """Add bay to warehouse."""
         return requests.SaveWarehouseBay(
-            warehouse_id, bay, bay_number=bay_number, aisle=aisle, shelf=shelf,
+            warehouse_id,
+            bay,
+            bay_number=bay_number,
+            aisle=aisle,
+            shelf=shelf,
             warehouse_bay_type=warehouse_bay_type)
 
     @staticmethod
@@ -554,8 +566,9 @@ class CCAPI:
         while True:
             new_orders = requests.GetOrdersForDispatch(*args, **kwargs)
             new_orders = [
-                o for o in new_orders if o.order_id not in
-                (o.order_id for o in orders)]
+                o for o in new_orders
+                if o.order_id not in (o.order_id for o in orders)
+            ]
             orders += new_orders
             if len(new_orders) > 0:
                 kwargs['skip_records'] += kwargs['take_limit']
@@ -564,10 +577,17 @@ class CCAPI:
 
     @staticmethod
     def update_range_settings(
-            range_id, current_name='', current_sku='',
-            current_end_of_line='', current_pre_order='',
-            current_group_items='', new_name='', new_sku='',
-            new_end_of_line='', new_pre_order='', new_group_items='',
+            range_id,
+            current_name='',
+            current_sku='',
+            current_end_of_line='',
+            current_pre_order='',
+            current_group_items='',
+            new_name='',
+            new_sku='',
+            new_end_of_line='',
+            new_pre_order='',
+            new_group_items='',
             channels=[]):
         """
         Update Range Settings.
@@ -576,12 +596,17 @@ class CCAPI:
         for Product Range.
         """
         return requests.UpdateRangeSettings(
-            range_id, current_name=current_name, current_sku=current_sku,
+            range_id,
+            current_name=current_name,
+            current_sku=current_sku,
             current_end_of_line=current_end_of_line,
             current_pre_order=current_pre_order,
-            current_group_items=current_group_items, new_name=new_name,
-            new_sku=new_sku, new_end_of_line=new_end_of_line,
-            new_pre_order=new_pre_order, new_group_items=new_group_items,
+            current_group_items=current_group_items,
+            new_name=new_name,
+            new_sku=new_sku,
+            new_end_of_line=new_end_of_line,
+            new_pre_order=new_pre_order,
+            new_group_items=new_group_items,
             channels=channels)
 
     @staticmethod
@@ -668,7 +693,8 @@ class CCAPI:
             image_file: File to upload.
         """
         return requests.UploadImage(
-            product_ids=product_ids, channel_ids=channel_ids,
+            product_ids=product_ids,
+            channel_ids=channel_ids,
             image_file=image_file)
 
     @staticmethod
@@ -723,12 +749,18 @@ class CCAPI:
 
     @staticmethod
     def update_product_factory_link(
-            product_id=None, factory_id=None, dropship=False, supplier_sku='',
+            product_id=None,
+            factory_id=None,
+            dropship=False,
+            supplier_sku='',
             price=0):
         """Create or update Product Factory Link."""
         return requests.UpdProductFactoryLink(
-            product_id=product_id, factory_id=factory_id, dropship=dropship,
-            supplier_sku=supplier_sku, price=price)
+            product_id=product_id,
+            factory_id=factory_id,
+            dropship=dropship,
+            supplier_sku=supplier_sku,
+            price=price)
 
     @staticmethod
     def delete_product_factory_link(factory_link_id):
@@ -752,10 +784,21 @@ class CCAPI:
 
     @staticmethod
     def add_address(
-            customer_id, address_type='Delivery', company_name='',
-            first_name='', last_name='', address_1='', address_2='',
-            post_code='', town='', region='', country='', telephone_number='',
-            fax_number='', mobile_number='', address_id='0',
+            customer_id,
+            address_type='Delivery',
+            company_name='',
+            first_name='',
+            last_name='',
+            address_1='',
+            address_2='',
+            post_code='',
+            town='',
+            region='',
+            country='',
+            telephone_number='',
+            fax_number='',
+            mobile_number='',
+            address_id='0',
             customer_add_link_id='0'):
         """Add address to customer and return it's ID."""
         kwargs = {

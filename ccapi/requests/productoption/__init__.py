@@ -1,5 +1,7 @@
-from . addoptionvalue import AddOptionValue  # noqa
-from . deleteoptionvalue import DeleteOptionValue  # noqa
-from . getoptiondata import GetOptionData  # noqa
-from . getoptions import GetOptions  # noqa
-from . getproductdata import GetProductData  # noqa
+"""Product Option Requests."""
+
+from .addoptionvalue import AddOptionValue  # NOQA
+from .deleteoptionvalue import DeleteOptionValue  # NOQA
+from .getoptiondata import GetOptionData  # NOQA
+from .getoptions import GetOptions  # NOQA
+from .getproductdata import GetProductData  # NOQA

@@ -4,7 +4,7 @@ checkRangesOnSalesChannel request.
 Get details of channels of which a Product Range is listed.
 """
 
-from .. apirequest import APIRequest
+from ..apirequest import APIRequest
 
 
 class CheckRangesOnSalesChannel(APIRequest):
@@ -35,8 +35,10 @@ class CheckRangesOnSalesChannel(APIRequest):
 
 
 class SalesChannel:
+    """Container for Cloud Commerce Sales Channels."""
 
     def __init__(self, data):
+        """Set attributes from API data."""
         self.json = data
         self.id = data.get('ID', None)
         self.name = data.get('Name', None)

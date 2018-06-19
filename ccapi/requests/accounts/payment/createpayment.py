@@ -14,21 +14,22 @@ class CreatePayment(APIRequest):
 
     uri = '/Handlers/Accounts/Payment/CreatePayment.ashx'
 
-    def __new__(self,
-                customer_id=None,
-                invoice_id=None,
-                login_id=None,
-                transaction_type_id='12',
-                bank_nominal_code='',
-                transaction_date=None,
-                bank_account_id='0',
-                amount=0,
-                proforma_id='0',
-                gateway_id='0',
-                currency_code_id='1',
-                currency_code='GBP',
-                exchange_rate='1',
-                brand_id='341'):
+    def __new__(
+            self,
+            customer_id=None,
+            invoice_id=None,
+            login_id=None,
+            transaction_type_id='12',
+            bank_nominal_code='',
+            transaction_date=None,
+            bank_account_id='0',
+            amount=0,
+            proforma_id='0',
+            gateway_id='0',
+            currency_code_id='1',
+            currency_code='GBP',
+            exchange_rate='1',
+            brand_id='341'):
         """Create CreatePayment request."""
         self.customer_id = customer_id
         self.invoice_id = invoice_id

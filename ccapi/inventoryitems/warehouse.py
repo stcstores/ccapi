@@ -1,6 +1,5 @@
 """This module contains classes for working with Warehouses."""
 
-
 from ccapi import ccapi
 
 
@@ -15,7 +14,9 @@ class Warehouses():
         """
         self.warehouses = warehouses
         self.warehouse_names = {
-            warehouse.name: warehouse for warehouse in self.warehouses}
+            warehouse.name: warehouse
+            for warehouse in self.warehouses
+        }
 
     def __iter__(self):
         for warehouse in self.warehouses:
@@ -33,6 +34,7 @@ class Warehouses():
             bay_name, create=create)
 
     def items(self):
+        """Return tuples of warehouse names and warehouses."""
         return self.warehouse_names.items()
 
 
@@ -102,7 +104,11 @@ class Warehouse:
         self._bay_names = self.load_bay_names()
 
     def add_bay(
-            self, bay, bay_number=0, aisle='', shelf='',
+            self,
+            bay,
+            bay_number=0,
+            aisle='',
+            shelf='',
             warehouse_bay_type='Default'):
         """
         Create Warehouse Bay for this Warehouse.
@@ -118,7 +124,11 @@ class Warehouse:
                 'Warehouse Bay {} already exists in Warehouse {}'.format(
                     bay, self.name))
         ccapi.CCAPI.add_bay_to_warehouse(
-            self.id, bay, bay_number=bay_number, aisle=aisle, shelf=shelf,
+            self.id,
+            bay,
+            bay_number=bay_number,
+            aisle=aisle,
+            shelf=shelf,
             warehouse_bay_type=warehouse_bay_type)
         self.reload_bays()
         return self.bay_names[bay].id
@@ -184,25 +194,31 @@ class WarehouseBay:
                 else:
                     self.products = [
                         BayProduct(d) for d in products
-                        if d['ManufacturerSKU'] != 'Warning']
+                        if d['ManufacturerSKU'] != 'Warning'
+                    ]
 
     def __repr__(self):
         return self.name
 
     def delete(self):
+        """Delete this bay."""
         ccapi.CCAPI.delete_bay(self.id)
 
     @property
     def empty(self):
+        """Return True if this bay contains no products."""
         return self.too_many_products is False and len(self.products) == 0
 
 
 class BayProduct:
+    """Container for Products in Bays."""
 
     def __init__(self, data):
+        """Load product data."""
         self.load_json(data)
 
     def load_json(self, data):
+        """Load product data from API."""
         self.json = data
         self.image_url = data['ProductImage']
         self.id = data['ID']

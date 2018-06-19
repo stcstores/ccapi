@@ -13,6 +13,7 @@ class DeleteProductFactoryLink(APIRequest):
     uri = '/Handlers/Products/deleteProductFactoryLink.ashx'
 
     def __new__(self, factory_link_id):
+        """Make deleteProductFactoryLink request."""
         self.factory_link_id = factory_link_id
         return super().__new__(self)
 

@@ -15,9 +15,15 @@ class FindWarehouseBay(APIRequest):
     uri = 'Handlers/WarehouseBay/FindWarehouseBay.ashx'
 
     def __new__(
-            self, prog_type=None, operation=None, warehouse_id=None,
-            product_id=None, warehouse_bay_id=None, products=False,
-            skip_records=0, take_limit=100):
+            self,
+            prog_type=None,
+            operation=None,
+            warehouse_id=None,
+            product_id=None,
+            warehouse_bay_id=None,
+            products=False,
+            skip_records=0,
+            take_limit=100):
         """Create FindWarehouseBay request."""
         self.prog_type = prog_type
         self.operation = operation
@@ -45,10 +51,14 @@ class FindWarehouseBay(APIRequest):
         """Create WarehouseBay objects from HTML response."""
         soup = BeautifulSoup(html, 'html.parser')
         bay_divs = soup.findAll('div', {'class': 'warehouse--bay--item'})
-        data = [{
-            'ID': bay_div.find('div', {'class': 'ListItem'})['data-bayid'],
-            'Name': bay_div.find('a', {'class': 'bay--name'}).text}
-            for bay_div in bay_divs]
+        data = [
+            {
+                'ID': bay_div.find('div', {'class': 'ListItem'})['data-bayid'],
+                'Name': bay_div.find('a', {
+                    'class': 'bay--name'
+                }).text
+            } for bay_div in bay_divs
+        ]
         return [WarehouseBay(bay) for bay in data]
 
     def get_data(self):
@@ -67,12 +77,14 @@ class FindWarehouseBay(APIRequest):
         return data
 
     def get_headers(self):
+        """Return headers for request."""
         if self.products is False and self.operation is None:
             return {'template': 'WarehouseBay.List'}
         if self.products is True:
             return {
                 'TakeLimit': str(self.take_limit),
-                'SkipRecords': str(self.skip_records)}
+                'SkipRecords': str(self.skip_records)
+            }
         return {}
 
     def get_params(self):

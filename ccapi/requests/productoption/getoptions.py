@@ -20,6 +20,4 @@ class GetOptions(APIRequest):
 
     def get_data(self):
         """Get data for request."""
-        return {
-            'brandID': "341",
-            'strOptionTypes': "1,+2,+6"}
+        return {'brandID': "341", 'strOptionTypes': "1,+2,+6"}

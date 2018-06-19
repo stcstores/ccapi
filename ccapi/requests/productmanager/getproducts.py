@@ -15,13 +15,30 @@ class GetProducts(APIRequest):
     uri = '/Handlers/ProductManager/GetProducts.ashx'
 
     def __new__(
-            self, search_text='', master_category_id=0, search_type=0,
-            main_products=True, clones=True, only_in_stock=False,
-            listing_status=0, product_id=0, product_range_id=0,
-            channel_identifier='', name='', price_from=0, price_to=0,
-            product_type=-1, sort_by='', skip_records=0, take_records=100,
-            take_exact_match=False, channel_type=-1, channel_id=0,
-            sort_desc=False, id_list=None, option_matches_id=0,
+            self,
+            search_text='',
+            master_category_id=0,
+            search_type=0,
+            main_products=True,
+            clones=True,
+            only_in_stock=False,
+            listing_status=0,
+            product_id=0,
+            product_range_id=0,
+            channel_identifier='',
+            name='',
+            price_from=0,
+            price_to=0,
+            product_type=-1,
+            sort_by='',
+            skip_records=0,
+            take_records=100,
+            take_exact_match=False,
+            channel_type=-1,
+            channel_id=0,
+            sort_desc=False,
+            id_list=None,
+            option_matches_id=0,
             multi_listings=True):
         """Create GetProductsForRange request.
 

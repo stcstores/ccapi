@@ -5,7 +5,7 @@ This is the base class for Cloud Commerce Pro API requests.
 
 import json
 
-from . ccapisession import CloudCommerceAPISession
+from .ccapisession import CloudCommerceAPISession
 
 
 class APIRequest:

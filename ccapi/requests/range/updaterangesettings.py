@@ -6,7 +6,7 @@ Update Name, SKU, End of Line, Pre Order and Group Items for Product Range.
 
 import json
 
-from .. apirequest import APIRequest
+from ..apirequest import APIRequest
 
 
 class UpdateRangeSettings(APIRequest):
@@ -15,10 +15,18 @@ class UpdateRangeSettings(APIRequest):
     uri = '/Handlers/Range/updateRangeSettings.ashx'
 
     def __new__(
-            self, range_id, current_name='', current_sku='',
-            current_end_of_line='', current_pre_order='',
-            current_group_items='', new_name='', new_sku='',
-            new_end_of_line='', new_pre_order='', new_group_items='',
+            self,
+            range_id,
+            current_name='',
+            current_sku='',
+            current_end_of_line='',
+            current_pre_order='',
+            current_group_items='',
+            new_name='',
+            new_sku='',
+            new_end_of_line='',
+            new_pre_order='',
+            new_group_items='',
             channels=[]):
         """Create updateRangeSettings request.
 
@@ -69,7 +77,7 @@ class UpdateRangeSettings(APIRequest):
             'newGBy': str(int(self.new_group_items)),
             'channels': ','.join(
                 [str(channel_id) for channel_id in self.channels])
-            }
+        }
         return json.dumps(data)
 
     def process_response(self, response):

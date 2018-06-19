@@ -4,7 +4,7 @@ deleteProductRange request.
 Deletes Product Ranges.
 """
 
-from .. apirequest import APIRequest
+from ..apirequest import APIRequest
 
 
 class DeleteProductRange(APIRequest):
@@ -24,10 +24,10 @@ class DeleteProductRange(APIRequest):
     def get_data(self):
         """Get data for request."""
         data = {
-                'ProgType': 'DeleteProductRange',
-                'BrandID': 341,
-                'ProdRangeID': self.range_id,
-            }
+            'ProgType': 'DeleteProductRange',
+            'BrandID': 341,
+            'ProdRangeID': self.range_id,
+        }
         return data
 
     def process_response(self, response):

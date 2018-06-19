@@ -4,7 +4,7 @@ setOptionSelect request.
 Set weather a Product Option is a drop down for a Product Range.
 """
 
-from .. apirequest import APIRequest
+from ..apirequest import APIRequest
 
 
 class SetOptionSelect(APIRequest):

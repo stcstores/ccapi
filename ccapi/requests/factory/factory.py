@@ -16,9 +16,17 @@ class Factory(APIRequest):
     uri = '/Handlers/Factory/Factory.ashx'
 
     def __new__(
-            self, prog_type=None, comp_to_del=None, currency_symbol=None,
-            delivery_method=None, exchange_rate=None, factory_id=None,
-            name=None, nominal_code=None, order_to_comp=None):
+            self,
+            prog_type=None,
+            comp_to_del=None,
+            currency_symbol=None,
+            delivery_method=None,
+            exchange_rate=None,
+            factory_id=None,
+            name=None,
+            nominal_code=None,
+            order_to_comp=None):
+        """Make factory request."""
         self.prog_type = prog_type
         self.comp_to_del = comp_to_del
         self.currency_symbol = currency_symbol
@@ -42,7 +50,8 @@ class Factory(APIRequest):
                 'FactoryID': self.factory_id,
                 'Name': self.name or '',
                 'NominalCode': self.nominal_code or '',
-                'OrderToComp': self.order_to_comp or ''}
+                'OrderToComp': self.order_to_comp or ''
+            }
         if self.prog_type == self.DELETE_FACTORY:
             return {
                 'ProgType': self.prog_type,

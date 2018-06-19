@@ -4,7 +4,7 @@ getOrderAddresses request.
 Get addresses associated with an order.
 """
 
-from .. apirequest import APIRequest
+from ..apirequest import APIRequest
 
 
 class GetOrderAddresses(APIRequest):
@@ -12,8 +12,7 @@ class GetOrderAddresses(APIRequest):
 
     uri = '/Handlers/OrderDetails/getOrderAddresses.ashx'
 
-    def __new__(
-            self, order_id, customer_id):
+    def __new__(self, order_id, customer_id):
         """Create getOrderAddresses request.
 
         args:
@@ -26,9 +25,7 @@ class GetOrderAddresses(APIRequest):
 
     def get_data(self):
         """Get data for request."""
-        data = {
-            "OrderID": self.order_id,
-            "CustID": self.customer_id}
+        data = {"OrderID": self.order_id, "CustID": self.customer_id}
         return data
 
     def get_params(self):

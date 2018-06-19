@@ -1,7 +1,7 @@
 """setProductOptionValue Request."""
 
 
-from .. apirequest import APIRequest
+from ..apirequest import APIRequest
 
 
 class SetProductOptionValue(APIRequest):

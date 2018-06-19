@@ -1,12 +1,17 @@
+"""Containers for Cloud Commerce factories."""
+
 from ccapi import ccapi
 
 
 class Factory:
+    """Container for factories."""
 
     def __init__(self, data):
+        """Set object attributes."""
         self.load_from_data(data)
 
     def load_from_data(self, data):
+        """Set object attributes from API data."""
         self.id = data['ID']
         self.name = data['Name']
         self.undelivered = data['Undelivered']
@@ -31,13 +36,18 @@ class Factory:
             self, product_id, dropship=False, supplier_sku='', price=0):
         """Update or create product link."""
         return ccapi.CCAPI.update_product_factory_link(
-            product_id=product_id, factory_id=self.id, dropship=dropship,
-            supplier_sku=supplier_sku, price=price)
+            product_id=product_id,
+            factory_id=self.id,
+            dropship=dropship,
+            supplier_sku=supplier_sku,
+            price=price)
 
 
 class Factories:
+    """Container for multiple Factory objects."""
 
     def __init__(self, factories):
+        """Set factory list."""
         self.factories = factories
         self.names = {f.name: f for f in factories}
         self.ids = {f.id: f for f in factories}
@@ -61,8 +71,10 @@ class Factories:
 
 
 class FactoryLink:
+    """Container for Factory Links."""
 
     def __init__(self, data):
+        """Set factory link attributes from API data."""
         self.link_id = int(data['LinkID'])
         self.order_price = float(data['OrderPrice'])
         self.price_precision = float(data['PricePrecision'])
@@ -92,8 +104,10 @@ class FactoryLink:
 
 
 class FactoryLinks:
+    """Container for multiple FactoryLink objects."""
 
     def __init__(self, factory_links):
+        """Set list of factory links."""
         self.links = []
         self.factory_names = {}
         self.product_ids = {}

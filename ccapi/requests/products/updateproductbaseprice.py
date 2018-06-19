@@ -1,7 +1,7 @@
 """updateProductBasePrice Request."""
 
 
-from .. apirequest import APIRequest
+from ..apirequest import APIRequest
 
 
 class UpdateProductBasePrice(APIRequest):

@@ -30,6 +30,4 @@ class SetImageOrder(APIRequest):
 
     def get_data(self):
         """Get parameters for get request."""
-        return {
-            'prodid': self.product_id,
-            'order': '^^'.join(self.image_ids)}
+        return {'prodid': self.product_id, 'order': '^^'.join(self.image_ids)}

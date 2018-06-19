@@ -35,7 +35,8 @@ class UploadImage(APIRequest):
         return {
             'prodIDs': ','.join(self.product_ids),
             'channelids': ','.join(self.channel_ids),
-            'brandID': '341'}
+            'brandID': '341'
+        }
 
     def get_files(self):
         """Get file for request."""

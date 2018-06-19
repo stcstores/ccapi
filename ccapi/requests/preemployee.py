@@ -4,9 +4,9 @@ PreEmployee request.
 Get list of users.
 """
 
-from . apirequest import APIRequest
-
 from bs4 import BeautifulSoup
+
+from .apirequest import APIRequest
 
 
 class PreEmployee(APIRequest):
@@ -21,9 +21,7 @@ class PreEmployee(APIRequest):
 
     def get_data(self):
         """Get data for request."""
-        data = {
-            'ProgType': 'Search',
-            'Lname': self.search_string}
+        data = {'ProgType': 'Search', 'Lname': self.search_string}
         return data
 
     def get_params(self):

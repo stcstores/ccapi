@@ -5,8 +5,8 @@ Gets images for a Product.
 """
 from bs4 import BeautifulSoup
 
+from ..inventoryitems import ProductImage
 from .apirequest import APIRequest
-from .. inventoryitems import ProductImage
 
 
 class GetImages(APIRequest):
@@ -45,7 +45,8 @@ class GetImages(APIRequest):
             'ProgType': 'GetImages',
             'ProductID': self.product_id,
             'rID': self.range_id,
-            'cID': ''}
+            'cID': ''
+        }
 
     def get_params(self):
         """Get parameters for get request."""

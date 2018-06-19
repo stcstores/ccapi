@@ -34,7 +34,9 @@ class CloudCommerceAPISession:
             cls.password = password
         cls.session = requests.Session()
         login_post_data = {
-            'usernameInput': username, 'passwordInput': password}
+            'usernameInput': username,
+            'passwordInput': password
+        }
         cls.session.post(cls.login_url, data=login_post_data)
         cls.login_handler(username, password)
         cls.last_login = datetime.now()
@@ -57,8 +59,11 @@ class CloudCommerceAPISession:
         if cls.verbose:
             print('CCAPI Request {}: {}'.format(cls.request_count, url))
         response = cls.session.post(
-            url, headers=request.headers, params=request.params,
-            data=request.data, files=request.files)
+            url,
+            headers=request.headers,
+            params=request.params,
+            data=request.data,
+            files=request.files)
         return response
 
     @classmethod

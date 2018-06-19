@@ -15,14 +15,34 @@ class GetOrdersForDispatch(APIRequest):
     uri = '/Handlers/OrderHandlers/getOrdersForDispatch.ashx'
 
     def __new__(
-            self, date=None, order_type=1, number_of_days=1, customer_type=0,
-            courier_rule_id='CourierRule', priority='', printed='',
-            allocated='', picked='', courier_type='0', note_type='',
-            external_order_type=0, supplier_id='-1', dispatch_date='',
-            country='', warehouse=0, sales_channel_id='0', id_list='',
-            include_products=True, search_term='', order_by='',
-            order_by_direction='', first_run=False, manual_fetch=True,
-            take_limit=200, skip_records=0, issue_orders=False):
+            self,
+            date=None,
+            order_type=1,
+            number_of_days=1,
+            customer_type=0,
+            courier_rule_id='CourierRule',
+            priority='',
+            printed='',
+            allocated='',
+            picked='',
+            courier_type='0',
+            note_type='',
+            external_order_type=0,
+            supplier_id='-1',
+            dispatch_date='',
+            country='',
+            warehouse=0,
+            sales_channel_id='0',
+            id_list='',
+            include_products=True,
+            search_term='',
+            order_by='',
+            order_by_direction='',
+            first_run=False,
+            manual_fetch=True,
+            take_limit=200,
+            skip_records=0,
+            issue_orders=False):
         """Create getOrdersForDispatch request."""
         if date is None:
             self.date = datetime.datetime.now()
@@ -92,7 +112,8 @@ class GetOrdersForDispatch(APIRequest):
         """Get headers for request."""
         headers = {
             'TakeLimit': str(self.take_limit),
-            'SkipRecords': str(self.skip_records)}
+            'SkipRecords': str(self.skip_records)
+        }
         if self.issue_orders:
             headers['requestmode'] = 'issueorders'
         return headers
@@ -163,7 +184,8 @@ class DispatchOrder:
         self.external_transaction_id = data['ExternalTransactionID']
         self.esimated_delivery_days = data['EstDeliveryDays']
         self.products = [
-            DispatchOrderProduct(product) for product in data['Products']]
+            DispatchOrderProduct(product) for product in data['Products']
+        ]
         self.factory_ids = data['FactoryIds']
         self.is_exported = data['IsExported']
         self.exported_date = data['ExportedDate']
@@ -181,11 +203,15 @@ class DispatchOrder:
         self.item_summary = data['ItemSummary']
 
     def to_datetime(self, date_time_string):
+        """Return recieved date string as datetime.datetime object."""
         date, time = date_time_string.split(' ')
         day, month, year = date.split('/')
         hour, minute = time.split(':')
         return datetime.datetime(
-            day=int(day), month=int(month), year=int(year), hour=int(hour),
+            day=int(day),
+            month=int(month),
+            year=int(year),
+            hour=int(hour),
             minute=int(minute))
 
 

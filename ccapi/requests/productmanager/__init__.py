@@ -1,1 +1,3 @@
-from . getproducts import GetProducts  # noqa
+"""Product Manager requests."""
+
+from .getproducts import GetProducts  # NOQA

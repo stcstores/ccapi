@@ -4,7 +4,7 @@ updateOnSalesChannel request.
 Update Product Range settings on sales channel.
 """
 
-from .. apirequest import APIRequest
+from ..apirequest import APIRequest
 
 
 class UpdateRangeOnSalesChannel(APIRequest):
@@ -13,8 +13,13 @@ class UpdateRangeOnSalesChannel(APIRequest):
     uri = '/Handlers/Range/updateOnSalesChannel.ashx'
 
     def __new__(
-            self, range_id, request_type='select', act='update', value=None,
-            option_id=None, channel_ids=[]):
+            self,
+            range_id,
+            request_type='select',
+            act='update',
+            value=None,
+            option_id=None,
+            channel_ids=[]):
         """Create updateOnSalesChannel request.
 
         Args:

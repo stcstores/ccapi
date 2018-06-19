@@ -4,7 +4,7 @@ AddNewRange request.
 Creates a new product range.
 """
 
-from .. apirequest import APIRequest
+from ..apirequest import APIRequest
 
 
 class AddNewRange(APIRequest):
@@ -13,8 +13,13 @@ class AddNewRange(APIRequest):
     uri = 'Handlers/Range/addNewRange.ashx'
 
     def __new__(
-            self, range_name, sku, product_range_id=0, end_of_line=0,
-            group_all_items=0, pre_order=0):
+            self,
+            range_name,
+            sku,
+            product_range_id=0,
+            end_of_line=0,
+            group_all_items=0,
+            pre_order=0):
         """Create AddNewRange request.
 
         Args:
@@ -48,7 +53,8 @@ class AddNewRange(APIRequest):
             'GroupAllItems': self.group_all_items,
             'RangeName': self.range_name,
             'SKUCode': self.sku,
-            'BrandID': "341"}
+            'BrandID': "341"
+        }
 
     def get_params(self):
         """Get parameters for get request."""

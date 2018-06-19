@@ -6,7 +6,7 @@ Get the current contents of the Print Queue.
 
 from datetime import datetime
 
-from .. apirequest import APIRequest
+from ..apirequest import APIRequest
 
 
 class FindPrintQueue(APIRequest):
@@ -20,10 +20,7 @@ class FindPrintQueue(APIRequest):
 
     def get_data(self):
         """Get data for request."""
-        data = {
-            'ProgType': 'normal',
-            'brandID': '341',
-            'UnprintedOnly': False}
+        data = {'ProgType': 'normal', 'brandID': '341', 'UnprintedOnly': False}
         return data
 
     def get_params(self):
@@ -81,5 +78,9 @@ class PrintQueueItem:
         year, month, day = date_string.split('-')
         hour, minute, second = time_string.split(':')
         return datetime(
-            year=int(year), month=int(month), day=int(day), hour=int(hour),
-            minute=int(minute), second=int(second))
+            year=int(year),
+            month=int(month),
+            day=int(day),
+            hour=int(hour),
+            minute=int(minute),
+            second=int(second))

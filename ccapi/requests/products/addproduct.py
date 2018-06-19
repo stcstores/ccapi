@@ -11,8 +11,7 @@ class AddProduct(APIRequest):
 
     uri = 'Handlers/Products/AddProduct.ashx'
 
-    def __new__(
-            self, range_id, name, barcode, sku, description, vat_rate_id):
+    def __new__(self, range_id, name, barcode, sku, description, vat_rate_id):
         """Create AddProduct request.
 
         Args:
@@ -46,7 +45,8 @@ class AddProduct(APIRequest):
             'ProdDescription': self.description,
             'VatRateID': self.vat_rate_id,
             'CopyDesc': "0",
-            'BrandID': "341"}
+            'BrandID': "341"
+        }
 
     def get_params(self):
         """Get parameters for get request."""

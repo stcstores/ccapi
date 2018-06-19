@@ -3,8 +3,9 @@
 Gets product options assigned to given range.
 """
 
-from .. apirequest import APIRequest
-from ccapi.inventoryitems import ProductOptions, ProductOption
+from ccapi.inventoryitems import ProductOption, ProductOptions
+
+from ..apirequest import APIRequest
 
 
 class GetProductData(APIRequest):
@@ -27,7 +28,8 @@ class GetProductData(APIRequest):
         return {
             'RangeID': self.range_id,
             'channelID': self.channel_id,
-            'brandID': '341'}
+            'brandID': '341'
+        }
 
     def process_response(self, response):
         """Handle request response."""
@@ -44,7 +46,8 @@ class GetProductDataResult:
         self.group_by = data['GroupBy']
         self.sales_channel_type = data['SalesChannelType']
         self.shop_options = [
-            ShopOptions(option) for option in data['ShopOptions']]
+            ShopOptions(option) for option in data['ShopOptions']
+        ]
         self.options = ProductOptions(
             [ProductDataOption(option) for option in data['ProductOptions']])
 

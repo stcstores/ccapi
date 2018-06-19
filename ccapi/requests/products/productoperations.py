@@ -1,6 +1,6 @@
 """ProductOperations request."""
 
-from .. apirequest import APIRequest
+from ..apirequest import APIRequest
 
 
 class ProductOperations(APIRequest):

@@ -1,19 +1,21 @@
-from . addproduct import AddProduct  # noqa
-from . deleteallproductfactorylink import DeleteAllProductFactoryLink  # NOQA
-from . deleteimage import DeleteImage  # noqa
-from . deleteproductfactorylink import DeleteProductFactoryLink  # NOQA
-from . dosearch import DoSearch  # noqa
-from . findproductfactorylinks import FindProductFactoryLinks  # NOQA
-from . findproductselectedoptionsonly import FindProductSelectedOptionsOnly  # noqa
-from . productoperations import ProductOperations   # noqa
-from . savedescription import SaveDescription  # noqa
-from . savehandlingtime import SaveHandlingTime  # noqa
-from . saveproductname import SaveProductName  # noqa
-from . setimageorder import SetImageOrder  # noqa
-from . setproductoptionvalue import SetProductOptionValue  # noqa
-from . setproductscope import SetProductScope  # noqa
-from . updateproductbaseprice import UpdateProductBasePrice  # noqa
-from . updateonsaleschannel import UpdateProductOnSalesChannel  # noqa
-from . updateproductstocklevel import UpdateProductStockLevel  # noqa
-from . updateproductvatrate import UpdateProductVatRate  # noqa
-from . uploadimage import UploadImage  # noqa
+"""API Requests for Cloud Commerce Products."""
+
+from .addproduct import AddProduct  # NOQA
+from .deleteallproductfactorylink import DeleteAllProductFactoryLink  # NOQA
+from .deleteimage import DeleteImage  # NOQA
+from .deleteproductfactorylink import DeleteProductFactoryLink  # NOQA
+from .dosearch import DoSearch  # NOQA
+from .findproductfactorylinks import FindProductFactoryLinks  # NOQA
+from .findproductselectedoptionsonly import FindProductSelectedOptionsOnly  # NOQA
+from .productoperations import ProductOperations  # NOQA
+from .savedescription import SaveDescription  # NOQA
+from .savehandlingtime import SaveHandlingTime  # NOQA
+from .saveproductname import SaveProductName  # NOQA
+from .setimageorder import SetImageOrder  # NOQA
+from .setproductoptionvalue import SetProductOptionValue  # NOQA
+from .setproductscope import SetProductScope  # NOQA
+from .updateproductbaseprice import UpdateProductBasePrice  # NOQA
+from .updateonsaleschannel import UpdateProductOnSalesChannel  # NOQA
+from .updateproductstocklevel import UpdateProductStockLevel  # NOQA
+from .updateproductvatrate import UpdateProductVatRate  # NOQA
+from .uploadimage import UploadImage  # NOQA

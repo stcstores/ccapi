@@ -1,7 +1,6 @@
 """saveHandlingTime Request."""
 
-
-from .. apirequest import APIRequest
+from ..apirequest import APIRequest
 
 
 class SaveHandlingTime(APIRequest):
@@ -36,7 +35,8 @@ class SaveHandlingTime(APIRequest):
         return {
             'ProductID': self.product_id,
             'handlingTime': self.handling_time,
-            'updateChannels': self.update_channels}
+            'updateChannels': self.update_channels
+        }
 
     def get_params(self):
         """Get parameters for get request."""

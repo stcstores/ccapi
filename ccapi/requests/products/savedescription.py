@@ -3,7 +3,7 @@
 Save description for products.
 """
 
-from .. apirequest import APIRequest
+from ..apirequest import APIRequest
 
 
 class SaveDescription(APIRequest):
@@ -27,7 +27,8 @@ class SaveDescription(APIRequest):
         data = {
             'channelID': self.channel_id,
             'desc': self.description,
-            'prodids': ','.join(self.product_ids)}
+            'prodids': ','.join(self.product_ids)
+        }
         return data
 
     def get_params(self):
