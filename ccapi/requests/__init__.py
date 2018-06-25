@@ -7,6 +7,7 @@ from .configuration import *  # NOQA
 from .factory import *  # NOQA
 from .getproductsforrange import GetProductsForRange  # NOQA
 from .preemployee import PreEmployee  # NOQA
+from .productbarcode import *  # NOQA
 from .productoption import *  # NOQA
 from .products import *  # NOQA
 from .warehouse import *  # NOQA

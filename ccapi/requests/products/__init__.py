@@ -8,6 +8,7 @@ from .dosearch import DoSearch  # NOQA
 from .findproductfactorylinks import FindProductFactoryLinks  # NOQA
 from .findproductselectedoptionsonly import FindProductSelectedOptionsOnly  # NOQA
 from .productoperations import ProductOperations  # NOQA
+from .savebarcode import SaveBarcode  # NOQA
 from .savedescription import SaveDescription  # NOQA
 from .savehandlingtime import SaveHandlingTime  # NOQA
 from .saveproductname import SaveProductName  # NOQA
