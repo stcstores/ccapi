@@ -1,3 +1,7 @@
+quicktest.py
+
+.pytest_cache/
+
 *.pyo
 *.pyc
 env/*

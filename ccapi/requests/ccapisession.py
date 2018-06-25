@@ -16,6 +16,7 @@ class CloudCommerceAPISession:
     timeout = timedelta(hours=1)
     verbose = False
     request_count = 0
+    session = requests.Session()
 
     @classmethod
     def credentials(cls, username, password, verbose=False):
@@ -32,7 +33,6 @@ class CloudCommerceAPISession:
             cls.username = username
         if password is not None:
             cls.password = password
-        cls.session = requests.Session()
         login_post_data = {
             'usernameInput': username,
             'passwordInput': password
