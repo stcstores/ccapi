@@ -1,9 +1,12 @@
 """This module contains the CloudCommerceAPISession class."""
 
+import logging
 from datetime import datetime, timedelta
 from urllib.parse import urljoin
 
 import requests
+
+logger = logging.getLogger(__name__)
 
 
 class CloudCommerceAPISession:
@@ -40,6 +43,7 @@ class CloudCommerceAPISession:
         cls.session.post(cls.login_url, data=login_post_data)
         cls.login_handler(username, password)
         cls.last_login = datetime.now()
+        logger.info('Logged in to Cloud Commerce.')
         return cls.session
 
     @classmethod
@@ -56,14 +60,24 @@ class CloudCommerceAPISession:
         cls.check_login()
         url = urljoin(cls.domain, request.uri)
         cls.request_count += 1
-        if cls.verbose:
-            print('CCAPI Request {}: {}'.format(cls.request_count, url))
-        response = cls.session.post(
-            url,
-            headers=request.headers,
-            params=request.params,
-            data=request.data,
-            files=request.files)
+        logger.info('Request to {}.'.format(request.uri))
+        logger.debug(
+            'Request to {} with headers: {}, params: {}, data:{}, files: {}'.
+            format(
+                request.uri, request.headers, request.params, request.data,
+                request.files))
+        try:
+            response = cls.session.post(
+                url,
+                headers=request.headers,
+                params=request.params,
+                data=request.data,
+                files=request.files)
+        except Exception as e:
+            logging.error(e)
+        logger.debug(
+            'Response from {} with text: {}'.format(
+                request.uri, response.text))
         return response
 
     @classmethod
