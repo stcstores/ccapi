@@ -4,6 +4,7 @@ FindSelectedOptionsOnly request.
 Gets selected product options for given product.
 """
 
+from ccapi.exceptions import ProductNotFoundError
 from ccapi.inventoryitems import AppliedProductOptions, Product
 
 from ..apirequest import APIRequest
@@ -32,17 +33,19 @@ class FindProductSelectedOptionsOnly(APIRequest):
     def process_response(self, response):
         """Handle request response."""
         results = response.json()
-        return FindProductSelectedOptionsOnlyResult(results)
+        return FindProductSelectedOptionsOnlyResult(self.product_id, results)
 
 
 class FindProductSelectedOptionsOnlyResult:
     """Response from FindProductSelectedOptionsOnly."""
 
-    def __init__(self, data):
+    def __init__(self, product_id, data):
         """Get information from response from request."""
         self.stock_level = data['StockLevel']
         self.fba_stock_level = data['FBAStockLevel']
-        if data['product'] is not None:
+        if data['product'] is None:
+            raise ProductNotFoundError(product_id)
+        else:
             data['product']['StockLevel'] = data['StockLevel']
             self.product = Product(data['product'])
-        self.options = AppliedProductOptions(data['options'])
+            self.options = AppliedProductOptions(data['options'])
