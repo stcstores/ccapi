@@ -75,6 +75,7 @@ class CloudCommerceAPISession:
                 files=request.files)
         except Exception as e:
             logging.error(e)
+            raise e
         logger.debug(
             'Response from {} with text: {}'.format(
                 request.uri, response.text))
