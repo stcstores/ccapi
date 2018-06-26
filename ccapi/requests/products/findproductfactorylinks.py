@@ -12,7 +12,7 @@ from ..apirequest import APIRequest
 class FindProductFactoryLinks(APIRequest):
     """FindProductFactoryLinks request."""
 
-    uri = '/Handlers/Products/FindProductFactoryLinks.ashx'
+    uri = 'Handlers/Products/FindProductFactoryLinks.ashx'
 
     def __new__(self, product_id):
         """Make FindProductFactoryLinks request."""

@@ -1,6 +1,6 @@
 """Tests for product barcode requests."""
 
-from ccapi import exceptions
+from ccapi import exceptions, inventoryitems
 from ccapi.requests import products
 
 from .test_request import TestRequest
@@ -76,6 +76,71 @@ class TestDoSearch(TestRequest):
         self.register(json=self.EMPTY_RESPONSE)
         response = self.mock_request('This search will not match anything')
         self.assertEqual(response, [])
+
+
+class TestFindProductFactoryLinks(TestRequest):
+    """Tests for the FindProductFactoryLinks request."""
+
+    request_class = products.FindProductFactoryLinks
+
+    PRODUCT_ID = 6909316
+    LINK_ID = 3544350
+    ORDER_PRICE = 0.0
+    PRICE_PRECISION = 0.0
+    FACTORY_ID = 9946
+    FACTORY_NAME = "3P Enterprise Ltd"
+    PRODUCT_NAME = "Product Editor Test Variations Updated Title"
+    PRODUCT_RANGE_ID = 4347654
+    PRODUCT_RANGE_NAME = "Product Editor Test Variations Updated Title"
+    PRICE = 0.0
+    SUPPLIER_SKU = 'SKU009'
+
+    RESPONSE = {
+        "LinkID": LINK_ID,
+        "OrderPrice": 0.0,
+        "PricePrecision": 0.0,
+        "ProductID": PRODUCT_ID,
+        "FactoryID": FACTORY_ID,
+        "CurrencySymbol": "",
+        "FactoryName": FACTORY_NAME,
+        "ProductName": PRODUCT_NAME,
+        "ManufacturerSKU": "WUA-DU7-W6W",
+        "BarCodeNumber": None,
+        "Weight": 0,
+        "PreOrder": 0,
+        "EndOfLine": 0,
+        "ProductRangeID": PRODUCT_RANGE_ID,
+        "ProductRangeName": PRODUCT_RANGE_NAME,
+        "POType": 0,
+        "Price": 0.0,
+        "SupplierSKU": SUPPLIER_SKU,
+    }
+
+    def test_find_product_factory_links(self):
+        """Test requesting product factory links."""
+        self.register(json=[self.RESPONSE])
+        response = self.mock_request(self.PRODUCT_ID)
+        self.assertIsInstance(response, inventoryitems.FactoryLinks)
+        self.assertIsInstance(response[0], inventoryitems.FactoryLink)
+        self.assertEqual(response[0].product_id, self.PRODUCT_ID)
+        self.assertEqual(response[0].link_id, self.LINK_ID)
+        self.assertEqual(response[0].order_price, self.ORDER_PRICE)
+        self.assertEqual(response[0].price_precision, self.PRICE_PRECISION)
+        self.assertEqual(response[0].factory_name, self.FACTORY_NAME)
+        self.assertEqual(response[0].factory_id, self.FACTORY_ID)
+        self.assertEqual(response[0].product_name, self.PRODUCT_NAME)
+        self.assertEqual(response[0].product_range_id, self.PRODUCT_RANGE_ID)
+        self.assertEqual(
+            response[0].product_range_name, self.PRODUCT_RANGE_NAME)
+        self.assertEqual(response[0].price, self.PRICE)
+        self.assertEqual(response[0].supplier_sku, self.SUPPLIER_SKU)
+
+    def test_find_product_factory_links_with_no_links(self):
+        """Test FindProductFactoryLinks for a product with n o links."""
+        self.register(json=[])
+        response = self.mock_request(self.PRODUCT_ID)
+        self.assertIsInstance(response, inventoryitems.FactoryLinks)
+        self.assertEqual(len(response), 0)
 
 
 class TestProductOperations(TestRequest):
