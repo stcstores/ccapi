@@ -5,6 +5,33 @@ from ccapi.requests import products
 from .test_request import TestRequest
 
 
+class TestAddProduct(TestRequest):
+    """Tests for the AddProduct request."""
+
+    request_class = products.AddProduct
+
+    REQUEST_ARGS = [
+        '4347654', 'Product Name', '12345678912', 'WUA-DU7-W6W',
+        'Product Description', 20
+    ]
+
+    CREATED_PRODUCT_ID = '7286732'
+    SUCCESSFUL_RESPONSE = 'Success^^{}'.format(CREATED_PRODUCT_ID)
+    FAILED_RESPONSE = 'SubmitFailed^^0^^Insert'
+
+    def test_add_product(self):
+        """Test the AddProduct request."""
+        self.register(text=self.SUCCESSFUL_RESPONSE)
+        response = self.mock_request(*self.REQUEST_ARGS)
+        self.assertEqual(response, self.SUCCESSFUL_RESPONSE)
+
+    def test_failed_add_product(self):
+        """Test an AddProduct request with an invalid range ID."""
+        self.register(text=self.FAILED_RESPONSE)
+        response = self.mock_request(*self.REQUEST_ARGS)
+        self.assertEqual(response, self.FAILED_RESPONSE)
+
+
 class TestDoSearch(TestRequest):
     """Tests for doSearch requests."""
 
