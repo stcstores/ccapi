@@ -11,7 +11,8 @@ class AddProduct(APIRequest):
 
     uri = 'Handlers/Products/AddProduct.ashx'
 
-    def __new__(self, range_id, name, barcode, sku, description, vat_rate_id):
+    def __new__(
+            self, *, range_id, name, barcode, sku, description, vat_rate_id):
         """Create AddProduct request.
 
         Args:

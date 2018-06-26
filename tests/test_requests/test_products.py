@@ -10,10 +10,14 @@ class TestAddProduct(TestRequest):
 
     request_class = products.AddProduct
 
-    REQUEST_ARGS = [
-        '4347654', 'Product Name', '12345678912', 'WUA-DU7-W6W',
-        'Product Description', 20
-    ]
+    REQUEST_KWARGS = {
+        'range_id': '4347654',
+        'name': 'Product Name',
+        'barcode': '12345678912',
+        'sku': 'WUA-DU7-W6W',
+        'description': 'Product Description',
+        'vat_rate_id': 20,
+    }
 
     CREATED_PRODUCT_ID = '7286732'
     SUCCESSFUL_RESPONSE = 'Success^^{}'.format(CREATED_PRODUCT_ID)
@@ -22,13 +26,13 @@ class TestAddProduct(TestRequest):
     def test_add_product(self):
         """Test the AddProduct request."""
         self.register(text=self.SUCCESSFUL_RESPONSE)
-        response = self.mock_request(*self.REQUEST_ARGS)
+        response = self.mock_request(**self.REQUEST_KWARGS)
         self.assertEqual(response, self.SUCCESSFUL_RESPONSE)
 
     def test_failed_add_product(self):
         """Test an AddProduct request with an invalid range ID."""
         self.register(text=self.FAILED_RESPONSE)
-        response = self.mock_request(*self.REQUEST_ARGS)
+        response = self.mock_request(**self.REQUEST_KWARGS)
         self.assertEqual(response, self.FAILED_RESPONSE)
 
 
