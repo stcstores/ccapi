@@ -209,6 +209,9 @@ class AppliedProductOptions(ProductOptions):
     def __repr__(self):
         return (str(self.options))
 
+    def __len__(self):
+        return len(self.options)
+
 
 class AppliedProductOption(ProductOption):
     """Wrapper for Product Options applied to a Product."""

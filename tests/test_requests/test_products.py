@@ -3,6 +3,7 @@
 from ccapi import exceptions, inventoryitems
 from ccapi.requests import products
 
+from .. import test_data
 from .test_request import TestRequest
 
 
@@ -176,7 +177,41 @@ class TestFindProductSelectedOptionsOnly(TestRequest):
     """Tests for the findProductSelectedOptionsOnly request."""
 
     request_class = products.FindProductSelectedOptionsOnly
-    # TODO
+
+    RESPONSE_DATA = test_data.FIND_PRODUCT_SELECTED_OPTIONS_ONLY_TEST_RESLULT
+    NOT_FOUND_RESPONSE_DATA = {
+        "StockLevel": 0,
+        "FBAStockLevel": 0,
+        "FBAInTransitStockLevel": 0,
+        "PurchaseOrderIncomingStock": 0,
+        "PurchaseOrderBuildUpStock": 0,
+        "product": None,
+        "options": [],
+        "AutoPurchaseOrderTypeId": 0,
+        "PurchaseOrderAtStockQuantity": 0,
+        "PurchaseOrderMaxStock": 0,
+        "PurchaseOrderStockType": 0,
+        "PurchaseOrderBoxQuantity": 0,
+        "ItemsInThisMultipack": [],
+        "StockBreakdown": None
+    }
+
+    def test_find_product_selected_options_only_request(self):
+        """Test the findProductSelectedOptionsOnly request."""
+        self.register(json=self.RESPONSE_DATA)
+        product_ID = self.RESPONSE_DATA['product']['ID']
+        response = self.mock_request(product_ID)
+        self.assertIsInstance(response.product, inventoryitems.Product)
+        self.assertEqual(response.product.id, product_ID)
+        self.assertIsInstance(
+            response.options, inventoryitems.AppliedProductOptions)
+        self.assertGreater(len(response.options), 0)
+
+    def test_product_not_found(self):
+        """Test handling when the product does not exist."""
+        self.register(json=self.NOT_FOUND_RESPONSE_DATA)
+        with self.assertRaises(exceptions.ProductNotFoundError):
+            self.mock_request('999999')
 
 
 class TestProductOperations(TestRequest):
