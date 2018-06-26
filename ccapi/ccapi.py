@@ -315,9 +315,8 @@ class CCAPI:
         if description is None:
             description = name
         vat_rate_id = VatRates.get_vat_rate_id_by_rate(vat_rate)
-        response = requests.AddProduct(
+        return requests.AddProduct(
             range_id, name, barcode, sku, description, vat_rate_id)
-        return response.replace('Success^^', '')
 
     @staticmethod
     def set_product_option_value(product_ids, option_id, value_id):

@@ -1,5 +1,6 @@
 """Tests for product barcode requests."""
 
+from ccapi import exceptions
 from ccapi.requests import products
 
 from .test_request import TestRequest
@@ -27,13 +28,13 @@ class TestAddProduct(TestRequest):
         """Test the AddProduct request."""
         self.register(text=self.SUCCESSFUL_RESPONSE)
         response = self.mock_request(**self.REQUEST_KWARGS)
-        self.assertEqual(response, self.SUCCESSFUL_RESPONSE)
+        self.assertEqual(response, self.CREATED_PRODUCT_ID)
 
     def test_failed_add_product(self):
         """Test an AddProduct request with an invalid range ID."""
         self.register(text=self.FAILED_RESPONSE)
-        response = self.mock_request(**self.REQUEST_KWARGS)
-        self.assertEqual(response, self.FAILED_RESPONSE)
+        with self.assertRaises(exceptions.ProductNotCreatedError):
+            self.mock_request(**self.REQUEST_KWARGS)
 
 
 class TestDoSearch(TestRequest):

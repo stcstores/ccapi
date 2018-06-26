@@ -3,6 +3,8 @@
 Creates a new product within a given range.
 """
 
+from ccapi import exceptions
+
 from ..apirequest import APIRequest
 
 
@@ -33,7 +35,9 @@ class AddProduct(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
-        return response.text
+        if 'Success^^' in response.text:
+            return response.text.split('^^')[1]
+        raise exceptions.ProductNotCreatedError
 
     def get_data(self):
         """Get data for request."""
