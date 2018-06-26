@@ -115,14 +115,9 @@ class TestFindProductFactoryLinks(TestRequest):
 
     PRODUCT_ID = 6909316
     LINK_ID = 3544350
-    ORDER_PRICE = 0.0
-    PRICE_PRECISION = 0.0
     FACTORY_ID = 9946
     FACTORY_NAME = "3P Enterprise Ltd"
-    PRODUCT_NAME = "Product Editor Test Variations Updated Title"
     PRODUCT_RANGE_ID = 4347654
-    PRODUCT_RANGE_NAME = "Product Editor Test Variations Updated Title"
-    PRICE = 0.0
     SUPPLIER_SKU = 'SKU009'
 
     RESPONSE = {
@@ -133,40 +128,45 @@ class TestFindProductFactoryLinks(TestRequest):
         "FactoryID": FACTORY_ID,
         "CurrencySymbol": "",
         "FactoryName": FACTORY_NAME,
-        "ProductName": PRODUCT_NAME,
+        "ProductName": "Product Editor Test Variations Updated Title",
         "ManufacturerSKU": "WUA-DU7-W6W",
         "BarCodeNumber": None,
         "Weight": 0,
         "PreOrder": 0,
         "EndOfLine": 0,
-        "ProductRangeID": PRODUCT_RANGE_ID,
-        "ProductRangeName": PRODUCT_RANGE_NAME,
+        "ProductRangeID": 4347654,
+        "ProductRangeName": "Product Editor Test Variations Updated Title",
         "POType": 0,
         "Price": 0.0,
         "SupplierSKU": SUPPLIER_SKU,
     }
 
-    def test_find_product_factory_links(self):
+    def make_request(self):
         """Test requesting product factory links."""
         self.register(json=[self.RESPONSE])
-        response = self.mock_request(self.PRODUCT_ID)
+        return self.mock_request(self.PRODUCT_ID)
+
+    def test_FindProductFactoryLinks_returns_FactoryLinks(self):
+        """Test the request returns an instance of FactoryLinks."""
+        response = self.make_request()
         self.assertIsInstance(response, inventoryitems.FactoryLinks)
+
+    def test_FindProductFactoryLinks_response_contains_factory_links(self):
+        """Test returned object contains instances of FactoryLink."""
+        response = self.make_request()
         self.assertIsInstance(response[0], inventoryitems.FactoryLink)
+
+    def test_FindProductFactoryLinks_contains_factory_link_data(self):
+        """Test the correct data is returned."""
+        response = self.make_request()
         self.assertEqual(response[0].product_id, self.PRODUCT_ID)
         self.assertEqual(response[0].link_id, self.LINK_ID)
-        self.assertEqual(response[0].order_price, self.ORDER_PRICE)
-        self.assertEqual(response[0].price_precision, self.PRICE_PRECISION)
         self.assertEqual(response[0].factory_name, self.FACTORY_NAME)
         self.assertEqual(response[0].factory_id, self.FACTORY_ID)
-        self.assertEqual(response[0].product_name, self.PRODUCT_NAME)
-        self.assertEqual(response[0].product_range_id, self.PRODUCT_RANGE_ID)
-        self.assertEqual(
-            response[0].product_range_name, self.PRODUCT_RANGE_NAME)
-        self.assertEqual(response[0].price, self.PRICE)
         self.assertEqual(response[0].supplier_sku, self.SUPPLIER_SKU)
 
     def test_find_product_factory_links_with_no_links(self):
-        """Test FindProductFactoryLinks for a product with n o links."""
+        """Test FindProductFactoryLinks for a product with no links."""
         self.register(json=[])
         response = self.mock_request(self.PRODUCT_ID)
         self.assertIsInstance(response, inventoryitems.FactoryLinks)
@@ -196,18 +196,33 @@ class TestFindProductSelectedOptionsOnly(TestRequest):
         "StockBreakdown": None
     }
 
-    def test_find_product_selected_options_only_request(self):
+    PRODUCT_ID = RESPONSE_DATA['product']['ID']
+
+    def make_request(self):
         """Test the findProductSelectedOptionsOnly request."""
         self.register(json=self.RESPONSE_DATA)
-        product_ID = self.RESPONSE_DATA['product']['ID']
-        response = self.mock_request(product_ID)
+        return self.mock_request(self.PRODUCT_ID)
+
+    def test_FindProductSelectedOptionsOnly_returns_a_product(self):
+        """Test the request returns and instance of a product."""
+        response = self.make_request()
         self.assertIsInstance(response.product, inventoryitems.Product)
-        self.assertEqual(response.product.id, product_ID)
+        self.assertEqual(response.product.id, self.PRODUCT_ID)
+
+    def test_FindProductSelectedOptionsOnly_sets_product_stock_level(self):
+        """Test the request sets the returned Product's stock level."""
+        response = self.make_request()
+        stock_level = self.RESPONSE_DATA['StockLevel']
+        self.assertEqual(response.product.stock_level, stock_level)
+
+    def test_FindProductSelectedOptionsOnly_returns_product_options(self):
+        """Test the request returns the Product's Product Options."""
+        response = self.make_request()
         self.assertIsInstance(
             response.options, inventoryitems.AppliedProductOptions)
         self.assertGreater(len(response.options), 0)
 
-    def test_product_not_found(self):
+    def test_FindProductSelectedOptionsOnly_with_non_existant_product(self):
         """Test handling when the product does not exist."""
         self.register(json=self.NOT_FOUND_RESPONSE_DATA)
         with self.assertRaises(exceptions.ProductNotFoundError):

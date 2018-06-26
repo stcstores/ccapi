@@ -2,7 +2,7 @@
 
 FIND_PRODUCT_SELECTED_OPTIONS_ONLY_TEST_RESLULT = {
     "StockLevel":
-    0,
+    5,
     "FBAStockLevel":
     0,
     "FBAInTransitStockLevel":
