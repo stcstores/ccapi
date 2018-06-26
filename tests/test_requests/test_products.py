@@ -37,6 +37,35 @@ class TestAddProduct(TestRequest):
             self.mock_request(**self.REQUEST_KWARGS)
 
 
+class TestDeleteAllProductFactoryLink(TestRequest):
+    """Tests for the deleteAllProductFactoryLink request."""
+
+    request_class = products.DeleteAllProductFactoryLink
+    # TODO
+
+
+class TestDeleteImage(TestRequest):
+    """Tests for the deleteImage request."""
+
+    request_class = products.DeleteImage
+
+    # TODO
+
+
+class TestDeleteProductFactoryLink(TestRequest):
+    """Tests for the deleteProductFactoryLink request."""
+
+    request_class = products.DeleteProductFactoryLink
+
+    RESPONSE = 'Success'
+
+    def test_delete_product_factory_link(self):
+        """Test deleteProductFactoryLink request."""
+        self.register(text=self.RESPONSE)
+        response = self.mock_request('3544350')
+        self.assertEqual(response, self.RESPONSE)
+
+
 class TestDoSearch(TestRequest):
     """Tests for doSearch requests."""
 
@@ -76,20 +105,6 @@ class TestDoSearch(TestRequest):
         self.register(json=self.EMPTY_RESPONSE)
         response = self.mock_request('This search will not match anything')
         self.assertEqual(response, [])
-
-
-class TestDeleteProductFactoryLink(TestRequest):
-    """Tests for the deleteProductFactoryLink request."""
-
-    request_class = products.DeleteProductFactoryLink
-
-    RESPONSE = 'Success'
-
-    def test_delete_product_factory_link(self):
-        """Test deleteProductFactoryLink request."""
-        self.register(text=self.RESPONSE)
-        response = self.mock_request('3544350')
-        self.assertEqual(response, self.RESPONSE)
 
 
 class TestFindProductFactoryLinks(TestRequest):
@@ -157,6 +172,13 @@ class TestFindProductFactoryLinks(TestRequest):
         self.assertEqual(len(response), 0)
 
 
+class TestFindProductSelectedOptionsOnly(TestRequest):
+    """Tests for the findProductSelectedOptionsOnly request."""
+
+    request_class = products.FindProductSelectedOptionsOnly
+    # TODO
+
+
 class TestProductOperations(TestRequest):
     """Tests for the ProductOperations request."""
 
@@ -188,3 +210,80 @@ class TestProductSaveBarcode(TestRequest):
         self.register(text=self.RESPONSE)
         response = self.mock_request('1321564981', '123654')
         self.assertEqual(response, self.RESPONSE)
+
+
+class TestSaveDescription(TestRequest):
+    """Tests for the saveDescription Request."""
+
+    request_class = products.SaveDescription
+    # TODO
+
+
+class TestSaveHandlingTime(TestRequest):
+    """Tests for the saveHandlingTime request."""
+
+    request_class = products.SaveHandlingTime
+    # TODO
+
+
+class TestSaveProductName(TestRequest):
+    """Tests for the saveProductName request."""
+
+    request_class = products.SaveProductName
+    # TODO
+
+
+class TestSetImageOrder(TestRequest):
+    """Tests for the setImageOrder request."""
+
+    request_class = products.SetImageOrder
+    # TODO
+
+
+class TestSetProductOptionValue(TestRequest):
+    """Tests for the setProductOptionValue request."""
+
+    request_class = products.SetProductOptionValue
+    # TODO
+
+
+class TestSetProductScope(TestRequest):
+    """Tests for the setProductScope request."""
+
+    request_class = products.SetProductScope
+    # TODO
+
+
+class TestUpdateOnSalesChannel(TestRequest):
+    """Tests for the updateOnSalesChannel request."""
+
+    request_class = products.UpdateProductOnSalesChannel
+    # TODO
+
+
+class TestUpdateProductBasePrice(TestRequest):
+    """Tests for the updateProductBasePrice request."""
+
+    request_class = products.UpdateProductBasePrice
+    # TODO
+
+
+class TestUpdateProductStockLevel(TestRequest):
+    """Tests for the UpdateProductStockLevel."""
+
+    request_class = products.UpdateProductStockLevel
+    # TODO
+
+
+class TestUpdateProductVatRate(TestRequest):
+    """Tests for the updateProductVatRate request."""
+
+    request_class = products.UpdateProductVatRate
+    # TODO
+
+
+class TestUploadImage(TestRequest):
+    """Tests for the uploadImage request."""
+
+    request_class = products.UploadImage
+    # TODO
