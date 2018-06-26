@@ -78,6 +78,20 @@ class TestDoSearch(TestRequest):
         self.assertEqual(response, [])
 
 
+class TestDeleteProductFactoryLink(TestRequest):
+    """Tests for the deleteProductFactoryLink request."""
+
+    request_class = products.DeleteProductFactoryLink
+
+    RESPONSE = 'Success'
+
+    def test_delete_product_factory_link(self):
+        """Test deleteProductFactoryLink request."""
+        self.register(text=self.RESPONSE)
+        response = self.mock_request('3544350')
+        self.assertEqual(response, self.RESPONSE)
+
+
 class TestFindProductFactoryLinks(TestRequest):
     """Tests for the FindProductFactoryLinks request."""
 
