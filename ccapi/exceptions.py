@@ -4,9 +4,9 @@
 class CloudCommerceResponseError(Exception):
     """Exception for failed API Requests."""
 
-    def __init__(self):
+    def __init__(self, message='API Request failed.'):
         """Raise exception."""
-        super().__init__('API Request failed.')
+        super().__init__(message)
 
 
 class CloudCommerceNoResponseError(CloudCommerceResponseError):

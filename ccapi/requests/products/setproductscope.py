@@ -1,5 +1,7 @@
 """setProductScope Request."""
 
+from ccapi.exceptions import CloudCommerceResponseError
+
 from ..apirequest import APIRequest
 
 
@@ -16,8 +18,15 @@ class SetProductScope(APIRequest):
     uri = 'Handlers/Products/setProductScope.ashx'
 
     def __new__(
-            self, product_id, weight, height, length, width,
-            large_letter_compatible, external_id):
+            self,
+            *,
+            product_id,
+            weight,
+            height,
+            length,
+            width,
+            large_letter_compatible,
+            external_id=''):
         """
         Create setProductScope request.
 
@@ -42,6 +51,10 @@ class SetProductScope(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
+        try:
+            response.raise_for_status()
+        except Exception:
+            raise CloudCommerceResponseError('Product scope not set.')
         return response.text
 
     def get_data(self):
