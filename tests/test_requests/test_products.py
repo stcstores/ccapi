@@ -268,7 +268,7 @@ class TestSaveDescription(TestRequest):
     request_class = products.SaveDescription
 
     PRODUCT_ID = '6909316'
-    RESPONSE = 'ok'
+    RESPONSE = '"ok"'
 
     def test_set_product_description(self):
         """Test SaveDescription request."""
@@ -311,7 +311,7 @@ class TestSaveProductName(TestRequest):
     """Tests for the saveProductName request."""
 
     request_class = products.SaveProductName
-    RESPONSE = 'ok'
+    RESPONSE = '"ok"'
     PRODUCT_ID = '6909316'
 
     def test_saveProductName_request(self):
@@ -351,7 +351,41 @@ class TestSetProductOptionValue(TestRequest):
     """Tests for the setProductOptionValue request."""
 
     request_class = products.SetProductOptionValue
-    # TODO
+    PRODUCT_ID = '6909316'
+    OPTION_ID = '32131'
+    OPTION_VALUE_ID = '3040649'
+
+    RESPONSE = '"ok"'
+
+    def test_setProductOptionValue_request(self):
+        """Test the setProductOptionValue request."""
+        self.register(text=self.RESPONSE)
+        response = self.mock_request(
+            product_ids=[self.PRODUCT_ID],
+            option_id=self.OPTION_ID,
+            option_value_id=self.OPTION_VALUE_ID)
+        request_data = self.get_last_request_query()
+        self.assertEqual(request_data['prodids'], [self.PRODUCT_ID])
+        self.assertEqual(response, self.RESPONSE)
+
+    def test_setProductOptionValue_request_with_single_product(self):
+        """Test the setProductOptionValue request with a single product."""
+        self.register(text=self.RESPONSE)
+        self.mock_request(
+            product_ids=self.PRODUCT_ID,
+            option_id=self.OPTION_ID,
+            option_value_id=self.OPTION_VALUE_ID)
+        request_data = self.get_last_request_query()
+        self.assertEqual(request_data['prodids'], [self.PRODUCT_ID])
+
+    def test_setProductOptionValue_raises(self):
+        """Test setProductOptionValue raises on non 200 response."""
+        self.register(text=self.RESPONSE, status_code=500)
+        with self.assertRaises(exceptions.ProductOptionValueNotSavedError):
+            self.mock_request(
+                product_ids=[self.PRODUCT_ID],
+                option_id=self.OPTION_ID,
+                option_value_id=self.OPTION_VALUE_ID)
 
 
 class TestSetProductScope(TestRequest):
