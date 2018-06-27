@@ -311,7 +311,33 @@ class TestSaveProductName(TestRequest):
     """Tests for the saveProductName request."""
 
     request_class = products.SaveProductName
-    # TODO
+    RESPONSE = 'ok'
+    PRODUCT_ID = '6909316'
+
+    def test_saveProductName_request(self):
+        """Test the saveProductName request."""
+        self.register(text=self.RESPONSE)
+        response = self.mock_request(
+            name='New Product Name', product_ids=[self.PRODUCT_ID])
+        request_data = self.get_last_request_query()
+        self.assertEqual(request_data['prodids'], [self.PRODUCT_ID])
+        self.assertEqual(response, self.RESPONSE)
+
+    def test_saveProductName_request_with_single_product(self):
+        """Test the saveProductName request."""
+        self.register(text=self.RESPONSE)
+        response = self.mock_request(
+            name='New Product Name', product_ids=self.PRODUCT_ID)
+        request_data = self.get_last_request_query()
+        self.assertEqual(request_data['prodids'], [self.PRODUCT_ID])
+        self.assertEqual(response, self.RESPONSE)
+
+    def test_saveProductName_request_raises(self):
+        """Test that the request raises an exception for non 200 responses."""
+        self.register(text=self.RESPONSE, status_code=500)
+        with self.assertRaises(exceptions.ProductNameNotSavedError):
+            self.mock_request(
+                name='New Product Name', product_ids=self.PRODUCT_ID)
 
 
 class TestSetImageOrder(TestRequest):
