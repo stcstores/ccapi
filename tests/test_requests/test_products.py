@@ -266,7 +266,32 @@ class TestSaveDescription(TestRequest):
     """Tests for the saveDescription Request."""
 
     request_class = products.SaveDescription
-    # TODO
+
+    PRODUCT_ID = '6909316'
+    RESPONSE = 'ok'
+
+    def test_set_product_description(self):
+        """Test SaveDescription request."""
+        self.register(text=self.RESPONSE)
+        response = self.mock_request(
+            'Product Description', product_ids=[self.PRODUCT_ID])
+        request_data = self.get_last_request_query()
+        self.assertEqual(request_data['prodids'], [self.PRODUCT_ID])
+        self.assertEqual(response, self.RESPONSE)
+
+    def test_set_product_description_without_list(self):
+        """Test SaveDescription request."""
+        self.register(text=self.RESPONSE)
+        self.mock_request('Product Description', product_ids=self.PRODUCT_ID)
+        request_data = self.get_last_request_query()
+        self.assertEqual(request_data['prodids'], [self.PRODUCT_ID])
+
+    def test_failed_save_product_description_raises(self):
+        """Test exception is raised when product ID is invalid."""
+        self.register(text='ERROR', status_code=500)
+        with self.assertRaises(exceptions.DescriptionNotSavedError):
+            self.mock_request(
+                'Product Description', product_ids=[self.PRODUCT_ID])
 
 
 class TestSaveHandlingTime(TestRequest):
