@@ -1,42 +1,52 @@
 """Exceptions for the ccapi package."""
 
-import http
+
+class CloudCommerceResponseError(Exception):
+    """Exception for failed API Requests."""
+
+    def __init__(self):
+        """Raise exception."""
+        super().__init__('API Request failed.')
 
 
-class CloudCommerceNoResponseError(http.client.RemoteDisconnected):
+class CloudCommerceNoResponseError(CloudCommerceResponseError):
     """Handler for RemoteDisconnected errors."""
 
-    pass
+    def __init__(self):
+        """Raise exception."""
+        super(Exception, self).__init__('Cloud Commerce Pro did not respond')
 
 
-class ProductNotCreatedError(Exception):
+class ProductNotCreatedError(CloudCommerceResponseError):
     """Exception for product creation failures."""
 
     def __init__(self):
         """Raise exception."""
-        super().__init__('Product creation failed.')
+        super(Exception, self).__init__('Product creation failed.')
 
 
-class ProductNotFoundError(ValueError):
+class ProductNotFoundError(CloudCommerceResponseError):
     """Exception for failed requests for product data."""
 
     def __init__(self, product_ID):
         """Raise exception."""
-        super().__init__('Product not found with ID "{}"'.format(product_ID))
+        super(Exception, self).__init__(
+            'Product not found with ID "{}"'.format(product_ID))
 
 
-class DescriptionNotSavedError(ValueError):
+class DescriptionNotSavedError(CloudCommerceResponseError):
     """Exception for a failure when updating a product description."""
 
     def __init__(self, product_ids):
         """Raise exception."""
-        super().__init__(
-            'Description not saved for products: {}'.format(product_ids))
+        super(Exception, self).__init__(
+            'Product not found with ID "{}"'.format(product_ids))
 
 
-class ProductNameNotSavedError(ValueError):
+class ProductNameNotSavedError(CloudCommerceResponseError):
     """Exception for a failure when updating a product name."""
 
     def __init__(self, product_ids):
         """Raise exception."""
-        super().__init__('Name not saved for products: {}'.format(product_ids))
+        super(Exception, self).__init__(
+            'Product not found with ID "{}"'.format(product_ids))
