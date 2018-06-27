@@ -32,3 +32,11 @@ class DescriptionNotSavedError(ValueError):
         """Raise exception."""
         super().__init__(
             'Description not saved for products: {}'.format(product_ids))
+
+
+class ProductNameNotSavedError(ValueError):
+    """Exception for a failure when updating a product name."""
+
+    def __init__(self, product_ids):
+        """Raise exception."""
+        super().__init__('Name not saved for products: {}'.format(product_ids))

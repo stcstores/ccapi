@@ -4,15 +4,17 @@ saveProductName request.
 Set name of Product.
 """
 
+from ccapi.exceptions import ProductNameNotSavedError
+
 from ..apirequest import APIRequest
 
 
 class SaveProductName(APIRequest):
     """setOptionSelect request."""
 
-    uri = '/Handlers/Products/saveProductName.ashx'
+    uri = 'Handlers/Products/saveProductName.ashx'
 
-    def __new__(self, name, product_ids):
+    def __new__(self, *, name, product_ids):
         """Create saveProductName request.
 
         Args:
@@ -21,7 +23,10 @@ class SaveProductName(APIRequest):
 
         """
         self.name = name
-        self.product_ids = product_ids
+        if isinstance(product_ids, str) or isinstance(product_ids, int):
+            self.product_ids = [str(product_ids)]
+        else:
+            self.product_ids = [str(x) for x in product_ids]
         return super().__new__(self)
 
     def get_data(self):
@@ -35,4 +40,8 @@ class SaveProductName(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
-        return response
+        try:
+            response.raise_for_status()
+        except Exception:
+            raise ProductNameNotSavedError(self.product_ids)
+        return response.text
