@@ -21,5 +21,14 @@ class ProductNotFoundError(ValueError):
     """Exception for failed requests for product data."""
 
     def __init__(self, product_ID):
-        """Rase exception."""
+        """Raise exception."""
         super().__init__('Product not found with ID "{}"'.format(product_ID))
+
+
+class DescriptionNotSavedError(ValueError):
+    """Exception for a failure when updating a product description."""
+
+    def __init__(self, product_ids):
+        """Raise exception."""
+        super().__init__(
+            'Description not saved for products: {}'.format(product_ids))

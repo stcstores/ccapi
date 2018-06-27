@@ -3,6 +3,8 @@
 Save description for products.
 """
 
+from ccapi.exceptions import DescriptionNotSavedError
+
 from ..apirequest import APIRequest
 
 
@@ -18,7 +20,10 @@ class SaveDescription(APIRequest):
             request_mode: requestmode header
         """
         self.description = str(description)
-        self.product_ids = [str(x) for x in product_ids]
+        if isinstance(product_ids, str) or isinstance(product_ids, int):
+            self.product_ids = [str(product_ids)]
+        else:
+            self.product_ids = [str(x) for x in product_ids]
         self.channel_id = channel_id
         return super().__new__(self)
 
@@ -37,4 +42,8 @@ class SaveDescription(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
-        return response
+        try:
+            response.raise_for_status()
+        except Exception:
+            raise DescriptionNotSavedError(self.product_ids)
+        return response.text
