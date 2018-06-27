@@ -31,7 +31,7 @@ class CloudCommerceAPISession:
         cls.verbose = verbose
 
     @classmethod
-    def get_session(cls, *, username, password):
+    def get_session(cls, username, password):
         """Create logged in session with Cloud Commerce."""
         try:
             cls.login(username, password)
