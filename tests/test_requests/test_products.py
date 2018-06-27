@@ -392,7 +392,32 @@ class TestSetProductScope(TestRequest):
     """Tests for the setProductScope request."""
 
     request_class = products.SetProductScope
-    # TODO
+    RESPONSE = 'true'
+    PRODUCT_ID = '6909316'
+
+    def test_setProductScope_request(self):
+        """Test the setProductScope request."""
+        self.register(text=self.RESPONSE)
+        response = self.mock_request(
+            product_id=self.PRODUCT_ID,
+            weight=50,
+            height=25,
+            length=25,
+            width=25,
+            large_letter_compatible=False)
+        self.assertEqual(response, self.RESPONSE)
+
+    def test_setProductScope_raises(self):
+        """Test setProductScope raises on non 200 response."""
+        self.register(text=self.RESPONSE, status_code=500)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request(
+                product_id=self.PRODUCT_ID,
+                weight=50,
+                height=25,
+                length=25,
+                width=25,
+                large_letter_compatible=False)
 
 
 class TestUpdateOnSalesChannel(TestRequest):
