@@ -7,6 +7,7 @@ from urllib.parse import urljoin
 import requests
 
 logger = logging.getLogger(__name__)
+error_logger = logging.getLogger('errors')
 
 
 class CloudCommerceAPISession:
@@ -30,8 +31,21 @@ class CloudCommerceAPISession:
         cls.verbose = verbose
 
     @classmethod
-    def get_session(cls, username=None, password=None):
+    def get_session(cls, *, username, password):
         """Create logged in session with Cloud Commerce."""
+        try:
+            cls.login(username, password)
+            cls.login_handler(username, password)
+        except Exception as e:
+            error_logger.error(e)
+            raise e
+        cls.last_login = datetime.now()
+        logger.info('Logged in to Cloud Commerce.')
+        return cls.session
+
+    @classmethod
+    def login(cls, username, password):
+        """Make login request."""
         if username is not None:
             cls.username = username
         if password is not None:
@@ -40,11 +54,8 @@ class CloudCommerceAPISession:
             'usernameInput': username,
             'passwordInput': password
         }
-        cls.session.post(cls.login_url, data=login_post_data)
-        cls.login_handler(username, password)
-        cls.last_login = datetime.now()
-        logger.info('Logged in to Cloud Commerce.')
-        return cls.session
+        response = cls.session.post(cls.login_url, data=login_post_data)
+        response.raise_for_status()
 
     @classmethod
     def login_handler(cls, username, password):
@@ -66,16 +77,12 @@ class CloudCommerceAPISession:
             format(
                 request.uri, request.headers, request.params, request.data,
                 request.files))
-        try:
-            response = cls.session.post(
-                url,
-                headers=request.headers,
-                params=request.params,
-                data=request.data,
-                files=request.files)
-        except Exception as e:
-            logging.error(e)
-            raise e
+        response = cls.session.post(
+            url,
+            headers=request.headers,
+            params=request.params,
+            data=request.data,
+            files=request.files)
         logger.debug(
             'Response from {} with text: {}'.format(
                 request.uri, response.text))

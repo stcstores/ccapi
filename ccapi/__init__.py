@@ -8,13 +8,23 @@ dictLogConfig = {
         "default_file_handler": {
             "class": "logging.FileHandler",
             "formatter": "default_formatter",
-            "filename": "log.log"
+            "filename": "ccapi.log"
         },
+        "error_file_handler": {
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": "error.log",
+            "maxBytes": 102400,
+            "formatter": "default_formatter",
+        }
     },
     "loggers": {
         "ccapi.requests.ccapisession": {
             "handlers": [],
             "level": "DEBUG",
+        },
+        "errors": {
+            "handlers": ["error_file_handler"],
+            "level": "ERROR",
         }
     },
     "formatters": {

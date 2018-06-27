@@ -4,6 +4,7 @@ This is the base class for Cloud Commerce Pro API requests.
 """
 
 import http
+import logging
 
 from requests.exceptions import HTTPError
 
@@ -11,6 +12,8 @@ from ccapi import exceptions
 from ccapi.exceptions import CloudCommerceResponseError
 
 from .ccapisession import CloudCommerceAPISession
+
+error_logger = logging.getLogger('errors')
 
 
 class APIRequest:
@@ -26,9 +29,13 @@ class APIRequest:
         self.files = self.get_files(self)
         try:
             response = CloudCommerceAPISession.api_request(self)
+            return self.process_response(self, response)
         except http.client.RemoteDisconnected as e:
+            error_logger.critical(e)
             raise exceptions.CloudCommerceNoResponseError from e
-        return self.process_response(self, response)
+        except Exception as e:
+            error_logger.critical(e)
+            raise e
 
     def get_data(self):
         """Get data for request."""
