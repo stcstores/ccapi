@@ -1,5 +1,6 @@
 """setProductOptionValue Request."""
 
+from ccapi.exceptions import ProductOptionValueNotSavedError
 
 from ..apirequest import APIRequest
 
@@ -13,7 +14,7 @@ class SetProductOptionValue(APIRequest):
 
     uri = 'Handlers/Products/setProductOptionValue.ashx'
 
-    def __new__(self, product_ids, option_id, value_id):
+    def __new__(self, *, product_ids, option_id, option_value_id):
         """
         Create setProductOptionValue request.
 
@@ -22,13 +23,20 @@ class SetProductOptionValue(APIRequest):
             option_id: ID of Product Option to set.
             value_id: ID of Product Option Value to set.
         """
-        self.product_ids = [str(product_id) for product_id in product_ids]
+        if isinstance(product_ids, str) or isinstance(product_ids, int):
+            self.product_ids = [str(product_ids)]
+        else:
+            self.product_ids = [str(x) for x in product_ids]
         self.option_id = option_id
-        self.value_id = value_id
+        self.value_id = option_value_id
         return super().__new__(self)
 
     def process_response(self, response):
         """Handle request response."""
+        try:
+            response.raise_for_status()
+        except Exception:
+            raise ProductOptionValueNotSavedError(self.product_ids)
         return response.text
 
     def get_data(self):
@@ -36,7 +44,8 @@ class SetProductOptionValue(APIRequest):
         return {
             'prodids': ','.join(self.product_ids),
             'OptionID': int(self.option_id),
-            'OptionValueID': int(self.value_id)}
+            'OptionValueID': int(self.value_id)
+        }
 
     def get_params(self):
         """Get parameters for get request."""

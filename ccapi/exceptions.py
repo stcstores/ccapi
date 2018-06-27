@@ -40,7 +40,8 @@ class DescriptionNotSavedError(CloudCommerceResponseError):
     def __init__(self, product_ids):
         """Raise exception."""
         super(Exception, self).__init__(
-            'Product not found with ID "{}"'.format(product_ids))
+            'Product description not saved for product IDs "{}"'.format(
+                product_ids))
 
 
 class ProductNameNotSavedError(CloudCommerceResponseError):
@@ -49,4 +50,14 @@ class ProductNameNotSavedError(CloudCommerceResponseError):
     def __init__(self, product_ids):
         """Raise exception."""
         super(Exception, self).__init__(
-            'Product not found with ID "{}"'.format(product_ids))
+            'Product name not saved for product IDs "{}"'.format(product_ids))
+
+
+class ProductOptionValueNotSavedError(CloudCommerceResponseError):
+    """Exception for a failure when updating a product name."""
+
+    def __init__(self, product_ids):
+        """Raise exception."""
+        super(Exception, self).__init__(
+            'Product Option Value not saved for product IDs "{}"'.format(
+                product_ids))
