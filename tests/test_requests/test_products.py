@@ -485,15 +485,29 @@ class TestUpdateProductBasePrice(TestRequest):
     """Tests for the updateProductBasePrice request."""
 
     request_class = products.UpdateProductBasePrice
-    # TODO
+
+    RESPONSE = 'Success'
+    PRODUCT_ID = '6909316'
+
+    def test_UpdateProductBasePrice_request(self):
+        """Test the UpdateProductBasePrice request."""
+        self.register(text=self.RESPONSE)
+        response = self.mock_request(product_id=self.PRODUCT_ID, price=2.50)
+        self.assertEqual(response, self.RESPONSE)
+
+    def test_UpdateProductBasePrice_raises_for_non_200(self):
+        """Test the UpdateProductBasePrice raises for non 200 responses."""
+        self.register(text=self.RESPONSE, status_code=500)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request(product_id=self.PRODUCT_ID, price=2.50)
 
 
 class TestUpdateProductStockLevel(TestRequest):
     """Tests for the UpdateProductStockLevel."""
 
     request_class = products.UpdateProductStockLevel
-    RESPONSE = 'Success'
 
+    RESPONSE = 'Success'
     PRODUCT_ID = '6909316'
 
     def test_UpdateProductStockLevel_request(self):
