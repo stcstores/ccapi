@@ -11,7 +11,7 @@ class UpdateProductStockLevel(APIRequest):
 
     uri = 'Handlers/Products/UpdateProductStockLevel.ashx'
 
-    def __new__(self, product_id, new_stock_level, old_stock_level):
+    def __new__(self, *, product_id, new_stock_level, old_stock_level):
         """
         Create UpdateProductStockLevel request.
 
@@ -36,4 +36,8 @@ class UpdateProductStockLevel(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
-        pass
+        self.raise_for_non_200(
+            self, response,
+            'Error updating stock level for prouduct with ID "{}".'.format(
+                self.product_id))
+        return response.text
