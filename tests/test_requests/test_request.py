@@ -1,5 +1,7 @@
 """TestRequest - The base class for request tests."""
 
+import urllib
+
 from ..test_CCAPI import TestCCAPI
 
 
@@ -16,3 +18,7 @@ class TestRequest(TestCCAPI):
         """Register request URI."""
         uri = self.cloud_commerce_URI(self.request_class.uri)
         self.register_uri(self.METHOD, uri, *args, **kwargs)
+
+    def get_last_request_query(self):
+        """Return the data sent in the last request."""
+        return urllib.parse.parse_qs(self.adapter.request_history[-1].text)
