@@ -3,7 +3,7 @@
 Creates a new product within a given range.
 """
 
-from ccapi import exceptions
+from ccapi.exceptions import CloudCommerceResponseError
 
 from ..apirequest import APIRequest
 
@@ -35,9 +35,11 @@ class AddProduct(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
+        error_message = 'Product "{}" was not created'.format(self.name)
+        self.raise_for_non_200(self, response, error_message)
         if 'Success^^' in response.text:
             return response.text.split('^^')[1]
-        raise exceptions.ProductNotCreatedError
+        raise CloudCommerceResponseError(error_message)
 
     def get_data(self):
         """Get data for request."""

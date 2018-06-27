@@ -24,6 +24,8 @@ class DoSearch(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
+        self.raise_for_non_200(
+            self, response, 'Search for "{}" failed.'.format(self.text))
         results = response.json()
         return [DoSearchResult(item) for item in results]
 

@@ -4,8 +4,6 @@ saveProductName request.
 Set name of Product.
 """
 
-from ccapi.exceptions import ProductNameNotSavedError
-
 from ..apirequest import APIRequest
 
 
@@ -40,8 +38,7 @@ class SaveProductName(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
-        try:
-            response.raise_for_status()
-        except Exception:
-            raise ProductNameNotSavedError(self.product_ids)
+        self.raise_for_non_200(
+            self, response, 'Error saving name for product ID(s) {}'.format(
+                ', '.join(self.product_ids)))
         return response.text

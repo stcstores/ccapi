@@ -32,6 +32,10 @@ class FindProductSelectedOptionsOnly(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
+        self.raise_for_non_200(
+            self, response,
+            'Error finding product information for product ID "{}"'.format(
+                self.product_id))
         results = response.json()
         return FindProductSelectedOptionsOnlyResult(self.product_id, results)
 

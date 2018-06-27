@@ -28,6 +28,10 @@ class SaveHandlingTime(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
+        self.raise_for_non_200(
+            self, response,
+            'Error saving handling time for product ID "{}"'.format(
+                self.product_id))
         return response.text
 
     def get_data(self):

@@ -4,9 +4,11 @@ This is the base class for Cloud Commerce Pro API requests.
 """
 
 import http
-import json
+
+from requests.exceptions import HTTPError
 
 from ccapi import exceptions
+from ccapi.exceptions import CloudCommerceResponseError
 
 from .ccapisession import CloudCommerceAPISession
 
@@ -42,11 +44,14 @@ class APIRequest:
 
     def process_response(self, response):
         """Handle request response."""
+        raise NotImplementedError('No method to process response.')
+
+    def raise_for_non_200(self, response, message):
+        """Raise exception if response status code is not 200."""
         try:
-            data = response.json()
-        except json.decoder.JSONDecodeError:
-            raise NonJSONResponse(response.text)
-        return data
+            response.raise_for_status()
+        except HTTPError:
+            raise CloudCommerceResponseError(message)
 
     def get_files(self):
         """Get file for request."""

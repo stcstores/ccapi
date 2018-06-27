@@ -23,5 +23,8 @@ class DeleteProductFactoryLink(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
-        response.raise_for_status()
+        self.raise_for_non_200(
+            self, response,
+            'Factory link with ID "{}" was not deleted.'.format(
+                self.factory_link_id))
         return response.text

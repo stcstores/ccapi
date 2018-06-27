@@ -34,7 +34,13 @@ class TestAddProduct(TestRequest):
     def test_failed_add_product(self):
         """Test an AddProduct request with an invalid range ID."""
         self.register(text=self.FAILED_RESPONSE)
-        with self.assertRaises(exceptions.ProductNotCreatedError):
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request(**self.REQUEST_KWARGS)
+
+    def test_AddProduct_raises_for_non_200(self):
+        """Test AddProduct request raises for non 200 response."""
+        self.register(text=self.SUCCESSFUL_RESPONSE, status_code=500)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
             self.mock_request(**self.REQUEST_KWARGS)
 
 
@@ -65,6 +71,12 @@ class TestDeleteProductFactoryLink(TestRequest):
         self.register(text=self.RESPONSE)
         response = self.mock_request('3544350')
         self.assertEqual(response, self.RESPONSE)
+
+    def test_DeleteProductFactoryLink_raises_for_non_200(self):
+        """Test DeleteProductFactoryLink raises for non 200 responses."""
+        self.register(text=self.RESPONSE, status_code=500)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request('3544350')
 
 
 class TestDoSearch(TestRequest):
@@ -106,6 +118,12 @@ class TestDoSearch(TestRequest):
         self.register(json=self.EMPTY_RESPONSE)
         response = self.mock_request('This search will not match anything')
         self.assertEqual(response, [])
+
+    def test_doSearch_raises_for_non_200(self):
+        """Test the doSearch request raises for non 200 responses."""
+        self.register(json=self.EMPTY_RESPONSE, status_code=500)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request(self.SKU_SEARCH_TEXT)
 
 
 class TestFindProductFactoryLinks(TestRequest):
@@ -172,6 +190,12 @@ class TestFindProductFactoryLinks(TestRequest):
         self.assertIsInstance(response, inventoryitems.FactoryLinks)
         self.assertEqual(len(response), 0)
 
+    def test_FindProductFactoryLinks_raises_for_non_200(self):
+        """Test FindProductFactoryLinks raises for non 200 response."""
+        self.register(json=[self.RESPONSE], status_code=500)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request(self.PRODUCT_ID)
+
 
 class TestFindProductSelectedOptionsOnly(TestRequest):
     """Tests for the findProductSelectedOptionsOnly request."""
@@ -228,38 +252,62 @@ class TestFindProductSelectedOptionsOnly(TestRequest):
         with self.assertRaises(exceptions.ProductNotFoundError):
             self.mock_request('999999')
 
+    def test_FindProductSelectedOptionsOnly_raises_for_non_200(self):
+        """Test FindProductSelectedOptionsOnlyResult raises for non 200."""
+        self.register(json=self.NOT_FOUND_RESPONSE_DATA, status_code=500)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request(self.PRODUCT_ID)
+
 
 class TestProductOperations(TestRequest):
     """Tests for the ProductOperations request."""
 
     request_class = products.ProductOperations
 
-    def test_get_barcode(self):
+    SKU = 'VSG-H3R-G0R'
+    RESPONSE = {
+        "Success": None,
+        "Message": None,
+        "RecordCount": 1,
+        "Data": SKU,
+    }
+
+    GETGENERATEDSKU = 'getgeneratedsku'
+
+    def test_get_SKU(self):
         """Test getgeneratedsku request mode."""
-        request_mode = 'getgeneratedsku'
-        sku = 'VSG-H3R-G0R'
-        response = {
-            "Success": None,
-            "Message": None,
-            "RecordCount": 1,
-            "Data": sku,
-        }
-        self.register(headers={'requestmode': request_mode}, json=response)
-        response = self.mock_request(request_mode)
-        self.assertEqual(response.data, sku)
+        self.register(
+            headers={'requestmode': self.GETGENERATEDSKU}, json=self.RESPONSE)
+        response = self.mock_request(self.GETGENERATEDSKU)
+        self.assertEqual(response.data, self.SKU)
+
+    def test_ProductOperations_request_raises_for_non_200(self):
+        """Test ProductOptions request raises for non 200 responses."""
+        self.register(
+            headers={'requestmode': self.GETGENERATEDSKU},
+            json=self.RESPONSE,
+            status_code=500)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request(self.GETGENERATEDSKU)
 
 
-class TestProductSaveBarcode(TestRequest):
+class TestSaveBarcode(TestRequest):
     """Tests for the saveBarcode request."""
 
     request_class = products.SaveBarcode
     RESPONSE = '"OK"'
 
-    def test_save_barcode(self):
+    def test_saveBarcode(self):
         """Test the saveBarcode request."""
         self.register(text=self.RESPONSE)
         response = self.mock_request('1321564981', '123654')
         self.assertEqual(response, self.RESPONSE)
+
+    def test_saveBarcode_raises_for_non_200(self):
+        """Test the SaveBarcode request raises for non 200 responses."""
+        self.register(text=self.RESPONSE, status_code=500)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request('1321564981', '123654')
 
 
 class TestSaveDescription(TestRequest):
@@ -289,7 +337,7 @@ class TestSaveDescription(TestRequest):
     def test_failed_save_product_description_raises(self):
         """Test exception is raised when product ID is invalid."""
         self.register(text='ERROR', status_code=500)
-        with self.assertRaises(exceptions.DescriptionNotSavedError):
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
             self.mock_request(
                 'Product Description', product_ids=[self.PRODUCT_ID])
 
@@ -300,11 +348,17 @@ class TestSaveHandlingTime(TestRequest):
     request_class = products.SaveHandlingTime
     RESPONSE = 'Success'
 
-    def test_save_handling_time(self):
-        """Test the saveHandlingTime request."""
+    def test_Save_handling_time(self):
+        """Test the SaveHandlingTime request."""
         self.register(text=self.RESPONSE)
         response = self.mock_request(product_id='6909316', handling_time=1)
         self.assertEqual(response, self.RESPONSE)
+
+    def test_SaveHandlingTime_raises_for_non_200(self):
+        """Test SaveHandlingTime request raises for non 200 responses."""
+        self.register(text=self.RESPONSE, status_code=500)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request(product_id='6909316', handling_time=1)
 
 
 class TestSaveProductName(TestRequest):
@@ -335,7 +389,7 @@ class TestSaveProductName(TestRequest):
     def test_saveProductName_request_raises(self):
         """Test that the request raises an exception for non 200 responses."""
         self.register(text=self.RESPONSE, status_code=500)
-        with self.assertRaises(exceptions.ProductNameNotSavedError):
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
             self.mock_request(
                 name='New Product Name', product_ids=self.PRODUCT_ID)
 
@@ -381,7 +435,7 @@ class TestSetProductOptionValue(TestRequest):
     def test_setProductOptionValue_raises(self):
         """Test setProductOptionValue raises on non 200 response."""
         self.register(text=self.RESPONSE, status_code=500)
-        with self.assertRaises(exceptions.ProductOptionValueNotSavedError):
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
             self.mock_request(
                 product_ids=[self.PRODUCT_ID],
                 option_id=self.OPTION_ID,

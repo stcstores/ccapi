@@ -25,4 +25,8 @@ class FindProductFactoryLinks(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
+        self.raise_for_non_200(
+            self, response,
+            'Error finding factory links for product ID "{}"'.format(
+                self.product_id))
         return FactoryLinks([FactoryLink(link) for link in response.json()])

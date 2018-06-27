@@ -1,7 +1,5 @@
 """setProductScope Request."""
 
-from ccapi.exceptions import CloudCommerceResponseError
-
 from ..apirequest import APIRequest
 
 
@@ -51,10 +49,10 @@ class SetProductScope(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
-        try:
-            response.raise_for_status()
-        except Exception:
-            raise CloudCommerceResponseError('Product scope not set.')
+        self.raise_for_non_200(
+            self, response,
+            'Error setting product scope for product with ID "{}".'.format(
+                self.product_id))
         return response.text
 
     def get_data(self):

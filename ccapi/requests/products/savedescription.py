@@ -3,8 +3,6 @@
 Save description for products.
 """
 
-from ccapi.exceptions import DescriptionNotSavedError
-
 from ..apirequest import APIRequest
 
 
@@ -42,8 +40,8 @@ class SaveDescription(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
-        try:
-            response.raise_for_status()
-        except Exception:
-            raise DescriptionNotSavedError(self.product_ids)
+        self.raise_for_non_200(
+            self, response,
+            'Error saving description for product IDs "{}".'.format(
+                ', '.join(self.product_ids)))
         return response.text

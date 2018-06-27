@@ -27,6 +27,9 @@ class ProductOperations(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
+        self.raise_for_non_200(
+            self, response,
+            'Product Operations request returned an error code.')
         result = response.json()
         return ProductOperationsResult(result)
 
