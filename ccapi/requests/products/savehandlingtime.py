@@ -12,7 +12,7 @@ class SaveHandlingTime(APIRequest):
 
     uri = 'Handlers/Products/saveHandlingTime.ashx'
 
-    def __new__(self, product_id, handling_time, update_channels):
+    def __new__(self, *, product_id, handling_time, update_channels=False):
         """
         Create saveHandlingTime request.
 

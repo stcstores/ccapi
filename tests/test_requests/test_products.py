@@ -298,7 +298,13 @@ class TestSaveHandlingTime(TestRequest):
     """Tests for the saveHandlingTime request."""
 
     request_class = products.SaveHandlingTime
-    # TODO
+    RESPONSE = 'Success'
+
+    def test_save_handling_time(self):
+        """Test the saveHandlingTime request."""
+        self.register(text=self.RESPONSE)
+        response = self.mock_request(product_id='6909316', handling_time=1)
+        self.assertEqual(response, self.RESPONSE)
 
 
 class TestSaveProductName(TestRequest):
