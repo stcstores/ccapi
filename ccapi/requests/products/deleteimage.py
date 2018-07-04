@@ -23,8 +23,9 @@ class DeleteImage(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
-        response.raise_for_status()
-        return response
+        self.raise_for_non_200(
+            self, response, f'Image with ID {self.image_id} was not saved.')
+        return response.text
 
     def get_data(self):
         """Get data for request."""
