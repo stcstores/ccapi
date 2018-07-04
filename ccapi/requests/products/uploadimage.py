@@ -23,7 +23,10 @@ class UploadImage(APIRequest):
             channel_ids: IDs of channels to add image to.
             image_file: File object containing the image to upload.
         """
-        self.product_ids = [str(product_id) for product_id in product_ids]
+        if isinstance(product_ids, str) or isinstance(product_ids, int):
+            self.product_ids = [str(product_ids)]
+        else:
+            self.product_ids = [str(x) for x in product_ids]
         self.channel_ids = [str(channel_id) for channel_id in channel_ids]
         self.image_file = image_file
         return super().__new__(self)

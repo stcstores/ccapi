@@ -20,5 +20,9 @@ class TestRequest(TestCCAPI):
         self.register_uri(self.METHOD, uri, *args, **kwargs)
 
     def get_last_request_query(self):
-        """Return the data sent in the last request."""
+        """Return the data sent in the last request URL."""
+        return urllib.parse.parse_qs(self.adapter.request_history[-1].query)
+
+    def get_last_request_data(self):
+        """Return the data sent in the last request body."""
         return urllib.parse.parse_qs(self.adapter.request_history[-1].text)

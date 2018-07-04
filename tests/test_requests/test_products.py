@@ -325,7 +325,8 @@ class TestSaveDescription(TestRequest):
         self.register(text=self.RESPONSE)
         response = self.mock_request(
             'Product Description', product_ids=[self.PRODUCT_ID])
-        request_data = self.get_last_request_query()
+        request_data = self.get_last_request_data()
+        print(request_data)
         self.assertEqual(request_data['prodids'], [self.PRODUCT_ID])
         self.assertEqual(response, self.RESPONSE)
 
@@ -333,7 +334,7 @@ class TestSaveDescription(TestRequest):
         """Test SaveDescription request."""
         self.register(text=self.RESPONSE)
         self.mock_request('Product Description', product_ids=self.PRODUCT_ID)
-        request_data = self.get_last_request_query()
+        request_data = self.get_last_request_data()
         self.assertEqual(request_data['prodids'], [self.PRODUCT_ID])
 
     def test_SaveDescription_raises_for_non_200(self):
@@ -375,7 +376,7 @@ class TestSaveProductName(TestRequest):
         self.register(text=self.RESPONSE)
         response = self.mock_request(
             name='New Product Name', product_ids=[self.PRODUCT_ID])
-        request_data = self.get_last_request_query()
+        request_data = self.get_last_request_data()
         self.assertEqual(request_data['prodids'], [self.PRODUCT_ID])
         self.assertEqual(response, self.RESPONSE)
 
@@ -384,7 +385,7 @@ class TestSaveProductName(TestRequest):
         self.register(text=self.RESPONSE)
         response = self.mock_request(
             name='New Product Name', product_ids=self.PRODUCT_ID)
-        request_data = self.get_last_request_query()
+        request_data = self.get_last_request_data()
         self.assertEqual(request_data['prodids'], [self.PRODUCT_ID])
         self.assertEqual(response, self.RESPONSE)
 
@@ -420,7 +421,7 @@ class TestSetProductOptionValue(TestRequest):
             product_ids=[self.PRODUCT_ID],
             option_id=self.OPTION_ID,
             option_value_id=self.OPTION_VALUE_ID)
-        request_data = self.get_last_request_query()
+        request_data = self.get_last_request_data()
         self.assertEqual(request_data['prodids'], [self.PRODUCT_ID])
         self.assertEqual(response, self.RESPONSE)
 
@@ -431,7 +432,7 @@ class TestSetProductOptionValue(TestRequest):
             product_ids=self.PRODUCT_ID,
             option_id=self.OPTION_ID,
             option_value_id=self.OPTION_VALUE_ID)
-        request_data = self.get_last_request_query()
+        request_data = self.get_last_request_data()
         self.assertEqual(request_data['prodids'], [self.PRODUCT_ID])
 
     def test_SetProductOptionValue_raises_for_non_200(self):
@@ -551,6 +552,8 @@ class TestUpdateProductVatRate(TestRequest):
         response = self.mock_request(
             product_ids=self.PRODUCT_ID, vat_rate_id=self.VAT_RATE_ID)
         self.assertEqual(response, self.RESPONSE)
+        request_data = self.get_last_request_data()
+        self.assertEqual(request_data['prodids'], [self.PRODUCT_ID])
 
     def test_UpdateProductVatRate_raises_for_non_200(self):
         """Test UpdateProductVatRate raises for non 200 responses."""
@@ -588,6 +591,8 @@ class TestUploadImage(TestRequest):
         response = self.mock_request(
             product_ids=self.PRODUCT_ID, image_file=self.image)
         self.assertEqual(response, self.SUCCESSFUL_RESPONSE)
+        request_data = self.get_last_request_query()
+        self.assertEqual(request_data['prodids'], [self.PRODUCT_ID])
 
     def test_UploadImage_raises_for_invalid_response(self):
         """Test the UploadImage request raises for an error response."""
