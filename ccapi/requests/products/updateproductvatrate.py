@@ -11,7 +11,7 @@ class UpdateProductVatRate(APIRequest):
 
     uri = 'Handlers/Products/updateProductVatRate.ashx'
 
-    def __new__(self, product_ids, vat_rate_id):
+    def __new__(self, *, product_ids, vat_rate_id):
         """
         Create updateProductVatRate request.
 
@@ -19,7 +19,10 @@ class UpdateProductVatRate(APIRequest):
             product_ids: List containing IDs of products to update.
             vat_rate_id: ID of new VAT rate.
         """
-        self.product_ids = product_ids
+        if isinstance(product_ids, str) or isinstance(product_ids, int):
+            self.product_ids = [str(product_ids)]
+        else:
+            self.product_ids = [str(x) for x in product_ids]
         self.vat_rate_id = int(vat_rate_id)
         return super().__new__(self)
 
@@ -32,4 +35,8 @@ class UpdateProductVatRate(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
-        return response
+        self.raise_for_non_200(
+            self, response,
+            'Error saving VAT rate for product IDs "{}".'.format(
+                ', '.join(self.product_ids)))
+        return response.text
