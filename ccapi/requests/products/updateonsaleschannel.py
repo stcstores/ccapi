@@ -14,6 +14,7 @@ class UpdateProductOnSalesChannel(APIRequest):
 
     def __new__(
             self,
+            *,
             request_type,
             range_id,
             product_ids=[],
@@ -46,7 +47,11 @@ class UpdateProductOnSalesChannel(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
-        return response.text
+        self.raise_for_non_200(
+            self, response, (
+                'Sales Channel not updated for product'
+                f'ID(s) {", ".join(self.product_ids)}'))
+        return response.json()
 
     def get_data(self):
         """Get data for request."""
