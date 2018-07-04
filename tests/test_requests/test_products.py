@@ -50,7 +50,23 @@ class TestDeleteAllProductFactoryLink(TestRequest):
     """Tests for the deleteAllProductFactoryLink request."""
 
     request_class = products.DeleteAllProductFactoryLink
-    # TODO
+
+    FACTORY_ID = '11782'
+    RESPONSE = 'Success'
+
+    def test_DeleteAllProductFactoryLink_request(self):
+        """Test the DeleteAllProductFactoryLink request."""
+        self.register(text=self.RESPONSE)
+        response = self.mock_request(self.FACTORY_ID)
+        self.assertEqual(response, self.RESPONSE)
+        self.assertDataSent('FactoryID', self.FACTORY_ID)
+        self.assertDataSent('cornerloader', 'True')
+
+    def test_DeleteAllProductFactoryLink_request_raises_for_non_200(self):
+        """Test the DeleteAllProductFactoryLink request raises for non 200."""
+        self.register(text=self.RESPONSE, status_code=500)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request(self.FACTORY_ID)
 
 
 class TestDeleteImage(TestRequest):
