@@ -11,7 +11,7 @@ class SaveDescription(APIRequest):
 
     uri = 'Handlers/Products/saveDescription.ashx'
 
-    def __new__(self, description, product_ids=[], channel_id=0):
+    def __new__(self, *, description, product_ids=[], channel_id=0):
         """Create saveDescription request.
 
         Args:

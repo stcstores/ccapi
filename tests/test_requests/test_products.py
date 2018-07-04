@@ -386,7 +386,7 @@ class TestSaveDescription(TestRequest):
         """Test SaveDescription request."""
         self.register(text=self.RESPONSE)
         response = self.mock_request(
-            self.DESCRIPTION, product_ids=[self.PRODUCT_ID])
+            description=self.DESCRIPTION, product_ids=[self.PRODUCT_ID])
         self.assertEqual(response, self.RESPONSE)
         self.assertDataSent('prodids', [self.PRODUCT_ID])
         self.assertDataSent('desc', self.DESCRIPTION)
@@ -395,14 +395,16 @@ class TestSaveDescription(TestRequest):
     def test_SaveDescription_without_list(self):
         """Test SaveDescription request."""
         self.register(text=self.RESPONSE)
-        self.mock_request(self.DESCRIPTION, product_ids=self.PRODUCT_ID)
+        self.mock_request(
+            description=self.DESCRIPTION, product_ids=self.PRODUCT_ID)
         self.assertDataSent('prodids', [self.PRODUCT_ID])
 
     def test_SaveDescription_raises_for_non_200(self):
         """Test exception is raised when product ID is invalid."""
         self.register(text='ERROR', status_code=500)
         with self.assertRaises(exceptions.CloudCommerceResponseError):
-            self.mock_request(self.DESCRIPTION, product_ids=[self.PRODUCT_ID])
+            self.mock_request(
+                description=self.DESCRIPTION, product_ids=[self.PRODUCT_ID])
 
 
 class TestSaveHandlingTime(TestRequest):
