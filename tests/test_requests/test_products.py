@@ -421,7 +421,42 @@ class TestSetImageOrder(TestRequest):
     """Tests for the setImageOrder request."""
 
     request_class = products.SetImageOrder
-    # TODO
+
+    IMAGE_IDS = ['28179547', '28179563', '28179581']
+    PRODUCT_ID = '6909316'
+    RESPONSE = '"ok"'
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register(text=self.RESPONSE)
+
+    def test_SetImageOrder_request(self):
+        """Test the SetImageOrder request."""
+        response = self.mock_request(
+            product_id=self.PRODUCT_ID, image_ids=self.IMAGE_IDS)
+        self.assertEqual(response, self.RESPONSE)
+
+    def test_SetImageOrder_uses_correct_image_order(self):
+        """Test that the SetImageOrder sends the correct data."""
+        self.mock_request(product_id=self.PRODUCT_ID, image_ids=self.IMAGE_IDS)
+        request_data = self.get_last_request_data()
+        self.assertIsNotNone(request_data.get('order'), None)
+        self.assertEqual(request_data['order'], ['^^'.join(self.IMAGE_IDS)])
+
+    def test_SetImageOrder_sends_correct_product_ID(self):
+        """Test that the SetImageOrder request sends the correct product ID."""
+        self.mock_request(product_id=self.PRODUCT_ID, image_ids=self.IMAGE_IDS)
+        request_data = self.get_last_request_data()
+        self.assertIsNotNone(request_data.get('prodid'), None)
+        self.assertEqual(request_data['prodid'], [self.PRODUCT_ID])
+
+    def test_SetImageOrder_request_raises_for_non_200_response(self):
+        """Test that SetImageOrder raises for non 200 responses."""
+        self.register(text=self.RESPONSE, status_code=500)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request(
+                product_id=self.PRODUCT_ID, image_ids=self.IMAGE_IDS)
 
 
 class TestSetProductOptionValue(TestRequest):
