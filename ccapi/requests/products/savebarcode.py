@@ -11,7 +11,7 @@ class SaveBarcode(APIRequest):
 
     uri = 'Handlers/Products/saveBarcode.ashx'
 
-    def __new__(self, barcode, product_id):
+    def __new__(self, *, barcode, product_id):
         """Create saveBarcode request.
 
         Args:
