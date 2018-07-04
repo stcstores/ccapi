@@ -25,8 +25,10 @@ class SetImageOrder(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
-        response.raise_for_status()
-        return response
+        self.raise_for_non_200(
+            self, response,
+            f'Image order not saved for product with ID {self.product_id}.')
+        return response.text
 
     def get_data(self):
         """Get parameters for get request."""
