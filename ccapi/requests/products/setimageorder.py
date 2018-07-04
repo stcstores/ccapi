@@ -12,7 +12,7 @@ class SetImageOrder(APIRequest):
 
     uri = 'Handlers/Products/setImageOrder.ashx'
 
-    def __new__(self, product_id=None, image_ids=[]):
+    def __new__(self, *, product_id=None, image_ids=[]):
         """Create setImageOrder request.
 
         Kwargs:
