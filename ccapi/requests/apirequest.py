@@ -63,11 +63,3 @@ class APIRequest:
     def get_files(self):
         """Get file for request."""
         return {}
-
-
-class NonJSONResponse(Exception):
-    """Attempted to JSON decode string which was not valid JSON."""
-
-    def __init__(self, response_text):
-        """Create NonJSONResponse."""
-        self.response_text = response_text
