@@ -689,7 +689,7 @@ class CCAPI:
         Kwargs:
             product_ids: IDs of products to add image to.
             channel_ids: IDs of channels to add image to.
-            image_file: File to upload.
+            image_file: File object containing the image to upload.
         """
         return requests.UploadImage(
             product_ids=product_ids,

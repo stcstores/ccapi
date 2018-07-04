@@ -1,5 +1,7 @@
 """Tests for product barcode requests."""
 
+import os
+
 from ccapi import exceptions, inventoryitems
 from ccapi.requests import products
 
@@ -544,7 +546,7 @@ class TestUpdateProductVatRate(TestRequest):
         self.assertEqual(response, self.RESPONSE)
 
     def test_UpdateProductVatRate_request_with_single_product_ID(self):
-        """Test the UpdateProductVatRate request."""
+        """Test the UpdateProductVatRate request with a string product_ids."""
         self.register(text=self.RESPONSE)
         response = self.mock_request(
             product_ids=self.PRODUCT_ID, vat_rate_id=self.VAT_RATE_ID)
@@ -562,4 +564,41 @@ class TestUploadImage(TestRequest):
     """Tests for the uploadImage request."""
 
     request_class = products.UploadImage
-    # TODO
+
+    PRODUCT_ID = '6909316'
+    SUCCESSFUL_RESPONSE = {"result": "OK"}
+    ERROR_RESPONSE = {"result": "File not found"}
+
+    def setUp(self):
+        """Get image to upload."""
+        super().setUp()
+        self.image = open(
+            os.path.join(os.path.dirname(__file__), '14602048.jpg'), 'rb')
+
+    def test_UploadImage_request(self):
+        """Test the UploadImage request."""
+        self.register(json=self.SUCCESSFUL_RESPONSE)
+        response = self.mock_request(
+            product_ids=[self.PRODUCT_ID], image_file=self.image)
+        self.assertEqual(response, self.SUCCESSFUL_RESPONSE)
+
+    def test_UploadImage_request_with_single_product_ID(self):
+        """Test the UploadImage request with a string arg for product_ids."""
+        self.register(json=self.SUCCESSFUL_RESPONSE)
+        response = self.mock_request(
+            product_ids=self.PRODUCT_ID, image_file=self.image)
+        self.assertEqual(response, self.SUCCESSFUL_RESPONSE)
+
+    def test_UploadImage_raises_for_invalid_response(self):
+        """Test the UploadImage request raises for an error response."""
+        self.register(json=self.ERROR_RESPONSE)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request(
+                product_ids=[self.PRODUCT_ID], image_file=self.image)
+
+    def test_UploadImage_raises_for_non_200(self):
+        """Test UploadImage raises for non 200 responses."""
+        self.register(json=self.SUCCESSFUL_RESPONSE, status_code=500)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request(
+                product_ids=[self.PRODUCT_ID], image_file=self.image)
