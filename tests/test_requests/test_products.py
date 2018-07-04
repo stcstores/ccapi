@@ -580,7 +580,48 @@ class TestUpdateOnSalesChannel(TestRequest):
     """Tests for the updateOnSalesChannel request."""
 
     request_class = products.UpdateProductOnSalesChannel
-    # TODO
+    RANGE_ID = '4347654'
+    PRODUCT_IDS = ['6909316']
+    REQUEST_TYPE = 'name'
+    VALUE_1 = 'Test Name'
+    VALUE_2 = 'Test Val 2'
+    CHANNELS = ['1561561']
+    ACT = 'Test Act'
+    RESPONSE = []
+
+    def test_UpdateProductOnSalesChannel_request(self):
+        """Test the UpdateProductOnSalesChannel request."""
+        self.register(json=self.RESPONSE)
+        response = self.mock_request(
+            request_type=self.REQUEST_TYPE,
+            range_id=self.RANGE_ID,
+            product_ids=self.PRODUCT_IDS,
+            act=self.ACT,
+            value_1=self.VALUE_1,
+            value_2=self.VALUE_2,
+            channels=self.CHANNELS)
+        self.assertEqual(response, self.RESPONSE)
+        self.assertDataSent('brandid', 341)
+        self.assertDataSent('rangeid', self.RANGE_ID)
+        self.assertDataSent('prodids', ','.join(self.PRODUCT_IDS))
+        self.assertDataSent('type', self.REQUEST_TYPE)
+        self.assertDataSent('act', self.ACT)
+        self.assertDataSent('val1', self.VALUE_1)
+        self.assertDataSent('val2', self.VALUE_2)
+        self.assertDataSent('chans', ','.join(self.CHANNELS))
+
+    def test_UpdateProductOnSalesChannel_raises_for_non_200(self):
+        """Test UpdateProductOnSalesChannel raises for non 200 responses."""
+        self.register(json=self.RESPONSE, status_code=500)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request(
+                request_type=self.REQUEST_TYPE,
+                range_id=self.RANGE_ID,
+                product_ids=self.PRODUCT_IDS,
+                act=self.ACT,
+                value_1=self.VALUE_1,
+                value_2=self.VALUE_2,
+                channels=self.CHANNELS)
 
 
 class TestUpdateProductBasePrice(TestRequest):
