@@ -42,6 +42,7 @@ class TestRequest(TestCCAPI):
         """Test that request data contains the correct data."""
         self.assertIsNotNone(sent_data.get(data_key), None)
         if isinstance(expected_value, list):
-            self.assertEqual(sent_data[data_key], expected_value)
+            self.assertEqual(
+                sent_data[data_key], [str(value) for value in expected_value])
         else:
-            self.assertEqual(sent_data[data_key][0], [expected_value][0])
+            self.assertEqual(sent_data[data_key][0], [str(expected_value)][0])

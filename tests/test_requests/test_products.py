@@ -32,6 +32,16 @@ class TestAddProduct(TestRequest):
         self.register(text=self.SUCCESSFUL_RESPONSE)
         response = self.mock_request(**self.REQUEST_KWARGS)
         self.assertEqual(response, self.CREATED_PRODUCT_ID)
+        self.assertDataSent('ProductID', '0')
+        self.assertDataSent('ProdRangeID', self.REQUEST_KWARGS['range_id'])
+        self.assertDataSent('ProdName', self.REQUEST_KWARGS['name'])
+        self.assertDataSent('BarCode', self.REQUEST_KWARGS['barcode'])
+        self.assertDataSent('SKUCode', self.REQUEST_KWARGS['sku'])
+        self.assertDataSent(
+            'ProdDescription', self.REQUEST_KWARGS['description'])
+        self.assertDataSent('VatRateID', self.REQUEST_KWARGS['vat_rate_id'])
+        self.assertDataSent('CopyDesc', '0')
+        self.assertDataSent('BrandID', '341')
 
     def test_failed_AddProduct_request(self):
         """Test an AddProduct request with an invalid range ID."""
@@ -97,18 +107,20 @@ class TestDeleteProductFactoryLink(TestRequest):
     request_class = products.DeleteProductFactoryLink
 
     RESPONSE = 'Success'
+    FACTORY_ID = '3544350'
 
     def test_DeleteProductFactoryLink_request(self):
         """Test deleteProductFactoryLink request."""
         self.register(text=self.RESPONSE)
-        response = self.mock_request('3544350')
+        response = self.mock_request(self.FACTORY_ID)
         self.assertEqual(response, self.RESPONSE)
+        self.assertDataSent('factoryLinkId', self.FACTORY_ID)
 
     def test_DeleteProductFactoryLink_raises_for_non_200(self):
         """Test DeleteProductFactoryLink raises for non 200 responses."""
         self.register(text=self.RESPONSE, status_code=500)
         with self.assertRaises(exceptions.CloudCommerceResponseError):
-            self.mock_request('3544350')
+            self.mock_request(self.FACTORY_ID)
 
 
 class TestDoSearch(TestRequest):
@@ -144,6 +156,9 @@ class TestDoSearch(TestRequest):
         self.assertEqual(response[0].name, self.RESULT_NAME)
         self.assertEqual(response[0].sku, self.SKU_SEARCH_TEXT)
         self.assertEqual(response[0].thumbnail, self.RESULT_THUMBNAIL)
+        self.assertDataSent('text', self.SKU_SEARCH_TEXT)
+        self.assertDataSent('type', 'range')
+        self.assertDataSent('brandid', '341')
 
     def test_doSearch_raises_for_non_200unmatched_search(self):
         """Test a search with no results."""
@@ -191,24 +206,29 @@ class TestFindProductFactoryLinks(TestRequest):
         "SupplierSKU": SUPPLIER_SKU,
     }
 
-    def make_request(self):
-        """Test requesting product factory links."""
+    def setUp(self):
+        """Register the mock URI."""
+        super().setUp()
         self.register(json=[self.RESPONSE])
-        return self.mock_request(self.PRODUCT_ID)
+
+    def test_FindProductFactoryLinks_request(self):
+        """Test the FindProductFactoryLinks request."""
+        self.mock_request(self.PRODUCT_ID)
+        self.assertDataSent('ProductID', self.PRODUCT_ID)
 
     def test_FindProductFactoryLinks_returns_FactoryLinks(self):
         """Test the request returns an instance of FactoryLinks."""
-        response = self.make_request()
+        response = self.mock_request(self.PRODUCT_ID)
         self.assertIsInstance(response, inventoryitems.FactoryLinks)
 
     def test_FindProductFactoryLinks_response_contains_factory_links(self):
         """Test returned object contains instances of FactoryLink."""
-        response = self.make_request()
+        response = self.mock_request(self.PRODUCT_ID)
         self.assertIsInstance(response[0], inventoryitems.FactoryLink)
 
     def test_FindProductFactoryLinks_contains_factory_link_data(self):
         """Test the correct data is returned."""
-        response = self.make_request()
+        response = self.mock_request(self.PRODUCT_ID)
         self.assertEqual(response[0].product_id, self.PRODUCT_ID)
         self.assertEqual(response[0].link_id, self.LINK_ID)
         self.assertEqual(response[0].factory_name, self.FACTORY_NAME)
@@ -258,6 +278,12 @@ class TestFindProductSelectedOptionsOnly(TestRequest):
         """Test the findProductSelectedOptionsOnly request."""
         self.register(json=self.RESPONSE_DATA)
         return self.mock_request(self.PRODUCT_ID)
+
+    def test_FindProductSelectedOptionsOnly_request(self):
+        """Test the FindProductSelectedOptionsOnly request."""
+        self.make_request()
+        self.assertDataSent('ProductID', self.PRODUCT_ID)
+        self.assertDataSent('channelID', '0')
 
     def test_FindProductSelectedOptionsOnly_returns_a_product(self):
         """Test the request returns and instance of a product."""
@@ -327,19 +353,24 @@ class TestSaveBarcode(TestRequest):
     """Tests for the saveBarcode request."""
 
     request_class = products.SaveBarcode
-    RESPONSE = '"OK"'
+    RESPONSE = 'ok'
+    BARCODE = '1321564981'
+    PRODUCT_ID = '123654'
 
     def test_SaveBarcode_request(self):
         """Test the saveBarcode request."""
         self.register(text=self.RESPONSE)
-        response = self.mock_request('1321564981', '123654')
+        response = self.mock_request(
+            barcode=self.BARCODE, product_id=self.PRODUCT_ID)
         self.assertEqual(response, self.RESPONSE)
+        self.assertDataSent('bcode', self.BARCODE)
+        self.assertDataSent('prodid', self.PRODUCT_ID)
 
     def test_SaveBarcode_raises_for_non_200(self):
         """Test the SaveBarcode request raises for non 200 responses."""
         self.register(text=self.RESPONSE, status_code=500)
         with self.assertRaises(exceptions.CloudCommerceResponseError):
-            self.mock_request('1321564981', '123654')
+            self.mock_request(barcode=self.BARCODE, product_id=self.PRODUCT_ID)
 
 
 class TestSaveDescription(TestRequest):
@@ -347,64 +378,78 @@ class TestSaveDescription(TestRequest):
 
     request_class = products.SaveDescription
 
+    RESPONSE = 'ok'
     PRODUCT_ID = '6909316'
-    RESPONSE = '"ok"'
+    DESCRIPTION = 'Product Description'
 
     def test_SaveDescription_request(self):
         """Test SaveDescription request."""
         self.register(text=self.RESPONSE)
         response = self.mock_request(
-            'Product Description', product_ids=[self.PRODUCT_ID])
+            self.DESCRIPTION, product_ids=[self.PRODUCT_ID])
         self.assertEqual(response, self.RESPONSE)
         self.assertDataSent('prodids', [self.PRODUCT_ID])
+        self.assertDataSent('desc', self.DESCRIPTION)
+        self.assertDataSent('channelID', '0')
 
     def test_SaveDescription_without_list(self):
         """Test SaveDescription request."""
         self.register(text=self.RESPONSE)
-        self.mock_request('Product Description', product_ids=self.PRODUCT_ID)
+        self.mock_request(self.DESCRIPTION, product_ids=self.PRODUCT_ID)
         self.assertDataSent('prodids', [self.PRODUCT_ID])
 
     def test_SaveDescription_raises_for_non_200(self):
         """Test exception is raised when product ID is invalid."""
         self.register(text='ERROR', status_code=500)
         with self.assertRaises(exceptions.CloudCommerceResponseError):
-            self.mock_request(
-                'Product Description', product_ids=[self.PRODUCT_ID])
+            self.mock_request(self.DESCRIPTION, product_ids=[self.PRODUCT_ID])
 
 
 class TestSaveHandlingTime(TestRequest):
     """Tests for the saveHandlingTime request."""
 
     request_class = products.SaveHandlingTime
+
     RESPONSE = 'Success'
+    PRODUCT_ID = '6909316'
 
     def test_SaveHandlingTime_request(self):
         """Test the SaveHandlingTime request."""
         self.register(text=self.RESPONSE)
-        response = self.mock_request(product_id='6909316', handling_time=1)
+        response = self.mock_request(
+            product_id=self.PRODUCT_ID, handling_time=1, update_channels=False)
         self.assertEqual(response, self.RESPONSE)
+        self.assertDataSent('ProductID', self.PRODUCT_ID)
+        self.assertDataSent('handlingTime', '1')
+        self.assertDataSent('updateChannels', 'False')
 
     def test_SaveHandlingTime_raises_for_non_200(self):
         """Test SaveHandlingTime request raises for non 200 responses."""
         self.register(text=self.RESPONSE, status_code=500)
         with self.assertRaises(exceptions.CloudCommerceResponseError):
-            self.mock_request(product_id='6909316', handling_time=1)
+            self.mock_request(
+                product_id=self.PRODUCT_ID,
+                handling_time=1,
+                update_channels=False)
 
 
 class TestSaveProductName(TestRequest):
     """Tests for the saveProductName request."""
 
     request_class = products.SaveProductName
-    RESPONSE = '"ok"'
+    RESPONSE = 'ok'
     PRODUCT_ID = '6909316'
+    NAME = 'New Product Name'
 
     def test_SaveProductName_request(self):
         """Test the saveProductName request."""
         self.register(text=self.RESPONSE)
         response = self.mock_request(
-            name='New Product Name', product_ids=[self.PRODUCT_ID])
+            name=self.NAME, product_ids=[self.PRODUCT_ID])
         self.assertEqual(response, self.RESPONSE)
         self.assertDataSent('prodids', [self.PRODUCT_ID])
+        self.assertDataSent('name', self.NAME)
+        self.assertDataSent('channelID', '0')
 
     def test_SaveProductName_request_with_single_product(self):
         """Test the saveProductName request."""
@@ -427,7 +472,7 @@ class TestSetImageOrder(TestRequest):
 
     IMAGE_IDS = ['28179547', '28179563', '28179581']
     PRODUCT_ID = '6909316'
-    RESPONSE = '"ok"'
+    RESPONSE = 'ok'
 
     def setUp(self):
         """Register request URI."""
@@ -439,15 +484,7 @@ class TestSetImageOrder(TestRequest):
         response = self.mock_request(
             product_id=self.PRODUCT_ID, image_ids=self.IMAGE_IDS)
         self.assertEqual(response, self.RESPONSE)
-
-    def test_SetImageOrder_uses_correct_image_order(self):
-        """Test that the SetImageOrder sends the correct data."""
-        self.mock_request(product_id=self.PRODUCT_ID, image_ids=self.IMAGE_IDS)
         self.assertDataSent('order', '^^'.join(self.IMAGE_IDS))
-
-    def test_SetImageOrder_sends_correct_product_ID(self):
-        """Test that the SetImageOrder request sends the correct product ID."""
-        self.mock_request(product_id=self.PRODUCT_ID, image_ids=self.IMAGE_IDS)
         self.assertDataSent('prodid', self.PRODUCT_ID)
 
     def test_SetImageOrder_request_raises_for_non_200_response(self):
@@ -466,31 +503,23 @@ class TestSetProductOptionValue(TestRequest):
     OPTION_ID = '32131'
     OPTION_VALUE_ID = '3040649'
 
-    RESPONSE = '"ok"'
-
-    def setUp(self):
-        """Register mock URI."""
-        super().setUp()
-        self.register(text=self.RESPONSE)
+    RESPONSE = 'ok'
 
     def test_SetProductOptionValue_request(self):
         """Test the setProductOptionValue request."""
+        self.register(text=self.RESPONSE)
         response = self.mock_request(
             product_ids=[self.PRODUCT_ID],
             option_id=self.OPTION_ID,
             option_value_id=self.OPTION_VALUE_ID)
         self.assertEqual(response, self.RESPONSE)
-
-    def test_SetProductOptionValue_request_sends_correct_product_id(self):
-        """Test that the requests sends the correct product ID."""
-        self.mock_request(
-            product_ids=[self.PRODUCT_ID],
-            option_id=self.OPTION_ID,
-            option_value_id=self.OPTION_VALUE_ID)
         self.assertDataSent('prodids', [self.PRODUCT_ID])
+        self.assertDataSent('OptionID', self.OPTION_ID)
+        self.assertDataSent('OptionValueID', self.OPTION_VALUE_ID)
 
     def test_SetProductOptionValue_request_with_single_product(self):
         """Test the setProductOptionValue request with a single product."""
+        self.register(text=self.RESPONSE)
         self.mock_request(
             product_ids=self.PRODUCT_ID,
             option_id=self.OPTION_ID,
@@ -521,10 +550,16 @@ class TestSetProductScope(TestRequest):
             product_id=self.PRODUCT_ID,
             weight=50,
             height=25,
-            length=25,
-            width=25,
+            length=75,
+            width=90,
             large_letter_compatible=False)
         self.assertEqual(response, self.RESPONSE)
+        self.assertDataSent('ProductID', self.PRODUCT_ID)
+        self.assertDataSent('Weight', '50')
+        self.assertDataSent('Height', '25')
+        self.assertDataSent('Length', '75')
+        self.assertDataSent('Width', '90')
+        self.assertDataSent('LargeLetterCompatible', '0')
 
     def test_SetProductScope_raises_for_non_200(self):
         """Test setProductScope raises on non 200 response."""
@@ -559,6 +594,8 @@ class TestUpdateProductBasePrice(TestRequest):
         self.register(text=self.RESPONSE)
         response = self.mock_request(product_id=self.PRODUCT_ID, price=2.50)
         self.assertEqual(response, self.RESPONSE)
+        self.assertDataSent('prodid', self.PRODUCT_ID)
+        self.assertDataSent('price', '2.5')
 
     def test_UpdateProductBasePrice_raises_for_non_200(self):
         """Test the UpdateProductBasePrice raises for non 200 responses."""
@@ -581,6 +618,9 @@ class TestUpdateProductStockLevel(TestRequest):
         response = self.mock_request(
             product_id=self.PRODUCT_ID, new_stock_level=5, old_stock_level=10)
         self.assertEqual(response, self.RESPONSE)
+        self.assertDataSent('ProductID', self.PRODUCT_ID)
+        self.assertDataSent('newStockLevel', '5')
+        self.assertDataSent('oldStockLevel', '10')
 
     def test_UpdateProductStockLevel_raises_for_non_200(self):
         """Test UpdateProductStockLevel raises for non 200 responses."""
