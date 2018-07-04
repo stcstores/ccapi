@@ -58,7 +58,27 @@ class TestDeleteImage(TestRequest):
 
     request_class = products.DeleteImage
 
-    # TODO
+    IMAGE_ID = '28173405'
+    RESPONSE = 'Success'
+
+    def test_DeleteImage_request(self):
+        """Test the DeleteImage request."""
+        self.register(text=self.RESPONSE)
+        response = self.mock_request(self.IMAGE_ID)
+        self.assertEqual(response, self.RESPONSE)
+
+    def test_DeleteImage_sends_correct_image_ID(self):
+        """Test that the DeleteImage request deletes the correct image."""
+        self.register(text=self.RESPONSE)
+        self.mock_request(self.IMAGE_ID)
+        request_data = self.get_last_request_data()
+        self.assertEqual(request_data.get('imgID'), [self.IMAGE_ID])
+
+    def test_DeleteImage_raises_for_non_200(self):
+        """Test AddProduct request raises for non 200 response."""
+        self.register(text=self.RESPONSE, status_code=500)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request(self.IMAGE_ID)
 
 
 class TestDeleteProductFactoryLink(TestRequest):
