@@ -531,7 +531,31 @@ class TestUpdateProductVatRate(TestRequest):
     """Tests for the updateProductVatRate request."""
 
     request_class = products.UpdateProductVatRate
-    # TODO
+
+    RESPONSE = 'Success'
+    PRODUCT_ID = '6909316'
+    VAT_RATE_ID = 5
+
+    def test_UpdateProductVatRate_request(self):
+        """Test the UpdateProductVatRate request."""
+        self.register(text=self.RESPONSE)
+        response = self.mock_request(
+            product_ids=[self.PRODUCT_ID], vat_rate_id=self.VAT_RATE_ID)
+        self.assertEqual(response, self.RESPONSE)
+
+    def test_UpdateProductVatRate_request_with_single_product_ID(self):
+        """Test the UpdateProductVatRate request."""
+        self.register(text=self.RESPONSE)
+        response = self.mock_request(
+            product_ids=self.PRODUCT_ID, vat_rate_id=self.VAT_RATE_ID)
+        self.assertEqual(response, self.RESPONSE)
+
+    def test_UpdateProductVatRate_raises_for_non_200(self):
+        """Test UpdateProductVatRate raises for non 200 responses."""
+        self.register(text=self.RESPONSE, status_code=500)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request(
+                product_ids=[self.PRODUCT_ID], vat_rate_id=self.VAT_RATE_ID)
 
 
 class TestUploadImage(TestRequest):
