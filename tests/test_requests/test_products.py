@@ -66,13 +66,7 @@ class TestDeleteImage(TestRequest):
         self.register(text=self.RESPONSE)
         response = self.mock_request(self.IMAGE_ID)
         self.assertEqual(response, self.RESPONSE)
-
-    def test_DeleteImage_sends_correct_image_ID(self):
-        """Test that the DeleteImage request deletes the correct image."""
-        self.register(text=self.RESPONSE)
-        self.mock_request(self.IMAGE_ID)
-        request_data = self.get_last_request_data()
-        self.assertEqual(request_data.get('imgID'), [self.IMAGE_ID])
+        self.assertDataSent('imgID', self.IMAGE_ID)
 
     def test_DeleteImage_raises_for_non_200(self):
         """Test AddProduct request raises for non 200 response."""
@@ -345,17 +339,14 @@ class TestSaveDescription(TestRequest):
         self.register(text=self.RESPONSE)
         response = self.mock_request(
             'Product Description', product_ids=[self.PRODUCT_ID])
-        request_data = self.get_last_request_data()
-        print(request_data)
-        self.assertEqual(request_data['prodids'], [self.PRODUCT_ID])
         self.assertEqual(response, self.RESPONSE)
+        self.assertDataSent('prodids', [self.PRODUCT_ID])
 
     def test_SaveDescription_without_list(self):
         """Test SaveDescription request."""
         self.register(text=self.RESPONSE)
         self.mock_request('Product Description', product_ids=self.PRODUCT_ID)
-        request_data = self.get_last_request_data()
-        self.assertEqual(request_data['prodids'], [self.PRODUCT_ID])
+        self.assertDataSent('prodids', [self.PRODUCT_ID])
 
     def test_SaveDescription_raises_for_non_200(self):
         """Test exception is raised when product ID is invalid."""
@@ -396,18 +387,14 @@ class TestSaveProductName(TestRequest):
         self.register(text=self.RESPONSE)
         response = self.mock_request(
             name='New Product Name', product_ids=[self.PRODUCT_ID])
-        request_data = self.get_last_request_data()
-        self.assertEqual(request_data['prodids'], [self.PRODUCT_ID])
         self.assertEqual(response, self.RESPONSE)
+        self.assertDataSent('prodids', [self.PRODUCT_ID])
 
     def test_SaveProductName_request_with_single_product(self):
         """Test the saveProductName request."""
         self.register(text=self.RESPONSE)
-        response = self.mock_request(
-            name='New Product Name', product_ids=self.PRODUCT_ID)
-        request_data = self.get_last_request_data()
-        self.assertEqual(request_data['prodids'], [self.PRODUCT_ID])
-        self.assertEqual(response, self.RESPONSE)
+        self.mock_request(name='New Product Name', product_ids=self.PRODUCT_ID)
+        self.assertDataSent('prodids', [self.PRODUCT_ID])
 
     def test_SaveProductName_request_raises(self):
         """Test that the request raises an exception for non 200 responses."""
@@ -440,16 +427,12 @@ class TestSetImageOrder(TestRequest):
     def test_SetImageOrder_uses_correct_image_order(self):
         """Test that the SetImageOrder sends the correct data."""
         self.mock_request(product_id=self.PRODUCT_ID, image_ids=self.IMAGE_IDS)
-        request_data = self.get_last_request_data()
-        self.assertIsNotNone(request_data.get('order'), None)
-        self.assertEqual(request_data['order'], ['^^'.join(self.IMAGE_IDS)])
+        self.assertDataSent('order', '^^'.join(self.IMAGE_IDS))
 
     def test_SetImageOrder_sends_correct_product_ID(self):
         """Test that the SetImageOrder request sends the correct product ID."""
         self.mock_request(product_id=self.PRODUCT_ID, image_ids=self.IMAGE_IDS)
-        request_data = self.get_last_request_data()
-        self.assertIsNotNone(request_data.get('prodid'), None)
-        self.assertEqual(request_data['prodid'], [self.PRODUCT_ID])
+        self.assertDataSent('prodid', self.PRODUCT_ID)
 
     def test_SetImageOrder_request_raises_for_non_200_response(self):
         """Test that SetImageOrder raises for non 200 responses."""
@@ -469,26 +452,34 @@ class TestSetProductOptionValue(TestRequest):
 
     RESPONSE = '"ok"'
 
+    def setUp(self):
+        """Register mock URI."""
+        super().setUp()
+        self.register(text=self.RESPONSE)
+
     def test_SetProductOptionValue_request(self):
         """Test the setProductOptionValue request."""
-        self.register(text=self.RESPONSE)
         response = self.mock_request(
             product_ids=[self.PRODUCT_ID],
             option_id=self.OPTION_ID,
             option_value_id=self.OPTION_VALUE_ID)
-        request_data = self.get_last_request_data()
-        self.assertEqual(request_data['prodids'], [self.PRODUCT_ID])
         self.assertEqual(response, self.RESPONSE)
+
+    def test_SetProductOptionValue_request_sends_correct_product_id(self):
+        """Test that the requests sends the correct product ID."""
+        self.mock_request(
+            product_ids=[self.PRODUCT_ID],
+            option_id=self.OPTION_ID,
+            option_value_id=self.OPTION_VALUE_ID)
+        self.assertDataSent('prodids', [self.PRODUCT_ID])
 
     def test_SetProductOptionValue_request_with_single_product(self):
         """Test the setProductOptionValue request with a single product."""
-        self.register(text=self.RESPONSE)
         self.mock_request(
             product_ids=self.PRODUCT_ID,
             option_id=self.OPTION_ID,
             option_value_id=self.OPTION_VALUE_ID)
-        request_data = self.get_last_request_data()
-        self.assertEqual(request_data['prodids'], [self.PRODUCT_ID])
+        self.assertDataSent('prodids', [self.PRODUCT_ID])
 
     def test_SetProductOptionValue_raises_for_non_200(self):
         """Test setProductOptionValue raises on non 200 response."""
@@ -592,7 +583,7 @@ class TestUpdateProductVatRate(TestRequest):
 
     RESPONSE = 'Success'
     PRODUCT_ID = '6909316'
-    VAT_RATE_ID = 5
+    VAT_RATE_ID = '5'
 
     def test_UpdateProductVatRate_request(self):
         """Test the UpdateProductVatRate request."""
@@ -600,15 +591,15 @@ class TestUpdateProductVatRate(TestRequest):
         response = self.mock_request(
             product_ids=[self.PRODUCT_ID], vat_rate_id=self.VAT_RATE_ID)
         self.assertEqual(response, self.RESPONSE)
+        self.assertDataSent('prodids', [self.PRODUCT_ID])
+        self.assertDataSent('vatrate', self.VAT_RATE_ID)
 
     def test_UpdateProductVatRate_request_with_single_product_ID(self):
         """Test the UpdateProductVatRate request with a string product_ids."""
         self.register(text=self.RESPONSE)
-        response = self.mock_request(
+        self.mock_request(
             product_ids=self.PRODUCT_ID, vat_rate_id=self.VAT_RATE_ID)
-        self.assertEqual(response, self.RESPONSE)
-        request_data = self.get_last_request_data()
-        self.assertEqual(request_data['prodids'], [self.PRODUCT_ID])
+        self.assertDataSent('prodids', [self.PRODUCT_ID])
 
     def test_UpdateProductVatRate_raises_for_non_200(self):
         """Test UpdateProductVatRate raises for non 200 responses."""
@@ -630,24 +621,21 @@ class TestUploadImage(TestRequest):
     def setUp(self):
         """Get image to upload."""
         super().setUp()
+        self.register(json=self.SUCCESSFUL_RESPONSE)
         self.image = open(
             os.path.join(os.path.dirname(__file__), '14602048.jpg'), 'rb')
 
     def test_UploadImage_request(self):
         """Test the UploadImage request."""
-        self.register(json=self.SUCCESSFUL_RESPONSE)
         response = self.mock_request(
             product_ids=[self.PRODUCT_ID], image_file=self.image)
         self.assertEqual(response, self.SUCCESSFUL_RESPONSE)
+        self.assertQuerySent('prodIDs', [self.PRODUCT_ID])
 
     def test_UploadImage_request_with_single_product_ID(self):
         """Test the UploadImage request with a string arg for product_ids."""
-        self.register(json=self.SUCCESSFUL_RESPONSE)
-        response = self.mock_request(
-            product_ids=self.PRODUCT_ID, image_file=self.image)
-        self.assertEqual(response, self.SUCCESSFUL_RESPONSE)
-        request_data = self.get_last_request_query()
-        self.assertEqual(request_data['prodids'], [self.PRODUCT_ID])
+        self.mock_request(product_ids=self.PRODUCT_ID, image_file=self.image)
+        self.assertQuerySent('prodIDs', [self.PRODUCT_ID])
 
     def test_UploadImage_raises_for_invalid_response(self):
         """Test the UploadImage request raises for an error response."""
