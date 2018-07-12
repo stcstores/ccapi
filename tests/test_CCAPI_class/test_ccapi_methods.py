@@ -291,3 +291,35 @@ class Test_set_product_barcode_Method(TestCCAPI):
         with self.assertRaises(Exception):
             CCAPI.set_product_barcode(
                 barcode=self.BARCODE, product_id=self.PRODUCT_ID)
+
+
+class Test_set_product_description_Method(TestCCAPI):
+    """Test the CCAPI.set_product_description method."""
+
+    RESPONSE = test_requests.TestSaveDescription.RESPONSE
+    PRODUCT_IDS = ['123654', '6909316']
+    DESCRIPTION = 'A description of a product\n'
+
+    def setUp(self):
+        """Make test request."""
+        super().setUp()
+        self.register_request(requests.SaveDescription, text=self.RESPONSE)
+        CCAPI.set_product_description(
+            product_ids=[self.PRODUCT_IDS], description=self.DESCRIPTION)
+
+    def test_passed_product_ID_is_sent(self):
+        """Test that the passed product ID is sent."""
+        sent_data = self.get_last_request_data()
+        for product_id in self.PRODUCT_IDS:
+            self.assertIn(product_id, str(sent_data['prodids']))
+
+    def test_passed_description_is_sent(self):
+        """Test that the passed description is sent."""
+        self.assertDataSent('desc', self.DESCRIPTION)
+
+    def test_passing_single_product_ID_as_string(self):
+        """Test passing a single product ID as a string."""
+        CCAPI.set_product_description(
+            product_ids=self.PRODUCT_IDS[0], description=self.DESCRIPTION)
+        sent_data = self.get_last_request_data()
+        self.assertIn(self.PRODUCT_IDS[0], str(sent_data['prodids']))
