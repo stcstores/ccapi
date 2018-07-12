@@ -95,11 +95,15 @@ class Test_delete_product_factory_links_Method(TestCCAPI):
     RESPONSE = test_products.TestDeleteAllProductFactoryLink.RESPONSE
     FACTORY_ID = '11782'
 
-    def test_delete_product_factory_links(self):
-        """Test the CCAPI.delete_product_factory_links method."""
+    def setUp(self):
+        """Make test request."""
+        super().setUp()
         self.register_request(
             requests.DeleteAllProductFactoryLink, text=self.RESPONSE)
         CCAPI.delete_product_factory_links(self.FACTORY_ID)
+
+    def test_sends_correct_factory_ID(self):
+        """Test the correct factory ID is sent."""
         self.assertDataSent('FactoryID', self.FACTORY_ID)
 
 
@@ -109,10 +113,14 @@ class Test_delete_image_Method(TestCCAPI):
     IMAGE_ID = '28173405'
     RESPONSE = test_products.TestDeleteImage.RESPONSE
 
-    def test_delete_image(self):
-        """Test the CCAPI.delete_image method."""
+    def setUp(self):
+        """Make test request."""
+        super().setUp()
         self.register_request(requests.DeleteImage, text=self.RESPONSE)
         CCAPI.delete_image(self.IMAGE_ID)
+
+    def test_sends_passed_image_ID(self):
+        """Test the correct image ID is sent."""
         self.assertDataSent('imgID', self.IMAGE_ID)
 
 
@@ -122,11 +130,15 @@ class Test_delete_product_facotry_link_Method(TestCCAPI):
     FACTORY_ID = '3544350'
     RESPONSE = test_products.TestDeleteProductFactoryLink.RESPONSE
 
-    def test_delete_product_factory_links_method(self):
-        """Test the CCAPI.delete_product_factory_link method."""
+    def setUp(self):
+        """Make test request."""
+        super().setUp()
         self.register_request(
             requests.DeleteProductFactoryLink, text=self.RESPONSE)
         CCAPI.delete_product_factory_link(self.FACTORY_ID)
+
+    def test_sends_passed_factory_ID(self):
+        """Test the passed factory ID is sent."""
         self.assertDataSent('factoryLinkId', self.FACTORY_ID)
 
 
@@ -136,17 +148,27 @@ class Test_search_products_Method(TestCCAPI):
     RESPONSE = test_products.TestDoSearch.SUCCESSFUL_RESPONSE
     SEARCH_TEXT = 'WUA-DU7-W6W'
 
-    def test_search_products_method(self):
-        """Test the CCAPI.search_products method."""
+    def setUp(self):
+        """Make test request."""
+        super().setUp()
         self.register_request(requests.DoSearch, json=self.RESPONSE)
-        products = CCAPI.search_products(self.SEARCH_TEXT)
+        self.products = CCAPI.search_products(self.SEARCH_TEXT)
+
+    def test_sends_correct_product_ID(self):
+        """Test sends the correct productID."""
         self.assertDataSent('text', self.SEARCH_TEXT)
-        self.assertIsInstance(products, list)
-        self.assertTrue(hasattr(products[0], 'id'))
-        self.assertTrue(hasattr(products[0], 'variation_id'))
-        self.assertTrue(hasattr(products[0], 'name'))
-        self.assertTrue(hasattr(products[0], 'sku'))
-        self.assertTrue(hasattr(products[0], 'thumbnail'))
+
+    def test_returns_list(self):
+        """Test returns a list instance."""
+        self.assertIsInstance(self.products, list)
+
+    def test_search_result(self):
+        """Test returned list contains object with the correct attributes."""
+        self.assertTrue(hasattr(self.products[0], 'id'))
+        self.assertTrue(hasattr(self.products[0], 'variation_id'))
+        self.assertTrue(hasattr(self.products[0], 'name'))
+        self.assertTrue(hasattr(self.products[0], 'sku'))
+        self.assertTrue(hasattr(self.products[0], 'thumbnail'))
 
 
 class Test_get_product_factory_links_Method(TestCCAPI):
@@ -155,13 +177,20 @@ class Test_get_product_factory_links_Method(TestCCAPI):
     PRODUCT_ID = 6909316
     RESPONSE = [test_products.TestFindProductFactoryLinks.RESPONSE]
 
-    def test_get_factory_links_method(self):
-        """Test the CCAPI.get_product_factory_links method."""
+    def setUp(self):
+        """Make test request."""
+        super().setUp()
         self.register_request(
             requests.FindProductFactoryLinks, json=self.RESPONSE)
-        factories = CCAPI.get_product_factory_links(self.PRODUCT_ID)
+        self.factories = CCAPI.get_product_factory_links(self.PRODUCT_ID)
+
+    def test_sends_passed_product_ID(self):
+        """Test sends the passed product ID."""
         self.assertDataSent('ProductID', self.PRODUCT_ID)
-        self.assertIsInstance(factories, inventoryitems.FactoryLinks)
+
+    def test_returns_FactoryLinks_instance(self):
+        """Test returns FactoryLinks instance."""
+        self.assertIsInstance(self.factories, inventoryitems.FactoryLinks)
 
 
 class Test_get_product_Method(TestCCAPI):
