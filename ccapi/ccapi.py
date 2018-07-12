@@ -712,8 +712,8 @@ class CCAPI:
             image_file=image_file)
 
     @staticmethod
-    def set_image_order(product_id=None, image_ids=[]):
-        """Create setImageOrder request.
+    def set_image_order(*, product_id=None, image_ids=[]):
+        """Set the order of a product's images.
 
         Kwargs:
             product_id: ID of Product for which Images will be ordered.
