@@ -2,16 +2,15 @@
 
 from ccapi import CCAPI, VatRates, inventoryitems, requests
 
-from .. import test_data
-from ..test_requests import test_products
+from .. import test_data, test_requests
 from .test_CCAPI_class import TestCCAPI
 
 
 class Test_get_sku_Method(TestCCAPI):
     """Test the get_sku method of CCAPI."""
 
-    SKU = test_products.TestProductOperations.SKU
-    RESPONSE = test_products.TestProductOperations.RESPONSE
+    SKU = test_requests.TestProductOperations.SKU
+    RESPONSE = test_requests.TestProductOperations.RESPONSE
 
     def test_get_sku(self):
         """Test the get_sku method of CCAPI."""
@@ -35,9 +34,9 @@ class Test_create_product_Method(TestCCAPI):
         'description': 'Product Description',
         'vat_rate': 20,
     }
-    CREATED_PRODUCT_ID = test_products.TestAddProduct.CREATED_PRODUCT_ID
-    SUCCESSFUL_RESPONSE = test_products.TestAddProduct.SUCCESSFUL_RESPONSE
-    FAILED_RESPONSE = test_products.TestAddProduct.FAILED_RESPONSE
+    CREATED_PRODUCT_ID = test_requests.TestAddProduct.CREATED_PRODUCT_ID
+    SUCCESSFUL_RESPONSE = test_requests.TestAddProduct.SUCCESSFUL_RESPONSE
+    FAILED_RESPONSE = test_requests.TestAddProduct.FAILED_RESPONSE
 
     def test_create_product(self):
         """Test CCAPI can add a product to a range."""
@@ -92,7 +91,7 @@ class Test_create_product_Method(TestCCAPI):
 class Test_delete_product_factory_links_Method(TestCCAPI):
     """Test the CCAPI.delete_product_factory_links method."""
 
-    RESPONSE = test_products.TestDeleteAllProductFactoryLink.RESPONSE
+    RESPONSE = test_requests.TestDeleteAllProductFactoryLink.RESPONSE
     FACTORY_ID = '11782'
 
     def setUp(self):
@@ -111,7 +110,7 @@ class Test_delete_image_Method(TestCCAPI):
     """Test the CCAPI.delete_image method."""
 
     IMAGE_ID = '28173405'
-    RESPONSE = test_products.TestDeleteImage.RESPONSE
+    RESPONSE = test_requests.TestDeleteImage.RESPONSE
 
     def setUp(self):
         """Make test request."""
@@ -128,7 +127,7 @@ class Test_delete_product_facotry_link_Method(TestCCAPI):
     """Test the CCAPI.delete_product_factory_link method."""
 
     FACTORY_ID = '3544350'
-    RESPONSE = test_products.TestDeleteProductFactoryLink.RESPONSE
+    RESPONSE = test_requests.TestDeleteProductFactoryLink.RESPONSE
 
     def setUp(self):
         """Make test request."""
@@ -145,7 +144,7 @@ class Test_delete_product_facotry_link_Method(TestCCAPI):
 class Test_search_products_Method(TestCCAPI):
     """Test the CCAPI.search_products method."""
 
-    RESPONSE = test_products.TestDoSearch.SUCCESSFUL_RESPONSE
+    RESPONSE = test_requests.TestDoSearch.SUCCESSFUL_RESPONSE
     SEARCH_TEXT = 'WUA-DU7-W6W'
 
     def setUp(self):
@@ -175,7 +174,7 @@ class Test_get_product_factory_links_Method(TestCCAPI):
     """Test the CCAPI.get_product_factory_links method."""
 
     PRODUCT_ID = 6909316
-    RESPONSE = [test_products.TestFindProductFactoryLinks.RESPONSE]
+    RESPONSE = [test_requests.TestFindProductFactoryLinks.RESPONSE]
 
     def setUp(self):
         """Make test request."""
@@ -235,3 +234,25 @@ class Test_get_options_for_product_Method(TestCCAPI):
     def test_get_product_returns_a_product(self):
         """Test CCAPI.get_product returns an inventoryitems.Product."""
         self.assertDataSent('ProductID', self.PRODUCT_ID)
+
+
+class Test_barcode_is_in_use_Method(TestCCAPI):
+    """Test the CCAPI.barcode_is_in_use method."""
+
+    RESPONSE = test_requests.TestProductBarcodeInUse.UNUSED_RESPONSE
+    BARCODE = '1321564981'
+
+    def setUp(self):
+        """Make test request."""
+        super().setUp()
+        self.register_request(requests.ProductBarcodeInUse, json=self.RESPONSE)
+        self.barcode_used = CCAPI.barcode_is_in_use(barcode=self.BARCODE)
+
+    def test_passed_barcode_is_sent(self):
+        """Test the correct barcode is sent."""
+        self.assertDataSent('BarcodeNumber', self.BARCODE)
+
+    def test_bool_is_returned(self):
+        """Test that the method returns a boolean."""
+        self.assertIsInstance(self.barcode_used, bool)
+
