@@ -127,3 +127,23 @@ class Test_delete_product_facotry_link_Method(TestCCAPI):
             requests.DeleteProductFactoryLink, text=self.RESPONSE)
         CCAPI.delete_product_factory_link(self.FACTORY_ID)
         self.assertDataSent('factoryLinkId', self.FACTORY_ID)
+
+
+class Test_search_products_Method(TestCCAPI):
+    """Test the CCAPI.search_products method."""
+
+    RESPONSE = test_products.TestDoSearch.SUCCESSFUL_RESPONSE
+    SEARCH_TEXT = 'WUA-DU7-W6W'
+
+    def test_search_products_method(self):
+        """Test the CCAPI.search_products method."""
+        self.register_request(requests.DoSearch, json=self.RESPONSE)
+        products = CCAPI.search_products(self.SEARCH_TEXT)
+        self.assertDataSent('text', self.SEARCH_TEXT)
+        self.assertIsInstance(products, list)
+        self.assertTrue(hasattr(products[0], 'id'))
+        self.assertTrue(hasattr(products[0], 'variation_id'))
+        self.assertTrue(hasattr(products[0], 'name'))
+        self.assertTrue(hasattr(products[0], 'sku'))
+        self.assertTrue(hasattr(products[0], 'thumbnail'))
+
