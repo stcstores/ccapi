@@ -308,7 +308,7 @@ class Test_set_product_description_Method(TestCCAPI):
             product_ids=[self.PRODUCT_IDS], description=self.DESCRIPTION)
 
     def test_passed_product_ID_is_sent(self):
-        """Test that the passed product ID is sent."""
+        """Test that the passed product IDs are sent."""
         sent_data = self.get_last_request_data()
         for product_id in self.PRODUCT_IDS:
             self.assertIn(product_id, str(sent_data['prodids']))
@@ -346,3 +346,33 @@ class Test_set_product_handling_time_Method(TestCCAPI):
     def test_passed_handling_time_is_sent(self):
         """Test that the passed handling_time is sent."""
         self.assertDataSent('handlingTime', self.HANDLING_TIME)
+
+
+class Test_set_product_name_Method(TestCCAPI):
+    """Test the CCAPI.set_product_name method."""
+
+    RESPONSE = test_requests.TestSaveProductName.RESPONSE
+    PRODUCT_IDS = ['123654', '6909316']
+    NAME = 'Product Name'
+
+    def setUp(self):
+        """Make test request."""
+        super().setUp()
+        self.register_request(requests.SaveProductName, text=self.RESPONSE)
+        CCAPI.set_product_name(product_ids=[self.PRODUCT_IDS], name=self.NAME)
+
+    def test_passed_product_ID_is_sent(self):
+        """Test that the passed product IDs are sent."""
+        sent_data = self.get_last_request_data()
+        for product_id in self.PRODUCT_IDS:
+            self.assertIn(product_id, str(sent_data['prodids']))
+
+    def test_passed_description_is_sent(self):
+        """Test that the passed name is sent."""
+        self.assertDataSent('name', self.NAME)
+
+    def test_passing_single_product_ID_as_string(self):
+        """Test passing a single product ID as a string."""
+        CCAPI.set_product_name(product_ids=self.PRODUCT_IDS[0], name=self.NAME)
+        sent_data = self.get_last_request_data()
+        self.assertIn(self.PRODUCT_IDS[0], str(sent_data['prodids']))
