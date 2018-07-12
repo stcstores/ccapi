@@ -330,16 +330,19 @@ class CCAPI:
             vat_rate_id=vat_rate_id)
 
     @staticmethod
-    def set_product_option_value(product_ids, option_id, value_id):
+    def set_product_option_value(*, product_ids, option_id, option_value_id):
         """
         Create setProductOptionValue request.
 
         Args:
             product_ids: Tuple of products to which the value will be applied.
             option_id: ID of Product Option to set.
-            value_id: ID of Product Option Value to set.
+            option_value_id: ID of Product Option Value to set.
         """
-        return requests.SetProductOptionValue(product_ids, option_id, value_id)
+        return requests.SetProductOptionValue(
+            product_ids=product_ids,
+            option_id=option_id,
+            option_value_id=option_value_id)
 
     @staticmethod
     def set_product_scope(
