@@ -376,3 +376,26 @@ class Test_set_product_name_Method(TestCCAPI):
         CCAPI.set_product_name(product_ids=self.PRODUCT_IDS[0], name=self.NAME)
         sent_data = self.get_last_request_data()
         self.assertIn(self.PRODUCT_IDS[0], str(sent_data['prodids']))
+
+
+class Test_set_image_order_Method(TestCCAPI):
+    """Test the CCAPI.set_image_order method."""
+
+    RESPONSE = test_requests.TestSetImageOrder.RESPONSE
+    IMAGE_IDS = ['28179547', '28179563', '28179581']
+    PRODUCT_ID = '6909316'
+
+    def setUp(self):
+        """Make test request."""
+        super().setUp()
+        self.register_request(requests.SetImageOrder, text=self.RESPONSE)
+        CCAPI.set_image_order(
+            product_id=self.PRODUCT_ID, image_ids=self.IMAGE_IDS)
+
+    def test_passed_product_ID_is_sent(self):
+        """Test that the passed product ID is sent."""
+        self.assertDataSent('prodid', self.PRODUCT_ID)
+
+    def test_passed_handling_time_is_sent(self):
+        """Test that the passed image IDs are sent."""
+        self.assertDataSent('order', '^^'.join(self.IMAGE_IDS))
