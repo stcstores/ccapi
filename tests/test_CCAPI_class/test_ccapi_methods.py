@@ -86,3 +86,17 @@ class Test_create_product_Method(TestCCAPI):
             description=None,
             vat_rate=20)
         self.assertDataSent('ProdDescription', self.REQUEST_KWARGS['name'])
+
+
+class Test_delete_product_factory_links_Method(TestCCAPI):
+    """Test the CCAPI.delete_product_factory_links method."""
+
+    RESPONSE = test_products.TestDeleteAllProductFactoryLink.RESPONSE
+    FACTORY_ID = '11782'
+
+    def test_delete_product_factory_links(self):
+        """Test the CCAPI.delete_product_factory_links method."""
+        self.register_request(
+            requests.DeleteAllProductFactoryLink, text=self.RESPONSE)
+        CCAPI.delete_product_factory_links(self.FACTORY_ID)
+        self.assertDataSent('FactoryID', self.FACTORY_ID)
