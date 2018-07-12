@@ -378,7 +378,7 @@ class CCAPI:
 
     @staticmethod
     def set_product_handling_time(
-            product_id, handling_time, update_channels=True):
+            *, product_id, handling_time, update_channels=True):
         """
         Set handling time for product.
 
@@ -390,7 +390,10 @@ class CCAPI:
             update_channels: If True will update handling time on channels.
                 Default: True.
         """
-        requests.SaveHandlingTime(product_id, handling_time, update_channels)
+        requests.SaveHandlingTime(
+            product_id=product_id,
+            handling_time=handling_time,
+            update_channels=update_channels)
 
     @staticmethod
     def get_warehouses():
