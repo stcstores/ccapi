@@ -399,3 +399,45 @@ class Test_set_image_order_Method(TestCCAPI):
     def test_passed_handling_time_is_sent(self):
         """Test that the passed image IDs are sent."""
         self.assertDataSent('order', '^^'.join(self.IMAGE_IDS))
+
+
+class Test_set_product_option_value_Method(TestCCAPI):
+    """Test the CCAPI.set_product_option_value method."""
+
+    RESPONSE = test_requests.TestSetProductOptionValue.RESPONSE
+    PRODUCT_IDS = ['123654', '6909316']
+    OPTION_ID = '32131'
+    OPTION_VALUE_ID = '3040649'
+
+    def setUp(self):
+        """Make test request."""
+        super().setUp()
+        self.register_request(
+            requests.SetProductOptionValue, text=self.RESPONSE)
+        CCAPI.set_product_option_value(
+            product_ids=self.PRODUCT_IDS,
+            option_id=self.OPTION_ID,
+            option_value_id=self.OPTION_VALUE_ID)
+
+    def test_passed_product_ID_is_sent(self):
+        """Test that the passed product IDs are sent."""
+        sent_data = self.get_last_request_data()
+        for product_id in self.PRODUCT_IDS:
+            self.assertIn(product_id, str(sent_data['prodids']))
+
+    def test_passed_option_ID_is_sent(self):
+        """Test that the passed option ID is sent."""
+        self.assertDataSent('OptionID', self.OPTION_ID)
+
+    def test_passed_option_value_is_sent(self):
+        """Test that the passed option value is sent."""
+        self.assertDataSent('OptionValueID', self.OPTION_VALUE_ID)
+
+    def test_passing_single_product_ID_as_string(self):
+        """Test passing a single product ID as a string."""
+        CCAPI.set_product_option_value(
+            product_ids=self.PRODUCT_IDS[0],
+            option_id=self.OPTION_ID,
+            option_value_id=self.OPTION_VALUE_ID)
+        sent_data = self.get_last_request_data()
+        self.assertIn(self.PRODUCT_IDS[0], str(sent_data['prodids']))
