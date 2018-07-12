@@ -838,8 +838,8 @@ class CCAPI:
         return requests.ProductBarcodeInUse(barcode)
 
     @classmethod
-    def set_product_barcode(cls, barcode, product_id):
+    def set_product_barcode(cls, *, barcode, product_id):
         """Set a product's barcode."""
         if cls.barcode_is_in_use(barcode) is False:
-            return requests.SaveBarcode(barcode, product_id)
+            return requests.SaveBarcode(barcode=barcode, product_id=product_id)
         raise Exception('Barcode "{}" is already in use'.format(barcode))
