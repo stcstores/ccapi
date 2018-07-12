@@ -2,6 +2,7 @@
 
 from ccapi import CCAPI, VatRates, inventoryitems, requests
 
+from .. import test_data
 from ..test_requests import test_products
 from .test_CCAPI_class import TestCCAPI
 
@@ -161,3 +162,25 @@ class Test_get_product_factory_links_Method(TestCCAPI):
         factories = CCAPI.get_product_factory_links(self.PRODUCT_ID)
         self.assertDataSent('ProductID', self.PRODUCT_ID)
         self.assertIsInstance(factories, inventoryitems.FactoryLinks)
+
+
+class Test_get_product_Method(TestCCAPI):
+    """Test the CCAPI.get_product method."""
+
+    PRODUCT_ID = 6909316
+    RESPONSE = test_data.FIND_PRODUCT_SELECTED_OPTIONS_ONLY_TEST_RESLULT
+
+    def setUp(self):
+        """Make test request."""
+        super().setUp()
+        self.register_request(
+            requests.FindProductSelectedOptionsOnly, json=self.RESPONSE)
+        self.product = CCAPI.get_product(self.PRODUCT_ID)
+
+    def test_get_product_sends_correct_product_ID(self):
+        """Test CCAPI.get_product sends the passed product ID ."""
+        self.assertIsInstance(self.product, inventoryitems.Product)
+
+    def test_get_product_returns_a_product(self):
+        """Test CCAPI.get_product returns an inventoryitems.Product."""
+        self.assertDataSent('ProductID', self.PRODUCT_ID)
