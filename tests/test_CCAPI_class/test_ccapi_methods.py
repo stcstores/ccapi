@@ -113,3 +113,17 @@ class Test_delete_image_Method(TestCCAPI):
         self.register_request(requests.DeleteImage, text=self.RESPONSE)
         CCAPI.delete_image(self.IMAGE_ID)
         self.assertDataSent('imgID', self.IMAGE_ID)
+
+
+class Test_delete_product_facotry_link_Method(TestCCAPI):
+    """Test the CCAPI.delete_product_factory_link method."""
+
+    FACTORY_ID = '3544350'
+    RESPONSE = test_products.TestDeleteProductFactoryLink.RESPONSE
+
+    def test_delete_product_factory_links_method(self):
+        """Test the CCAPI.delete_product_factory_link method."""
+        self.register_request(
+            requests.DeleteProductFactoryLink, text=self.RESPONSE)
+        CCAPI.delete_product_factory_link(self.FACTORY_ID)
+        self.assertDataSent('factoryLinkId', self.FACTORY_ID)
