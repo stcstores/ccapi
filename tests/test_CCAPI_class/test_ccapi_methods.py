@@ -1,6 +1,6 @@
 """Tests for CCAPI's methods."""
 
-from ccapi import CCAPI, VatRates, requests
+from ccapi import CCAPI, VatRates, inventoryitems, requests
 
 from ..test_requests import test_products
 from .test_CCAPI_class import TestCCAPI
@@ -147,3 +147,17 @@ class Test_search_products_Method(TestCCAPI):
         self.assertTrue(hasattr(products[0], 'sku'))
         self.assertTrue(hasattr(products[0], 'thumbnail'))
 
+
+class Test_get_product_factory_links_Method(TestCCAPI):
+    """Test the CCAPI.get_product_factory_links method."""
+
+    PRODUCT_ID = 6909316
+    RESPONSE = [test_products.TestFindProductFactoryLinks.RESPONSE]
+
+    def test_get_factory_links_method(self):
+        """Test the CCAPI.get_product_factory_links method."""
+        self.register_request(
+            requests.FindProductFactoryLinks, json=self.RESPONSE)
+        factories = CCAPI.get_product_factory_links(self.PRODUCT_ID)
+        self.assertDataSent('ProductID', self.PRODUCT_ID)
+        self.assertIsInstance(factories, inventoryitems.FactoryLinks)
