@@ -213,3 +213,25 @@ class Test_get_product_Method(TestCCAPI):
     def test_get_product_returns_a_product(self):
         """Test CCAPI.get_product returns an inventoryitems.Product."""
         self.assertDataSent('ProductID', self.PRODUCT_ID)
+
+
+class Test_get_options_for_product_Method(TestCCAPI):
+    """Test the CCAPI.get_options_for_product method."""
+
+    PRODUCT_ID = 6909316
+    RESPONSE = test_data.FIND_PRODUCT_SELECTED_OPTIONS_ONLY_TEST_RESLULT
+
+    def setUp(self):
+        """Make test request."""
+        super().setUp()
+        self.register_request(
+            requests.FindProductSelectedOptionsOnly, json=self.RESPONSE)
+        self.product = CCAPI.get_options_for_product(self.PRODUCT_ID)
+
+    def test_get_product_sends_correct_product_ID(self):
+        """Test CCAPI.get_product sends the passed product ID ."""
+        self.assertIsInstance(self.product, inventoryitems.ProductOptions)
+
+    def test_get_product_returns_a_product(self):
+        """Test CCAPI.get_product returns an inventoryitems.Product."""
+        self.assertDataSent('ProductID', self.PRODUCT_ID)
