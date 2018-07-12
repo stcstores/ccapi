@@ -290,7 +290,13 @@ class CCAPI:
 
     @classmethod
     def create_product(
-            cls, range_id, name, barcode, sku=None, description=None,
+            cls,
+            *,
+            range_id,
+            name,
+            barcode,
+            sku=None,
+            description=None,
             vat_rate=20):
         """
         Add new Product to a Product Range.
@@ -316,7 +322,12 @@ class CCAPI:
             description = name
         vat_rate_id = VatRates.get_vat_rate_id_by_rate(vat_rate)
         return requests.AddProduct(
-            range_id, name, barcode, sku, description, vat_rate_id)
+            range_id=range_id,
+            name=name,
+            barcode=barcode,
+            sku=sku,
+            description=description,
+            vat_rate_id=vat_rate_id)
 
     @staticmethod
     def set_product_option_value(product_ids, option_id, value_id):
