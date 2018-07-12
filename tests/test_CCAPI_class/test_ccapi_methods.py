@@ -256,3 +256,38 @@ class Test_barcode_is_in_use_Method(TestCCAPI):
         """Test that the method returns a boolean."""
         self.assertIsInstance(self.barcode_used, bool)
 
+
+class Test_set_product_barcode_Method(TestCCAPI):
+    """Test the CCAPI.set_product_barcode method."""
+
+    BARCODE_USED_RESPONSE = test_requests.TestProductBarcodeInUse.USED_RESPONSE
+    BARCODE_UNUSED_RESPONSE = (
+        test_requests.TestProductBarcodeInUse.UNUSED_RESPONSE)
+    RESPONSE = test_requests.TestSaveBarcode.RESPONSE
+    BARCODE = '1321564981'
+    PRODUCT_ID = '123654'
+
+    def setUp(self):
+        """Make test request."""
+        super().setUp()
+        self.register_request(
+            requests.ProductBarcodeInUse, json=self.BARCODE_UNUSED_RESPONSE)
+        self.register_request(requests.SaveBarcode, text=self.RESPONSE)
+        CCAPI.set_product_barcode(
+            barcode=self.BARCODE, product_id=self.PRODUCT_ID)
+
+    def test_passed_barcode_is_sent(self):
+        """Test the correct barcode is sent."""
+        self.assertDataSent('bcode', self.BARCODE)
+
+    def test_passed_product_ID_is_sent(self):
+        """Test the passed product ID is sent."""
+        self.assertDataSent('prodid', self.PRODUCT_ID)
+
+    def test_raises_for_used_barcode(self):
+        """Test exception is raised if barcode is in use."""
+        self.register_request(
+            requests.ProductBarcodeInUse, json=self.BARCODE_USED_RESPONSE)
+        with self.assertRaises(Exception):
+            CCAPI.set_product_barcode(
+                barcode=self.BARCODE, product_id=self.PRODUCT_ID)
