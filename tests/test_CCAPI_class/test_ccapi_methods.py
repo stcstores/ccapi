@@ -323,3 +323,26 @@ class Test_set_product_description_Method(TestCCAPI):
             product_ids=self.PRODUCT_IDS[0], description=self.DESCRIPTION)
         sent_data = self.get_last_request_data()
         self.assertIn(self.PRODUCT_IDS[0], str(sent_data['prodids']))
+
+
+class Test_set_product_handling_time_Method(TestCCAPI):
+    """Test the CCAPI.set_product_handling_time method."""
+
+    RESPONSE = test_requests.TestSaveHandlingTime.RESPONSE
+    PRODUCT_ID = '6909316'
+    HANDLING_TIME = 1
+
+    def setUp(self):
+        """Make test request."""
+        super().setUp()
+        self.register_request(requests.SaveHandlingTime, text=self.RESPONSE)
+        CCAPI.set_product_handling_time(
+            product_id=self.PRODUCT_ID, handling_time=self.HANDLING_TIME)
+
+    def test_passed_product_ID_is_sent(self):
+        """Test that the passed product ID is sent."""
+        self.assertDataSent('ProductID', self.PRODUCT_ID)
+
+    def test_passed_handling_time_is_sent(self):
+        """Test that the passed handling_time is sent."""
+        self.assertDataSent('handlingTime', self.HANDLING_TIME)
