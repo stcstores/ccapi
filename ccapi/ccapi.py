@@ -380,7 +380,7 @@ class CCAPI:
             external_id=external_id)
 
     @staticmethod
-    def set_product_base_price(product_id, price):
+    def set_product_base_price(*, product_id, price):
         """
         Set base price for product.
 
@@ -388,7 +388,7 @@ class CCAPI:
             product_id: ID of Product to update.
             price: New base price for Product.
         """
-        requests.UpdateProductBasePrice(product_id, price)
+        requests.UpdateProductBasePrice(product_id=product_id, price=price)
 
     @staticmethod
     def set_product_handling_time(
