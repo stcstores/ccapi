@@ -13,3 +13,6 @@ test:
 
 lock:
 	pipenv lock -dr > requirements.txt
+
+coverage:
+	pipenv run pytest --cov=ccapi tests/
