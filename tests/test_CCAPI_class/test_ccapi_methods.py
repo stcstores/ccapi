@@ -557,3 +557,28 @@ class Test_set_product_scope_Method(TestCCAPI):
             large_letter_compatible=False,
             external_id=None)
         self.assertDataValueIsNone('ExternalID')
+
+
+class Test_set_product_base_price_Method(TestCCAPI):
+    """Test the CCAPI.set_product_base_price method."""
+
+    RESPONSE = test_requests.TestUpdateProductBasePrice.RESPONSE
+
+    PRODUCT_ID = '6909316'
+    PRICE = '6.25'
+
+    def setUp(self):
+        """Make test request."""
+        super().setUp()
+        self.register_request(
+            requests.UpdateProductBasePrice, text=self.RESPONSE)
+        CCAPI.set_product_base_price(
+            product_id=self.PRODUCT_ID, price=self.PRICE)
+
+    def test_passed_product_ID_is_sent(self):
+        """Test the passed product ID is sent."""
+        self.assertDataSent('prodid', self.PRODUCT_ID)
+
+    def test_passed_price_is_sent(self):
+        """Test the passed price is sent."""
+        self.assertDataSent('price', self.PRICE)
