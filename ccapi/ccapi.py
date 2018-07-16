@@ -165,7 +165,7 @@ class CCAPI:
 
     @staticmethod
     def update_product_stock_level(
-            product_id, new_stock_level, old_stock_level):
+            *, product_id, new_stock_level, old_stock_level):
         """
         Change stock level for a Product.
 
@@ -176,7 +176,9 @@ class CCAPI:
 
         """
         requests.UpdateProductStockLevel(
-            str(product_id), new_stock_level, old_stock_level)
+            product_id=product_id,
+            new_stock_level=new_stock_level,
+            old_stock_level=old_stock_level)
 
     @classmethod
     def create_range(cls, range_name, sku=None):
