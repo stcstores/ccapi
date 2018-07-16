@@ -614,3 +614,41 @@ class Test_update_product_stock_level_Method(TestCCAPI):
     def test_passed_old_stock_level_is_sent(self):
         """Test the passed old stock level is sent."""
         self.assertDataSent('oldStockLevel', self.OLD_STOCK_LEVEL)
+
+
+class Test_set_product_vat_rate_Method(TestCCAPI):
+    """Test the CCAPI.set_product_vat_rate method."""
+
+    RESPONSE = test_requests.TestUpdateProductVatRate.RESPONSE
+
+    PRODUCT_IDS = ['123654', '6909316']
+
+    VAT_RATE = 20
+    VAT_RATE_ID = VatRates.get_vat_rate_id_by_rate(VAT_RATE)
+
+    def setUp(self):
+        """Make test request."""
+        super().setUp()
+        self.register_request(
+            requests.UpdateProductVatRate, text=self.RESPONSE)
+
+    def test_passed_product_ID_is_sent(self):
+        """Test that the passed product IDs are sent."""
+        CCAPI.set_product_vat_rate(
+            product_ids=self.PRODUCT_IDS, vat_rate=self.VAT_RATE)
+        sent_data = self.get_last_request_data()
+        for product_id in self.PRODUCT_IDS:
+            self.assertIn(product_id, str(sent_data['prodids']))
+
+    def test_passing_single_product_ID_as_string(self):
+        """Test passing a single product ID as a string."""
+        CCAPI.set_product_vat_rate(
+            product_ids=self.PRODUCT_IDS[0], vat_rate=self.VAT_RATE)
+        sent_data = self.get_last_request_data()
+        self.assertIn(self.PRODUCT_IDS[0], str(sent_data['prodids']))
+
+    def test_vat_rate_ID_is_sent(self):
+        """Test the correct VAT rate ID is sent."""
+        CCAPI.set_product_vat_rate(
+            product_ids=self.PRODUCT_IDS, vat_rate=self.VAT_RATE)
+        self.assertDataSent('vatrate', self.VAT_RATE_ID)
