@@ -3,10 +3,10 @@
 from ccapi import CCAPI, VatRates, cc_objects, requests
 
 from .. import test_data, test_requests
-from .test_CCAPI_class import TestCCAPI
+from .test_CCAPI_class import TestCCAPIMethod
 
 
-class Test_get_sku_Method(TestCCAPI):
+class Test_get_sku_Method(TestCCAPIMethod):
     """Test the get_sku method of CCAPI."""
 
     SKU = test_requests.TestProductOperations.SKU
@@ -23,7 +23,7 @@ class Test_get_sku_Method(TestCCAPI):
         self.assertEqual(CCAPI.get_sku(range_sku=True), 'RNG_' + self.SKU)
 
 
-class Test_create_product_Method(TestCCAPI):
+class Test_create_product_Method(TestCCAPIMethod):
     """Test the create_product method of CCAPI."""
 
     REQUEST_KWARGS = {
@@ -84,7 +84,7 @@ class Test_create_product_Method(TestCCAPI):
         self.assertDataSent('ProdDescription', self.REQUEST_KWARGS['name'])
 
 
-class Test_delete_product_factory_links_Method(TestCCAPI):
+class Test_delete_product_factory_links_Method(TestCCAPIMethod):
     """Test the CCAPI.delete_product_factory_links method."""
 
     RESPONSE = test_requests.TestDeleteAllProductFactoryLink.RESPONSE
@@ -102,7 +102,7 @@ class Test_delete_product_factory_links_Method(TestCCAPI):
         self.assertDataSent('FactoryID', self.FACTORY_ID)
 
 
-class Test_delete_image_Method(TestCCAPI):
+class Test_delete_image_Method(TestCCAPIMethod):
     """Test the CCAPI.delete_image method."""
 
     IMAGE_ID = '28173405'
@@ -119,7 +119,7 @@ class Test_delete_image_Method(TestCCAPI):
         self.assertDataSent('imgID', self.IMAGE_ID)
 
 
-class Test_delete_product_facotry_link_Method(TestCCAPI):
+class Test_delete_product_facotry_link_Method(TestCCAPIMethod):
     """Test the CCAPI.delete_product_factory_link method."""
 
     FACTORY_ID = '3544350'
@@ -137,7 +137,7 @@ class Test_delete_product_facotry_link_Method(TestCCAPI):
         self.assertDataSent('factoryLinkId', self.FACTORY_ID)
 
 
-class Test_search_products_Method(TestCCAPI):
+class Test_search_products_Method(TestCCAPIMethod):
     """Test the CCAPI.search_products method."""
 
     RESPONSE = test_requests.TestDoSearch.SUCCESSFUL_RESPONSE
@@ -166,7 +166,7 @@ class Test_search_products_Method(TestCCAPI):
         self.assertTrue(hasattr(self.products[0], 'thumbnail'))
 
 
-class Test_get_product_factory_links_Method(TestCCAPI):
+class Test_get_product_factory_links_Method(TestCCAPIMethod):
     """Test the CCAPI.get_product_factory_links method."""
 
     PRODUCT_ID = 6909316
@@ -188,7 +188,7 @@ class Test_get_product_factory_links_Method(TestCCAPI):
         self.assertIsInstance(self.factories, cc_objects.FactoryLinks)
 
 
-class Test_get_product_Method(TestCCAPI):
+class Test_get_product_Method(TestCCAPIMethod):
     """Test the CCAPI.get_product method."""
 
     PRODUCT_ID = 6909316
@@ -210,7 +210,7 @@ class Test_get_product_Method(TestCCAPI):
         self.assertDataSent('ProductID', self.PRODUCT_ID)
 
 
-class Test_get_options_for_product_Method(TestCCAPI):
+class Test_get_options_for_product_Method(TestCCAPIMethod):
     """Test the CCAPI.get_options_for_product method."""
 
     PRODUCT_ID = 6909316
@@ -232,7 +232,7 @@ class Test_get_options_for_product_Method(TestCCAPI):
         self.assertDataSent('ProductID', self.PRODUCT_ID)
 
 
-class Test_barcode_is_in_use_Method(TestCCAPI):
+class Test_barcode_is_in_use_Method(TestCCAPIMethod):
     """Test the CCAPI.barcode_is_in_use method."""
 
     RESPONSE = test_requests.TestProductBarcodeInUse.UNUSED_RESPONSE
@@ -253,7 +253,7 @@ class Test_barcode_is_in_use_Method(TestCCAPI):
         self.assertIsInstance(self.barcode_used, bool)
 
 
-class Test_set_product_barcode_Method(TestCCAPI):
+class Test_set_product_barcode_Method(TestCCAPIMethod):
     """Test the CCAPI.set_product_barcode method."""
 
     BARCODE_USED_RESPONSE = test_requests.TestProductBarcodeInUse.USED_RESPONSE
@@ -289,7 +289,7 @@ class Test_set_product_barcode_Method(TestCCAPI):
                 barcode=self.BARCODE, product_id=self.PRODUCT_ID)
 
 
-class Test_set_product_description_Method(TestCCAPI):
+class Test_set_product_description_Method(TestCCAPIMethod):
     """Test the CCAPI.set_product_description method."""
 
     RESPONSE = test_requests.TestSaveDescription.RESPONSE
@@ -321,7 +321,7 @@ class Test_set_product_description_Method(TestCCAPI):
         self.assertIn(self.PRODUCT_IDS[0], str(sent_data['prodids']))
 
 
-class Test_set_product_handling_time_Method(TestCCAPI):
+class Test_set_product_handling_time_Method(TestCCAPIMethod):
     """Test the CCAPI.set_product_handling_time method."""
 
     RESPONSE = test_requests.TestSaveHandlingTime.RESPONSE
@@ -344,7 +344,7 @@ class Test_set_product_handling_time_Method(TestCCAPI):
         self.assertDataSent('handlingTime', self.HANDLING_TIME)
 
 
-class Test_set_product_name_Method(TestCCAPI):
+class Test_set_product_name_Method(TestCCAPIMethod):
     """Test the CCAPI.set_product_name method."""
 
     RESPONSE = test_requests.TestSaveProductName.RESPONSE
@@ -374,7 +374,7 @@ class Test_set_product_name_Method(TestCCAPI):
         self.assertIn(self.PRODUCT_IDS[0], str(sent_data['prodids']))
 
 
-class Test_set_image_order_Method(TestCCAPI):
+class Test_set_image_order_Method(TestCCAPIMethod):
     """Test the CCAPI.set_image_order method."""
 
     RESPONSE = test_requests.TestSetImageOrder.RESPONSE
@@ -397,7 +397,7 @@ class Test_set_image_order_Method(TestCCAPI):
         self.assertDataSent('order', '^^'.join(self.IMAGE_IDS))
 
 
-class Test_set_product_option_value_Method(TestCCAPI):
+class Test_set_product_option_value_Method(TestCCAPIMethod):
     """Test the CCAPI.set_product_option_value method."""
 
     RESPONSE = test_requests.TestSetProductOptionValue.RESPONSE
@@ -439,7 +439,7 @@ class Test_set_product_option_value_Method(TestCCAPI):
         self.assertIn(self.PRODUCT_IDS[0], str(sent_data['prodids']))
 
 
-class Test_set_product_scope_Method(TestCCAPI):
+class Test_set_product_scope_Method(TestCCAPIMethod):
     """Test the CCAPI.set_product_scope method."""
 
     RESPONSE = test_requests.TestSetProductScope.RESPONSE
@@ -555,7 +555,7 @@ class Test_set_product_scope_Method(TestCCAPI):
         self.assertDataValueIsNone('ExternalID')
 
 
-class Test_set_product_base_price_Method(TestCCAPI):
+class Test_set_product_base_price_Method(TestCCAPIMethod):
     """Test the CCAPI.set_product_base_price method."""
 
     RESPONSE = test_requests.TestUpdateProductBasePrice.RESPONSE
@@ -580,7 +580,7 @@ class Test_set_product_base_price_Method(TestCCAPI):
         self.assertDataSent('price', self.PRICE)
 
 
-class Test_update_product_stock_level_Method(TestCCAPI):
+class Test_update_product_stock_level_Method(TestCCAPIMethod):
     """Test the CCAPI.update_product_stock_level method."""
 
     RESPONSE = test_requests.TestUpdateProductStockLevel.RESPONSE
@@ -612,7 +612,7 @@ class Test_update_product_stock_level_Method(TestCCAPI):
         self.assertDataSent('oldStockLevel', self.OLD_STOCK_LEVEL)
 
 
-class Test_set_product_vat_rate_Method(TestCCAPI):
+class Test_set_product_vat_rate_Method(TestCCAPIMethod):
     """Test the CCAPI.set_product_vat_rate method."""
 
     RESPONSE = test_requests.TestUpdateProductVatRate.RESPONSE
@@ -650,7 +650,7 @@ class Test_set_product_vat_rate_Method(TestCCAPI):
         self.assertDataSent('vatrate', self.VAT_RATE_ID)
 
 
-class Test_upload_image_Method(TestCCAPI):
+class Test_upload_image_Method(TestCCAPIMethod):
     """Test the CCAPI.upload_image method."""
 
     RESPONSE = test_requests.TestUploadImage.SUCCESSFUL_RESPONSE

@@ -3,7 +3,7 @@
 from ..test_CCAPI import TestCCAPI
 
 
-class TestCCAPI(TestCCAPI):
+class TestCCAPIMethod(TestCCAPI):
     """Base class for CCAPI tests."""
 
     pass
