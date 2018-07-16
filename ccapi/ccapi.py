@@ -715,7 +715,7 @@ class CCAPI:
         return requests.DeleteImage(image_id)
 
     @staticmethod
-    def upload_image(product_ids=[], channel_ids=[], image_file=None):
+    def upload_image(*, product_ids, channel_ids=[], image_file=None):
         """Add image to products.
 
         Kwargs:
