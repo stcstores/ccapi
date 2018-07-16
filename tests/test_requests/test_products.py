@@ -746,24 +746,23 @@ class TestUploadImage(TestRequest):
     PRODUCT_ID = '6909316'
     SUCCESSFUL_RESPONSE = {"result": "OK"}
     ERROR_RESPONSE = {"result": "File not found"}
+    IMAGE = open(os.path.join(os.path.dirname(__file__), '14602048.jpg'), 'rb')
 
     def setUp(self):
         """Get image to upload."""
         super().setUp()
         self.register(json=self.SUCCESSFUL_RESPONSE)
-        self.image = open(
-            os.path.join(os.path.dirname(__file__), '14602048.jpg'), 'rb')
 
     def test_UploadImage_request(self):
         """Test the UploadImage request."""
         response = self.mock_request(
-            product_ids=[self.PRODUCT_ID], image_file=self.image)
+            product_ids=[self.PRODUCT_ID], image_file=self.IMAGE)
         self.assertEqual(response, self.SUCCESSFUL_RESPONSE)
         self.assertQuerySent('prodIDs', [self.PRODUCT_ID])
 
     def test_UploadImage_request_with_single_product_ID(self):
         """Test the UploadImage request with a string arg for product_ids."""
-        self.mock_request(product_ids=self.PRODUCT_ID, image_file=self.image)
+        self.mock_request(product_ids=self.PRODUCT_ID, image_file=self.IMAGE)
         self.assertQuerySent('prodIDs', [self.PRODUCT_ID])
 
     def test_UploadImage_raises_for_invalid_response(self):
@@ -771,11 +770,11 @@ class TestUploadImage(TestRequest):
         self.register(json=self.ERROR_RESPONSE)
         with self.assertRaises(exceptions.CloudCommerceResponseError):
             self.mock_request(
-                product_ids=[self.PRODUCT_ID], image_file=self.image)
+                product_ids=[self.PRODUCT_ID], image_file=self.IMAGE)
 
     def test_UploadImage_raises_for_non_200(self):
         """Test UploadImage raises for non 200 responses."""
         self.register(json=self.SUCCESSFUL_RESPONSE, status_code=500)
         with self.assertRaises(exceptions.CloudCommerceResponseError):
             self.mock_request(
-                product_ids=[self.PRODUCT_ID], image_file=self.image)
+                product_ids=[self.PRODUCT_ID], image_file=self.IMAGE)
