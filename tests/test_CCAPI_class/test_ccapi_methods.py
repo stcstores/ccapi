@@ -441,3 +441,119 @@ class Test_set_product_option_value_Method(TestCCAPI):
             option_value_id=self.OPTION_VALUE_ID)
         sent_data = self.get_last_request_data()
         self.assertIn(self.PRODUCT_IDS[0], str(sent_data['prodids']))
+
+
+class Test_set_product_scope_Method(TestCCAPI):
+    """Test the CCAPI.set_product_scope method."""
+
+    RESPONSE = test_requests.TestSetProductScope.RESPONSE
+
+    PRODUCT_ID = '6909316'
+    WEIGHT = 50
+    HEIGHT = 25
+    LENGTH = 75
+    WIDTH = 90
+    LARGE_LETTER_COMPATIBLE = False
+    EXTERNAL_ID = '165481035'
+
+    def setUp(self):
+        """Make test request."""
+        super().setUp()
+        self.register_request(requests.SetProductScope, text=self.RESPONSE)
+
+    def test_product_ID_is_sent(self):
+        """Test the passed product ID is sent."""
+        CCAPI.set_product_scope(
+            product_id=self.PRODUCT_ID,
+            weight=self.WEIGHT,
+            height=self.HEIGHT,
+            length=self.LENGTH,
+            width=self.WIDTH,
+            large_letter_compatible=self.LARGE_LETTER_COMPATIBLE,
+            external_id=self.EXTERNAL_ID)
+        self.assertDataSent('ProductID', self.PRODUCT_ID)
+
+    def test_weight_is_sent(self):
+        """Test the passed weight is sent."""
+        CCAPI.set_product_scope(
+            product_id=self.PRODUCT_ID,
+            weight=self.WEIGHT,
+            height=self.HEIGHT,
+            length=self.LENGTH,
+            width=self.WIDTH,
+            large_letter_compatible=self.LARGE_LETTER_COMPATIBLE,
+            external_id=self.EXTERNAL_ID)
+        self.assertDataSent('Weight', self.WEIGHT)
+
+    def test_height_is_sent(self):
+        """Test the passed height is sent."""
+        CCAPI.set_product_scope(
+            product_id=self.PRODUCT_ID,
+            weight=self.WEIGHT,
+            height=self.HEIGHT,
+            length=self.LENGTH,
+            width=self.WIDTH,
+            large_letter_compatible=self.LARGE_LETTER_COMPATIBLE,
+            external_id=self.EXTERNAL_ID)
+        self.assertDataSent('Height', self.HEIGHT)
+
+    def test_length_is_sent(self):
+        """Test the passed length is sent."""
+        CCAPI.set_product_scope(
+            product_id=self.PRODUCT_ID,
+            weight=self.WEIGHT,
+            height=self.HEIGHT,
+            length=self.LENGTH,
+            width=self.WIDTH,
+            large_letter_compatible=self.LARGE_LETTER_COMPATIBLE,
+            external_id=self.EXTERNAL_ID)
+        self.assertDataSent('Length', self.LENGTH)
+
+    def test_width_is_sent(self):
+        """Test the passed width is sent."""
+        CCAPI.set_product_scope(
+            product_id=self.PRODUCT_ID,
+            weight=self.WEIGHT,
+            height=self.HEIGHT,
+            length=self.LENGTH,
+            width=self.WIDTH,
+            large_letter_compatible=self.LARGE_LETTER_COMPATIBLE,
+            external_id=self.EXTERNAL_ID)
+        self.assertDataSent('Width', self.WIDTH)
+
+    def test_large_letter_compatible_is_sent(self):
+        """Test the passed large letter compatibilty is sent."""
+        CCAPI.set_product_scope(
+            product_id=self.PRODUCT_ID,
+            weight=self.WEIGHT,
+            height=self.HEIGHT,
+            length=self.LENGTH,
+            width=self.WIDTH,
+            large_letter_compatible=self.LARGE_LETTER_COMPATIBLE,
+            external_id=self.EXTERNAL_ID)
+        self.assertDataSent(
+            'LargeLetterCompatible', int(self.LARGE_LETTER_COMPATIBLE))
+
+    def test_external_ID_is_sent(self):
+        """Test the passed external ID is sent."""
+        CCAPI.set_product_scope(
+            product_id=self.PRODUCT_ID,
+            weight=50,
+            height=25,
+            length=75,
+            width=90,
+            large_letter_compatible=False,
+            external_id=self.EXTERNAL_ID)
+        self.assertDataSent('ExternalID', self.EXTERNAL_ID)
+
+    def test_external_ID_None(self):
+        """Test no external ID is sent when None is passed."""
+        CCAPI.set_product_scope(
+            product_id=self.PRODUCT_ID,
+            weight=50,
+            height=25,
+            length=75,
+            width=90,
+            large_letter_compatible=False,
+            external_id=None)
+        self.assertDataValueIsNone('ExternalID')
