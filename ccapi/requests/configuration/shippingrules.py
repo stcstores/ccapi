@@ -4,7 +4,7 @@ ShippingRules request.
 Get courier shipping rules.
 """
 
-from ccapi.inventoryitems import CourierRule
+from ccapi.cc_objects import CourierRule
 
 from ..apirequest import APIRequest
 

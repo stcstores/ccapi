@@ -4,7 +4,7 @@ FindFactories request.
 Get list of suppliers.
 """
 
-from ccapi.inventoryitems import Factories, Factory
+from ccapi.cc_objects import Factories, Factory
 
 from ..apirequest import APIRequest
 

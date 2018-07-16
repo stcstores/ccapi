@@ -1,6 +1,6 @@
 """Tests for CCAPI's methods."""
 
-from ccapi import CCAPI, VatRates, inventoryitems, requests
+from ccapi import CCAPI, VatRates, cc_objects, requests
 
 from .. import test_data, test_requests
 from .test_CCAPI_class import TestCCAPI
@@ -189,7 +189,7 @@ class Test_get_product_factory_links_Method(TestCCAPI):
 
     def test_returns_FactoryLinks_instance(self):
         """Test returns FactoryLinks instance."""
-        self.assertIsInstance(self.factories, inventoryitems.FactoryLinks)
+        self.assertIsInstance(self.factories, cc_objects.FactoryLinks)
 
 
 class Test_get_product_Method(TestCCAPI):
@@ -207,10 +207,10 @@ class Test_get_product_Method(TestCCAPI):
 
     def test_get_product_sends_correct_product_ID(self):
         """Test CCAPI.get_product sends the passed product ID ."""
-        self.assertIsInstance(self.product, inventoryitems.Product)
+        self.assertIsInstance(self.product, cc_objects.Product)
 
     def test_get_product_returns_a_product(self):
-        """Test CCAPI.get_product returns an inventoryitems.Product."""
+        """Test CCAPI.get_product returns an cc_objects.Product."""
         self.assertDataSent('ProductID', self.PRODUCT_ID)
 
 
@@ -229,10 +229,10 @@ class Test_get_options_for_product_Method(TestCCAPI):
 
     def test_get_product_sends_correct_product_ID(self):
         """Test CCAPI.get_product sends the passed product ID ."""
-        self.assertIsInstance(self.product, inventoryitems.ProductOptions)
+        self.assertIsInstance(self.product, cc_objects.ProductOptions)
 
     def test_get_product_returns_a_product(self):
-        """Test CCAPI.get_product returns an inventoryitems.Product."""
+        """Test CCAPI.get_product returns an cc_objects.Product."""
         self.assertDataSent('ProductID', self.PRODUCT_ID)
 
 

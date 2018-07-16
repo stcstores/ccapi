@@ -1,7 +1,7 @@
 """This module contains the main CCAPI class for ccapi."""
 
 from . import requests
-from .inventoryitems import VatRates
+from .cc_objects import VatRates
 from .requests import CloudCommerceAPISession
 
 
@@ -100,7 +100,7 @@ class CCAPI:
         Args:
             product_id: ID of product.
 
-        Returns ccapi.inventoryitems.productoptions.ProductOptions.
+        Returns ccapi.cc_objects.productoptions.ProductOptions.
 
         """
         response = requests.FindProductSelectedOptionsOnly(product_id)
@@ -120,7 +120,7 @@ class CCAPI:
         Args:
             range_id: ID of product range.
 
-        Returns ccapi.inventoryitems.productoptions.ProductOptions.
+        Returns ccapi.cc_objects.productoptions.ProductOptions.
 
         """
         response = requests.GetProductData(range_id)
@@ -134,7 +134,7 @@ class CCAPI:
         Args:
             range_id: ID of product range.
 
-        Returns ccapi.inventoryitems.productoptions.ShopOptions.
+        Returns ccapi.cc_objects.productoptions.ShopOptions.
 
         """
         response = requests.GetProductData(range_id)
@@ -145,7 +145,7 @@ class CCAPI:
         """
         Get all available Product Options.
 
-        Returns ccapi.inventoryitems.productoptions.ProductOptions.
+        Returns ccapi.cc_objects.productoptions.ProductOptions.
 
         """
         return requests.GetOptions()
@@ -158,7 +158,7 @@ class CCAPI:
         Args:
             option_id: ID of Product Option.
 
-        Returns ccapi.inventoryitems.productoptions.ProductOptions.
+        Returns ccapi.cc_objects.productoptions.ProductOptions.
 
         """
         return requests.GetOptionData(option_id)
@@ -285,7 +285,7 @@ class CCAPI:
         Args:
             range_id: ID of Range.
 
-        Returns ccapi.inventoryitems.ProductRange.
+        Returns ccapi.cc_objects.ProductRange.
 
         """
         return requests.GetProductsForRange(range_id)

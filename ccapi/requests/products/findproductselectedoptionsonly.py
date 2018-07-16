@@ -5,7 +5,7 @@ Gets selected product options for given product.
 """
 
 from ccapi.exceptions import ProductNotFoundError
-from ccapi.inventoryitems import AppliedProductOptions, Product
+from ccapi.cc_objects import AppliedProductOptions, Product
 
 from ..apirequest import APIRequest
 

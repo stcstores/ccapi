@@ -4,7 +4,7 @@ GetOptionData request.
 Gets values for a given product option.
 """
 
-from ccapi.inventoryitems import ProductOptionValue
+from ccapi.cc_objects import ProductOptionValue
 
 from ..apirequest import APIRequest
 

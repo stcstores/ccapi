@@ -4,7 +4,7 @@ FindProductFactoryLinks request.
 Get Factory links for Product.
 """
 
-from ccapi.inventoryitems import FactoryLink, FactoryLinks
+from ccapi.cc_objects import FactoryLink, FactoryLinks
 
 from ..apirequest import APIRequest
 

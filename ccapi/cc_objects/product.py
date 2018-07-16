@@ -83,7 +83,7 @@ class Product:
         """
         Product Options for this Product.
 
-        ccapi.inventoryitems.ProductOptions object with the Product Options
+        ccapi.cc_objects.ProductOptions object with the Product Options
         applied to this Product.
         """
         if self._options is None:

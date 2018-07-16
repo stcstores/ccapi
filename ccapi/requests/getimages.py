@@ -5,7 +5,7 @@ Gets images for a Product.
 """
 from bs4 import BeautifulSoup
 
-from ..inventoryitems import ProductImage
+from ..cc_objects import ProductImage
 from .apirequest import APIRequest
 
 

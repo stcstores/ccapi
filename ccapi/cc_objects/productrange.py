@@ -133,7 +133,7 @@ class ProductRange:
         """
         Product Options for this Product Range.
 
-        ccapi.inventoryitems.ProductOptions object with the Product Options
+        ccapi.cc_objects.ProductOptions object with the Product Options
         applied to this Product Range.
         """
         if self._options is None:
@@ -156,7 +156,7 @@ class ProductRange:
                 Default: None.
             vat_rate_id: ID of VAT rate for product. Default: 5.
 
-        Returns: (ccapi.inventoryitems.Product) New Product.
+        Returns: (ccapi.cc_objects.Product) New Product.
 
         """
         product_id = ccapi.CCAPI.create_product(

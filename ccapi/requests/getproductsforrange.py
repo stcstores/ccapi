@@ -4,7 +4,7 @@ GetProductsForRange request.
 Gets information about a given product range.
 """
 
-from ..inventoryitems import ProductRange
+from ..cc_objects import ProductRange
 from .apirequest import APIRequest
 
 

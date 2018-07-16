@@ -2,7 +2,7 @@
 
 import os
 
-from ccapi import exceptions, inventoryitems
+from ccapi import cc_objects, exceptions
 from ccapi.requests import products
 
 from .. import test_data
@@ -219,12 +219,12 @@ class TestFindProductFactoryLinks(TestRequest):
     def test_FindProductFactoryLinks_returns_FactoryLinks(self):
         """Test the request returns an instance of FactoryLinks."""
         response = self.mock_request(self.PRODUCT_ID)
-        self.assertIsInstance(response, inventoryitems.FactoryLinks)
+        self.assertIsInstance(response, cc_objects.FactoryLinks)
 
     def test_FindProductFactoryLinks_response_contains_factory_links(self):
         """Test returned object contains instances of FactoryLink."""
         response = self.mock_request(self.PRODUCT_ID)
-        self.assertIsInstance(response[0], inventoryitems.FactoryLink)
+        self.assertIsInstance(response[0], cc_objects.FactoryLink)
 
     def test_FindProductFactoryLinks_contains_factory_link_data(self):
         """Test the correct data is returned."""
@@ -239,7 +239,7 @@ class TestFindProductFactoryLinks(TestRequest):
         """Test FindProductFactoryLinks for a product with no links."""
         self.register(json=[])
         response = self.mock_request(self.PRODUCT_ID)
-        self.assertIsInstance(response, inventoryitems.FactoryLinks)
+        self.assertIsInstance(response, cc_objects.FactoryLinks)
         self.assertEqual(len(response), 0)
 
     def test_FindProductFactoryLinks_raises_for_non_200(self):
@@ -288,7 +288,7 @@ class TestFindProductSelectedOptionsOnly(TestRequest):
     def test_FindProductSelectedOptionsOnly_returns_a_product(self):
         """Test the request returns and instance of a product."""
         response = self.make_request()
-        self.assertIsInstance(response.product, inventoryitems.Product)
+        self.assertIsInstance(response.product, cc_objects.Product)
         self.assertEqual(response.product.id, self.PRODUCT_ID)
 
     def test_FindProductSelectedOptionsOnly_sets_product_stock_level(self):
@@ -301,7 +301,7 @@ class TestFindProductSelectedOptionsOnly(TestRequest):
         """Test the request returns the Product's Product Options."""
         response = self.make_request()
         self.assertIsInstance(
-            response.options, inventoryitems.AppliedProductOptions)
+            response.options, cc_objects.AppliedProductOptions)
         self.assertGreater(len(response.options), 0)
 
     def test_FindProductSelectedOptionsOnly_with_non_existant_product(self):

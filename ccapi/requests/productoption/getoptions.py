@@ -3,7 +3,7 @@
 Gets list of available product options.
 """
 
-from ccapi.inventoryitems import ProductOption, ProductOptions
+from ccapi.cc_objects import ProductOption, ProductOptions
 
 from ..apirequest import APIRequest
 
