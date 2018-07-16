@@ -79,3 +79,8 @@ class TestCCAPI(unittest.TestCase):
                 sent_data[data_key], [str(value) for value in expected_value])
         else:
             self.assertEqual(sent_data[data_key][0], [str(expected_value)][0])
+
+    def assertDataValueIsNone(self, data_key):
+        """Test that request data contains the correct data."""
+        sent_data = self.get_last_request_data()
+        self.assertIsNone(sent_data.get(data_key), None)
