@@ -35,13 +35,11 @@ class Test_create_product_Method(TestCCAPI):
         'vat_rate': 20,
     }
     CREATED_PRODUCT_ID = test_requests.TestAddProduct.CREATED_PRODUCT_ID
-    SUCCESSFUL_RESPONSE = test_requests.TestAddProduct.SUCCESSFUL_RESPONSE
-    FAILED_RESPONSE = test_requests.TestAddProduct.FAILED_RESPONSE
+    RESPONSE = test_requests.TestAddProduct.SUCCESSFUL_RESPONSE
 
     def test_create_product(self):
         """Test CCAPI can add a product to a range."""
-        self.register_request(
-            requests.AddProduct, text=self.SUCCESSFUL_RESPONSE)
+        self.register_request(requests.AddProduct, text=self.RESPONSE)
         CCAPI.create_product(
             range_id=self.REQUEST_KWARGS['range_id'],
             name=self.REQUEST_KWARGS['name'],
@@ -61,8 +59,7 @@ class Test_create_product_Method(TestCCAPI):
 
     def test_create_product_without_sku(self):
         """Test create_product generates a SKU."""
-        self.register_request(
-            requests.AddProduct, text=self.SUCCESSFUL_RESPONSE)
+        self.register_request(requests.AddProduct, text=self.RESPONSE)
         self.register_request(
             requests.ProductOperations, json=Test_get_sku_Method.RESPONSE)
         CCAPI.create_product(
@@ -76,8 +73,7 @@ class Test_create_product_Method(TestCCAPI):
 
     def test_create_product_without_description(self):
         """Test create_product handles description not being passed."""
-        self.register_request(
-            requests.AddProduct, text=self.SUCCESSFUL_RESPONSE)
+        self.register_request(requests.AddProduct, text=self.RESPONSE)
         CCAPI.create_product(
             range_id=self.REQUEST_KWARGS['range_id'],
             name=self.REQUEST_KWARGS['name'],
