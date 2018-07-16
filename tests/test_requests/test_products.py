@@ -1,4 +1,4 @@
-"""Tests for product barcode requests."""
+"""Tests for product barcode requests.""" ''
 
 import os
 
@@ -543,25 +543,48 @@ class TestSetProductScope(TestRequest):
 
     request_class = products.SetProductScope
     RESPONSE = 'true'
+
     PRODUCT_ID = '6909316'
+    WEIGHT = 50
+    HEIGHT = 25
+    LENGTH = 75
+    WIDTH = 90
+    LARGE_LETTER_COMPATIBLE = False
+    EXTERNAL_ID = '165481035'
 
     def test_SetProductScope_request(self):
         """Test the setProductScope request."""
         self.register(text=self.RESPONSE)
         response = self.mock_request(
             product_id=self.PRODUCT_ID,
-            weight=50,
-            height=25,
-            length=75,
-            width=90,
-            large_letter_compatible=False)
+            weight=self.WEIGHT,
+            height=self.HEIGHT,
+            length=self.LENGTH,
+            width=self.WIDTH,
+            large_letter_compatible=self.LARGE_LETTER_COMPATIBLE,
+            external_id=self.EXTERNAL_ID)
         self.assertEqual(response, self.RESPONSE)
         self.assertDataSent('ProductID', self.PRODUCT_ID)
-        self.assertDataSent('Weight', '50')
-        self.assertDataSent('Height', '25')
-        self.assertDataSent('Length', '75')
-        self.assertDataSent('Width', '90')
-        self.assertDataSent('LargeLetterCompatible', '0')
+        self.assertDataSent('Weight', self.WEIGHT)
+        self.assertDataSent('Height', self.HEIGHT)
+        self.assertDataSent('Length', self.LENGTH)
+        self.assertDataSent('Width', self.WIDTH)
+        self.assertDataSent(
+            'LargeLetterCompatible', int(self.LARGE_LETTER_COMPATIBLE))
+        self.assertDataSent('ExternalID', self.EXTERNAL_ID)
+
+    def test_SetProductScope_with_no_externale_id(self):
+        """Test the SetProductScope method with None as the external ID."""
+        self.register(text=self.RESPONSE)
+        self.mock_request(
+            product_id=self.PRODUCT_ID,
+            weight=self.WEIGHT,
+            height=self.HEIGHT,
+            length=self.LENGTH,
+            width=self.WIDTH,
+            large_letter_compatible=self.LARGE_LETTER_COMPATIBLE,
+            external_id=None)
+        self.assertDataValueIsNone('ExternalID')
 
     def test_SetProductScope_raises_for_non_200(self):
         """Test setProductScope raises on non 200 response."""
