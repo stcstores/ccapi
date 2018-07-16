@@ -355,7 +355,7 @@ class CCAPI:
             large_letter_compatible,
             external_id=None):
         """
-        Create setProductScope request.
+        Set the scope of a product.
 
         Sets weight, height, length, width, large letter compatibilty and
         external ID.
