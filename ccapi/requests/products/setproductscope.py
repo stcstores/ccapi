@@ -24,7 +24,7 @@ class SetProductScope(APIRequest):
             length,
             width,
             large_letter_compatible,
-            external_id=''):
+            external_id=None):
         """
         Create setProductScope request.
 
@@ -64,7 +64,7 @@ class SetProductScope(APIRequest):
             'Length': self.length,
             'Width': self.width,
             'LargeLetterCompatible': int(bool(self.large_letter_compatible)),
-            'ExternalID': self.external_id
+            'ExternalID': self.external_id or ''
         }
 
     def get_params(self):
