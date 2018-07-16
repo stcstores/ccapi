@@ -582,3 +582,35 @@ class Test_set_product_base_price_Method(TestCCAPI):
     def test_passed_price_is_sent(self):
         """Test the passed price is sent."""
         self.assertDataSent('price', self.PRICE)
+
+
+class Test_update_product_stock_level_Method(TestCCAPI):
+    """Test the CCAPI.update_product_stock_level method."""
+
+    RESPONSE = test_requests.TestUpdateProductStockLevel.RESPONSE
+
+    PRODUCT_ID = '6909316'
+    NEW_STOCK_LEVEL = 5
+    OLD_STOCK_LEVEL = 10
+
+    def setUp(self):
+        """Make test request."""
+        super().setUp()
+        self.register_request(
+            requests.UpdateProductStockLevel, text=self.RESPONSE)
+        CCAPI.update_product_stock_level(
+            product_id=self.PRODUCT_ID,
+            new_stock_level=self.NEW_STOCK_LEVEL,
+            old_stock_level=self.OLD_STOCK_LEVEL)
+
+    def test_passed_product_ID_is_sent(self):
+        """Test the passed product ID is sent."""
+        self.assertDataSent('ProductID', self.PRODUCT_ID)
+
+    def test_passed_new_stock_level_is_sent(self):
+        """Test the passed new stock level is sent."""
+        self.assertDataSent('newStockLevel', self.NEW_STOCK_LEVEL)
+
+    def test_passed_old_stock_level_is_sent(self):
+        """Test the passed old stock level is sent."""
+        self.assertDataSent('oldStockLevel', self.OLD_STOCK_LEVEL)
