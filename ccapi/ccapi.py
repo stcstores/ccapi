@@ -346,8 +346,14 @@ class CCAPI:
 
     @staticmethod
     def set_product_scope(
-            product_id, weight, height, lenght, width, large_letter_compatible,
-            external_id):
+            *,
+            product_id,
+            weight,
+            height,
+            length,
+            width,
+            large_letter_compatible,
+            external_id=None):
         """
         Create setProductScope request.
 
@@ -365,8 +371,13 @@ class CCAPI:
             external_id: External ID of product.
         """
         return requests.SetProductScope(
-            product_id, weight, height, lenght, width, large_letter_compatible,
-            external_id)
+            product_id=product_id,
+            weight=weight,
+            height=height,
+            length=length,
+            width=width,
+            large_letter_compatible=large_letter_compatible,
+            external_id=external_id)
 
     @staticmethod
     def set_product_base_price(product_id, price):
