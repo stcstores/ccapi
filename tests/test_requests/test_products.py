@@ -678,17 +678,22 @@ class TestUpdateProductStockLevel(TestRequest):
     request_class = products.UpdateProductStockLevel
 
     RESPONSE = 'Success'
+
     PRODUCT_ID = '6909316'
+    NEW_STOCK_LEVEL = 5
+    OLD_STOCK_LEVEL = 10
 
     def test_UpdateProductStockLevel_request(self):
         """Test UpdateProductStockLevel request."""
         self.register(text=self.RESPONSE)
         response = self.mock_request(
-            product_id=self.PRODUCT_ID, new_stock_level=5, old_stock_level=10)
+            product_id=self.PRODUCT_ID,
+            new_stock_level=self.NEW_STOCK_LEVEL,
+            old_stock_level=self.OLD_STOCK_LEVEL)
         self.assertEqual(response, self.RESPONSE)
         self.assertDataSent('ProductID', self.PRODUCT_ID)
-        self.assertDataSent('newStockLevel', '5')
-        self.assertDataSent('oldStockLevel', '10')
+        self.assertDataSent('newStockLevel', self.NEW_STOCK_LEVEL)
+        self.assertDataSent('oldStockLevel', self.OLD_STOCK_LEVEL)
 
     def test_UpdateProductStockLevel_raises_for_non_200(self):
         """Test UpdateProductStockLevel raises for non 200 responses."""
@@ -696,8 +701,8 @@ class TestUpdateProductStockLevel(TestRequest):
         with self.assertRaises(exceptions.CloudCommerceResponseError):
             self.mock_request(
                 product_id=self.PRODUCT_ID,
-                new_stock_level=5,
-                old_stock_level=10)
+                new_stock_level=self.NEW_STOCK_LEVEL,
+                old_stock_level=self.OLD_STOCK_LEVEL)
 
 
 class TestUpdateProductVatRate(TestRequest):
