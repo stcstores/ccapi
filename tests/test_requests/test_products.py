@@ -654,20 +654,22 @@ class TestUpdateProductBasePrice(TestRequest):
 
     RESPONSE = 'Success'
     PRODUCT_ID = '6909316'
+    PRICE = '6.25'
 
     def test_UpdateProductBasePrice_request(self):
         """Test the UpdateProductBasePrice request."""
         self.register(text=self.RESPONSE)
-        response = self.mock_request(product_id=self.PRODUCT_ID, price=2.50)
+        response = self.mock_request(
+            product_id=self.PRODUCT_ID, price=self.PRICE)
         self.assertEqual(response, self.RESPONSE)
         self.assertDataSent('prodid', self.PRODUCT_ID)
-        self.assertDataSent('price', '2.5')
+        self.assertDataSent('price', self.PRICE)
 
     def test_UpdateProductBasePrice_raises_for_non_200(self):
         """Test the UpdateProductBasePrice raises for non 200 responses."""
         self.register(text=self.RESPONSE, status_code=500)
         with self.assertRaises(exceptions.CloudCommerceResponseError):
-            self.mock_request(product_id=self.PRODUCT_ID, price=2.50)
+            self.mock_request(product_id=self.PRODUCT_ID, price=self.PRICE)
 
 
 class TestUpdateProductStockLevel(TestRequest):
