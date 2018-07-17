@@ -197,7 +197,7 @@ class CCAPI:
         """
         if sku is None:
             sku = cls.get_sku(range_sku=True)
-        new_range_id = requests.AddNewRange(range_name, sku)
+        new_range_id = requests.AddNewRange(range_name=range_name, sku=sku)
         return new_range_id
 
     @staticmethod
