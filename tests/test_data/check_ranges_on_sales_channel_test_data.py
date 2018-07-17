@@ -1,0 +1,51 @@
+"""Example respose data for the CheckRangesOnSalesChannel request."""
+
+CHECK_RANGES_ON_SALES_CHANNEL_RESULT = [
+    {
+        "ID": 3541,
+        "Name": "Sales Channel 1",
+        "Domain": None,
+        "BrandID": 0,
+        "AccountID": 0,
+        "BrandName": None,
+        "CountryID": 0,
+        "CountryName": None,
+        "AccountName": None,
+        "PreOrder": 0,
+        "TypeID": 0,
+        "TypeName": "TelephoneOrders",
+        "NominalCodeID": 0,
+        "NominalCodeName": None,
+        "ExtShopID": 0,
+        "PseudoStockLevelType": 0,
+        "CurrencySymbol": None,
+        "LoyaltyPointPerValue": 0.0,
+        "LoyaltyValuePerPoint": 0.0,
+        "disabled": False,
+        "deleted": False,
+        "Note": ""
+    }, {
+        "ID": 3557,
+        "Name": "Sales Channel 1",
+        "Domain": None,
+        "BrandID": 0,
+        "AccountID": 0,
+        "BrandName": None,
+        "CountryID": 0,
+        "CountryName": None,
+        "AccountName": None,
+        "PreOrder": 0,
+        "TypeID": 0,
+        "TypeName": "WooCommerce",
+        "NominalCodeID": 0,
+        "NominalCodeName": None,
+        "ExtShopID": 0,
+        "PseudoStockLevelType": 0,
+        "CurrencySymbol": None,
+        "LoyaltyPointPerValue": 0.0,
+        "LoyaltyValuePerPoint": 0.0,
+        "disabled": False,
+        "deleted": False,
+        "Note": ""
+    }
+]

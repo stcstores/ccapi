@@ -1,8 +1,9 @@
 """Tests for range requests."""
 
-from ccapi import exceptions
+from ccapi import cc_objects, exceptions
 from ccapi.requests import range
 
+from .. import test_data
 from .test_request import TestRequest
 
 
@@ -72,7 +73,7 @@ class TestAddRemProductOption(TestRequest):
     request_class = range.AddRemProductOption
 
     RESPONSE = ''
-    PRODUCT_ID = '4462752'
+    RANGE_ID = '4462752'
     OPTION_ID = '32129'
 
     def setUp(self):
@@ -83,8 +84,8 @@ class TestAddRemProductOption(TestRequest):
     def test_add_action(self):
         """Test the add action of the AddRemProductOption request."""
         self.mock_request(
-            product_id=self.PRODUCT_ID, option_id=self.OPTION_ID, add=True)
-        self.assertDataSent('prdid', self.PRODUCT_ID)
+            product_id=self.RANGE_ID, option_id=self.OPTION_ID, add=True)
+        self.assertDataSent('prdid', self.RANGE_ID)
         self.assertDataSent('optid', self.OPTION_ID)
         self.assertDataSent('act', 'add')
         self.assertDataSent('ebyopt', 0)
@@ -98,8 +99,8 @@ class TestAddRemProductOption(TestRequest):
     def test_rem_action(self):
         """Test the rem action of the AddRemProductOption request."""
         self.mock_request(
-            product_id=self.PRODUCT_ID, option_id=self.OPTION_ID, remove=True)
-        self.assertDataSent('prdid', self.PRODUCT_ID)
+            product_id=self.RANGE_ID, option_id=self.OPTION_ID, remove=True)
+        self.assertDataSent('prdid', self.RANGE_ID)
         self.assertDataSent('optid', self.OPTION_ID)
         self.assertDataSent('act', 'rem')
 
@@ -108,13 +109,13 @@ class TestAddRemProductOption(TestRequest):
         self.register(text=self.RESPONSE, status_code=500)
         with self.assertRaises(exceptions.CloudCommerceResponseError):
             self.mock_request(
-                product_id=self.PRODUCT_ID, option_id=self.OPTION_ID, add=True)
+                product_id=self.RANGE_ID, option_id=self.OPTION_ID, add=True)
 
     def test_add_and_remove_both_True(self):
         """Test the request with both add and remove arguments True."""
         with self.assertRaises(ValueError):
             self.mock_request(
-                product_id=self.PRODUCT_ID,
+                product_id=self.RANGE_ID,
                 option_id=self.OPTION_ID,
                 add=True,
                 remove=True)
@@ -123,7 +124,7 @@ class TestAddRemProductOption(TestRequest):
         """Test the request with both add and remove arguments False."""
         with self.assertRaises(ValueError):
             self.mock_request(
-                product_id=self.PRODUCT_ID,
+                product_id=self.RANGE_ID,
                 option_id=self.OPTION_ID,
                 add=False,
                 remove=False)
@@ -134,7 +135,42 @@ class TestCheckRangesOnSalesChannel(TestRequest):
 
     request_class = range.CheckRangesOnSalesChannel
 
-    # TODO
+    RESPONSE = test_data.CHECK_RANGES_ON_SALES_CHANNEL_RESULT
+    EMPTY_RESPONSE = []
+    RANGE_ID = '4462752'
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register(json=self.RESPONSE)
+
+    def test_sends_range_id(self):
+        """Test the CheckRangesOnSalesChannel sends the passed range ID."""
+        self.mock_request(self.RANGE_ID)
+        self.assertDataSent('rangeid', self.RANGE_ID)
+        self.assertDataSent('brandid', 341)
+
+    def test_returns_list(self):
+        """Test the CheckRangesOnSalesChannel request returns a list."""
+        response = self.mock_request(self.RANGE_ID)
+        self.assertIsInstance(response, list)
+
+    def test_returns_list_of_sales_channels(self):
+        """Test the request returns a list of ccapi.cc_objects.SalesChannel."""
+        response = self.mock_request(self.RANGE_ID)
+        self.assertIsInstance(response[0], cc_objects.SalesChannel)
+
+    def test_returns_empty_list_for_empty_response(self):
+        """Test the request returns an empty list when no channels exist."""
+        self.register(json=[])
+        response = self.mock_request(self.RANGE_ID)
+        self.assertEqual(response, [])
+
+    def test_raises_for_non_200(self):
+        """Test the request raises for non 200 responses."""
+        self.register(json=[], status_code=500)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request(self.RANGE_ID)
 
 
 class TestDeleteProductRange(TestRequest):
