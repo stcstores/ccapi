@@ -672,7 +672,7 @@ class CCAPI:
 
     @staticmethod
     def get_sales_channels_for_range(range_id):
-        """Create checkRangesOnSalesChannel request.
+        """Return a list of sales channels for the given Product Range.
 
         Args:
             range_id: ID of Product Range.
