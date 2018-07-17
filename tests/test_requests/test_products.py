@@ -1,4 +1,4 @@
-"""Tests for product barcode requests."""
+"""Tests for product requests."""
 
 import os
 
