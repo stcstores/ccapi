@@ -232,3 +232,21 @@ class Test_set_stock_level_Method(TestProduct):
         self.assertDataSent('ProductID', self.PRODUCT_ID)
         self.assertDataSent('newStockLevel', new_stock_level)
         self.assertDataSent('oldStockLevel', original_stock_level)
+
+
+class Test_set_description_Method(TestProduct):
+    """Test the set_description method."""
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register_request(
+            requests.SaveDescription,
+            text=test_requests.TestSaveDescription.RESPONSE)
+
+    def test_set_description(self):
+        """Test the set_description method."""
+        description = 'Product Description\n'
+        self.product.set_description(description)
+        self.assertDataSent('prodids', [self.PRODUCT_ID])
+        self.assertDataSent('desc', description)

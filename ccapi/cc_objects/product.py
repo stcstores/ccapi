@@ -233,7 +233,8 @@ class Product:
 
     def set_description(self, description):
         """Set description for Product."""
-        ccapi.CCAPI.set_product_description(description, [self.id])
+        ccapi.CCAPI.set_product_description(
+            product_ids=[self.id], description=description)
 
     def add_bay(self, bay):
         """Add product to Warehouse Bay."""
