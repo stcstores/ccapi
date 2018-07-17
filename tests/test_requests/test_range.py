@@ -71,7 +71,62 @@ class TestAddRemProductOption(TestRequest):
 
     request_class = range.AddRemProductOption
 
-    # TODO
+    RESPONSE = ''
+    PRODUCT_ID = '4462752'
+    OPTION_ID = '32129'
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register(text=self.RESPONSE)
+
+    def test_add_action(self):
+        """Test the add action of the AddRemProductOption request."""
+        self.mock_request(
+            product_id=self.PRODUCT_ID, option_id=self.OPTION_ID, add=True)
+        self.assertDataSent('prdid', self.PRODUCT_ID)
+        self.assertDataSent('optid', self.OPTION_ID)
+        self.assertDataSent('act', 'add')
+        self.assertDataSent('ebyopt', 0)
+        self.assertDataSent('ebyimg', 0)
+        self.assertDataSent('amaopt', 0)
+        self.assertDataSent('amaimg', 0)
+        self.assertDataSent('shpfil', 0)
+        self.assertDataSent('shpgrp', 0)
+        self.assertDataSent('shpsel', 0)
+
+    def test_rem_action(self):
+        """Test the rem action of the AddRemProductOption request."""
+        self.mock_request(
+            product_id=self.PRODUCT_ID, option_id=self.OPTION_ID, remove=True)
+        self.assertDataSent('prdid', self.PRODUCT_ID)
+        self.assertDataSent('optid', self.OPTION_ID)
+        self.assertDataSent('act', 'rem')
+
+    def test_AddRemProductOption_raises_for_non_200(self):
+        """Test the AddRemProductOption request raises for non 200 response."""
+        self.register(text=self.RESPONSE, status_code=500)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request(
+                product_id=self.PRODUCT_ID, option_id=self.OPTION_ID, add=True)
+
+    def test_add_and_remove_both_True(self):
+        """Test the request with both add and remove arguments True."""
+        with self.assertRaises(ValueError):
+            self.mock_request(
+                product_id=self.PRODUCT_ID,
+                option_id=self.OPTION_ID,
+                add=True,
+                remove=True)
+
+    def test_add_and_remove_both_False(self):
+        """Test the request with both add and remove arguments False."""
+        with self.assertRaises(ValueError):
+            self.mock_request(
+                product_id=self.PRODUCT_ID,
+                option_id=self.OPTION_ID,
+                add=False,
+                remove=False)
 
 
 class TestCheckRangesOnSalesChannel(TestRequest):
