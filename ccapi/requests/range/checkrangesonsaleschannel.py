@@ -33,11 +33,8 @@ class CheckRangesOnSalesChannel(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
+        self.raise_for_non_200(
+            self, response, (
+                f'Error getting sales channels for product range with '
+                'ID "{self.range_id}"'))
         return [SalesChannel(channel) for channel in response.json()]
-        self.loyalty_value_per_point = data.get('LoyaltyValuePerPoint', None)
-        self.disabled = data.get('disabled', None)
-        self.deleted = data.get('deleted', None)
-        self.note = data.get('Note', None)
-
-    def __repr__(self):
-        return 'Sales Channel: {}'.format(self.name)
