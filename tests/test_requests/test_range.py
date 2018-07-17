@@ -64,3 +64,51 @@ class TestAddNewRange(TestRequest):
         self.register(text=self.RESPONSE, status_code=500)
         with self.assertRaises(exceptions.CloudCommerceResponseError):
             self.mock_request(range_name=self.RANGE_NAME, sku=self.SKU)
+
+
+class TestAddRemProductOption(TestRequest):
+    """Test the AddRemProductOption request."""
+
+    request_class = range.AddRemProductOption
+
+    # TODO
+
+
+class TestCheckRangesOnSalesChannel(TestRequest):
+    """Test the CheckRangesOnSalesChannel request."""
+
+    request_class = range.CheckRangesOnSalesChannel
+
+    # TODO
+
+
+class TestDeleteProductRange(TestRequest):
+    """Test the DeleteProductRange request."""
+
+    request_class = range.DeleteProductRange
+
+    # TODO
+
+
+class TestSetOptionSelect(TestRequest):
+    """Test the SetOptionSelect request."""
+
+    request_class = range.SetOptionSelect
+
+    # TODO
+
+
+class TestUpdateOnSalesChannel(TestRequest):
+    """Test the UpdateRangeOnSalesChannel request."""
+
+    request_class = range.UpdateRangeOnSalesChannel
+
+    # TODO
+
+
+class TestUpdateRangeSettings(TestRequest):
+    """Test the UpdateRangeSettings request."""
+
+    request_class = range.UpdateRangeSettings
+
+    # TODO
