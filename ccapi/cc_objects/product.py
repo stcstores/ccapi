@@ -217,7 +217,9 @@ class Product:
         if old_stock_level is None:
             old_stock_level = self.stock_level
         ccapi.CCAPI.update_product_stock_level(
-            self.id, new_stock_level, old_stock_level)
+            product_id=self.id,
+            new_stock_level=new_stock_level,
+            old_stock_level=old_stock_level)
 
     def set_name(self, name):
         """Set name of Product."""

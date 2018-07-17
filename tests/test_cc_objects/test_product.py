@@ -212,3 +212,23 @@ class TestProductAttributes(TestProduct):
     def test_dimensions(self):
         """Test the dimensions attribute."""
         self.check_attribute('dimensions', self.PRODUCT_DATA['Dimensions'])
+
+
+class Test_set_stock_level_Method(TestProduct):
+    """Test the set_stock_level method."""
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register_request(
+            requests.UpdateProductStockLevel,
+            text=test_requests.TestUpdateProductStockLevel.RESPONSE)
+
+    def test_set_stock_level(self):
+        """Test the Product.set_stock_level method."""
+        original_stock_level = self.product.stock_level
+        new_stock_level = 5
+        self.product.set_stock_level(new_stock_level)
+        self.assertDataSent('ProductID', self.PRODUCT_ID)
+        self.assertDataSent('newStockLevel', new_stock_level)
+        self.assertDataSent('oldStockLevel', original_stock_level)
