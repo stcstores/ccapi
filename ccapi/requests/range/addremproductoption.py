@@ -10,9 +10,11 @@ from ..apirequest import APIRequest
 class AddRemProductOption(APIRequest):
     """AddRemProductOption request."""
 
-    uri = '/Handlers/Range/addRemProductOption.ashx'
+    uri = 'Handlers/Range/addRemProductOption.ashx'
+    ADD = 'add'
+    REMOVE = 'rem'
 
-    def __new__(self, product_id, option_id, action='add'):
+    def __new__(self, *, product_id, option_id, add=False, remove=False):
         """Create AddRemProductOption request.
 
         Args:
@@ -23,9 +25,13 @@ class AddRemProductOption(APIRequest):
             action (str): Action to perform,  'add' or 'rem'. Default: 'add'.
         """
         self.product_id = product_id
-        self.product_id = product_id
         self.option_id = option_id
-        self.action = action
+        if add is True and remove is True or add is False and remove is False:
+            raise ValueError('Either add or remove must be True.')
+        if add is True:
+            self.action = self.ADD
+        else:
+            self.action = self.REMOVE
         return super().__new__(self)
 
     def get_data(self):
