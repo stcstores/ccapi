@@ -14,9 +14,9 @@ class AddNewRange(APIRequest):
 
     def __new__(
             self,
+            *,
             range_name,
             sku,
-            product_range_id=0,
             end_of_line=0,
             group_all_items=0,
             pre_order=0):
@@ -34,7 +34,6 @@ class AddNewRange(APIRequest):
         """
         self.range_name = range_name
         self.sku = sku
-        self.product_range_id = product_range_id
         self.end_of_line = end_of_line
         self.group_all_items = group_all_items
         self.pre_order = pre_order
@@ -42,15 +41,18 @@ class AddNewRange(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
+        self.raise_for_non_200(
+            self, response,
+            f'Error creating product range "{self.range_name}"')
         return response.text
 
     def get_data(self):
         """Get data for request."""
         return {
-            'ProdRangeID': self.product_range_id,
-            'EndOfLine': self.end_of_line,
-            'PreOrder': self.pre_order,
-            'GroupAllItems': self.group_all_items,
+            'ProdRangeID': 0,
+            'EndOfLine': int(bool(self.end_of_line)),
+            'PreOrder': int(bool(self.pre_order)),
+            'GroupAllItems': int(bool(self.group_all_items)),
             'RangeName': self.range_name,
             'SKUCode': self.sku,
             'BrandID': "341"
