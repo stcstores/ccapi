@@ -205,7 +205,35 @@ class TestSetOptionSelect(TestRequest):
 
     request_class = range.SetOptionSelect
 
-    # TODO
+    RANGE_ID = '4355752'
+    OPTION_ID = '32129'
+    DROP_DOWN = True
+
+    RESPONSE = 'ok'
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register(text=self.RESPONSE)
+
+    def test_SetOptionSelect_request(self):
+        """Test the SetOptionSelect request."""
+        self.mock_request(
+            range_id=self.RANGE_ID,
+            option_id=self.OPTION_ID,
+            drop_down=self.DROP_DOWN)
+        self.assertDataSent('prdid', self.RANGE_ID)
+        self.assertDataSent('optid', self.OPTION_ID)
+        self.assertDataSent('onoff', int(self.DROP_DOWN))
+
+    def test_SetOptionSelect_raises_for_non_200(self):
+        """Test the request raises for a non 200 response."""
+        self.register(text=self.RESPONSE, status_code=500)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request(
+                range_id=self.RANGE_ID,
+                option_id=self.OPTION_ID,
+                drop_down=self.DROP_DOWN)
 
 
 class TestUpdateOnSalesChannel(TestRequest):
