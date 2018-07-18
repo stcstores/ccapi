@@ -290,4 +290,105 @@ class TestUpdateRangeSettings(TestRequest):
 
     request_class = range.UpdateRangeSettings
 
-    # TODO
+    RESPONSE = '"OK"'
+
+    RANGE_ID = '4355752'
+    CURRENT_NAME = "Test Move Department 2"
+    CURRENT_SKU = "RNG_UYV-3SP-W60"
+    CURRENT_END_OF_LINE = False
+    CURRENT_PRE_ORDER = False
+    CURRENT_GROUP_ITEMS = False
+    NEW_NAME = "Test Move Department 2"
+    NEW_SKU = "RNG_UYV-3SP-W60"
+    NEW_END_OF_LINE = "0"
+    NEW_PRE_ORDER = False
+    NEW_GROUP_ITEMS = False
+    CHANNELS = ['3541', '3557']
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register(text=self.RESPONSE)
+        self.mock_request(
+            range_id=self.RANGE_ID,
+            current_name=self.CURRENT_NAME,
+            current_sku=self.CURRENT_SKU,
+            current_end_of_line=self.CURRENT_END_OF_LINE,
+            current_pre_order=self.CURRENT_PRE_ORDER,
+            current_group_items=self.CURRENT_GROUP_ITEMS,
+            new_name=self.NEW_NAME,
+            new_sku=self.NEW_SKU,
+            new_end_of_line=self.NEW_END_OF_LINE,
+            new_pre_order=self.NEW_PRE_ORDER,
+            new_group_items=self.NEW_GROUP_ITEMS,
+            channels=self.CHANNELS)
+
+    def test_UpdateRangeSettings_sends_range_id(self):
+        """Test the request sends the passed range ID."""
+        self.assertJsonValueSent('rangeID', self.RANGE_ID)
+
+    def test_UpdateRangeSettings_sends_current_name(self):
+        """Test the request sends the passed current name."""
+        self.assertJsonValueSent('currName', self.CURRENT_NAME)
+
+    def test_UpdateRangeSettings_sends_current_sku(self):
+        """Test the request sends the passed current SKU."""
+        self.assertJsonValueSent('currSKU', self.CURRENT_SKU)
+
+    def test_UpdateRangeSettings_sends_current_end_of_line(self):
+        """Test the request sends the passed current end of line."""
+        self.assertJsonValueSent('currEoL', int(self.CURRENT_END_OF_LINE))
+
+    def test_UpdateRangeSettings_sends_current_pre_order(self):
+        """Test the request sends the passed current pre order."""
+        self.assertJsonValueSent('currPreO', int(self.CURRENT_PRE_ORDER))
+
+    def test_UpdateRangeSettings_sends_current_group_items(self):
+        """Test the request sends the passed current group items."""
+        self.assertJsonValueSent('currGBy', str(int(self.CURRENT_GROUP_ITEMS)))
+
+    def test_UpdateRangeSettings_sends_new_name(self):
+        """Test the request sends the passed new name."""
+        self.assertJsonValueSent('newName', self.NEW_NAME)
+
+    def test_UpdateRangeSettings_sends_new_sku(self):
+        """Test the request sends the passed new SKU."""
+        self.assertJsonValueSent('newSKU', self.NEW_SKU)
+
+    def test_UpdateRangeSettings_sends_new_end_of_line(self):
+        """Test the request sends the passed new end of line."""
+        self.assertJsonValueSent('newEoL', str(int(self.NEW_END_OF_LINE)))
+
+    def test_UpdateRangeSettings_sends_new_pre_order(self):
+        """Test the request sends the passed new pre order."""
+        self.assertJsonValueSent('newPreO', str(int(self.NEW_PRE_ORDER)))
+
+    def test_UpdateRangeSettings_sends_new_group_items(self):
+        """Test the request sends the passed new group items."""
+        self.assertJsonValueSent('newGBy', str(int(self.NEW_GROUP_ITEMS)))
+
+    def test_UpdateRangeSettings_sends_channels(self):
+        """Test the request sends the passed channels."""
+        self.assertJsonValueSent('channels', self.CHANNELS)
+
+    def test_UpdateRangeSettings_sends_brand_id(self):
+        """Test the request sends the passed brand ID."""
+        self.assertJsonValueSent('brandID', 341)
+
+    def test_UpdateRangeSettings_raises_for_non_200_response(self):
+        """Test UpdateRangeSettings rasies for non 200 responses."""
+        self.register(text=self.RESPONSE, status_code=500)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request(
+                range_id=self.RANGE_ID,
+                current_name=self.CURRENT_NAME,
+                current_sku=self.CURRENT_SKU,
+                current_end_of_line=self.CURRENT_END_OF_LINE,
+                current_pre_order=self.CURRENT_PRE_ORDER,
+                current_group_items=self.CURRENT_GROUP_ITEMS,
+                new_name=self.NEW_NAME,
+                new_sku=self.NEW_SKU,
+                new_end_of_line=self.NEW_END_OF_LINE,
+                new_pre_order=self.NEW_PRE_ORDER,
+                new_group_items=self.NEW_GROUP_ITEMS,
+                channels=self.CHANNELS)
