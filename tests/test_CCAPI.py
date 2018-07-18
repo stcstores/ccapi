@@ -53,26 +53,47 @@ class TestCCAPI(unittest.TestCase):
         CloudCommerceAPISession.get_session(
             username=username, password=password)
 
-    def get_last_request_query(self):
-        """Return the data sent in the last request URL."""
-        return urllib.parse.parse_qs(self.adapter.request_history[-1].query)
+    def get_sent_request(self, skip=1):
+        """
+        Return a recently made request.
 
-    def get_last_request_data(self):
-        """Return the data sent in the last request body."""
-        return urllib.parse.parse_qs(self.adapter.request_history[-1].text)
+        Kwargs:
+            skip: The number of requests to skip. 0 will retrun the most recent
+            request, 1 will return the one before that etc. Default: 0.
+        """
+        return self.adapter.request_history[-skip]
 
-    def get_last_Request_json(self):
+    def get_sent_request_query(self, request=None):
+        """Return the data sent in a previous request's URL."""
+        if request is None:
+            request = self.get_sent_request()
+        return urllib.parse.parse_qs(request.query)
+
+    def get_sent_request_data(self, request=None):
+        """Return the data sent in a previous request's body."""
+        if request is None:
+            request = self.get_sent_request()
+        return urllib.parse.parse_qs(request.text)
+
+    def get_executed_request_json(self, request=None):
+        """Return parsed JSON sent in a previous request."""
+        if request is None:
+            request = self.get_sent_request()
         return json.loads(self.adapter.request_history[-1].text)
 
-    def assertDataSent(self, data_key, expected_value):
+    def assertDataSent(self, data_key, expected_value, request=None):
         """Test the last request body contained the correct data."""
-        sent_data = self.get_last_request_data()
+        if request is None:
+            request = self.get_sent_request()
+        sent_data = self.get_sent_request_data(request=request)
         self.assertDataValueEqual(sent_data, data_key, expected_value)
 
-    def assertQuerySent(self, data_key, expected_value):
+    def assertQuerySent(self, data_key, expected_value, request=None):
         """Test the last request URL query contained the correct data."""
+        if request is None:
+            request = self.get_sent_request()
+        sent_data = self.get_sent_request_query(request=request)
         data_key = data_key.lower()
-        sent_data = self.get_last_request_query()
         self.assertDataValueEqual(sent_data, data_key, expected_value)
 
     def assertDataValueIsNotNone(self, sent_data, data_key):
@@ -106,9 +127,11 @@ class TestCCAPI(unittest.TestCase):
                         f'Value "{expected_value}" was not sent for data key '
                         f'"{data_key}". "{sent_data[data_key]}" was sent.'))
 
-    def assertJsonValueSent(self, data_key, expected_value):
+    def assertJsonValueSent(self, data_key, expected_value, request=None):
         """Test that a value was sent in the JSON body of the last request."""
-        sent_data = self.get_last_Request_json()
+        if request is None:
+            request = self.get_sent_request()
+        sent_data = self.get_executed_request_json(request=request)
         if isinstance(expected_value, list):
             self.assertListSent(sent_data, data_key, expected_value)
         else:
@@ -119,7 +142,17 @@ class TestCCAPI(unittest.TestCase):
                         f'"{data_key}". "{sent_data[data_key]}" was sent '
                         'instead.'))
 
-    def assertDataValueIsNone(self, data_key):
+    def assertDataValueIsNone(self, data_key, request=None):
         """Test that request data contains the correct data."""
-        sent_data = self.get_last_request_data()
+        if request is None:
+            request = self.get_sent_request()
+        sent_data = self.get_sent_request_data(request=request)
         self.assertIsNone(sent_data.get(data_key), None)
+
+    def assertRequestUsesRequestClassURI(self, request, request_class):
+        """Test that a sent request uses the URI of a request class."""
+        if request_class.uri not in request.url:
+            raise AssertionError(
+                (
+                    f'Request expected to use URI "{request_class.uri}", used '
+                    '"{request.url}"'))

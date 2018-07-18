@@ -305,7 +305,7 @@ class Test_set_product_description_Method(TestCCAPIMethod):
 
     def test_passed_product_ID_is_sent(self):
         """Test that the passed product IDs are sent."""
-        sent_data = self.get_last_request_data()
+        sent_data = self.get_sent_request_data()
         for product_id in self.PRODUCT_IDS:
             self.assertIn(product_id, str(sent_data['prodids']))
 
@@ -317,7 +317,7 @@ class Test_set_product_description_Method(TestCCAPIMethod):
         """Test passing a single product ID as a string."""
         CCAPI.set_product_description(
             product_ids=self.PRODUCT_IDS[0], description=self.DESCRIPTION)
-        sent_data = self.get_last_request_data()
+        sent_data = self.get_sent_request_data()
         self.assertIn(self.PRODUCT_IDS[0], str(sent_data['prodids']))
 
 
@@ -359,7 +359,7 @@ class Test_set_product_name_Method(TestCCAPIMethod):
 
     def test_passed_product_ID_is_sent(self):
         """Test that the passed product IDs are sent."""
-        sent_data = self.get_last_request_data()
+        sent_data = self.get_sent_request_data()
         for product_id in self.PRODUCT_IDS:
             self.assertIn(product_id, str(sent_data['prodids']))
 
@@ -370,7 +370,7 @@ class Test_set_product_name_Method(TestCCAPIMethod):
     def test_passing_single_product_ID_as_string(self):
         """Test passing a single product ID as a string."""
         CCAPI.set_product_name(product_ids=self.PRODUCT_IDS[0], name=self.NAME)
-        sent_data = self.get_last_request_data()
+        sent_data = self.get_sent_request_data()
         self.assertIn(self.PRODUCT_IDS[0], str(sent_data['prodids']))
 
 
@@ -417,7 +417,7 @@ class Test_set_product_option_value_Method(TestCCAPIMethod):
 
     def test_passed_product_ID_is_sent(self):
         """Test that the passed product IDs are sent."""
-        sent_data = self.get_last_request_data()
+        sent_data = self.get_sent_request_data()
         for product_id in self.PRODUCT_IDS:
             self.assertIn(product_id, str(sent_data['prodids']))
 
@@ -435,7 +435,7 @@ class Test_set_product_option_value_Method(TestCCAPIMethod):
             product_ids=self.PRODUCT_IDS[0],
             option_id=self.OPTION_ID,
             option_value_id=self.OPTION_VALUE_ID)
-        sent_data = self.get_last_request_data()
+        sent_data = self.get_sent_request_data()
         self.assertIn(self.PRODUCT_IDS[0], str(sent_data['prodids']))
 
 
@@ -632,7 +632,7 @@ class Test_set_product_vat_rate_Method(TestCCAPIMethod):
         """Test that the passed product IDs are sent."""
         CCAPI.set_product_vat_rate(
             product_ids=self.PRODUCT_IDS, vat_rate=self.VAT_RATE)
-        sent_data = self.get_last_request_data()
+        sent_data = self.get_sent_request_data()
         for product_id in self.PRODUCT_IDS:
             self.assertIn(product_id, str(sent_data['prodids']))
 
@@ -640,7 +640,7 @@ class Test_set_product_vat_rate_Method(TestCCAPIMethod):
         """Test passing a single product ID as a string."""
         CCAPI.set_product_vat_rate(
             product_ids=self.PRODUCT_IDS[0], vat_rate=self.VAT_RATE)
-        sent_data = self.get_last_request_data()
+        sent_data = self.get_sent_request_data()
         self.assertIn(self.PRODUCT_IDS[0], str(sent_data['prodids']))
 
     def test_vat_rate_ID_is_sent(self):
@@ -666,12 +666,12 @@ class Test_upload_image_Method(TestCCAPIMethod):
     def test_passed_product_ID_is_sent(self):
         """Test that the passed product IDs are sent."""
         CCAPI.upload_image(product_ids=self.PRODUCT_IDS, image_file=self.IMAGE)
-        sent_data = self.get_last_request_query()
+        sent_data = self.get_sent_request_query()
         for product_id in self.PRODUCT_IDS:
             self.assertIn(product_id, str(sent_data['prodids']))
 
     def test_passing_single_product_ID_as_string(self):
         """Test passing a single product ID as a string."""
         CCAPI.upload_image(product_ids=self.PRODUCT_IDS, image_file=self.IMAGE)
-        sent_data = self.get_last_request_query()
+        sent_data = self.get_sent_request_query()
         self.assertIn(self.PRODUCT_IDS[0], str(sent_data['prodids']))
