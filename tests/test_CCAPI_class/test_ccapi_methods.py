@@ -712,3 +712,35 @@ class Test_create_range_Method(TestCCAPIMethod):
         """Test the CCAPI.create_range method retrives a SKU."""
         CCAPI.create_range(self.RANGE_NAME)
         self.assertDataSent('SKUCode', 'RNG_' + self.GET_SKU_RESPONSE['Data'])
+
+
+class Test_add_option_to_product_Method(TestCCAPIMethod):
+    """Test the ccapi.CCAPI.add_option_to_product method."""
+
+    RESPONSE = test_requests.TestAddRemProductOption.RESPONSE
+
+    RANGE_ID = '4940634'
+    OPTION_ID = '32131'
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register_request(requests.AddRemProductOption, text=self.RESPONSE)
+
+    def test_add_option_to_product_sends_range_ID(self):
+        """Test the CCAPI.add_option_to_product method sends a Range ID."""
+        CCAPI.add_option_to_product(
+            range_id=self.RANGE_ID, option_id=self.OPTION_ID)
+        self.assertDataSent('prdid', self.RANGE_ID)
+
+    def test_add_option_to_product_sends_option_ID(self):
+        """Test the CCAPI.add_option_to_product method sends an option ID."""
+        CCAPI.add_option_to_product(
+            range_id=self.RANGE_ID, option_id=self.OPTION_ID)
+        self.assertDataSent('optid', self.OPTION_ID)
+
+    def test_add_option_to_product_sends_act(self):
+        """Test the CCAPI.add_option_to_product method sends a correct act."""
+        CCAPI.add_option_to_product(
+            range_id=self.RANGE_ID, option_id=self.OPTION_ID)
+        self.assertDataSent('act', 'add')
