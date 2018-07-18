@@ -10,19 +10,19 @@ from ..apirequest import APIRequest
 class SetOptionSelect(APIRequest):
     """setOptionSelect request."""
 
-    uri = '/Handlers/Range/setOptionSelect.ashx'
+    uri = 'Handlers/Range/setOptionSelect.ashx'
 
-    def __new__(self, range_id, option_id, value):
+    def __new__(self, *, range_id, option_id, drop_down):
         """Create setOptionSelect request.
 
         Args:
             range_id: ID of Product Range.
             option_id: ID of Product Option.
-            value: (Bool) Product Option is a drop down.
+            drop_down: (Bool) Product Option is a drop down.
         """
         self.range_id = range_id
         self.option_id = option_id
-        self.value = bool(value)
+        self.drop_down = bool(drop_down)
         return super().__new__(self)
 
     def get_data(self):

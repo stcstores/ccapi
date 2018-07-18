@@ -491,15 +491,16 @@ class CCAPI:
         requests.DeleteOptionValue(option_value_id)
 
     @staticmethod
-    def set_range_option_drop_down(range_id, option_id, value):
+    def set_range_option_drop_down(*, range_id, option_id, drop_down):
         """Set weather a Product Option is a drop down for a Product Range.
 
         Args:
             range_id: ID of Product Range.
             option_id: ID of Product Option.
-            value: (Bool) Product Option is a drop down.
+            drop_down: (Bool) Set Product Option as a drop down or not.
         """
-        requests.SetOptionSelect(range_id, option_id, value)
+        requests.SetOptionSelect(
+            range_id=range_id, option_id=option_id, drop_down=drop_down)
 
     @classmethod
     def get_products(cls, *args, **kwargs):
