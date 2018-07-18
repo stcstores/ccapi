@@ -241,7 +241,42 @@ class TestUpdateOnSalesChannel(TestRequest):
 
     request_class = range.UpdateRangeOnSalesChannel
 
-    # TODO
+    RESPONSE = []
+
+    RANGE_ID = '4355752'
+    VALUE = 'Test Value'
+    OPTION_ID = '32129'
+    CHANNEL_IDS = ['3541', '3557']
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register(json=self.RESPONSE)
+
+    def test_UpdateRangeOnSalesChannel_request(self):
+        """Test the UpdateRangeOnSalesChannel requset."""
+        self.mock_request(
+            self.RANGE_ID,
+            value=self.VALUE,
+            option_id=self.OPTION_ID,
+            channel_ids=self.CHANNEL_IDS)
+        self.assertDataSent('rangeid', self.RANGE_ID)
+        self.assertDataSent('type', 'select')
+        self.assertDataSent('act', 'update')
+        self.assertDataSent('val', self.VALUE)
+        self.assertDataSent('optid', self.OPTION_ID)
+        self.assertDataSent('chans', self.CHANNEL_IDS)
+        self.assertDataSent('brandid', 341)
+
+    def test_UpdateRangeOnSalesChannel_raises_for_non_200(self):
+        """Test UpdateRangeOnSalesChannel raies for non 200 responses."""
+        self.register(json=self.RESPONSE, status_code=500)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request(
+                self.RANGE_ID,
+                value=self.VALUE,
+                option_id=self.OPTION_ID,
+                channel_ids=self.CHANNEL_IDS)
 
 
 class TestUpdateRangeSettings(TestRequest):
