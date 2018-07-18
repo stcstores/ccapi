@@ -83,5 +83,7 @@ class UpdateRangeSettings(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
-        response.raise_for_status()
-        return response.text
+        self.raise_for_non_200(
+            self, response, (
+                'Range settings not updated for Product Range with '
+                f'ID "{self.range_id}"'))
