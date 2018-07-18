@@ -12,21 +12,22 @@ from ..apirequest import APIRequest
 class UpdateRangeSettings(APIRequest):
     """updateRangeSettings request."""
 
-    uri = '/Handlers/Range/updateRangeSettings.ashx'
+    uri = 'Handlers/Range/updateRangeSettings.ashx'
 
     def __new__(
             self,
+            *,
             range_id,
-            current_name='',
-            current_sku='',
-            current_end_of_line='',
-            current_pre_order='',
-            current_group_items='',
-            new_name='',
-            new_sku='',
-            new_end_of_line='',
-            new_pre_order='',
-            new_group_items='',
+            current_name,
+            current_sku,
+            current_end_of_line,
+            current_pre_order,
+            current_group_items,
+            new_name,
+            new_sku,
+            new_end_of_line,
+            new_pre_order,
+            new_group_items,
             channels=[]):
         """Create updateRangeSettings request.
 

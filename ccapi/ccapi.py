@@ -628,7 +628,7 @@ class CCAPI:
         for Product Range.
         """
         return requests.UpdateRangeSettings(
-            range_id,
+            range_id=range_id,
             current_name=current_name,
             current_sku=current_sku,
             current_end_of_line=current_end_of_line,
