@@ -234,6 +234,65 @@ class Test_set_stock_level_Method(TestProduct):
         self.assertDataSent('oldStockLevel', original_stock_level)
 
 
+class Test_set_name_Method(TestProduct):
+    """Test the set_name method."""
+
+    NEW_PRODUCT_NAME = 'New Product Name'
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register_request(
+            requests.SaveProductName,
+            text=test_requests.TestSaveProductName.RESPONSE)
+        self.register_request(
+            requests.UpdateProductOnSalesChannel,
+            json=test_requests.TestUpdateOnSalesChannel.RESPONSE)
+        self.register_request(
+            requests.CheckRangesOnSalesChannel,
+            json=test_data.CHECK_RANGES_ON_SALES_CHANNEL_RESULT)
+        self.product.set_name(self.NEW_PRODUCT_NAME)
+        self.SaveProductName_request = self.get_sent_request(skip=3)
+        self.UpdateProductOnSalesChannel_request = self.get_sent_request(
+            skip=1)
+
+    def test_set_name_sends_SaveProductName_request(self):
+        """Test the Product.set_name method sends a SaveProductName request."""
+        self.assertRequestUsesRequestClassURI(
+            self.SaveProductName_request, requests.SaveProductName)
+
+    def test_set_name_sends_product_ID(self):
+        """Test the Product.set_name method sends the product's ID."""
+        self.assertDataSent(
+            'prodids', [self.PRODUCT_ID], request=self.SaveProductName_request)
+
+    def test_set_name_sends_new_product_name(self):
+        """Test the Product.set_name method sends the new product name."""
+        self.assertDataSent(
+            'name',
+            self.NEW_PRODUCT_NAME,
+            request=self.SaveProductName_request)
+
+    def test_set_name_sends_UpdateProductOnSalesChannel_request(self):
+        """Test the method sends an UpdateProductOnSalesChannel request."""
+        self.assertRequestUsesRequestClassURI(
+            self.UpdateProductOnSalesChannel_request,
+            requests.UpdateProductOnSalesChannel)
+        self.assertDataSent(
+            'rangeid',
+            self.product.range_id,
+            request=self.UpdateProductOnSalesChannel_request)
+        self.assertDataSent(
+            'prodids', [self.PRODUCT_ID],
+            request=self.UpdateProductOnSalesChannel_request)
+        self.assertDataSent(
+            'type', 'name', request=self.UpdateProductOnSalesChannel_request)
+        self.assertDataSent(
+            'val1',
+            self.NEW_PRODUCT_NAME,
+            request=self.UpdateProductOnSalesChannel_request)
+
+
 class Test_set_description_Method(TestProduct):
     """Test the set_description method."""
 
