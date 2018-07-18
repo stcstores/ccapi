@@ -10,7 +10,7 @@ from ..apirequest import APIRequest
 class DeleteProductRange(APIRequest):
     """deleteProductRange request."""
 
-    uri = '/Handlers/Range/deleteProductRange.ashx'
+    uri = 'Handlers/Range/deleteProductRange.ashx'
 
     def __new__(self, range_id):
         """Create deleteProductRange request.
@@ -32,4 +32,6 @@ class DeleteProductRange(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
-        return response
+        self.raise_for_non_200(
+            self, response,
+            f'Product Range with ID "{self.range_id}" was not deleted.')
