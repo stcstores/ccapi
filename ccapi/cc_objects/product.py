@@ -1,6 +1,6 @@
 """This module contains the Product class."""
 
-from ccapi import ccapi
+import ccapi
 
 from .productoptions import ProductOption, ProductOptionValue
 from .vatrates import VatRates
