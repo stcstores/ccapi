@@ -98,7 +98,8 @@ class ProductRange:
             option_id = option.id
         else:
             option_id = self.options[option].id
-        ccapi.CCAPI.remove_option_from_product(self.id, option_id)
+        ccapi.CCAPI.remove_option_from_product(
+            range_id=self.id, option_id=option_id)
         self._options = None
         if update_channels:
             self.update_on_sales_channel(

@@ -277,7 +277,7 @@ class CCAPI:
             option_id: ID of Product Option.
         """
         requests.AddRemProductOption(
-            product_id=range_id, option_id=option_id, remove=True)
+            range_id=range_id, option_id=option_id, remove=True)
 
     @staticmethod
     def get_range(range_id):
