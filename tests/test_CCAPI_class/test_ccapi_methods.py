@@ -776,3 +776,32 @@ class Test_remove_option_from_product_Method(TestCCAPIMethod):
         CCAPI.remove_option_from_product(
             range_id=self.RANGE_ID, option_id=self.OPTION_ID)
         self.assertDataSent('act', 'rem')
+
+
+class Test_get_sales_channels_for_range_Method(TestCCAPIMethod):
+    """Test the ccapi.CCAPI.get_sales_channels_for_range method."""
+
+    RESPONSE = test_data.CHECK_RANGES_ON_SALES_CHANNEL_RESULT
+
+    RANGE_ID = '4940634'
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register_request(
+            requests.CheckRangesOnSalesChannel, json=self.RESPONSE)
+
+    def test_get_sales_channels_for_range_sends_range_id(self):
+        """Test the method uses the correct request class."""
+        CCAPI.get_sales_channels_for_range(self.RANGE_ID)
+        self.assertDataSent('rangeid', self.RANGE_ID)
+
+    def test_get_sales_channel_for_range_returns_list(self):
+        """Test the method returns a list."""
+        response = CCAPI.get_sales_channels_for_range(self.RANGE_ID)
+        self.assertIsInstance(response, list)
+
+    def test_get_sales_channel_for_range_returns_sales_channels(self):
+        """Test the method returns a list."""
+        response = CCAPI.get_sales_channels_for_range(self.RANGE_ID)
+        self.assertIsInstance(response[0], cc_objects.SalesChannel)
