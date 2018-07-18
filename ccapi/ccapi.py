@@ -256,7 +256,7 @@ class CCAPI:
         return None
 
     @staticmethod
-    def add_option_to_product(product_id, option_id):
+    def add_option_to_product(*, range_id, option_id):
         """
         Add Product Option to Product Range.
 
@@ -265,19 +265,19 @@ class CCAPI:
             option_id: ID of Product Option.
         """
         requests.AddRemProductOption(
-            product_id=product_id, option_id=option_id, add=True)
+            range_id=range_id, option_id=option_id, add=True)
 
     @staticmethod
-    def remove_option_from_product(product_id, option_id):
+    def remove_option_from_product(*, range_id, option_id):
         """
         Remove Product Option from Product Range.
 
         Args:
-            product_id: ID of Range.
+            range_id: ID of Range.
             option_id: ID of Product Option.
         """
         requests.AddRemProductOption(
-            product_id=product_id, option_id=option_id, remove=True)
+            product_id=range_id, option_id=option_id, remove=True)
 
     @staticmethod
     def get_range(range_id):

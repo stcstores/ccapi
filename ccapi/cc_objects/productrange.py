@@ -78,7 +78,8 @@ class ProductRange:
             option_id = option.id
         else:
             option_id = ProductOptions[option].id
-        ccapi.CCAPI.add_option_to_product(self.id, option_id)
+        ccapi.CCAPI.add_option_to_product(
+            range_id=self.id, option_id=option_id)
         if drop_down is True:
             self.set_option_drop_down(option_id, True)
         self._options = None

@@ -14,17 +14,17 @@ class AddRemProductOption(APIRequest):
     ADD = 'add'
     REMOVE = 'rem'
 
-    def __new__(self, *, product_id, option_id, add=False, remove=False):
+    def __new__(self, *, range_id, option_id, add=False, remove=False):
         """Create AddRemProductOption request.
 
         Args:
-            product_id: ID of range.
+            range_id: ID of range.
             option_id: ID of product option.
 
         Kwargs:
             action (str): Action to perform,  'add' or 'rem'. Default: 'add'.
         """
-        self.product_id = product_id
+        self.range_id = range_id
         self.option_id = option_id
         if add is True and remove is True or add is False and remove is False:
             raise ValueError('Either add or remove must be True.')
@@ -38,7 +38,7 @@ class AddRemProductOption(APIRequest):
         """Get data for request."""
         if self.action == 'add':
             return {
-                'prdid': self.product_id,
+                'prdid': self.range_id,
                 'optid': self.option_id,
                 'act': 'add',
                 'ebyopt': "0",
@@ -51,7 +51,7 @@ class AddRemProductOption(APIRequest):
             }
         if self.action == 'rem':
             return {
-                'prdid': self.product_id,
+                'prdid': self.range_id,
                 'optid': self.option_id,
                 'act': 'rem',
             }
@@ -60,6 +60,6 @@ class AddRemProductOption(APIRequest):
     def process_response(self, response):
         """Handle request response."""
         error_message = (
-            f'Product Option not updated for product with '
-            'ID "{self.product_id}"')
+            f'Product Option not updated for product range with '
+            'ID "{self.range_id}"')
         self.raise_for_non_200(self, response, error_message)

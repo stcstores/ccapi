@@ -84,7 +84,7 @@ class TestAddRemProductOption(TestRequest):
     def test_add_action(self):
         """Test the add action of the AddRemProductOption request."""
         self.mock_request(
-            product_id=self.RANGE_ID, option_id=self.OPTION_ID, add=True)
+            range_id=self.RANGE_ID, option_id=self.OPTION_ID, add=True)
         self.assertDataSent('prdid', self.RANGE_ID)
         self.assertDataSent('optid', self.OPTION_ID)
         self.assertDataSent('act', 'add')
@@ -99,7 +99,7 @@ class TestAddRemProductOption(TestRequest):
     def test_rem_action(self):
         """Test the rem action of the AddRemProductOption request."""
         self.mock_request(
-            product_id=self.RANGE_ID, option_id=self.OPTION_ID, remove=True)
+            range_id=self.RANGE_ID, option_id=self.OPTION_ID, remove=True)
         self.assertDataSent('prdid', self.RANGE_ID)
         self.assertDataSent('optid', self.OPTION_ID)
         self.assertDataSent('act', 'rem')
@@ -109,13 +109,13 @@ class TestAddRemProductOption(TestRequest):
         self.register(text=self.RESPONSE, status_code=500)
         with self.assertRaises(exceptions.CloudCommerceResponseError):
             self.mock_request(
-                product_id=self.RANGE_ID, option_id=self.OPTION_ID, add=True)
+                range_id=self.RANGE_ID, option_id=self.OPTION_ID, add=True)
 
     def test_add_and_remove_both_True(self):
         """Test the request with both add and remove arguments True."""
         with self.assertRaises(ValueError):
             self.mock_request(
-                product_id=self.RANGE_ID,
+                range_id=self.RANGE_ID,
                 option_id=self.OPTION_ID,
                 add=True,
                 remove=True)
@@ -124,7 +124,7 @@ class TestAddRemProductOption(TestRequest):
         """Test the request with both add and remove arguments False."""
         with self.assertRaises(ValueError):
             self.mock_request(
-                product_id=self.RANGE_ID,
+                range_id=self.RANGE_ID,
                 option_id=self.OPTION_ID,
                 add=False,
                 remove=False)
