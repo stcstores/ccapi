@@ -38,7 +38,7 @@ class UpdateProductOnSalesChannel(APIRequest):
         """
         self.request_type = request_type
         self.range_id = range_id
-        self.product_ids = product_ids
+        self.product_ids = [str(product_id) for product_id in product_ids]
         self.act = act
         self.value_1 = value_1
         self.value_2 = value_2
@@ -58,7 +58,7 @@ class UpdateProductOnSalesChannel(APIRequest):
         return {
             'brandid': 341,
             'rangeid': self.range_id,
-            'prodids': ','.join([str(x) for x in self.product_ids]),
+            'prodids': ','.join(self.product_ids),
             'type': self.request_type,
             'act': self.act,
             'val1': self.value_1,
