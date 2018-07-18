@@ -14,9 +14,10 @@ class UpdateRangeOnSalesChannel(APIRequest):
 
     def __new__(
             self,
+            *,
             range_id,
-            request_type='select',
-            act='update',
+            request_type,
+            act,
             value=None,
             option_id=None,
             channel_ids=[]):

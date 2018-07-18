@@ -642,7 +642,8 @@ class CCAPI:
             channels=channels)
 
     @staticmethod
-    def update_range_on_sales_channel(*args, **kwargs):
+    def update_range_on_sales_channel(
+            *, range_id, request_type, act, value, option_id, channel_ids=[]):
         """Update Product Range settings on sales channel.
 
         Args:
@@ -652,7 +653,13 @@ class CCAPI:
             option_id: ID of Product Option.
             value: (Bool) Product Option is a drop down.
         """
-        return requests.UpdateRangeOnSalesChannel(*args, **kwargs)
+        return requests.UpdateRangeOnSalesChannel(
+            range_id=range_id,
+            request_type=request_type,
+            act=act,
+            value=value,
+            option_id=option_id,
+            channel_ids=channel_ids)
 
     @staticmethod
     def update_product_on_sales_channel(*args, **kwargs):

@@ -83,7 +83,8 @@ class ProductRange:
             self.set_option_drop_down(option_id, True)
         self._options = None
         if update_channels:
-            self.update_of_sales_channel(option_id, 'option', 'add')
+            self.update_on_sales_channel(
+                option_id=option_id, request_type='option', act='add')
 
     def remove_product_option(self, option, update_channels=True):
         """
@@ -99,7 +100,8 @@ class ProductRange:
         ccapi.CCAPI.remove_option_from_product(self.id, option_id)
         self._options = None
         if update_channels:
-            self.update_of_sales_channel(option_id, 'option', 'remove')
+            self.update_on_sales_channel(
+                option_id=option_id, request_type='option', act='remove')
 
     def set_option_drop_down(self, option, value, update_channels=True):
         """
@@ -115,13 +117,18 @@ class ProductRange:
             option_id = option
         ccapi.CCAPI.set_range_option_drop_down(self.id, option_id, value)
         if update_channels is True:
-            self.update_of_sales_channel(option_id, 'option', 'remove', value)
+            self.update_on_sales_channel(
+                option_id=option_id,
+                request_type='option',
+                act='remove',
+                value=value)
 
-    def update_of_sales_channel(self, option_id, request_type, act, value=''):
+    def update_on_sales_channel(
+            self, *, option_id, request_type, act, value=''):
         """Update this range's info on selling channels."""
         channel_ids = self.get_sales_channel_ids()
         ccapi.CCAPI.update_range_on_sales_channel(
-            self.id,
+            range_id=self.id,
             request_type=request_type,
             act=act,
             value=value,

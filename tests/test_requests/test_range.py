@@ -244,6 +244,8 @@ class TestUpdateOnSalesChannel(TestRequest):
     RESPONSE = []
 
     RANGE_ID = '4355752'
+    REQUEST_TYPE = 'select'
+    ACT = 'update'
     VALUE = 'Test Value'
     OPTION_ID = '32129'
     CHANNEL_IDS = ['3541', '3557']
@@ -256,13 +258,15 @@ class TestUpdateOnSalesChannel(TestRequest):
     def test_UpdateRangeOnSalesChannel_request(self):
         """Test the UpdateRangeOnSalesChannel requset."""
         self.mock_request(
-            self.RANGE_ID,
+            range_id=self.RANGE_ID,
+            request_type=self.REQUEST_TYPE,
+            act=self.ACT,
             value=self.VALUE,
             option_id=self.OPTION_ID,
             channel_ids=self.CHANNEL_IDS)
         self.assertDataSent('rangeid', self.RANGE_ID)
-        self.assertDataSent('type', 'select')
-        self.assertDataSent('act', 'update')
+        self.assertDataSent('type', self.REQUEST_TYPE)
+        self.assertDataSent('act', self.ACT)
         self.assertDataSent('val', self.VALUE)
         self.assertDataSent('optid', self.OPTION_ID)
         self.assertDataSent('chans', self.CHANNEL_IDS)
@@ -273,7 +277,9 @@ class TestUpdateOnSalesChannel(TestRequest):
         self.register(json=self.RESPONSE, status_code=500)
         with self.assertRaises(exceptions.CloudCommerceResponseError):
             self.mock_request(
-                self.RANGE_ID,
+                range_id=self.RANGE_ID,
+                request_type=self.REQUEST_TYPE,
+                act=self.ACT,
                 value=self.VALUE,
                 option_id=self.OPTION_ID,
                 channel_ids=self.CHANNEL_IDS)
