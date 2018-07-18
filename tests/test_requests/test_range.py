@@ -178,7 +178,26 @@ class TestDeleteProductRange(TestRequest):
 
     request_class = range.DeleteProductRange
 
-    # TODO
+    RESPONSE = 'Deleted^^0Deleted^^0'
+    RANGE_ID = '4462752'
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register(text=self.RESPONSE)
+
+    def test_DeleteProductRange_request(self):
+        """Test the DeleteProductRangeRequest."""
+        self.mock_request(self.RANGE_ID)
+        self.assertDataSent('ProgType', 'DeleteProductRange')
+        self.assertDataSent('BrandID', 341)
+        self.assertDataSent('ProdRangeID', self.RANGE_ID)
+
+    def test_DeleteProductRange_raises_for_non_200(self):
+        """Test the DeleteProductRange request raises for non 200 responses."""
+        self.register(text=self.RESPONSE, status_code=500)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request(self.RANGE_ID)
 
 
 class TestSetOptionSelect(TestRequest):
