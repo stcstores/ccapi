@@ -675,3 +675,40 @@ class Test_upload_image_Method(TestCCAPIMethod):
         CCAPI.upload_image(product_ids=self.PRODUCT_IDS, image_file=self.IMAGE)
         sent_data = self.get_sent_request_query()
         self.assertIn(self.PRODUCT_IDS[0], str(sent_data['prodids']))
+
+
+class Test_create_range_Method(TestCCAPIMethod):
+    """Test the CCAPI.upload_image method."""
+
+    RANGE_ID = '4940634'
+    GET_SKU_RESPONSE = test_requests.TestProductOperations.RESPONSE
+
+    RANGE_NAME = 'New Product Range'
+    SKU = 'JF8-98D-3KD'
+
+    def setUp(self):
+        """Register request URIs."""
+        super().setUp()
+        self.register_request(requests.AddNewRange, text=self.RANGE_ID)
+        self.register_request(
+            requests.ProductOperations, json=self.GET_SKU_RESPONSE)
+
+    def test_create_range_returns_a_range_ID(self):
+        """Test the CCAPI.create_range method returns a range ID."""
+        response = CCAPI.create_range(self.RANGE_NAME, self.SKU)
+        self.assertEqual(response, self.RANGE_ID)
+
+    def test_create_range_sends_range_name(self):
+        """Test the CCAPI.create_range method sends a range name."""
+        CCAPI.create_range(self.RANGE_NAME, self.SKU)
+        self.assertDataSent('RangeName', self.RANGE_NAME)
+
+    def test_create_range_sends_SKU(self):
+        """Test the CCAPI.create_range method sends a SKU."""
+        CCAPI.create_range(self.RANGE_NAME, self.SKU)
+        self.assertDataSent('SKUCode', self.SKU)
+
+    def test_generates_SKU(self):
+        """Test the CCAPI.create_range method retrives a SKU."""
+        CCAPI.create_range(self.RANGE_NAME)
+        self.assertDataSent('SKUCode', 'RNG_' + self.GET_SKU_RESPONSE['Data'])
