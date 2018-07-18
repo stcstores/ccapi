@@ -10,7 +10,7 @@ from ..apirequest import APIRequest
 class UpdateRangeOnSalesChannel(APIRequest):
     """setOptionSelect request."""
 
-    uri = '/Handlers/Range/updateOnSalesChannel.ashx'
+    uri = 'Handlers/Range/updateOnSalesChannel.ashx'
 
     def __new__(
             self,
@@ -56,4 +56,7 @@ class UpdateRangeOnSalesChannel(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
-        pass
+        self.raise_for_non_200(
+            self, response, (
+                'Sales channel not updated for Product Range with '
+                f'ID "{self.range_id}".'))
