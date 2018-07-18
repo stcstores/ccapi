@@ -223,13 +223,14 @@ class Product:
 
     def set_name(self, name):
         """Set name of Product."""
-        ccapi.CCAPI.set_product_name(name, [self.id])
+        ccapi.CCAPI.set_product_name(name=name, product_ids=[self.id])
+        sales_channels = self.get_sales_channel_ids()
         ccapi.CCAPI.update_product_on_sales_channel(
             range_id=self.range_id,
             product_ids=[self.id],
             request_type='name',
             value_1=name,
-            channels=self.get_sales_channel_ids())
+            channels=sales_channels)
 
     def set_description(self, description):
         """Set description for Product."""
