@@ -30,10 +30,13 @@ class SetOptionSelect(APIRequest):
         data = {
             'prdid': self.range_id,
             'optid': self.option_id,
-            'onoff': int(self.value),
+            'onoff': int(self.drop_down),
         }
         return data
 
     def process_response(self, response):
         """Handle request response."""
-        pass
+        self.raise_for_non_200(
+            self, response, (
+                'Product Option drop down setting was not set for Product '
+                f'Range with ID "{self.range_id}".'))
