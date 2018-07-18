@@ -1,5 +1,6 @@
 """TestCCAPI - The base class for CCAPI tests."""
 
+import json
 import unittest
 import urllib
 
@@ -60,6 +61,9 @@ class TestCCAPI(unittest.TestCase):
         """Return the data sent in the last request body."""
         return urllib.parse.parse_qs(self.adapter.request_history[-1].text)
 
+    def get_last_Request_json(self):
+        return json.loads(self.adapter.request_history[-1].text)
+
     def assertDataSent(self, data_key, expected_value):
         """Test the last request body contained the correct data."""
         sent_data = self.get_last_request_data()
@@ -71,14 +75,49 @@ class TestCCAPI(unittest.TestCase):
         sent_data = self.get_last_request_query()
         self.assertDataValueEqual(sent_data, data_key, expected_value)
 
+    def assertDataValueIsNotNone(self, sent_data, data_key):
+        """Raise AssertionError if sent value is None."""
+        if sent_data.get(data_key) is None:
+            raise AssertionError(
+                f'Sent value "{data_key}" was unexpectedly None.')
+
+    def assertListSent(self, sent_data, data_key, expected_values):
+        """Raise Assertion Error if expected values are not in sent data."""
+        missing_values = [
+            value for value in expected_values
+            if str(value) not in str(sent_data[data_key])
+        ]
+        if missing_values:
+            raise AssertionError(
+                (
+                    f'Values {", ".join(missing_values)} not sent in data '
+                    f'key {data_key}. The value sent was '
+                    f'"{sent_data[data_key]}"'))
+
     def assertDataValueEqual(self, sent_data, data_key, expected_value):
         """Test that request data contains the correct data."""
-        self.assertIsNotNone(sent_data.get(data_key), None)
+        self.assertDataValueIsNotNone(sent_data, data_key)
         if isinstance(expected_value, list):
-            for value in expected_value:
-                self.assertIn(str(value), str(sent_data[data_key]))
+            self.assertListSent(sent_data, data_key, expected_value)
         else:
-            self.assertEqual(sent_data[data_key][0], [str(expected_value)][0])
+            if sent_data[data_key][0] != [str(expected_value)][0]:
+                raise AssertionError(
+                    (
+                        f'Value "{expected_value}" was not sent for data key '
+                        f'"{data_key}". "{sent_data[data_key]}" was sent.'))
+
+    def assertJsonValueSent(self, data_key, expected_value):
+        """Test that a value was sent in the JSON body of the last request."""
+        sent_data = self.get_last_Request_json()
+        if isinstance(expected_value, list):
+            self.assertListSent(sent_data, data_key, expected_value)
+        else:
+            if sent_data[data_key] != expected_value:
+                raise AssertionError(
+                    (
+                        f'"{expected_value}" was not sent for data key '
+                        f'"{data_key}". "{sent_data[data_key]}" was sent '
+                        'instead.'))
 
     def assertDataValueIsNone(self, data_key):
         """Test that request data contains the correct data."""
