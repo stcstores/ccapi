@@ -4,7 +4,7 @@ addCustomer request.
 Add a new customer to Cloud Commerce.
 """
 
-from .apirequest import APIRequest
+from ccapi.requests import APIRequest
 
 
 class AddCustomer(APIRequest):

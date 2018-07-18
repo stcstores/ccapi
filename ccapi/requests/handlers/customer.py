@@ -4,7 +4,7 @@ customer request.
 Handle customers.
 """
 
-from .apirequest import APIRequest
+from ccapi.requests import APIRequest
 
 
 class Customer(APIRequest):

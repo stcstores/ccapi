@@ -6,7 +6,7 @@ Add a new customer to Cloud Commerce.
 
 import json
 
-from .apirequest import APIRequest
+from ccapi.requests import APIRequest
 
 
 class CreateOrder(APIRequest):

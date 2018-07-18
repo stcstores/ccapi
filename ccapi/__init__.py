@@ -57,4 +57,4 @@ logger.addHandler(handler)
 from .ccapi import CCAPI  # NOQA
 from .cc_objects import ProductOptions, Warehouses, VatRates  # NOQA
 from .urls import URLs  # NOQA
-from .requests.createorder import NewOrderItem  # NOQA
+from .requests.handlers.createorder import NewOrderItem  # NOQA

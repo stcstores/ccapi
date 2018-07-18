@@ -5,8 +5,7 @@ Get list of users.
 """
 
 from bs4 import BeautifulSoup
-
-from .apirequest import APIRequest
+from ccapi.requests import APIRequest
 
 
 class PreEmployee(APIRequest):
