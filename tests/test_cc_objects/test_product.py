@@ -214,6 +214,122 @@ class TestProductAttributes(TestProduct):
         self.check_attribute('dimensions', self.PRODUCT_DATA['Dimensions'])
 
 
+class Test_get_sales_chanels_Method(TestProduct):
+    """Test the ccapi.cc_objects.Product.get_sales_channels method."""
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register_request(
+            requests.CheckRangesOnSalesChannel,
+            json=test_requests.TestCheckRangesOnSalesChannel.RESPONSE)
+        self.returned_value = self.product.get_sales_channels()
+
+    def test_returns_list(self):
+        """Test the get_sales_channels method returns a list."""
+        self.assertIsInstance(self.returned_value, list)
+
+    def test_returns_sales_channel_instances(self):
+        """Test the get_sales_channels method returns SalesChannels."""
+        self.assertIsInstance(self.returned_value[0], cc_objects.SalesChannel)
+
+
+class Test_get_sales_channel_ids_Method(TestProduct):
+    """Test the ccapi.cc_objects.Product.get_sales_channel_ids method."""
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register_request(
+            requests.CheckRangesOnSalesChannel,
+            json=test_requests.TestCheckRangesOnSalesChannel.RESPONSE)
+        self.returned_value = self.product.get_sales_channel_ids()
+
+    def test_returns_list(self):
+        """Test the get_sales_channel_ids method returns a list."""
+        self.assertIsInstance(self.returned_value, list)
+
+    def test_returns_sales_channel_instances(self):
+        """Test the get_sales_channel_ids method returns channel IDs."""
+        self.assertIsInstance(self.returned_value[0], int)
+
+
+class Test_options_Property(TestProduct):
+    """Test the options property of ccapi.cc_objects.Product."""
+
+    def test_product_has_option_property(self):
+        """Test product.options returns an instance of ProductOptions."""
+        self.assertIsInstance(self.product.options, cc_objects.ProductOptions)
+
+    def test_product_options_are_retrieved_if_not_set(self):
+        """Test that product options are downloaded if not set."""
+        self.product._options = None
+        last_request = self.get_sent_request()
+        options = self.product.options
+        self.assertNotEqual(last_request, self.get_sent_request())
+        self.assertIsInstance(options, cc_objects.ProductOptions)
+
+
+class Test_get_range_Method(TestProduct):
+    """Test the get_range method of ccapi.cc_objects.Product."""
+
+    # TODO
+
+
+class Test_set_option_value_Method(TestProduct):
+    """Test the set_option_value method of ccapi.cc_objects.Product."""
+
+    # TODO
+
+
+class Test_set_product_scope_Method(TestProduct):
+    """Test the set_product_scope method of ccapi.cc_objects.Product."""
+
+    # TODO
+
+
+class Test_set_weight_Method(TestProduct):
+    """Test the weight method of ccapi.cc_objects.Product."""
+
+    # TODO
+
+
+class Test_set_dimensions_Method(TestProduct):
+    """Test the set_dimensions method of ccapi.cc_objects.Product."""
+
+    # TODO
+
+
+class Test_set_large_letter_compatible_Method(TestProduct):
+    """Test the set_large_letter_compatible method of cc_objects.Product."""
+
+    # TODO
+
+
+class Test_set_external_id_Method(TestProduct):
+    """Test the set_external_id method of cc_objects.Product."""
+
+    # TODO
+
+
+class Test_set_base_price_Method(TestProduct):
+    """Test the set_base_price method of cc_objects.Product."""
+
+    # TODO
+
+
+class Test_set_vat_rate_Method(TestProduct):
+    """Test the set_vat_rate method of cc_objects.Product."""
+
+    # TODO
+
+
+class Test_set_handling_time_Method(TestProduct):
+    """Test the set_handling_time method of cc_objects.Product."""
+
+    # TODO
+
+
 class Test_set_stock_level_Method(TestProduct):
     """Test the set_stock_level method."""
 
@@ -311,57 +427,43 @@ class Test_set_description_Method(TestProduct):
         self.assertDataSent('desc', description)
 
 
-class Test_get_sales_chanels_Method(TestProduct):
-    """Test the ccapi.cc_objects.Product.get_sales_channels method."""
+class Test_add_bay_Method(TestProduct):
+    """Test the add_bay method of cc_objects.Product."""
 
-    def setUp(self):
-        """Register request URI."""
-        super().setUp()
-        self.register_request(
-            requests.CheckRangesOnSalesChannel,
-            json=test_requests.TestCheckRangesOnSalesChannel.RESPONSE)
-        self.returned_value = self.product.get_sales_channels()
-
-    def test_returns_list(self):
-        """Test the get_sales_channels method returns a list."""
-        self.assertIsInstance(self.returned_value, list)
-
-    def test_returns_sales_channel_instances(self):
-        """Test the get_sales_channels method returns SalesChannels."""
-        self.assertIsInstance(self.returned_value[0], cc_objects.SalesChannel)
+    # TODO
 
 
-class Test_get_sales_channel_ids_Method(TestProduct):
-    """Test the ccapi.cc_objects.Product.get_sales_channel_ids method."""
+class Test_remove_bay_Method(TestProduct):
+    """Test the remove_bay method of cc_objects.Product."""
 
-    def setUp(self):
-        """Register request URI."""
-        super().setUp()
-        self.register_request(
-            requests.CheckRangesOnSalesChannel,
-            json=test_requests.TestCheckRangesOnSalesChannel.RESPONSE)
-        self.returned_value = self.product.get_sales_channel_ids()
-
-    def test_returns_list(self):
-        """Test the get_sales_channel_ids method returns a list."""
-        self.assertIsInstance(self.returned_value, list)
-
-    def test_returns_sales_channel_instances(self):
-        """Test the get_sales_channel_ids method returns channel IDs."""
-        self.assertIsInstance(self.returned_value[0], int)
+    # TODO
 
 
-class Test_options_Property(TestProduct):
-    """Test the options property of ccapi.cc_objects.Product."""
+class Test_get_images_Method(TestProduct):
+    """Test the get_images method of cc_objects.Product."""
 
-    def test_product_has_option_property(self):
-        """Test product.options returns an instance of ProductOptions."""
-        self.assertIsInstance(self.product.options, cc_objects.ProductOptions)
+    # TODO
 
-    def test_product_options_are_retrieved_if_not_set(self):
-        """Test that product options are downloaded if not set."""
-        self.product._options = None
-        last_request = self.get_sent_request()
-        options = self.product.options
-        self.assertNotEqual(last_request, self.get_sent_request())
-        self.assertIsInstance(options, cc_objects.ProductOptions)
+
+class Test_add_image_Method(TestProduct):
+    """Test the add_image method of cc_objects.Product."""
+
+    # TODO
+
+
+class Test_set_image_order_Method(TestProduct):
+    """Test the set_image_order method of cc_objects.Product."""
+
+    # TODO
+
+
+class Test_get_factory_links_Method(TestProduct):
+    """Test the get_factory_links method of cc_objects.Product."""
+
+    # TODO
+
+
+class Test_update_factory_link_Method(TestProduct):
+    """Test the update_factory_link method of cc_objects.Product."""
+
+    # TODO
