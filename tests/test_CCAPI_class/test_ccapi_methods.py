@@ -827,3 +827,34 @@ class Test_delete_range_Method(TestCCAPIMethod):
     def test_delete_range_sends_range_id(self):
         """Test the delete_range method sends the passed range ID."""
         self.assertDataSent('ProdRangeID', self.RANGE_ID)
+
+
+class Test_set_range_option_drop_down_Method(TestCCAPIMethod):
+    """Test the ccapi.CCAPI.set_range_option_drop_down method."""
+
+    RESPONSE = test_requests.TestSetOptionSelect.RESPONSE
+
+    RANGE_ID = '4355752'
+    OPTION_ID = '32129'
+    DROP_DOWN = True
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register_request(requests.SetOptionSelect, text=self.RESPONSE)
+        CCAPI.set_range_option_drop_down(
+            range_id=self.RANGE_ID,
+            option_id=self.OPTION_ID,
+            drop_down=self.DROP_DOWN)
+
+    def test_sends_range_ID(self):
+        """Test the set_range_option_drop_down method sends a range ID."""
+        self.assertDataSent('prdid', self.RANGE_ID)
+
+    def test_sends_option_ID(self):
+        """Test the set_range_option_drop_down method sends an option ID."""
+        self.assertDataSent('optid', self.OPTION_ID)
+
+    def test_sends_drop_down_status(self):
+        """Test the method sends a drop down status."""
+        self.assertDataSent('onoff', int(self.DROP_DOWN))
