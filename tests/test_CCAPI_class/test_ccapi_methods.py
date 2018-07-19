@@ -858,3 +858,57 @@ class Test_set_range_option_drop_down_Method(TestCCAPIMethod):
     def test_sends_drop_down_status(self):
         """Test the method sends a drop down status."""
         self.assertDataSent('onoff', int(self.DROP_DOWN))
+
+
+class Test_update_range_on_sales_channel_Method(TestCCAPIMethod):
+    """Test the update_range_on_sales_channel method."""
+
+    RESPONSE = []
+
+    RANGE_ID = '4355752'
+    REQUEST_TYPE = 'select'
+    ACT = 'update'
+    VALUE = 'Test Value'
+    OPTION_ID = '32129'
+    CHANNEL_IDS = ['3541', '3557']
+
+    def setUp(self):
+        """Register request URI and call method."""
+        super().setUp()
+        self.register_request(
+            requests.UpdateRangeOnSalesChannel, json=self.RESPONSE)
+        CCAPI.update_range_on_sales_channel(
+            range_id=self.RANGE_ID,
+            request_type=self.REQUEST_TYPE,
+            act=self.ACT,
+            value=self.VALUE,
+            option_id=self.OPTION_ID,
+            channel_ids=self.CHANNEL_IDS)
+
+    def test_update_range_on_sales_channel_method_sends_range_ID(self):
+        """Test the update_range_on_sales_channel method sends a range ID."""
+        self.assertDataSent('rangeid', self.RANGE_ID)
+
+    def test_update_range_on_sales_channel_method_sends_request_type(self):
+        """Test update_range_on_sales_channel method sends a request type."""
+        self.assertDataSent('type', self.REQUEST_TYPE)
+
+    def test_update_range_on_sales_channel_method_sends_act(self):
+        """Test the update_range_on_sales_channel method sends an act."""
+        self.assertDataSent('act', self.ACT)
+
+    def test_update_range_on_sales_channel_method_sends_value(self):
+        """Test the update_range_on_sales_channel method sends a value."""
+        self.assertDataSent('val', self.VALUE)
+
+    def test_update_range_on_sales_channel_method_sends_option_ID(self):
+        """Test the update_range_on_sales_channel method sends an option ID."""
+        self.assertDataSent('optid', self.OPTION_ID)
+
+    def test_update_range_on_sales_channel_method_sends_channel_IDs(self):
+        """Test the update_range_on_sales_channel method sends channel IDs."""
+        self.assertDataSent('chans', self.CHANNEL_IDS)
+
+    def test_update_range_on_sales_channel_method_sends_brand_ID(self):
+        """Test the update_range_on_sales_channel method sends a brand ID."""
+        self.assertDataSent('brandid', 341)
