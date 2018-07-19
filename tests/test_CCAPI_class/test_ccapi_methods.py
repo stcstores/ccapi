@@ -805,3 +805,21 @@ class Test_get_sales_channels_for_range_Method(TestCCAPIMethod):
         """Test the method returns a list."""
         response = CCAPI.get_sales_channels_for_range(self.RANGE_ID)
         self.assertIsInstance(response[0], cc_objects.SalesChannel)
+
+
+class Test_delete_range_Method(TestCCAPIMethod):
+    """Test the ccapi.CCAPI.delete_range method."""
+
+    RESPONSE = test_requests.TestDeleteProductRange.RESPONSE
+
+    RANGE_ID = '4940634'
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register_request(requests.DeleteProductRange, text=self.RESPONSE)
+
+    def test_delete_range_sends_range_id(self):
+        """Test the delete_range method sends the passed range ID."""
+        CCAPI.delete_range(self.RANGE_ID)
+        self.assertDataSent('ProdRangeID', self.RANGE_ID)
