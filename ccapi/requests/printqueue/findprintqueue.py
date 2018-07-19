@@ -75,6 +75,7 @@ class PrintQueueItem:
     def to_datetime(self, date_time_string):
         """Convert Cloud Commerce date time string to datetime.datetime."""
         date_string, time_string = date_time_string.split('T')
+        time_string = time_string.split('.')[0]
         year, month, day = date_string.split('-')
         hour, minute, second = time_string.split(':')
         return datetime(
