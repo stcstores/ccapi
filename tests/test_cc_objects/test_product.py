@@ -309,3 +309,23 @@ class Test_set_description_Method(TestProduct):
         self.product.set_description(description)
         self.assertDataSent('prodids', [self.PRODUCT_ID])
         self.assertDataSent('desc', description)
+
+
+class Test_get_sales_chanels_Method(TestProduct):
+    """Test the ccapi.cc_objects.Product.get_sales_channels method."""
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register_request(
+            requests.CheckRangesOnSalesChannel,
+            json=test_requests.TestCheckRangesOnSalesChannel.RESPONSE)
+        self.returned_value = self.product.get_sales_channels()
+
+    def test_returns_list(self):
+        """Test the get_sales_channels method returns a list."""
+        self.assertIsInstance(self.returned_value, list)
+
+    def test_returns_sales_channel_instances(self):
+        """Test the get_sales_channels method returns SalesChannels."""
+        self.assertIsInstance(self.returned_value[0], cc_objects.SalesChannel)
