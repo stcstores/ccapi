@@ -349,3 +349,19 @@ class Test_get_sales_channel_ids_Method(TestProduct):
     def test_returns_sales_channel_instances(self):
         """Test the get_sales_channel_ids method returns channel IDs."""
         self.assertIsInstance(self.returned_value[0], int)
+
+
+class Test_options_Property(TestProduct):
+    """Test the options property of ccapi.cc_objects.Product."""
+
+    def test_product_has_option_property(self):
+        """Test product.options returns an instance of ProductOptions."""
+        self.assertIsInstance(self.product.options, cc_objects.ProductOptions)
+
+    def test_product_options_are_retrieved_if_not_set(self):
+        """Test that product options are downloaded if not set."""
+        self.product._options = None
+        last_request = self.get_sent_request()
+        options = self.product.options
+        self.assertNotEqual(last_request, self.get_sent_request())
+        self.assertIsInstance(options, cc_objects.ProductOptions)
