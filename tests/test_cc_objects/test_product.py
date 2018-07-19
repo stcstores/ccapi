@@ -259,7 +259,7 @@ class Test_set_name_Method(TestProduct):
     def test_set_name_sends_SaveProductName_request(self):
         """Test the Product.set_name method sends a SaveProductName request."""
         self.assertRequestUsesRequestClassURI(
-            self.SaveProductName_request, requests.SaveProductName)
+            requests.SaveProductName, self.SaveProductName_request)
 
     def test_set_name_sends_product_ID(self):
         """Test the Product.set_name method sends the product's ID."""
@@ -276,8 +276,8 @@ class Test_set_name_Method(TestProduct):
     def test_set_name_sends_UpdateProductOnSalesChannel_request(self):
         """Test the method sends an UpdateProductOnSalesChannel request."""
         self.assertRequestUsesRequestClassURI(
-            self.UpdateProductOnSalesChannel_request,
-            requests.UpdateProductOnSalesChannel)
+            requests.UpdateProductOnSalesChannel,
+            self.UpdateProductOnSalesChannel_request)
         self.assertDataSent(
             'rangeid',
             self.product.range_id,

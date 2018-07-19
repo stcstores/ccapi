@@ -12,76 +12,125 @@ class Test_get_sku_Method(TestCCAPIMethod):
     SKU = test_requests.TestProductOperations.SKU
     RESPONSE = test_requests.TestProductOperations.RESPONSE
 
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register_request(requests.ProductOperations, json=self.RESPONSE)
+
     def test_get_sku(self):
         """Test the get_sku method of CCAPI."""
-        self.register_request(requests.ProductOperations, json=self.RESPONSE)
-        self.assertEqual(CCAPI.get_sku(), self.SKU)
+        sku = CCAPI.get_sku()
+        self.assertEqual(sku, self.SKU)
 
     def test_get_range_sku(self):
         """Test the get_sku method of CCAPI."""
-        self.register_request(requests.ProductOperations, json=self.RESPONSE)
-        self.assertEqual(CCAPI.get_sku(range_sku=True), 'RNG_' + self.SKU)
+        range_sku = CCAPI.get_sku(range_sku=True)
+        self.assertEqual(range_sku, 'RNG_' + self.SKU)
 
 
 class Test_create_product_Method(TestCCAPIMethod):
     """Test the create_product method of CCAPI."""
 
-    REQUEST_KWARGS = {
-        'range_id': '4347654',
-        'name': 'Product Name',
-        'barcode': '12345678912',
-        'sku': 'WUA-DU7-W6W',
-        'description': 'Product Description',
-        'vat_rate': 20,
-    }
+    RANGE_ID = '4347654'
+    NAME = 'Product Name'
+    BARCODE = '12345678912'
+    SKU = 'WUA-DU7-W6W'
+    DESCRIPTION = 'Product Description'
+    VAT_RATE = 20
+
     CREATED_PRODUCT_ID = test_requests.TestAddProduct.CREATED_PRODUCT_ID
     RESPONSE = test_requests.TestAddProduct.SUCCESSFUL_RESPONSE
 
-    def test_create_product(self):
-        """Test CCAPI can add a product to a range."""
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
         self.register_request(requests.AddProduct, text=self.RESPONSE)
-        CCAPI.create_product(
-            range_id=self.REQUEST_KWARGS['range_id'],
-            name=self.REQUEST_KWARGS['name'],
-            barcode=self.REQUEST_KWARGS['barcode'],
-            sku=self.REQUEST_KWARGS['sku'],
-            description=self.REQUEST_KWARGS['description'],
-            vat_rate=20)
-        self.assertDataSent('ProdRangeID', self.REQUEST_KWARGS['range_id'])
-        self.assertDataSent('ProdName', self.REQUEST_KWARGS['name'])
-        self.assertDataSent('BarCode', self.REQUEST_KWARGS['barcode'])
-        self.assertDataSent('SKUCode', self.REQUEST_KWARGS['sku'])
-        self.assertDataSent(
-            'ProdDescription', self.REQUEST_KWARGS['description'])
-        self.assertDataSent(
-            'VatRateID',
-            VatRates.get_vat_rate_id_by_rate(self.REQUEST_KWARGS['vat_rate']))
 
-    def test_create_product_without_sku(self):
-        """Test create_product generates a SKU."""
-        self.register_request(requests.AddProduct, text=self.RESPONSE)
+
+class Test_create_product_MethodPassingSKU(Test_create_product_Method):
+    """Test the create_product method when an SKU is passed."""
+
+    def setUp(self):
+        """Make request."""
+        super().setUp()
+        CCAPI.create_product(
+            range_id=self.RANGE_ID,
+            name=self.NAME,
+            barcode=self.BARCODE,
+            sku=self.SKU,
+            description=self.DESCRIPTION,
+            vat_rate=self.VAT_RATE)
+
+    def test_sends_product_ID(self):
+        """Test a product ID is sent."""
+        self.assertDataSent('ProdRangeID', self.RANGE_ID)
+
+    def test_sends_product_name(self):
+        """Test a product name is sent."""
+        self.assertDataSent('ProdName', self.NAME)
+
+    def test_sends_barcode(self):
+        """Test a barcode is sent."""
+        self.assertDataSent('BarCode', self.BARCODE)
+
+    def test_sends_SKU(self):
+        """Test a SKU is sent."""
+        self.assertDataSent('SKUCode', self.SKU)
+
+    def test_sends_description(self):
+        """Test a description is sent."""
+        self.assertDataSent('ProdDescription', self.DESCRIPTION)
+
+    def test_sends_VAT_rate_ID(self):
+        """Test a VAT rate ID is sent."""
+        self.assertDataSent(
+            'VatRateID', VatRates.get_vat_rate_id_by_rate(self.VAT_RATE))
+
+
+class Test_create_product_MethodWithoutPassingSKU(Test_create_product_Method):
+    """Test the create_product method without passing a SKU."""
+
+    def setUp(self):
+        """Register URI and make request."""
+        super().setUp()
         self.register_request(
             requests.ProductOperations, json=Test_get_sku_Method.RESPONSE)
         CCAPI.create_product(
-            range_id=self.REQUEST_KWARGS['range_id'],
-            name=self.REQUEST_KWARGS['name'],
-            barcode=self.REQUEST_KWARGS['barcode'],
+            range_id=self.RANGE_ID,
+            name=self.NAME,
+            barcode=self.BARCODE,
             sku=None,
-            description=self.REQUEST_KWARGS['description'],
-            vat_rate=20)
+            description=self.DESCRIPTION,
+            vat_rate=self.VAT_RATE)
+
+    def test_sends_request_for_new_SKU(self):
+        """Test a request is sent for a new SKU if none is provided."""
+        self.assertRequestUsesRequestClassURI(
+            requests.ProductOperations, request=self.get_sent_request(skip=2))
+
+    def test_sends_generated_SKU(self):
+        """Test create_product sends the new SKU."""
         self.assertDataSent('SKUCode', Test_get_sku_Method.SKU)
+
+
+class Test_create_product_MethodWithoutPassingADescription(
+        Test_create_product_Method):
+    """Test the create_product method without passing a description."""
+
+    def setUp(self):
+        """Make request."""
+        super().setUp()
+        CCAPI.create_product(
+            range_id=self.RANGE_ID,
+            name=self.NAME,
+            barcode=self.BARCODE,
+            sku=self.SKU,
+            description=None,
+            vat_rate=self.VAT_RATE)
 
     def test_create_product_without_description(self):
         """Test create_product handles description not being passed."""
-        self.register_request(requests.AddProduct, text=self.RESPONSE)
-        CCAPI.create_product(
-            range_id=self.REQUEST_KWARGS['range_id'],
-            name=self.REQUEST_KWARGS['name'],
-            barcode=self.REQUEST_KWARGS['barcode'],
-            sku=self.REQUEST_KWARGS['sku'],
-            description=None,
-            vat_rate=20)
-        self.assertDataSent('ProdDescription', self.REQUEST_KWARGS['name'])
+        self.assertDataSent('ProdDescription', self.NAME)
 
 
 class Test_delete_product_factory_links_Method(TestCCAPIMethod):
@@ -272,6 +321,11 @@ class Test_set_product_barcode_Method(TestCCAPIMethod):
         CCAPI.set_product_barcode(
             barcode=self.BARCODE, product_id=self.PRODUCT_ID)
 
+    def test_uses_ProductBarcodeInUse_request(self):
+        """Test set_product_barcode uses the ProductBarcodeInUse request."""
+        self.assertRequestUsesRequestClassURI(
+            requests.ProductBarcodeInUse, self.get_sent_request(skip=2))
+
     def test_passed_barcode_is_sent(self):
         """Test the correct barcode is sent."""
         self.assertDataSent('bcode', self.BARCODE)
@@ -456,9 +510,6 @@ class Test_set_product_scope_Method(TestCCAPIMethod):
         """Make test request."""
         super().setUp()
         self.register_request(requests.SetProductScope, text=self.RESPONSE)
-
-    def test_product_ID_is_sent(self):
-        """Test the passed product ID is sent."""
         CCAPI.set_product_scope(
             product_id=self.PRODUCT_ID,
             weight=self.WEIGHT,
@@ -467,90 +518,45 @@ class Test_set_product_scope_Method(TestCCAPIMethod):
             width=self.WIDTH,
             large_letter_compatible=self.LARGE_LETTER_COMPATIBLE,
             external_id=self.EXTERNAL_ID)
+
+    def test_product_ID_is_sent(self):
+        """Test the passed product ID is sent."""
         self.assertDataSent('ProductID', self.PRODUCT_ID)
 
     def test_weight_is_sent(self):
         """Test the passed weight is sent."""
-        CCAPI.set_product_scope(
-            product_id=self.PRODUCT_ID,
-            weight=self.WEIGHT,
-            height=self.HEIGHT,
-            length=self.LENGTH,
-            width=self.WIDTH,
-            large_letter_compatible=self.LARGE_LETTER_COMPATIBLE,
-            external_id=self.EXTERNAL_ID)
         self.assertDataSent('Weight', self.WEIGHT)
 
     def test_height_is_sent(self):
         """Test the passed height is sent."""
-        CCAPI.set_product_scope(
-            product_id=self.PRODUCT_ID,
-            weight=self.WEIGHT,
-            height=self.HEIGHT,
-            length=self.LENGTH,
-            width=self.WIDTH,
-            large_letter_compatible=self.LARGE_LETTER_COMPATIBLE,
-            external_id=self.EXTERNAL_ID)
         self.assertDataSent('Height', self.HEIGHT)
 
     def test_length_is_sent(self):
         """Test the passed length is sent."""
-        CCAPI.set_product_scope(
-            product_id=self.PRODUCT_ID,
-            weight=self.WEIGHT,
-            height=self.HEIGHT,
-            length=self.LENGTH,
-            width=self.WIDTH,
-            large_letter_compatible=self.LARGE_LETTER_COMPATIBLE,
-            external_id=self.EXTERNAL_ID)
         self.assertDataSent('Length', self.LENGTH)
 
     def test_width_is_sent(self):
         """Test the passed width is sent."""
-        CCAPI.set_product_scope(
-            product_id=self.PRODUCT_ID,
-            weight=self.WEIGHT,
-            height=self.HEIGHT,
-            length=self.LENGTH,
-            width=self.WIDTH,
-            large_letter_compatible=self.LARGE_LETTER_COMPATIBLE,
-            external_id=self.EXTERNAL_ID)
         self.assertDataSent('Width', self.WIDTH)
 
     def test_large_letter_compatible_is_sent(self):
         """Test the passed large letter compatibilty is sent."""
-        CCAPI.set_product_scope(
-            product_id=self.PRODUCT_ID,
-            weight=self.WEIGHT,
-            height=self.HEIGHT,
-            length=self.LENGTH,
-            width=self.WIDTH,
-            large_letter_compatible=self.LARGE_LETTER_COMPATIBLE,
-            external_id=self.EXTERNAL_ID)
         self.assertDataSent(
             'LargeLetterCompatible', int(self.LARGE_LETTER_COMPATIBLE))
 
     def test_external_ID_is_sent(self):
         """Test the passed external ID is sent."""
-        CCAPI.set_product_scope(
-            product_id=self.PRODUCT_ID,
-            weight=50,
-            height=25,
-            length=75,
-            width=90,
-            large_letter_compatible=False,
-            external_id=self.EXTERNAL_ID)
         self.assertDataSent('ExternalID', self.EXTERNAL_ID)
 
     def test_external_ID_None(self):
         """Test no external ID is sent when None is passed."""
         CCAPI.set_product_scope(
             product_id=self.PRODUCT_ID,
-            weight=50,
-            height=25,
-            length=75,
-            width=90,
-            large_letter_compatible=False,
+            weight=self.WEIGHT,
+            height=self.HEIGHT,
+            length=self.LENGTH,
+            width=self.WIDTH,
+            large_letter_compatible=self.LARGE_LETTER_COMPATIBLE,
             external_id=None)
         self.assertDataValueIsNone('ExternalID')
 
@@ -678,7 +684,7 @@ class Test_upload_image_Method(TestCCAPIMethod):
 
 
 class Test_create_range_Method(TestCCAPIMethod):
-    """Test the CCAPI.upload_image method."""
+    """Test the CCAPI.create_range method."""
 
     RANGE_ID = '4940634'
     GET_SKU_RESPONSE = test_requests.TestProductOperations.RESPONSE
@@ -708,8 +714,14 @@ class Test_create_range_Method(TestCCAPIMethod):
         CCAPI.create_range(self.RANGE_NAME, self.SKU)
         self.assertDataSent('SKUCode', self.SKU)
 
-    def test_generates_SKU(self):
-        """Test the CCAPI.create_range method retrives a SKU."""
+    def test_gets_generated_SKU(self):
+        """Test a request is made for a new SKU."""
+        CCAPI.create_range(self.RANGE_NAME)
+        self.assertRequestUsesRequestClassURI(
+            requests.ProductOperations, self.get_sent_request(skip=2))
+
+    def test_generated_SKU_is_used(self):
+        """Test that the generated SKU is sent."""
         CCAPI.create_range(self.RANGE_NAME)
         self.assertDataSent('SKUCode', 'RNG_' + self.GET_SKU_RESPONSE['Data'])
 
@@ -726,23 +738,19 @@ class Test_add_option_to_product_Method(TestCCAPIMethod):
         """Register request URI."""
         super().setUp()
         self.register_request(requests.AddRemProductOption, text=self.RESPONSE)
+        CCAPI.add_option_to_product(
+            range_id=self.RANGE_ID, option_id=self.OPTION_ID)
 
     def test_add_option_to_product_sends_range_ID(self):
         """Test the CCAPI.add_option_to_product method sends a Range ID."""
-        CCAPI.add_option_to_product(
-            range_id=self.RANGE_ID, option_id=self.OPTION_ID)
         self.assertDataSent('prdid', self.RANGE_ID)
 
     def test_add_option_to_product_sends_option_ID(self):
         """Test the CCAPI.add_option_to_product method sends an option ID."""
-        CCAPI.add_option_to_product(
-            range_id=self.RANGE_ID, option_id=self.OPTION_ID)
         self.assertDataSent('optid', self.OPTION_ID)
 
     def test_add_option_to_product_sends_act(self):
         """Test the CCAPI.add_option_to_product method sends a correct act."""
-        CCAPI.add_option_to_product(
-            range_id=self.RANGE_ID, option_id=self.OPTION_ID)
         self.assertDataSent('act', 'add')
 
 
@@ -758,23 +766,19 @@ class Test_remove_option_from_product_Method(TestCCAPIMethod):
         """Register request URI."""
         super().setUp()
         self.register_request(requests.AddRemProductOption, text=self.RESPONSE)
+        CCAPI.remove_option_from_product(
+            range_id=self.RANGE_ID, option_id=self.OPTION_ID)
 
     def test_remove_option_from_product_sends_range_ID(self):
         """Test the remove_option_from_product method sends a Range ID."""
-        CCAPI.remove_option_from_product(
-            range_id=self.RANGE_ID, option_id=self.OPTION_ID)
         self.assertDataSent('prdid', self.RANGE_ID)
 
     def test_remove_option_from_product_sends_option_ID(self):
         """Test the remove_option_from_product method sends an option ID."""
-        CCAPI.remove_option_from_product(
-            range_id=self.RANGE_ID, option_id=self.OPTION_ID)
         self.assertDataSent('optid', self.OPTION_ID)
 
     def test_remove_option_from_product_sends_act(self):
         """Test the remove_option_from_product method sends a correct act."""
-        CCAPI.remove_option_from_product(
-            range_id=self.RANGE_ID, option_id=self.OPTION_ID)
         self.assertDataSent('act', 'rem')
 
 
@@ -818,8 +822,8 @@ class Test_delete_range_Method(TestCCAPIMethod):
         """Register request URI."""
         super().setUp()
         self.register_request(requests.DeleteProductRange, text=self.RESPONSE)
+        CCAPI.delete_range(self.RANGE_ID)
 
     def test_delete_range_sends_range_id(self):
         """Test the delete_range method sends the passed range ID."""
-        CCAPI.delete_range(self.RANGE_ID)
         self.assertDataSent('ProdRangeID', self.RANGE_ID)

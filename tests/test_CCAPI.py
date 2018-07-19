@@ -149,10 +149,12 @@ class TestCCAPI(unittest.TestCase):
         sent_data = self.get_sent_request_data(request=request)
         self.assertIsNone(sent_data.get(data_key), None)
 
-    def assertRequestUsesRequestClassURI(self, request, request_class):
+    def assertRequestUsesRequestClassURI(self, request_class, request=None):
         """Test that a sent request uses the URI of a request class."""
+        if request is None:
+            request = request = self.get_sent_request()
         if request_class.uri not in request.url:
             raise AssertionError(
                 (
                     f'Request expected to use URI "{request_class.uri}", used '
-                    '"{request.url}"'))
+                    f'"{request.url}"'))
