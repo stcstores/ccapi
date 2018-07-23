@@ -173,7 +173,7 @@ class Product:
         """Set weight for Product in grams."""
         self.set_product_scope(weight=weight)
 
-    def set_dimensions(self, height, length, width):
+    def set_dimensions(self, *, height, length, width):
         """Set height, lenght and width of Product in milimeters."""
         self.set_product_scope(height=height, length=length, width=width)
 
