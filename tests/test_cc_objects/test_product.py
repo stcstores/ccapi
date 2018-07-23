@@ -399,6 +399,10 @@ class Test_set_weight_Method(TestProduct):
         self.assertDataSent(
             'LargeLetterCompatible', int(self.product.large_letter_compatible))
 
+    def test_weight_is_set(self):
+        """Test that the product.weight attribute is updated."""
+        self.assertEqual(self.product.weight, self.WEIGHT)
+
 
 class Test_set_dimensions_Method(TestProduct):
     """Test the set_dimensions method of ccapi.cc_objects.Product."""
