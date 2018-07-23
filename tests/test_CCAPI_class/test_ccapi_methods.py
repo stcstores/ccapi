@@ -168,7 +168,7 @@ class Test_delete_image_Method(TestCCAPIMethod):
         self.assertDataSent('imgID', self.IMAGE_ID)
 
 
-class Test_delete_product_facotry_link_Method(TestCCAPIMethod):
+class Test_delete_product_factory_link_Method(TestCCAPIMethod):
     """Test the CCAPI.delete_product_factory_link method."""
 
     FACTORY_ID = '3544350'
