@@ -413,7 +413,45 @@ class Test_set_dimensions_Method(TestProduct):
 class Test_set_large_letter_compatible_Method(TestProduct):
     """Test the set_large_letter_compatible method of cc_objects.Product."""
 
-    # TODO
+    RESPONSE = test_requests.TestSetProductScope.RESPONSE
+
+    LARGE_LETTER_COMPATIBLE = True
+
+    def setUp(self):
+        """Make test request."""
+        super().setUp()
+        self.register_request(requests.SetProductScope, text=self.RESPONSE)
+        self.product.set_large_letter_compatible(self.LARGE_LETTER_COMPATIBLE)
+
+    def test_product_ID_is_sent(self):
+        """Test the passed product ID is sent."""
+        self.assertDataSent('ProductID', self.product.id)
+
+    def test_weight_is_sent(self):
+        """Test the passed weight is sent."""
+        self.assertDataSent('Weight', self.product.weight)
+
+    def test_height_is_sent(self):
+        """Test the passed height is sent."""
+        self.assertDataSent('Height', self.product.height_mm)
+
+    def test_length_is_sent(self):
+        """Test the passed length is sent."""
+        self.assertDataSent('Length', self.product.length_mm)
+
+    def test_width_is_sent(self):
+        """Test the passed width is sent."""
+        self.assertDataSent('Width', self.product.width_mm)
+
+    def test_large_letter_compatible_is_sent(self):
+        """Test the passed large letter compatibilty is sent."""
+        self.assertDataSent(
+            'LargeLetterCompatible', int(self.LARGE_LETTER_COMPATIBLE))
+
+    def test_large_letter_compatible_is_set(self):
+        """Test that product.large_letter_compatible attribute is updated."""
+        self.assertEqual(
+            self.product.large_letter_compatible, self.LARGE_LETTER_COMPATIBLE)
 
 
 class Test_set_external_id_Method(TestProduct):
