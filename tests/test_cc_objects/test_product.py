@@ -555,7 +555,24 @@ class Test_set_external_id_Method(TestProduct):
 class Test_set_base_price_Method(TestProduct):
     """Test the set_base_price method of cc_objects.Product."""
 
-    # TODO
+    RESPONSE = 'Success'
+
+    PRICE = '6.25'
+
+    def setUp(self):
+        """Make test request."""
+        super().setUp()
+        self.register_request(
+            requests.UpdateProductBasePrice, text=self.RESPONSE)
+        self.product.set_base_price(self.PRICE)
+
+    def test_product_id_is_sent(self):
+        """Test the product's product ID is sent."""
+        self.assertDataSent('prodid', self.PRODUCT_ID)
+
+    def test_price_is_sent(self):
+        """Test the new price is sent."""
+        self.assertDataSent('price', self.PRICE)
 
 
 class Test_set_vat_rate_Method(TestProduct):
