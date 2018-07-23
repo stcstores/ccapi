@@ -7,6 +7,14 @@ class BaseCloudCommerceAPIError(Exception):
     pass
 
 
+class NotLoggedInError(Exception):
+    """Raised when login information is not available."""
+
+    def __init__(self):
+        """Raise exception."""
+        super().__init__('No session Cloud Commerce session exists.')
+
+
 class CloudCommerceResponseError(BaseCloudCommerceAPIError):
     """Exception for failed API Requests."""
 
