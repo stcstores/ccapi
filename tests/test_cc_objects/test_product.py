@@ -218,7 +218,7 @@ class Test_get_sales_chanels_Method(TestProduct):
     """Test the ccapi.cc_objects.Product.get_sales_channels method."""
 
     def setUp(self):
-        """Register request URI."""
+        """Register request URI and call method."""
         super().setUp()
         self.register_request(
             requests.CheckRangesOnSalesChannel,
@@ -238,7 +238,7 @@ class Test_get_sales_channel_ids_Method(TestProduct):
     """Test the ccapi.cc_objects.Product.get_sales_channel_ids method."""
 
     def setUp(self):
-        """Register request URI."""
+        """Register request URI and call method."""
         super().setUp()
         self.register_request(
             requests.CheckRangesOnSalesChannel,
@@ -295,7 +295,7 @@ class Test_set_product_scope_Method(TestProduct):
     EXTERNAL_ID = '165481035'
 
     def setUp(self):
-        """Make test request."""
+        """Register request URI and call method."""
         super().setUp()
         self.register_request(requests.SetProductScope, text=self.RESPONSE)
         self.product.set_product_scope(
@@ -369,7 +369,7 @@ class Test_set_weight_Method(TestProduct):
     WEIGHT = 50
 
     def setUp(self):
-        """Make test request."""
+        """Register request URI and call method."""
         super().setUp()
         self.register_request(requests.SetProductScope, text=self.RESPONSE)
         self.product.set_weight(self.WEIGHT)
@@ -414,7 +414,7 @@ class Test_set_dimensions_Method(TestProduct):
     WIDTH = 90
 
     def setUp(self):
-        """Make test request."""
+        """Register request URI and call method."""
         super().setUp()
         self.register_request(requests.SetProductScope, text=self.RESPONSE)
         self.product.set_dimensions(
@@ -469,7 +469,7 @@ class Test_set_large_letter_compatible_Method(TestProduct):
     LARGE_LETTER_COMPATIBLE = True
 
     def setUp(self):
-        """Make test request."""
+        """Register request URI and call method."""
         super().setUp()
         self.register_request(requests.SetProductScope, text=self.RESPONSE)
         self.product.set_large_letter_compatible(self.LARGE_LETTER_COMPATIBLE)
@@ -513,7 +513,7 @@ class Test_set_external_id_Method(TestProduct):
     EXTERNAL_ID = '165481035'
 
     def setUp(self):
-        """Make test request."""
+        """Register request URI and call method."""
         super().setUp()
         self.register_request(requests.SetProductScope, text=self.RESPONSE)
         self.product.set_external_id(external_id=self.EXTERNAL_ID)
@@ -560,7 +560,7 @@ class Test_set_base_price_Method(TestProduct):
     PRICE = '6.25'
 
     def setUp(self):
-        """Make test request."""
+        """Register request URI and call method."""
         super().setUp()
         self.register_request(
             requests.UpdateProductBasePrice, text=self.RESPONSE)
@@ -584,7 +584,7 @@ class Test_set_vat_rate_Method(TestProduct):
     VAT_RATE_ID = VatRates.get_vat_rate_id_by_rate(VAT_RATE)
 
     def setUp(self):
-        """Make test request."""
+        """Register request URI and call method."""
         super().setUp()
         self.register_request(
             requests.UpdateProductVatRate, text=self.RESPONSE)
@@ -607,7 +607,7 @@ class Test_set_handling_time_Method(TestProduct):
     HANDLING_TIME = 1
 
     def setUp(self):
-        """Make test request."""
+        """Register request URI and call method."""
         super().setUp()
         self.register_request(requests.SaveHandlingTime, text=self.RESPONSE)
         self.product.set_handling_time(self.HANDLING_TIME)
@@ -624,21 +624,32 @@ class Test_set_handling_time_Method(TestProduct):
 class Test_set_stock_level_Method(TestProduct):
     """Test the set_stock_level method."""
 
+    NEW_STOCK_LEVEL = 5
+
     def setUp(self):
-        """Register request URI."""
+        """Register request URI and call method."""
         super().setUp()
         self.register_request(
             requests.UpdateProductStockLevel,
             text=test_requests.TestUpdateProductStockLevel.RESPONSE)
+        self.original_stock_level = self.product.stock_level
+        self.product.set_stock_level(self.NEW_STOCK_LEVEL)
 
-    def test_set_stock_level(self):
-        """Test the Product.set_stock_level method."""
-        original_stock_level = self.product.stock_level
-        new_stock_level = 5
-        self.product.set_stock_level(new_stock_level)
+    def test_product_ID_is_sent(self):
+        """Test the product ID is sent."""
         self.assertDataSent('ProductID', self.PRODUCT_ID)
-        self.assertDataSent('newStockLevel', new_stock_level)
-        self.assertDataSent('oldStockLevel', original_stock_level)
+
+    def test_the_old_stock_level_is_sent(self):
+        """Test that the old stock level is sent."""
+        self.assertDataSent('oldStockLevel', self.original_stock_level)
+
+    def test_the_new_stock_level_is_sent(self):
+        """Test that the new stock level is sent."""
+        self.assertDataSent('newStockLevel', self.NEW_STOCK_LEVEL)
+
+    def test_the_product_stock_level_is_updated(self):
+        """Test that the product's stock_level attribute is updated."""
+        self.assertEqual(self.product.stock_level, self.NEW_STOCK_LEVEL)
 
 
 class Test_set_name_Method(TestProduct):
@@ -647,7 +658,7 @@ class Test_set_name_Method(TestProduct):
     NEW_PRODUCT_NAME = 'New Product Name'
 
     def setUp(self):
-        """Register request URI."""
+        """Register request URI and call method."""
         super().setUp()
         self.register_request(
             requests.SaveProductName,
@@ -703,19 +714,23 @@ class Test_set_name_Method(TestProduct):
 class Test_set_description_Method(TestProduct):
     """Test the set_description method."""
 
+    DESCRIPTION = 'Product Description\n'
+
     def setUp(self):
-        """Register request URI."""
+        """Register request URI and call method."""
         super().setUp()
         self.register_request(
             requests.SaveDescription,
             text=test_requests.TestSaveDescription.RESPONSE)
+        self.product.set_description(self.DESCRIPTION)
 
-    def test_set_description(self):
-        """Test the set_description method."""
-        description = 'Product Description\n'
-        self.product.set_description(description)
+    def test_product_ID_is_sent(self):
+        """Test the product ID is sent."""
         self.assertDataSent('prodids', [self.PRODUCT_ID])
-        self.assertDataSent('desc', description)
+
+    def test_description_is_sent(self):
+        """Test the description is sent."""
+        self.assertDataSent('desc', self.DESCRIPTION)
 
 
 class Test_add_bay_Method(TestProduct):
@@ -745,7 +760,7 @@ class Test_add_image_Method(TestProduct):
     IMAGE = test_requests.TestUploadImage.IMAGE
 
     def setUp(self):
-        """Make test request."""
+        """Register request URI and call method."""
         super().setUp()
         self.register_request(requests.UploadImage, json=self.RESPONSE)
         self.product.add_image(self.IMAGE)
@@ -763,7 +778,7 @@ class Test_set_image_order_Method(TestProduct):
     IMAGE_IDS = ['28179547', '28179563', '28179581']
 
     def setUp(self):
-        """Make test request."""
+        """Register request URI and call method."""
         super().setUp()
         self.register_request(requests.SetImageOrder, text=self.RESPONSE)
         self.product.set_image_order(self.IMAGE_IDS)
@@ -783,7 +798,7 @@ class Test_get_factory_links_Method(TestProduct):
     RESPONSE = [test_requests.TestFindProductFactoryLinks.RESPONSE]
 
     def setUp(self):
-        """Make test request."""
+        """Register request URI and call method."""
         super().setUp()
         self.register_request(
             requests.FindProductFactoryLinks, json=self.RESPONSE)
