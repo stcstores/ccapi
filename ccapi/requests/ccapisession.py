@@ -27,7 +27,7 @@ class CloudCommerceAPISession:
     password = None
 
     @classmethod
-    def get_session(cls, domain=None, username=None, password=None):
+    def get_session(cls, *, domain=None, username=None, password=None):
         """Create logged in session with Cloud Commerce."""
         cls.get_credentials(
             domain=domain, username=username, password=password)
@@ -52,7 +52,7 @@ class CloudCommerceAPISession:
         return cls.session
 
     @classmethod
-    def add_credentials(cls, domain=None, username=None, password=None):
+    def add_credentials(cls, *, domain=None, username=None, password=None):
         """Set the domain, username and password."""
         if domain is not None:
             cls.domain = domain
@@ -60,10 +60,10 @@ class CloudCommerceAPISession:
             cls.username = username
         if password is not None:
             cls.password = password
-        logger.info('Logged in to Cloud Commerce.')
+        logger.info(f'Logged in to {domain}.')
 
     @classmethod
-    def get_credentials(cls, domain=None, username=None, password=None):
+    def get_credentials(cls, *, domain=None, username=None, password=None):
         """Load the domain, username and password for login."""
         cls.get_credentials_from_yaml(
             domain=domain, username=username, password=password)
@@ -72,7 +72,7 @@ class CloudCommerceAPISession:
 
     @classmethod
     def get_credentials_from_yaml(
-            cls, domain=None, username=None, password=None):
+            cls, *, domain=None, username=None, password=None):
         """Load login credentials from a cc_login.yaml file."""
         yaml_config_path = cls.find_yaml()
         if yaml_config_path is not None:
@@ -135,12 +135,17 @@ class CloudCommerceAPISession:
     @classmethod
     def is_logged_in(cls):
         """Check current session is valid."""
-        if cls.last_login and cls.last_login + cls.timeout > datetime.now():
-            return True
+        if cls.last_login:
+            login_expires = cls.last_login + cls.timeout
+            if cls.last_login < login_expires:
+                return True
         return False
 
     @classmethod
     def check_login(cls):
         """Get new session if current session has expired."""
         if not cls.is_logged_in():
-            cls.get_session(cls.username, cls.password)
+            cls.get_session(
+                domain=cls.domain,
+                username=cls.username,
+                password=cls.password)

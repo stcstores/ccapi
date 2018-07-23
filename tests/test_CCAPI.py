@@ -11,7 +11,7 @@ from ccapi.requests.ccapisession import CloudCommerceAPISession
 class TestCCAPI(unittest.TestCase):
     """TestCCAPI - The base class for CCAPI tests."""
 
-    DOMAIN = 'http://seatontradingcompany.cloudcommercepro.com/'
+    DOMAIN = 'mockcompany.cloudcommercepro.com/'
     LOGIN_HANDLER_URI = 'Handlers/loginHandler.ashx'
 
     def setUp(self):
@@ -19,10 +19,9 @@ class TestCCAPI(unittest.TestCase):
         self.set_mock_session()
         self.mock_login()
 
-    def register_uri(self, method, url, response_list=None, **kwargs):
+    def register_uri(self, method, url, **kwargs):
         """Register a URI with the mock adapter."""
-        self.adapter.register_uri(
-            method, url, response_list=response_list, **kwargs)
+        self.adapter.register_uri(method, url, **kwargs)
 
     def register_request(self, request_class, *args, **kwargs):
         """Register mock URI for a request class."""
@@ -31,7 +30,7 @@ class TestCCAPI(unittest.TestCase):
 
     def cloud_commerce_URI(self, uri):
         """Return URI for the Cloud Commerce domain."""
-        return self.DOMAIN + uri
+        return f'http://{self.DOMAIN}{uri}'
 
     def set_mock_session(self):
         """Mount mock adapters to the session."""
@@ -48,10 +47,8 @@ class TestCCAPI(unittest.TestCase):
 
     def mock_login(self):
         """Mock the login process."""
-        username = 'USERNAME'
-        password = 'PASSWORD'
         CloudCommerceAPISession.get_session(
-            username=username, password=password)
+            domain=self.DOMAIN, username='USERNAME', password='PASSWORD')
 
     def get_sent_request(self, skip=1):
         """

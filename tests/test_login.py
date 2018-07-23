@@ -13,7 +13,8 @@ class TestCloudCommerceAPISession(TestCCAPI):
         username = 'USERNAME'
         password = 'PASSWORD'
         CloudCommerceAPISession.get_session(
-            username=username, password=password)
+            domain=self.DOMAIN, username=username, password=password)
+        self.assertEqual(CloudCommerceAPISession.domain, self.DOMAIN)
         self.assertEqual(CloudCommerceAPISession.username, username)
         self.assertEqual(CloudCommerceAPISession.password, password)
         self.assertTrue(CloudCommerceAPISession.is_logged_in())
