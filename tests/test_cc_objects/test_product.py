@@ -578,7 +578,25 @@ class Test_set_base_price_Method(TestProduct):
 class Test_set_vat_rate_Method(TestProduct):
     """Test the set_vat_rate method of cc_objects.Product."""
 
-    # TODO
+    RESPONSE = 'Success'
+    PRODUCT_ID = '6909316'
+    VAT_RATE = 20
+    VAT_RATE_ID = VatRates.get_vat_rate_id_by_rate(VAT_RATE)
+
+    def setUp(self):
+        """Make test request."""
+        super().setUp()
+        self.register_request(
+            requests.UpdateProductVatRate, text=self.RESPONSE)
+        self.product.set_vat_rate(self.VAT_RATE)
+
+    def test_product_ID_is_sent(self):
+        """Test the product's product ID is sent."""
+        self.assertDataSent('prodids', [self.product.id])
+
+    def test_vat_rate_ID_is_sent(self):
+        """Test the product's product ID is sent."""
+        self.assertDataSent('vatrate', self.VAT_RATE_ID)
 
 
 class Test_set_handling_time_Method(TestProduct):
