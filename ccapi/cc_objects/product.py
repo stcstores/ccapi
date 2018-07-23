@@ -161,9 +161,13 @@ class Product:
         if external_id is not None:
             self.external_product_id = external_id
         return ccapi.CCAPI.set_product_scope(
-            self.id, self.weight, self.height_mm, self.length_mm,
-            self.width_mm, self.large_letter_compatible,
-            self.external_product_id)
+            product_id=self.id,
+            weight=self.weight,
+            height=self.height_mm,
+            length=self.length_mm,
+            width=self.width_mm,
+            large_letter_compatible=self.large_letter_compatible,
+            external_id=self.external_product_id)
 
     def set_weight(self, weight):
         """Set weight for Product in grams."""
