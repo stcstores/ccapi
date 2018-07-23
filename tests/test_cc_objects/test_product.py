@@ -602,7 +602,23 @@ class Test_set_vat_rate_Method(TestProduct):
 class Test_set_handling_time_Method(TestProduct):
     """Test the set_handling_time method of cc_objects.Product."""
 
-    # TODO
+    RESPONSE = test_requests.TestSaveHandlingTime.RESPONSE
+    PRODUCT_ID = '6909316'
+    HANDLING_TIME = 1
+
+    def setUp(self):
+        """Make test request."""
+        super().setUp()
+        self.register_request(requests.SaveHandlingTime, text=self.RESPONSE)
+        self.product.set_handling_time(self.HANDLING_TIME)
+
+    def test_passed_product_ID_is_sent(self):
+        """Test that the passed product ID is sent."""
+        self.assertDataSent('ProductID', self.PRODUCT_ID)
+
+    def test_passed_handling_time_is_sent(self):
+        """Test that the passed handling_time is sent."""
+        self.assertDataSent('handlingTime', self.HANDLING_TIME)
 
 
 class Test_set_stock_level_Method(TestProduct):
