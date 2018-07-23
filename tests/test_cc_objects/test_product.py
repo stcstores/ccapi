@@ -407,7 +407,58 @@ class Test_set_weight_Method(TestProduct):
 class Test_set_dimensions_Method(TestProduct):
     """Test the set_dimensions method of ccapi.cc_objects.Product."""
 
-    # TODO
+    RESPONSE = test_requests.TestSetProductScope.RESPONSE
+
+    HEIGHT = 25
+    LENGTH = 75
+    WIDTH = 90
+
+    def setUp(self):
+        """Make test request."""
+        super().setUp()
+        self.register_request(requests.SetProductScope, text=self.RESPONSE)
+        self.product.set_dimensions(
+            height=self.HEIGHT,
+            length=self.LENGTH,
+            width=self.WIDTH,
+        )
+
+    def test_product_ID_is_sent(self):
+        """Test the passed product ID is sent."""
+        self.assertDataSent('ProductID', self.product.id)
+
+    def test_weight_is_sent(self):
+        """Test the passed weight is sent."""
+        self.assertDataSent('Weight', self.product.weight)
+
+    def test_height_is_sent(self):
+        """Test the passed height is sent."""
+        self.assertDataSent('Height', self.HEIGHT)
+
+    def test_length_is_sent(self):
+        """Test the passed length is sent."""
+        self.assertDataSent('Length', self.LENGTH)
+
+    def test_width_is_sent(self):
+        """Test the passed width is sent."""
+        self.assertDataSent('Width', self.WIDTH)
+
+    def test_large_letter_compatible_is_sent(self):
+        """Test the passed large letter compatibilty is sent."""
+        self.assertDataSent(
+            'LargeLetterCompatible', int(self.product.large_letter_compatible))
+
+    def test_height_is_set(self):
+        """Test that the product.height attribute is updated."""
+        self.assertEqual(self.product.height_mm, self.HEIGHT)
+
+    def test_length_is_set(self):
+        """Test that the product.length attribute is updated."""
+        self.assertEqual(self.product.length_mm, self.LENGTH)
+
+    def test_width_is_set(self):
+        """Test that the product.width attribute is updated."""
+        self.assertEqual(self.product.width_mm, self.WIDTH)
 
 
 class Test_set_large_letter_compatible_Method(TestProduct):
