@@ -191,7 +191,8 @@ class Product:
 
     def set_vat_rate(self, vat_rate):
         """Set VAT rate for product."""
-        return ccapi.CCAPI.set_product_vat_rate([self.id], vat_rate)
+        return ccapi.CCAPI.set_product_vat_rate(
+            product_ids=[self.id], vat_rate=vat_rate)
 
     def set_handling_time(self, handling_time, update_channels=True):
         """
