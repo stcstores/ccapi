@@ -187,7 +187,7 @@ class Product:
 
     def set_base_price(self, price):
         """Set Product base price."""
-        ccapi.CCAPI.set_product_base_price(self.id, price)
+        ccapi.CCAPI.set_product_base_price(product_id=self.id, price=price)
 
     def set_vat_rate(self, vat_rate):
         """Set VAT rate for product."""
