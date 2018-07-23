@@ -579,7 +579,7 @@ class Test_set_vat_rate_Method(TestProduct):
     """Test the set_vat_rate method of cc_objects.Product."""
 
     RESPONSE = 'Success'
-    PRODUCT_ID = '6909316'
+
     VAT_RATE = 20
     VAT_RATE_ID = VatRates.get_vat_rate_id_by_rate(VAT_RATE)
 
@@ -745,7 +745,22 @@ class Test_add_image_Method(TestProduct):
 class Test_set_image_order_Method(TestProduct):
     """Test the set_image_order method of cc_objects.Product."""
 
-    # TODO
+    RESPONSE = test_requests.TestSetImageOrder.RESPONSE
+    IMAGE_IDS = ['28179547', '28179563', '28179581']
+
+    def setUp(self):
+        """Make test request."""
+        super().setUp()
+        self.register_request(requests.SetImageOrder, text=self.RESPONSE)
+        self.product.set_image_order(self.IMAGE_IDS)
+
+    def test_passed_product_ID_is_sent(self):
+        """Test that the passed product ID is sent."""
+        self.assertDataSent('prodid', self.product.id)
+
+    def test_passed_handling_time_is_sent(self):
+        """Test that the passed image IDs are sent."""
+        self.assertDataSent('order', '^^'.join(self.IMAGE_IDS))
 
 
 class Test_get_factory_links_Method(TestProduct):
