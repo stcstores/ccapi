@@ -780,7 +780,22 @@ class Test_set_image_order_Method(TestProduct):
 class Test_get_factory_links_Method(TestProduct):
     """Test the get_factory_links method of cc_objects.Product."""
 
-    # TODO
+    RESPONSE = [test_requests.TestFindProductFactoryLinks.RESPONSE]
+
+    def setUp(self):
+        """Make test request."""
+        super().setUp()
+        self.register_request(
+            requests.FindProductFactoryLinks, json=self.RESPONSE)
+        self.factories = self.product.get_factory_links()
+
+    def test_sends_product_ID(self):
+        """Test sends the product's ID."""
+        self.assertDataSent('ProductID', self.PRODUCT_ID)
+
+    def test_returns_FactoryLinks_instance(self):
+        """Test returns FactoryLinks instance."""
+        self.assertIsInstance(self.factories, cc_objects.FactoryLinks)
 
 
 class Test_update_factory_link_Method(TestProduct):
