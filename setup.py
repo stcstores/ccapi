@@ -24,6 +24,6 @@ setuptools.setup(
     url=about['__url__'],
     author=about['__author__'],
     author_email=about['__author_email__'],
-    install_requires=['requests', 'beautifulsoup4'],
+    install_requires=['requests', 'beautifulsoup4', 'pyaml'],
     packages=setuptools.find_packages(),
 )
