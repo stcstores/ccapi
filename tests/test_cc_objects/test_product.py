@@ -739,7 +739,21 @@ class Test_get_images_Method(TestProduct):
 class Test_add_image_Method(TestProduct):
     """Test the add_image method of cc_objects.Product."""
 
-    # TODO
+    RESPONSE = test_requests.TestUploadImage.SUCCESSFUL_RESPONSE
+
+    PRODUCT_IDS = ['123654', '6909316']
+    IMAGE = test_requests.TestUploadImage.IMAGE
+
+    def setUp(self):
+        """Make test request."""
+        super().setUp()
+        self.register_request(requests.UploadImage, json=self.RESPONSE)
+        self.product.add_image(self.IMAGE)
+
+    def test_product_ID_is_sent(self):
+        """Test that the products ID is sent."""
+        sent_data = self.get_sent_request_query()
+        self.assertIn(str(self.product.id), str(sent_data['prodids']))
 
 
 class Test_set_image_order_Method(TestProduct):
