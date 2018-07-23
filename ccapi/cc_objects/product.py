@@ -206,7 +206,9 @@ class Product:
                 Default: True.
         """
         ccapi.CCAPI.set_product_handling_time(
-            self.id, handling_time, update_channels=update_channels)
+            product_id=self.id,
+            handling_time=handling_time,
+            update_channels=update_channels)
 
     def set_stock_level(self, new_stock_level, old_stock_level=None):
         """
