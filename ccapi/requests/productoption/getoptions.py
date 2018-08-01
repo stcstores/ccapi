@@ -11,7 +11,7 @@ from ..apirequest import APIRequest
 class GetOptions(APIRequest):
     """Wrapper for GetOptions request."""
 
-    uri = 'Handlers/ProductOption/getOptions.ashx'
+    uri = "Handlers/ProductOption/getOptions.ashx"
 
     def process_response(self, response):
         """Handle request response."""
@@ -20,4 +20,4 @@ class GetOptions(APIRequest):
 
     def get_data(self):
         """Get data for request."""
-        return {'brandID': "341", 'strOptionTypes': "1,+2,+6"}
+        return {"brandID": "341", "strOptionTypes": "1,+2,+6"}

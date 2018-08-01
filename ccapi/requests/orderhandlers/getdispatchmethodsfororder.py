@@ -12,7 +12,7 @@ from ..apirequest import APIRequest
 class GetDispatchMethodsForOrder(APIRequest):
     """GetDispatchMethodsForOrder request."""
 
-    uri = '/Handlers/OrderHandlers/GetDispatchMethodsForOrder.ashx'
+    uri = "/Handlers/OrderHandlers/GetDispatchMethodsForOrder.ashx"
 
     def __new__(self, order_id, analyse=True):
         """Create GetDispatchMethodsForOrder request."""
@@ -22,7 +22,7 @@ class GetDispatchMethodsForOrder(APIRequest):
 
     def get_params(self):
         """Get parameters for get request."""
-        return {'orderid': self.order_id, 'analyse': self.analyse}
+        return {"orderid": self.order_id, "analyse": self.analyse}
 
     def process_response(self, response):
         """Handle request response."""
@@ -72,16 +72,16 @@ class DispatchMethod:
 
     def load_from_request(self, data):
         """Set attributes based on GetDispatchMethodsForOrder request."""
-        self.passed_filters = data['passedFilters']
-        self.courier_rule = CourierRule(data['CourierRule'])
-        self.rule_type = data['RuleType']
-        self.match_score = data['MatchScore']
-        self.matched_rules = data['MatchedRules']
-        self.failed_rules = data['FailedRules']
-        self.total_rules = data['TotalRules']
-        self.courier_match_cost = data['CourierMatchCost']
-        self.shipping_label_count = data['ShippingLabelCount']
-        self.total_shipping_label_estimate = data['TotalShippingLabelEstimate']
-        self.bonus_score = data['BonusScore']
-        self.failed_rules_descriptions = data['FailedRulesDescriptions']
-        self.best_matching_courier_rule = data['BestMatchingCourierRule']
+        self.passed_filters = data["passedFilters"]
+        self.courier_rule = CourierRule(data["CourierRule"])
+        self.rule_type = data["RuleType"]
+        self.match_score = data["MatchScore"]
+        self.matched_rules = data["MatchedRules"]
+        self.failed_rules = data["FailedRules"]
+        self.total_rules = data["TotalRules"]
+        self.courier_match_cost = data["CourierMatchCost"]
+        self.shipping_label_count = data["ShippingLabelCount"]
+        self.total_shipping_label_estimate = data["TotalShippingLabelEstimate"]
+        self.bonus_score = data["BonusScore"]
+        self.failed_rules_descriptions = data["FailedRulesDescriptions"]
+        self.best_matching_courier_rule = data["BestMatchingCourierRule"]

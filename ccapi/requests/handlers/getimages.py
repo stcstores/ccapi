@@ -11,9 +11,9 @@ from ccapi.requests import APIRequest
 class GetImages(APIRequest):
     """getImages request."""
 
-    uri = 'Handlers/getImages.ashx'
+    uri = "Handlers/getImages.ashx"
 
-    def __new__(self, range_id='', product_id=''):
+    def __new__(self, range_id="", product_id=""):
         """Create getImages request.
 
         Kwargs:
@@ -27,13 +27,13 @@ class GetImages(APIRequest):
     def process_response(self, response):
         """Handle request response."""
         html = response.text
-        if 'NoRecFound' in html:
+        if "NoRecFound" in html:
             return []
-        soup = BeautifulSoup(html, 'html.parser')
+        soup = BeautifulSoup(html, "html.parser")
         images = []
         image_divs = soup.findAll("div", {"class": "galleryImageContainer"})
         for image_div in image_divs:
-            url = image_div.find('img')['src']
+            url = image_div.find("img")["src"]
             image = ProductImage(url)
             images.append(image)
         return images
@@ -41,12 +41,12 @@ class GetImages(APIRequest):
     def get_data(self):
         """Get data for request."""
         return {
-            'ProgType': 'GetImages',
-            'ProductID': self.product_id,
-            'rID': self.range_id,
-            'cID': ''
+            "ProgType": "GetImages",
+            "ProductID": self.product_id,
+            "rID": self.range_id,
+            "cID": "",
         }
 
     def get_params(self):
         """Get parameters for get request."""
-        return {'d': '155'}
+        return {"d": "155"}

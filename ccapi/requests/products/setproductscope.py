@@ -13,18 +13,19 @@ class SetProductScope(APIRequest):
     external ID.
     """
 
-    uri = 'Handlers/Products/setProductScope.ashx'
+    uri = "Handlers/Products/setProductScope.ashx"
 
     def __new__(
-            self,
-            *,
-            product_id,
-            weight,
-            height,
-            length,
-            width,
-            large_letter_compatible,
-            external_id=None):
+        self,
+        *,
+        product_id,
+        weight,
+        height,
+        length,
+        width,
+        large_letter_compatible,
+        external_id=None
+    ):
         """
         Create setProductScope request.
 
@@ -50,23 +51,26 @@ class SetProductScope(APIRequest):
     def process_response(self, response):
         """Handle request response."""
         self.raise_for_non_200(
-            self, response,
+            self,
+            response,
             'Error setting product scope for product with ID "{}".'.format(
-                self.product_id))
+                self.product_id
+            ),
+        )
         return response.text
 
     def get_data(self):
         """Get data for request."""
         return {
-            'ProductID': self.product_id,
-            'Weight': self.weight,
-            'Height': self.height,
-            'Length': self.length,
-            'Width': self.width,
-            'LargeLetterCompatible': int(bool(self.large_letter_compatible)),
-            'ExternalID': self.external_id or ''
+            "ProductID": self.product_id,
+            "Weight": self.weight,
+            "Height": self.height,
+            "Length": self.length,
+            "Width": self.width,
+            "LargeLetterCompatible": int(bool(self.large_letter_compatible)),
+            "ExternalID": self.external_id or "",
         }
 
     def get_params(self):
         """Get parameters for get request."""
-        return {'d': '920'}
+        return {"d": "920"}

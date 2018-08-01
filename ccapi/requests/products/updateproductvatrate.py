@@ -9,7 +9,7 @@ from ..apirequest import APIRequest
 class UpdateProductVatRate(APIRequest):
     """updateProductVatRate request."""
 
-    uri = 'Handlers/Products/updateProductVatRate.ashx'
+    uri = "Handlers/Products/updateProductVatRate.ashx"
 
     def __new__(self, *, product_ids, vat_rate_id):
         """
@@ -29,14 +29,17 @@ class UpdateProductVatRate(APIRequest):
     def get_data(self):
         """Get data for request."""
         return {
-            'prodids': ','.join([str(x) for x in self.product_ids]),
-            'vatrate': self.vat_rate_id,
+            "prodids": ",".join([str(x) for x in self.product_ids]),
+            "vatrate": self.vat_rate_id,
         }
 
     def process_response(self, response):
         """Handle request response."""
         self.raise_for_non_200(
-            self, response,
+            self,
+            response,
             'Error saving VAT rate for product IDs "{}".'.format(
-                ', '.join(self.product_ids)))
+                ", ".join(self.product_ids)
+            ),
+        )
         return response.text

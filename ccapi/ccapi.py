@@ -32,7 +32,8 @@ class CCAPI:
             password: Login password.
         """
         return CloudCommerceAPISession.get_session(
-            domain=domain, username=username, password=password)
+            domain=domain, username=username, password=password
+        )
 
     @staticmethod
     def is_logged_in():
@@ -70,10 +71,10 @@ class CCAPI:
             product SKU.
 
         """
-        response = requests.ProductOperations('getgeneratedsku')
+        response = requests.ProductOperations("getgeneratedsku")
         sku = response.data
         if range_sku is True:
-            sku = 'RNG_{}'.format(sku)
+            sku = "RNG_{}".format(sku)
         return sku
 
     @staticmethod
@@ -159,8 +160,7 @@ class CCAPI:
         return requests.GetOptionData(option_id)
 
     @staticmethod
-    def update_product_stock_level(
-            *, product_id, new_stock_level, old_stock_level):
+    def update_product_stock_level(*, product_id, new_stock_level, old_stock_level):
         """
         Change stock level for a Product.
 
@@ -173,7 +173,8 @@ class CCAPI:
         requests.UpdateProductStockLevel(
             product_id=product_id,
             new_stock_level=new_stock_level,
-            old_stock_level=old_stock_level)
+            old_stock_level=old_stock_level,
+        )
 
     @classmethod
     def create_range(cls, range_name, sku=None):
@@ -259,8 +260,7 @@ class CCAPI:
             product_id: ID of Range.
             option_id: ID of Product Option.
         """
-        requests.AddRemProductOption(
-            range_id=range_id, option_id=option_id, add=True)
+        requests.AddRemProductOption(range_id=range_id, option_id=option_id, add=True)
 
     @staticmethod
     def remove_option_from_product(*, range_id, option_id):
@@ -272,7 +272,8 @@ class CCAPI:
             option_id: ID of Product Option.
         """
         requests.AddRemProductOption(
-            range_id=range_id, option_id=option_id, remove=True)
+            range_id=range_id, option_id=option_id, remove=True
+        )
 
     @staticmethod
     def get_range(range_id):
@@ -289,14 +290,8 @@ class CCAPI:
 
     @classmethod
     def create_product(
-            cls,
-            *,
-            range_id,
-            name,
-            barcode,
-            sku=None,
-            description=None,
-            vat_rate=20):
+        cls, *, range_id, name, barcode, sku=None, description=None, vat_rate=20
+    ):
         """
         Add new Product to a Product Range.
 
@@ -326,7 +321,8 @@ class CCAPI:
             barcode=barcode,
             sku=sku,
             description=description,
-            vat_rate_id=vat_rate_id)
+            vat_rate_id=vat_rate_id,
+        )
 
     @staticmethod
     def set_product_option_value(*, product_ids, option_id, option_value_id):
@@ -341,18 +337,20 @@ class CCAPI:
         return requests.SetProductOptionValue(
             product_ids=product_ids,
             option_id=option_id,
-            option_value_id=option_value_id)
+            option_value_id=option_value_id,
+        )
 
     @staticmethod
     def set_product_scope(
-            *,
-            product_id,
-            weight,
-            height,
-            length,
-            width,
-            large_letter_compatible,
-            external_id=None):
+        *,
+        product_id,
+        weight,
+        height,
+        length,
+        width,
+        large_letter_compatible,
+        external_id=None
+    ):
         """
         Set the scope of a product.
 
@@ -376,7 +374,8 @@ class CCAPI:
             length=length,
             width=width,
             large_letter_compatible=large_letter_compatible,
-            external_id=external_id)
+            external_id=external_id,
+        )
 
     @staticmethod
     def set_product_base_price(*, product_id, price):
@@ -390,8 +389,7 @@ class CCAPI:
         requests.UpdateProductBasePrice(product_id=product_id, price=price)
 
     @staticmethod
-    def set_product_handling_time(
-            *, product_id, handling_time, update_channels=True):
+    def set_product_handling_time(*, product_id, handling_time, update_channels=True):
         """
         Set handling time for product.
 
@@ -406,7 +404,8 @@ class CCAPI:
         requests.SaveHandlingTime(
             product_id=product_id,
             handling_time=handling_time,
-            update_channels=update_channels)
+            update_channels=update_channels,
+        )
 
     @staticmethod
     def get_warehouses():
@@ -418,7 +417,8 @@ class CCAPI:
         """Return list of Warehouse Bays for Warehouse."""
         if products is False:
             return requests.FindWarehouseBay(
-                warehouse_id=warehouse_id, prog_type='normal', products=False)
+                warehouse_id=warehouse_id, prog_type="normal", products=False
+            )
         skip_records = 0
         ids = []
         bays = []
@@ -426,13 +426,14 @@ class CCAPI:
         skip_records = 0
         request = 1
         while True:
-            print('Request: {}'.format(request))
+            print("Request: {}".format(request))
             data = requests.FindWarehouseBay(
                 warehouse_id=warehouse_id,
-                prog_type='normal',
+                prog_type="normal",
                 products=True,
                 skip_records=skip_records,
-                take_limit=take_limit)
+                take_limit=take_limit,
+            )
             request += 1
             skip_records += take_limit
             for bay in data:
@@ -444,33 +445,31 @@ class CCAPI:
     @staticmethod
     def get_bays_for_product(product_id):
         """Return list of Warehouse Bays for Product."""
-        return requests.FindWarehouseBay(
-            product_id=product_id, operation='productbays')
+        return requests.FindWarehouseBay(product_id=product_id, operation="productbays")
 
     @staticmethod
     def add_warehouse_bay_to_product(product_id, bay_id):
         """Add Warehouse Bay to Product."""
         return requests.FindWarehouseBay(
-            product_id=product_id,
-            warehouse_bay_id=bay_id,
-            operation='addlocation')
+            product_id=product_id, warehouse_bay_id=bay_id, operation="addlocation"
+        )
 
     @staticmethod
     def remove_warehouse_bay_from_product(product_id, bay_id):
         """Remove Warehouse Bay from Product."""
         return requests.FindWarehouseBay(
-            product_id=product_id,
-            warehouse_bay_id=bay_id,
-            operation='removelocation')
+            product_id=product_id, warehouse_bay_id=bay_id, operation="removelocation"
+        )
 
     @staticmethod
     def add_bay_to_warehouse(
-            warehouse_id,
-            bay,
-            bay_number=0,
-            aisle='',
-            shelf='',
-            warehouse_bay_type='Default'):
+        warehouse_id,
+        bay,
+        bay_number=0,
+        aisle="",
+        shelf="",
+        warehouse_bay_type="Default",
+    ):
         """Add bay to warehouse."""
         return requests.SaveWarehouseBay(
             warehouse_id,
@@ -478,7 +477,8 @@ class CCAPI:
             bay_number=bay_number,
             aisle=aisle,
             shelf=shelf,
-            warehouse_bay_type=warehouse_bay_type)
+            warehouse_bay_type=warehouse_bay_type,
+        )
 
     @staticmethod
     def delete_product_option_value(option_value_id):
@@ -495,7 +495,8 @@ class CCAPI:
             drop_down: (Bool) Set Product Option as a drop down or not.
         """
         requests.SetOptionSelect(
-            range_id=range_id, option_id=option_id, drop_down=drop_down)
+            range_id=range_id, option_id=option_id, drop_down=drop_down
+        )
 
     @classmethod
     def get_products(cls, *args, **kwargs):
@@ -526,14 +527,14 @@ class CCAPI:
         Returns: list containing ccapi.Range.
 
         """
-        kwargs['skip_records'] = 0
+        kwargs["skip_records"] = 0
         range_ids = []
         product_ids = []
         while True:
             request = requests.GetProducts(*args, **kwargs)
             for product in request:
-                range_id = product['RangeId']
-                product_id = product['VariationId']
+                range_id = product["RangeId"]
+                product_id = product["VariationId"]
                 if product_id in product_ids:
                     ranges = []
                     for range_id in range_ids:
@@ -544,13 +545,12 @@ class CCAPI:
                 product_ids.append(product_id)
                 if range_id not in range_ids:
                     range_ids.append(range_id)
-            kwargs['skip_records'] = len(product_ids)
+            kwargs["skip_records"] = len(product_ids)
 
     @staticmethod
     def delete_bay(bay_id):
         """Delete Warehouse Bay."""
-        return requests.FindWarehouseBay(
-            warehouse_bay_id=bay_id, operation='removebay')
+        return requests.FindWarehouseBay(warehouse_bay_id=bay_id, operation="removebay")
 
     @classmethod
     def get_bay_id(cls, bay_name, warehouse_name, create=False):
@@ -570,7 +570,7 @@ class CCAPI:
         return requests.FindPrintQueue()
 
     @staticmethod
-    def get_users(search_string=''):
+    def get_users(search_string=""):
         """Return system users."""
         return requests.PreEmployee(search_string=search_string)
 
@@ -587,35 +587,35 @@ class CCAPI:
     @staticmethod
     def get_orders_for_dispatch(*args, **kwargs):
         """Get orders for dispatch."""
-        kwargs['skip_records'] = 0
-        kwargs['take_limit'] = 200
+        kwargs["skip_records"] = 0
+        kwargs["take_limit"] = 200
         orders = []
         while True:
             new_orders = requests.GetOrdersForDispatch(*args, **kwargs)
             new_orders = [
-                o for o in new_orders
-                if o.order_id not in (o.order_id for o in orders)
+                o for o in new_orders if o.order_id not in (o.order_id for o in orders)
             ]
             orders += new_orders
             if len(new_orders) > 0:
-                kwargs['skip_records'] += kwargs['take_limit']
+                kwargs["skip_records"] += kwargs["take_limit"]
             else:
                 return orders
 
     @staticmethod
     def update_range_settings(
-            range_id,
-            current_name='',
-            current_sku='',
-            current_end_of_line='',
-            current_pre_order='',
-            current_group_items='',
-            new_name='',
-            new_sku='',
-            new_end_of_line='',
-            new_pre_order='',
-            new_group_items='',
-            channels=[]):
+        range_id,
+        current_name="",
+        current_sku="",
+        current_end_of_line="",
+        current_pre_order="",
+        current_group_items="",
+        new_name="",
+        new_sku="",
+        new_end_of_line="",
+        new_pre_order="",
+        new_group_items="",
+        channels=[],
+    ):
         """
         Update Range Settings.
 
@@ -634,11 +634,13 @@ class CCAPI:
             new_end_of_line=new_end_of_line,
             new_pre_order=new_pre_order,
             new_group_items=new_group_items,
-            channels=channels)
+            channels=channels,
+        )
 
     @staticmethod
     def update_range_on_sales_channel(
-            *, range_id, request_type, act, value, option_id, channel_ids=[]):
+        *, range_id, request_type, act, value, option_id, channel_ids=[]
+    ):
         """Update Product Range settings on sales channel.
 
         Args:
@@ -654,7 +656,8 @@ class CCAPI:
             act=act,
             value=value,
             option_id=option_id,
-            channel_ids=channel_ids)
+            channel_ids=channel_ids,
+        )
 
     @staticmethod
     def update_product_on_sales_channel(*args, **kwargs):
@@ -686,7 +689,8 @@ class CCAPI:
     def set_product_description(*, description, product_ids):
         """Set description for Product."""
         return requests.SaveDescription(
-            description=description, product_ids=product_ids)
+            description=description, product_ids=product_ids
+        )
 
     @staticmethod
     def set_product_name(*, name, product_ids):
@@ -698,7 +702,8 @@ class CCAPI:
         """Set VAT rate for products."""
         vat_rate_id = VatRates.get_vat_rate_id_by_rate(vat_rate)
         return requests.UpdateProductVatRate(
-            product_ids=product_ids, vat_rate_id=vat_rate_id)
+            product_ids=product_ids, vat_rate_id=vat_rate_id
+        )
 
     @staticmethod
     def get_product_images(range_id, product_id):
@@ -729,9 +734,8 @@ class CCAPI:
             image_file: File object containing the image to upload.
         """
         return requests.UploadImage(
-            product_ids=product_ids,
-            channel_ids=channel_ids,
-            image_file=image_file)
+            product_ids=product_ids, channel_ids=channel_ids, image_file=image_file
+        )
 
     @staticmethod
     def set_image_order(*, product_id=None, image_ids=[]):
@@ -741,8 +745,7 @@ class CCAPI:
             product_id: ID of Product for which Images will be ordered.
             image_order: List containing IDs of images in updated order.
         """
-        return requests.SetImageOrder(
-            product_id=product_id, image_ids=image_ids)
+        return requests.SetImageOrder(product_id=product_id, image_ids=image_ids)
 
     @staticmethod
     def get_courier_rules():
@@ -763,7 +766,8 @@ class CCAPI:
     def create_factory(cls, name):
         """Create new Factory."""
         new_factory_id = requests.Factory(
-            name=name, factory_id=0, prog_type=requests.Factory.UPDATE_FACTORY)
+            name=name, factory_id=0, prog_type=requests.Factory.UPDATE_FACTORY
+        )
         factories = cls.get_factories()
         return factories.ids[new_factory_id]
 
@@ -776,7 +780,8 @@ class CCAPI:
     def delete_factory(factory_id):
         """Delete Factory."""
         return requests.Factory(
-            prog_type=requests.Factory.DELETE_FACTORY, factory_id=factory_id)
+            prog_type=requests.Factory.DELETE_FACTORY, factory_id=factory_id
+        )
 
     @staticmethod
     def get_product_factory_links(product_id):
@@ -785,18 +790,16 @@ class CCAPI:
 
     @staticmethod
     def update_product_factory_link(
-            product_id=None,
-            factory_id=None,
-            dropship=False,
-            supplier_sku='',
-            price=0):
+        product_id=None, factory_id=None, dropship=False, supplier_sku="", price=0
+    ):
         """Create or update Product Factory Link."""
         return requests.UpdProductFactoryLink(
             product_id=product_id,
             factory_id=factory_id,
             dropship=dropship,
             supplier_sku=supplier_sku,
-            price=price)
+            price=price,
+        )
 
     @staticmethod
     def delete_product_factory_link(factory_link_id):
@@ -820,43 +823,44 @@ class CCAPI:
 
     @staticmethod
     def add_address(
-            customer_id,
-            address_type='Delivery',
-            company_name='',
-            first_name='',
-            last_name='',
-            address_1='',
-            address_2='',
-            post_code='',
-            town='',
-            region='',
-            country='',
-            telephone_number='',
-            fax_number='',
-            mobile_number='',
-            address_id='0',
-            customer_add_link_id='0'):
+        customer_id,
+        address_type="Delivery",
+        company_name="",
+        first_name="",
+        last_name="",
+        address_1="",
+        address_2="",
+        post_code="",
+        town="",
+        region="",
+        country="",
+        telephone_number="",
+        fax_number="",
+        mobile_number="",
+        address_id="0",
+        customer_add_link_id="0",
+    ):
         """Add address to customer and return it's ID."""
         kwargs = {
-            'CustID': customer_id,
-            'CustAddLinkID': customer_add_link_id,
-            'AddressID': address_id,
-            'AddTitle': address_type,
-            'CompanyName': company_name,
-            'FirstName': first_name,
-            'LastName': last_name,
-            'Address1': address_1,
-            'Address2': address_2,
-            'Postcode': post_code,
-            'Town': town,
-            'Region': region,
-            'Country': country,
-            'TelNo': telephone_number,
-            'FaxNo': fax_number,
-            'MobNo': mobile_number,
+            "CustID": customer_id,
+            "CustAddLinkID": customer_add_link_id,
+            "AddressID": address_id,
+            "AddTitle": address_type,
+            "CompanyName": company_name,
+            "FirstName": first_name,
+            "LastName": last_name,
+            "Address1": address_1,
+            "Address2": address_2,
+            "Postcode": post_code,
+            "Town": town,
+            "Region": region,
+            "Country": country,
+            "TelNo": telephone_number,
+            "FaxNo": fax_number,
+            "MobNo": mobile_number,
         }
-        response = requests.Customer('UpdCustAddr', **kwargs)
-        return response.text.split('^^')[2]
+        response = requests.Customer("UpdCustAddr", **kwargs)
+        return response.text.split("^^")[2]
 
     @staticmethod
     def barcode_is_in_use(barcode):

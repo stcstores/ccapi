@@ -10,7 +10,7 @@ from ..apirequest import APIRequest
 class DeleteImage(APIRequest):
     """deleteImage request."""
 
-    uri = 'Handlers/Products/deleteImage.ashx'
+    uri = "Handlers/Products/deleteImage.ashx"
 
     def __new__(self, image_id):
         """Create deleteImage request.
@@ -24,13 +24,14 @@ class DeleteImage(APIRequest):
     def process_response(self, response):
         """Handle request response."""
         self.raise_for_non_200(
-            self, response, f'Image with ID {self.image_id} was not saved.')
+            self, response, f"Image with ID {self.image_id} was not saved."
+        )
         return response.text
 
     def get_data(self):
         """Get data for request."""
-        return {'imgID': self.image_id}
+        return {"imgID": self.image_id}
 
     def get_params(self):
         """Get parameters for get request."""
-        return {'d': '155'}
+        return {"d": "155"}

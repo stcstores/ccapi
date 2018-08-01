@@ -11,10 +11,9 @@ from ..apirequest import APIRequest
 class AddProduct(APIRequest):
     """AddProduct request class."""
 
-    uri = 'Handlers/Products/AddProduct.ashx'
+    uri = "Handlers/Products/AddProduct.ashx"
 
-    def __new__(
-            self, *, range_id, name, barcode, sku, description, vat_rate_id):
+    def __new__(self, *, range_id, name, barcode, sku, description, vat_rate_id):
         """Create AddProduct request.
 
         Args:
@@ -37,24 +36,24 @@ class AddProduct(APIRequest):
         """Handle request response."""
         error_message = 'Product "{}" was not created'.format(self.name)
         self.raise_for_non_200(self, response, error_message)
-        if 'Success^^' in response.text:
-            return response.text.split('^^')[1]
+        if "Success^^" in response.text:
+            return response.text.split("^^")[1]
         raise CloudCommerceResponseError(error_message)
 
     def get_data(self):
         """Get data for request."""
         return {
-            'ProductID': "0",
-            'ProdRangeID': self.range_id,
-            'ProdName': self.name,
-            'BarCode': self.barcode,
-            'SKUCode': self.sku,
-            'ProdDescription': self.description,
-            'VatRateID': self.vat_rate_id,
-            'CopyDesc': "0",
-            'BrandID': "341"
+            "ProductID": "0",
+            "ProdRangeID": self.range_id,
+            "ProdName": self.name,
+            "BarCode": self.barcode,
+            "SKUCode": self.sku,
+            "ProdDescription": self.description,
+            "VatRateID": self.vat_rate_id,
+            "CopyDesc": "0",
+            "BrandID": "341",
         }
 
     def get_params(self):
         """Get parameters for get request."""
-        return {'d': '1496918496099'}
+        return {"d": "1496918496099"}

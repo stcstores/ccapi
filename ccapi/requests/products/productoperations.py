@@ -6,7 +6,7 @@ from ..apirequest import APIRequest
 class ProductOperations(APIRequest):
     """ProductOperations request."""
 
-    uri = 'Handlers/Products/ProductOperations.ashx'
+    uri = "Handlers/Products/ProductOperations.ashx"
 
     def __new__(self, request_mode):
         """Create ProductOperations request.
@@ -19,17 +19,17 @@ class ProductOperations(APIRequest):
 
     def get_headers(self):
         """Get headers for request."""
-        return {'requestmode': self.request_mode}
+        return {"requestmode": self.request_mode}
 
     def get_params(self):
         """Get parameters for get request."""
-        return {'d': '769'}
+        return {"d": "769"}
 
     def process_response(self, response):
         """Handle request response."""
         self.raise_for_non_200(
-            self, response,
-            'Product Operations request returned an error code.')
+            self, response, "Product Operations request returned an error code."
+        )
         result = response.json()
         return ProductOperationsResult(result)
 
@@ -39,7 +39,7 @@ class ProductOperationsResult:
 
     def __init__(self, result):
         """Get information from ProductOperations request."""
-        self.success = result['Success']
-        self.message = result['Message']
-        self.record_count = result['RecordCount']
-        self.data = result['Data']
+        self.success = result["Success"]
+        self.message = result["Message"]
+        self.record_count = result["RecordCount"]
+        self.data = result["Data"]
