@@ -12,13 +12,13 @@ class NotLoggedInError(Exception):
 
     def __init__(self):
         """Raise exception."""
-        super().__init__('No session Cloud Commerce session exists.')
+        super().__init__("No session Cloud Commerce session exists.")
 
 
 class CloudCommerceResponseError(BaseCloudCommerceAPIError):
     """Exception for failed API Requests."""
 
-    def __init__(self, message='API Request failed.'):
+    def __init__(self, message="API Request failed."):
         """Raise exception."""
         super().__init__(message)
 
@@ -28,7 +28,7 @@ class CloudCommerceNoResponseError(BaseCloudCommerceAPIError):
 
     def __init__(self):
         """Raise exception."""
-        super().__init__('Cloud Commerce Pro did not respond')
+        super().__init__("Cloud Commerce Pro did not respond")
 
 
 class ProductNotFoundError(BaseCloudCommerceAPIError):
@@ -37,5 +37,5 @@ class ProductNotFoundError(BaseCloudCommerceAPIError):
     def __init__(self, product_id):
         """Raise exception."""
         super().__init__(
-            'Product information not found for product ID "{}"'.format(
-                product_id))
+            'Product information not found for product ID "{}"'.format(product_id)
+        )

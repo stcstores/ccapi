@@ -12,7 +12,7 @@ from ..apirequest import APIRequest
 class GetOptionData(APIRequest):
     """Wrapper for GetOptionData request."""
 
-    uri = 'Handlers/ProductOption/getOptionData.ashx'
+    uri = "Handlers/ProductOption/getOptionData.ashx"
 
     def __new__(self, option_id):
         """Create GetOptionData request.
@@ -30,4 +30,4 @@ class GetOptionData(APIRequest):
 
     def get_data(self):
         """Get data for request."""
-        return {'optid': self.option_id}
+        return {"optid": self.option_id}

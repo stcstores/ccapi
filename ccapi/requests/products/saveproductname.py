@@ -10,7 +10,7 @@ from ..apirequest import APIRequest
 class SaveProductName(APIRequest):
     """setOptionSelect request."""
 
-    uri = 'Handlers/Products/saveProductName.ashx'
+    uri = "Handlers/Products/saveProductName.ashx"
 
     def __new__(self, *, name, product_ids):
         """Create saveProductName request.
@@ -30,15 +30,19 @@ class SaveProductName(APIRequest):
     def get_data(self):
         """Get data for request."""
         data = {
-            'prodids': ','.join([str(x) for x in self.product_ids]),
-            'name': self.name,
-            'channelID': 0
+            "prodids": ",".join([str(x) for x in self.product_ids]),
+            "name": self.name,
+            "channelID": 0,
         }
         return data
 
     def process_response(self, response):
         """Handle request response."""
         self.raise_for_non_200(
-            self, response, 'Error saving name for product ID(s) {}'.format(
-                ', '.join(self.product_ids)))
+            self,
+            response,
+            "Error saving name for product ID(s) {}".format(
+                ", ".join(self.product_ids)
+            ),
+        )
         return response.text

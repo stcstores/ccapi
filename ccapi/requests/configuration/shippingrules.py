@@ -12,7 +12,7 @@ from ..apirequest import APIRequest
 class ShippingRules(APIRequest):
     """ShippingRules request."""
 
-    uri = '/Handlers/Configuration/ShippingRules.ashx'
+    uri = "/Handlers/Configuration/ShippingRules.ashx"
 
     def __new__(self):
         """Create ShippingRules request."""

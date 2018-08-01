@@ -10,7 +10,7 @@ class SetProductOptionValue(APIRequest):
     Applies a Product Option Value to a set of products.
     """
 
-    uri = 'Handlers/Products/setProductOptionValue.ashx'
+    uri = "Handlers/Products/setProductOptionValue.ashx"
 
     def __new__(self, *, product_ids, option_id, option_value_id):
         """
@@ -32,21 +32,23 @@ class SetProductOptionValue(APIRequest):
     def process_response(self, response):
         """Handle request response."""
         self.raise_for_non_200(
-            self, response, (
+            self,
+            response,
+            (
                 'Error setting product option value with ID "{}" for product '
-                'option with ID "{}" on product(s) with ID(s) "{}".').format(
-                    self.option_value_id, self.option_id, ', '.join(
-                        self.product_ids)))
+                'option with ID "{}" on product(s) with ID(s) "{}".'
+            ).format(self.option_value_id, self.option_id, ", ".join(self.product_ids)),
+        )
         return response.text
 
     def get_data(self):
         """Get data for request."""
         return {
-            'prodids': ','.join(self.product_ids),
-            'OptionID': int(self.option_id),
-            'OptionValueID': int(self.option_value_id)
+            "prodids": ",".join(self.product_ids),
+            "OptionID": int(self.option_id),
+            "OptionValueID": int(self.option_value_id),
         }
 
     def get_params(self):
         """Get parameters for get request."""
-        return {'d': '178'}
+        return {"d": "178"}

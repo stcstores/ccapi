@@ -13,7 +13,7 @@ from ccapi.exceptions import CloudCommerceResponseError
 
 from .ccapisession import CloudCommerceAPISession
 
-error_logger = logging.getLogger('errors')
+error_logger = logging.getLogger("errors")
 
 
 class APIRequest:
@@ -51,7 +51,7 @@ class APIRequest:
 
     def process_response(self, response):
         """Handle request response."""
-        raise NotImplementedError('No method to process response.')
+        raise NotImplementedError("No method to process response.")
 
     def raise_for_non_200(self, response, message):
         """Raise exception if response status code is not 200."""
