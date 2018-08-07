@@ -44,9 +44,12 @@ class CloudCommerceAPISession:
         try:
             cls.session.post(login_url, data=login_post_data)
             cls.login_handler(cls.username, cls.password)
-            cls.last_login = datetime.now()
         except Exception as e:
             error_logger.error(e)
+            raise e
+        else:
+            cls.last_login = datetime.now()
+            logger.info(f"Logged in to {domain}.")
         return cls.session
 
     @classmethod
@@ -58,7 +61,6 @@ class CloudCommerceAPISession:
             cls.username = username
         if password is not None:
             cls.password = password
-        logger.info(f"Logged in to {domain}.")
 
     @classmethod
     def get_credentials(cls, *, domain=None, username=None, password=None):
@@ -134,18 +136,22 @@ class CloudCommerceAPISession:
         return response
 
     @classmethod
-    def is_logged_in(cls):
+    def session_timed_out(cls):
         """Check current session is valid."""
         if cls.last_login:
             login_expires = cls.last_login + cls.timeout
-            if cls.last_login < login_expires:
-                return True
-        return False
+            logger.info(
+                f"Last Login: {cls.last_login} Timeout: {cls.timeout} Expires: {login_expires} Current: {datetime.now()}"
+            )
+            if datetime.now() < login_expires:
+                return False
+        return True
 
     @classmethod
     def check_login(cls):
         """Get new session if current session has expired."""
-        if not cls.is_logged_in():
+        if cls.session_timed_out():
+            logger.info("Timed out")
             cls.get_session(
                 domain=cls.domain, username=cls.username, password=cls.password
             )

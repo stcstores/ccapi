@@ -19,7 +19,7 @@ dictLogConfig = {
         },
     },
     "loggers": {
-        "ccapi.requests.ccapisession": {"handlers": [], "level": "DEBUG"},
+        "ccapi.requests.ccapisession": {"handlers": [], "level": "INFO"},
         "errors": {"handlers": ["error_file_handler"], "level": "ERROR"},
     },
     "formatters": {

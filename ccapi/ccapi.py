@@ -23,7 +23,7 @@ class CCAPI:
         self.create_session(username, password)
 
     @staticmethod
-    def create_session(*, domain, username, password):
+    def create_session(domain=None, username=None, password=None):
         """
         Create Cloud Commerce Pro API session.
 
