@@ -12,17 +12,17 @@ class Factory:
 
     def load_from_data(self, data):
         """Set object attributes from API data."""
-        self.id = data['ID']
-        self.name = data['Name']
-        self.undelivered = data['Undelivered']
-        self.delivered = data['Delivered']
-        self.completed = data['Completed']
-        self.percent_sent = data['POSent']
-        self.percent_not_sent = data['PONotSent']
-        self.total = data['Total']
+        self.id = data["ID"]
+        self.name = data["Name"]
+        self.undelivered = data["Undelivered"]
+        self.delivered = data["Delivered"]
+        self.completed = data["Completed"]
+        self.percent_sent = data["POSent"]
+        self.percent_not_sent = data["PONotSent"]
+        self.total = data["Total"]
 
     def __repr__(self):
-        return 'Factory: {}'.format(self.name)
+        return "Factory: {}".format(self.name)
 
     def delete(self):
         """Delete this factory."""
@@ -32,15 +32,15 @@ class Factory:
         """Delete all product links for this factory."""
         return ccapi.CCAPI.delete_product_factory_links(self.id)
 
-    def update_product_link(
-            self, product_id, dropship=False, supplier_sku='', price=0):
+    def update_product_link(self, product_id, dropship=False, supplier_sku="", price=0):
         """Update or create product link."""
         return ccapi.CCAPI.update_product_factory_link(
             product_id=product_id,
             factory_id=self.id,
             dropship=dropship,
             supplier_sku=supplier_sku,
-            price=price)
+            price=price,
+        )
 
 
 class Factories:
@@ -75,28 +75,27 @@ class FactoryLink:
 
     def __init__(self, data):
         """Set factory link attributes from API data."""
-        self.link_id = int(data['LinkID'])
-        self.order_price = float(data['OrderPrice'])
-        self.price_precision = float(data['PricePrecision'])
-        self.product_id = int(data['ProductID'])
-        self.factory_id = int(data['FactoryID'])
-        self.currency_symbol = data['CurrencySymbol']
-        self.factory_name = data['FactoryName']
-        self.product_name = data['ProductName']
-        self.manufacturer_sku = data['ManufacturerSKU']
-        self.barcode_number = data['BarCodeNumber']
-        self.weight = int(data['Weight'])
-        self.pre_order = bool(data['PreOrder'])
-        self.end_of_line = bool(data['EndOfLine'])
-        self.product_range_id = int(data['ProductRangeID'])
-        self.product_range_name = data['ProductRangeName']
-        self.po_type = data['POType']
-        self.price = float(data['Price'])
-        self.supplier_sku = data['SupplierSKU']
+        self.link_id = int(data["LinkID"])
+        self.order_price = float(data["OrderPrice"])
+        self.price_precision = float(data["PricePrecision"])
+        self.product_id = int(data["ProductID"])
+        self.factory_id = int(data["FactoryID"])
+        self.currency_symbol = data["CurrencySymbol"]
+        self.factory_name = data["FactoryName"]
+        self.product_name = data["ProductName"]
+        self.manufacturer_sku = data["ManufacturerSKU"]
+        self.barcode_number = data["BarCodeNumber"]
+        self.weight = int(data["Weight"])
+        self.pre_order = bool(data["PreOrder"])
+        self.end_of_line = bool(data["EndOfLine"])
+        self.product_range_id = int(data["ProductRangeID"])
+        self.product_range_name = data["ProductRangeName"]
+        self.po_type = data["POType"]
+        self.price = float(data["Price"])
+        self.supplier_sku = data["SupplierSKU"]
 
     def __repr__(self):
-        return 'Factory Link: {} - {}'.format(
-            self.product_name, self.factory_name)
+        return "Factory Link: {} - {}".format(self.product_name, self.factory_name)
 
     def delete(self):
         """Delete this Product factory link."""

@@ -12,8 +12,8 @@ from ..apirequest import APIRequest
 class UploadImage(APIRequest):
     """uploadImage request."""
 
-    uri = 'Handlers/Products/uploadImage.ashx'
-    SUCCESS_RESULT = 'OK'
+    uri = "Handlers/Products/uploadImage.ashx"
+    SUCCESS_RESULT = "OK"
 
     def __new__(self, *, product_ids, image_file, channel_ids=[]):
         """Create uploadImage request.
@@ -34,24 +34,28 @@ class UploadImage(APIRequest):
     def process_response(self, response):
         """Handle request response."""
         self.raise_for_non_200(
-            self, response,
+            self,
+            response,
             'Error saving image for product ID(s) "{}".'.format(
-                ', '.join(self.product_ids)))
+                ", ".join(self.product_ids)
+            ),
+        )
         response_data = response.json()
-        if response_data.get('result') == self.SUCCESS_RESULT:
+        if response_data.get("result") == self.SUCCESS_RESULT:
             return response_data
         raise CloudCommerceResponseError(
-            f'Image not saved for product(s) {", ".join(self.product_ids)}')
+            f'Image not saved for product(s) {", ".join(self.product_ids)}'
+        )
 
     def get_params(self):
         """Get parameters for get request."""
         return {
-            'prodIDs': ','.join(self.product_ids),
-            'channelids': ','.join(self.channel_ids),
-            'brandID': '341'
+            "prodIDs": ",".join(self.product_ids),
+            "channelids": ",".join(self.channel_ids),
+            "brandID": "341",
         }
 
     def get_files(self):
         """Get file for request."""
-        files = {'upload_file': self.image_file}
+        files = {"upload_file": self.image_file}
         return files

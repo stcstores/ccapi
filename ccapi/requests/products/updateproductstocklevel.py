@@ -9,7 +9,7 @@ from ..apirequest import APIRequest
 class UpdateProductStockLevel(APIRequest):
     """UpdateProductStockLevel request."""
 
-    uri = 'Handlers/Products/UpdateProductStockLevel.ashx'
+    uri = "Handlers/Products/UpdateProductStockLevel.ashx"
 
     def __new__(self, *, product_id, new_stock_level, old_stock_level):
         """
@@ -28,16 +28,19 @@ class UpdateProductStockLevel(APIRequest):
     def get_data(self):
         """Get data for request."""
         return {
-            'AccountID': '4419651',
-            'ProductID': self.product_id,
-            'newStockLevel': self.new_stock_level,
-            'oldStockLevel': self.old_stock_level
+            "AccountID": "4419651",
+            "ProductID": self.product_id,
+            "newStockLevel": self.new_stock_level,
+            "oldStockLevel": self.old_stock_level,
         }
 
     def process_response(self, response):
         """Handle request response."""
         self.raise_for_non_200(
-            self, response,
+            self,
+            response,
             'Error updating stock level for prouduct with ID "{}".'.format(
-                self.product_id))
+                self.product_id
+            ),
+        )
         return response.text

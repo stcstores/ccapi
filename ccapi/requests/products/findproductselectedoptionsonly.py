@@ -13,7 +13,7 @@ from ..apirequest import APIRequest
 class FindProductSelectedOptionsOnly(APIRequest):
     """FindProductSelectedOptionsOnly request."""
 
-    uri = 'Handlers/Products/findProductSelectedOptionsOnly.ashx'
+    uri = "Handlers/Products/findProductSelectedOptionsOnly.ashx"
 
     def __new__(self, product_id, channel_id=0):
         """
@@ -28,14 +28,17 @@ class FindProductSelectedOptionsOnly(APIRequest):
 
     def get_data(self):
         """Get data for request."""
-        return {'ProductID': self.product_id, 'channelID': self.channel_id}
+        return {"ProductID": self.product_id, "channelID": self.channel_id}
 
     def process_response(self, response):
         """Handle request response."""
         self.raise_for_non_200(
-            self, response,
+            self,
+            response,
             'Error finding product information for product ID "{}"'.format(
-                self.product_id))
+                self.product_id
+            ),
+        )
         results = response.json()
         return FindProductSelectedOptionsOnlyResult(self.product_id, results)
 
@@ -45,11 +48,11 @@ class FindProductSelectedOptionsOnlyResult:
 
     def __init__(self, product_id, data):
         """Get information from response from request."""
-        self.stock_level = data['StockLevel']
-        self.fba_stock_level = data['FBAStockLevel']
-        if data['product'] is None:
+        self.stock_level = data["StockLevel"]
+        self.fba_stock_level = data["FBAStockLevel"]
+        if data["product"] is None:
             raise ProductNotFoundError(product_id)
         else:
-            data['product']['StockLevel'] = data['StockLevel']
-            self.product = Product(data['product'])
-            self.options = AppliedProductOptions(data['options'])
+            data["product"]["StockLevel"] = data["StockLevel"]
+            self.product = Product(data["product"])
+            self.options = AppliedProductOptions(data["options"])

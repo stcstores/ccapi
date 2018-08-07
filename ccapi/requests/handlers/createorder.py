@@ -12,32 +12,33 @@ from ccapi.requests import APIRequest
 class CreateOrder(APIRequest):
     """CreateOrder request."""
 
-    uri = '/Handlers/OrderFromStock/CreateOrder.ashx'
+    uri = "/Handlers/OrderFromStock/CreateOrder.ashx"
 
     def __new__(
-            self,
-            items,
-            customer_id=None,
-            login_id=None,
-            season_id=0,
-            channel_id=None,
-            reference='',
-            order_id=0,
-            prep='0',
-            delivery_date=None,
-            order_note='',
-            send_email='0',
-            postage_override='',
-            carriage_net=0,
-            carriage_vat=0,
-            total_net=None,
-            total_vat=None,
-            total_gross=None,
-            discount_net=None,
-            free_of_charge=False,
-            delivery_address_id=None,
-            billing_address_id=None,
-            shipping_rule_id=None):
+        self,
+        items,
+        customer_id=None,
+        login_id=None,
+        season_id=0,
+        channel_id=None,
+        reference="",
+        order_id=0,
+        prep="0",
+        delivery_date=None,
+        order_note="",
+        send_email="0",
+        postage_override="",
+        carriage_net=0,
+        carriage_vat=0,
+        total_net=None,
+        total_vat=None,
+        total_gross=None,
+        discount_net=None,
+        free_of_charge=False,
+        delivery_address_id=None,
+        billing_address_id=None,
+        shipping_rule_id=None,
+    ):
         """Create CreateOrder request."""
         self.items = items
         self.customer_id = customer_id
@@ -66,29 +67,29 @@ class CreateOrder(APIRequest):
     def get_data(self):
         """Get data for get request."""
         data = {
-            'cusID': str(self.customer_id),
-            'loginID': str(self.login_id),
-            'seasID': str(self.season_id),
-            'items': json.dumps([i.to_dict() for i in self.items]),
-            'chanID': str(self.channel_id),
-            'ref': str(self.reference),
-            'ordID': str(self.order_id),
-            'prep': str(self.prep),
-            'DeliveryDate': self.delivery_date.strftime('%d/%m/%Y'),
-            'orderNote': self.order_note,
-            'sendEmail': str(int(self.send_email)),
-            'PostageOverride': str(self.postage_override),
-            'CarriageNet': str(float(self.carriage_net)),
-            'CarriageVat': str(float(self.carriage_vat)),
-            'TotalNet': str(float(self.total_net)),
-            'TotalVat': str(float(self.total_vat)),
-            'TotalGross': str(float(self.total_gross)),
-            'DiscountNet': str(float(self.discount_net)),
-            'isFOCOrder': str(bool(self.free_of_charge)).lower(),
-            'BCSID': str(self.shipping_rule_id),
-            'deliveryAddressID': str(self.delivery_address_id),
-            'billingAddressID': str(self.billing_address_id),
-            'CSRID': '411',
+            "cusID": str(self.customer_id),
+            "loginID": str(self.login_id),
+            "seasID": str(self.season_id),
+            "items": json.dumps([i.to_dict() for i in self.items]),
+            "chanID": str(self.channel_id),
+            "ref": str(self.reference),
+            "ordID": str(self.order_id),
+            "prep": str(self.prep),
+            "DeliveryDate": self.delivery_date.strftime("%d/%m/%Y"),
+            "orderNote": self.order_note,
+            "sendEmail": str(int(self.send_email)),
+            "PostageOverride": str(self.postage_override),
+            "CarriageNet": str(float(self.carriage_net)),
+            "CarriageVat": str(float(self.carriage_vat)),
+            "TotalNet": str(float(self.total_net)),
+            "TotalVat": str(float(self.total_vat)),
+            "TotalGross": str(float(self.total_gross)),
+            "DiscountNet": str(float(self.discount_net)),
+            "isFOCOrder": str(bool(self.free_of_charge)).lower(),
+            "BCSID": str(self.shipping_rule_id),
+            "deliveryAddressID": str(self.delivery_address_id),
+            "billingAddressID": str(self.billing_address_id),
+            "CSRID": "411",
         }
         return data
 
@@ -102,19 +103,20 @@ class NewOrderItem:
     """Continer for items for CreateOrder requests."""
 
     def __init__(
-            self,
-            product_id,
-            quantity=1,
-            currency='£',
-            item_net=0,
-            item_gross=0,
-            item_vat_rate=5,
-            item_discount_net=0,
-            item_discount_gross=0,
-            total_net=0,
-            total_gross=0,
-            parent_product_id='0',
-            product_type='0'):
+        self,
+        product_id,
+        quantity=1,
+        currency="£",
+        item_net=0,
+        item_gross=0,
+        item_vat_rate=5,
+        item_discount_net=0,
+        item_discount_gross=0,
+        total_net=0,
+        total_gross=0,
+        parent_product_id="0",
+        product_type="0",
+    ):
         """Initialise with data."""
         self.product_id = product_id
         self.quantity = quantity
@@ -132,18 +134,18 @@ class NewOrderItem:
     def to_dict(self):
         """Return item data as a dict."""
         return {
-            'ProductID': int(self.product_id),
-            'ItemQuantity': int(self.quantity),
-            'RowCurrency': str(self.currency),
-            'ItemNet': self.item_net,
-            'ItemGross': self.item_gross,
-            'ItemVatRate': self.item_vat_rate,
-            'ItemDiscountNet': self.item_discount_net,
-            'ItemDiscountGross': self.item_discount_gross,
-            'TotalNet': self.total_net,
-            'TotalGross': self.total_gross,
-            'ParentProductID': str(self.parent_product_id),
-            'ProductType': str(self.product_type),
+            "ProductID": int(self.product_id),
+            "ItemQuantity": int(self.quantity),
+            "RowCurrency": str(self.currency),
+            "ItemNet": self.item_net,
+            "ItemGross": self.item_gross,
+            "ItemVatRate": self.item_vat_rate,
+            "ItemDiscountNet": self.item_discount_net,
+            "ItemDiscountGross": self.item_discount_gross,
+            "TotalNet": self.total_net,
+            "TotalGross": self.total_gross,
+            "ParentProductID": str(self.parent_product_id),
+            "ProductType": str(self.product_type),
         }
 
     def to_json(self):
@@ -156,17 +158,15 @@ class CreateOrderResponse:
 
     def __init__(self, response_data):
         """Set attributes from CreateOrder request response."""
-        self.error = response_data['error']
-        self.order_id = response_data['orderID']
-        self.invoice_id = response_data['invoiceID']
-        self.payment_term_id = response_data['paymentTermID']
-        self.gateway_type = response_data['gatewayType']
-        self.days_of_credit = response_data['DaysOfCredit']
-        self.reference = response_data['Reference']
-        self.total_gross = response_data['TotalGross']
-        if self.error != '':
-            raise ValueError(
-                'Order creation returned error: {}'.format(self.error))
+        self.error = response_data["error"]
+        self.order_id = response_data["orderID"]
+        self.invoice_id = response_data["invoiceID"]
+        self.payment_term_id = response_data["paymentTermID"]
+        self.gateway_type = response_data["gatewayType"]
+        self.days_of_credit = response_data["DaysOfCredit"]
+        self.reference = response_data["Reference"]
+        self.total_gross = response_data["TotalGross"]
+        if self.error != "":
+            raise ValueError("Order creation returned error: {}".format(self.error))
         if self.order_id == 0:
-            raise ValueError(
-                'CreateOrder request did not return a valid order ID')
+            raise ValueError("CreateOrder request did not return a valid order ID")

@@ -11,8 +11,10 @@ from ccapi.requests.ccapisession import CloudCommerceAPISession
 class TestCCAPI(unittest.TestCase):
     """TestCCAPI - The base class for CCAPI tests."""
 
-    DOMAIN = 'mockcompany.cloudcommercepro.com/'
-    LOGIN_HANDLER_URI = 'Handlers/loginHandler.ashx'
+    DOMAIN = "mockcompany.cloudcommercepro.com"
+    USERNAME = "mock_username"
+    PASSWORD = "mock_password"
+    LOGIN_HANDLER_URI = "Handlers/loginHandler.ashx"
 
     def setUp(self):
         """Mock session and login."""
@@ -26,29 +28,29 @@ class TestCCAPI(unittest.TestCase):
     def register_request(self, request_class, *args, **kwargs):
         """Register mock URI for a request class."""
         uri = self.cloud_commerce_URI(request_class.uri)
-        self.register_uri(kwargs.pop('method', 'POST'), uri, *args, **kwargs)
+        self.register_uri(kwargs.pop("method", "POST"), uri, *args, **kwargs)
 
     def cloud_commerce_URI(self, uri):
         """Return URI for the Cloud Commerce domain."""
-        return f'http://{self.DOMAIN}{uri}'
+        return f"http://{self.DOMAIN}/{uri}"
 
     def set_mock_session(self):
         """Mount mock adapters to the session."""
         self.adapter = requests_mock.Adapter()
-        CloudCommerceAPISession.session.mount('https://', self.adapter)
-        CloudCommerceAPISession.session.mount('http://', self.adapter)
+        CloudCommerceAPISession.session.mount("https://", self.adapter)
+        CloudCommerceAPISession.session.mount("http://", self.adapter)
         self.set_login_URIs()
 
     def set_login_URIs(self):
         """Add login URIs to mock adapter."""
-        self.register_uri('POST', self.DOMAIN, text='mock_text')
-        self.register_uri(
-            'GET', self.cloud_commerce_URI(self.LOGIN_HANDLER_URI))
+        self.register_uri("POST", f"http://{self.DOMAIN}", text="mock_text")
+        self.register_uri("GET", self.cloud_commerce_URI(self.LOGIN_HANDLER_URI))
 
     def mock_login(self):
         """Mock the login process."""
         CloudCommerceAPISession.get_session(
-            domain=self.DOMAIN, username='USERNAME', password='PASSWORD')
+            domain=self.DOMAIN, username=self.USERNAME, password=self.PASSWORD
+        )
 
     def get_sent_request(self, skip=1):
         """
@@ -96,21 +98,23 @@ class TestCCAPI(unittest.TestCase):
     def assertDataValueIsNotNone(self, sent_data, data_key):
         """Raise AssertionError if sent value is None."""
         if sent_data.get(data_key) is None:
-            raise AssertionError(
-                f'Sent value "{data_key}" was unexpectedly None.')
+            raise AssertionError(f'Sent value "{data_key}" was unexpectedly None.')
 
     def assertListSent(self, sent_data, data_key, expected_values):
         """Raise Assertion Error if expected values are not in sent data."""
         missing_values = [
-            value for value in expected_values
+            value
+            for value in expected_values
             if str(value) not in str(sent_data[data_key])
         ]
         if missing_values:
             raise AssertionError(
                 (
                     f'Values {", ".join(missing_values)} not sent in data '
-                    f'key {data_key}. The value sent was '
-                    f'"{sent_data[data_key]}"'))
+                    f"key {data_key}. The value sent was "
+                    f'"{sent_data[data_key]}"'
+                )
+            )
 
     def assertDataValueEqual(self, sent_data, data_key, expected_value):
         """Test that request data contains the correct data."""
@@ -122,7 +126,9 @@ class TestCCAPI(unittest.TestCase):
                 raise AssertionError(
                     (
                         f'Value "{expected_value}" was not sent for data key '
-                        f'"{data_key}". "{sent_data[data_key]}" was sent.'))
+                        f'"{data_key}". "{sent_data[data_key]}" was sent.'
+                    )
+                )
 
     def assertJsonValueSent(self, data_key, expected_value, request=None):
         """Test that a value was sent in the JSON body of the last request."""
@@ -137,7 +143,9 @@ class TestCCAPI(unittest.TestCase):
                     (
                         f'"{expected_value}" was not sent for data key '
                         f'"{data_key}". "{sent_data[data_key]}" was sent '
-                        'instead.'))
+                        "instead."
+                    )
+                )
 
     def assertDataValueIsNone(self, data_key, request=None):
         """Test that request data contains the correct data."""
@@ -146,12 +154,27 @@ class TestCCAPI(unittest.TestCase):
         sent_data = self.get_sent_request_data(request=request)
         self.assertIsNone(sent_data.get(data_key), None)
 
-    def assertRequestUsesRequestClassURI(self, request_class, request=None):
-        """Test that a sent request uses the URI of a request class."""
+    def assertURIused(self, expected_uri, request=None):
+        """Test a request used the correct URI."""
         if request is None:
-            request = request = self.get_sent_request()
-        if request_class.uri not in request.url:
+            request = self.get_sent_request()
+        if expected_uri not in request.url:
             raise AssertionError(
                 (
-                    f'Request expected to use URI "{request_class.uri}", used '
-                    f'"{request.url}"'))
+                    f'Request expected to use URI "{expected_uri}", used '
+                    f'"{request.url}"'
+                )
+            )
+
+    def assertRequestUsesRequestClassURI(self, request_class, request=None):
+        """Test that a sent request uses the URI of a request class."""
+        try:
+            self.assertURIused(request_class.uri, request=request)
+        except AssertionError:
+            raise AssertionError(
+                (
+                    "Request expected to use URI "
+                    f'"{self.cloud_commerce_URI(request_class.uri)}", used '
+                    f'"{request.url}"'
+                )
+            )

@@ -6,7 +6,7 @@ from ..apirequest import APIRequest
 class AddOptionValue(APIRequest):
     """Wrapper for AddOptionValueRequest."""
 
-    uri = 'Handlers/ProductOption/addOptionValue.ashx'
+    uri = "Handlers/ProductOption/addOptionValue.ashx"
 
     def __new__(self, option_id, value):
         """
@@ -26,4 +26,4 @@ class AddOptionValue(APIRequest):
 
     def get_data(self):
         """Get data for request."""
-        return {'optid': self.option_id, 'val': self.value, 'brandID': '341'}
+        return {"optid": self.option_id, "val": self.value, "brandID": "341"}

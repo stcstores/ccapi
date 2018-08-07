@@ -10,19 +10,20 @@ class SaveWarehouseBay(APIRequest):
     Creates a new Warehouse Bay in a Warehouse.
     """
 
-    uri = 'Handlers/WarehouseBay/SaveWarehouseBay.ashx'
+    uri = "Handlers/WarehouseBay/SaveWarehouseBay.ashx"
 
     def __new__(
-            self,
-            warehouse_id,
-            name,
-            aisle='',
-            bay_number=0,
-            shelf='',
-            warehouse_bay_type='Default',
-            status_id=1,
-            bay_id=0,
-            add_object=True):
+        self,
+        warehouse_id,
+        name,
+        aisle="",
+        bay_number=0,
+        shelf="",
+        warehouse_bay_type="Default",
+        status_id=1,
+        bay_id=0,
+        add_object=True,
+    ):
         """
         Create FindWarehouseBay request.
 
@@ -48,17 +49,17 @@ class SaveWarehouseBay(APIRequest):
     def get_data(self):
         """Get data for request."""
         return {
-            'WarehouseID': self.warehouse_id,
-            'Name': self.name,
-            'Aisle': self.aisle,
-            'BayNumber': self.bay_number,
-            'Shelf': self.shelf,
-            'WarehouseBayType': self.warehouse_bay_type,
-            'StatusId': self.status_id,
-            'id': self.bay_id,
-            'addObject': self.add_object
+            "WarehouseID": self.warehouse_id,
+            "Name": self.name,
+            "Aisle": self.aisle,
+            "BayNumber": self.bay_number,
+            "Shelf": self.shelf,
+            "WarehouseBayType": self.warehouse_bay_type,
+            "StatusId": self.status_id,
+            "id": self.bay_id,
+            "addObject": self.add_object,
         }
 
     def get_params(self):
         """Get parameters for get request."""
-        return {'d': '57'}
+        return {"d": "57"}

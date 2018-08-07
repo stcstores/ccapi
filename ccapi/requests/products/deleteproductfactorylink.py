@@ -10,7 +10,7 @@ from ..apirequest import APIRequest
 class DeleteProductFactoryLink(APIRequest):
     """deleteProductFactoryLink request."""
 
-    uri = 'Handlers/Products/deleteProductFactoryLink.ashx'
+    uri = "Handlers/Products/deleteProductFactoryLink.ashx"
 
     def __new__(self, factory_link_id):
         """Make deleteProductFactoryLink request."""
@@ -19,12 +19,13 @@ class DeleteProductFactoryLink(APIRequest):
 
     def get_data(self):
         """Get data for request."""
-        return {'factoryLinkId': self.factory_link_id}
+        return {"factoryLinkId": self.factory_link_id}
 
     def process_response(self, response):
         """Handle request response."""
         self.raise_for_non_200(
-            self, response,
-            'Factory link with ID "{}" was not deleted.'.format(
-                self.factory_link_id))
+            self,
+            response,
+            'Factory link with ID "{}" was not deleted.'.format(self.factory_link_id),
+        )
         return response.text

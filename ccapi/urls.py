@@ -4,10 +4,10 @@
 class URLs:
     """Class containing methods for generating Cloud Commerce Pro URLs."""
 
-    cloud_commerce_domain = 'cloudcommercepro.com'
+    cloud_commerce_domain = "cloudcommercepro.com"
 
     @classmethod
-    def get_url(cls, subdomain=None, uri='', params=''):
+    def get_url(cls, subdomain=None, uri="", params=""):
         """
         Return URL.
 
@@ -24,20 +24,18 @@ class URLs:
             uri = cls.get_uri(uri)
         if len(params) > 0:
             params = cls.get_get(params)
-        return '{}{}.aspx{}'.format(domain, uri, params)
+        return "{}{}.aspx{}".format(domain, uri, params)
 
     @classmethod
     def get_uri(cls, uri):
         """Return URI from iterable of path elements."""
-        return '/{}'.format('/'.join(uri))
+        return "/{}".format("/".join(uri))
 
     @classmethod
     def get_get(cls, params):
         """Return get request string from dict of key, value pairs."""
-        param_strings = [
-            '{}={}'.format(key, value) for key, value in params.items()
-        ]
-        return '?{}'.format('&'.join(param_strings))
+        param_strings = ["{}={}".format(key, value) for key, value in params.items()]
+        return "?{}".format("&".join(param_strings))
 
     @classmethod
     def get_full_domain(cls, subdomain=None):
@@ -51,30 +49,30 @@ class URLs:
 
         """
         if subdomain is None:
-            return 'http://{}'.format(cls.cloud_commerce_domain)
-        return 'http://{}.{}'.format(subdomain, cls.cloud_commerce_domain)
+            return "http://{}".format(cls.cloud_commerce_domain)
+        return "http://{}.{}".format(subdomain, cls.cloud_commerce_domain)
 
     @classmethod
     def range_url(cls, subdomain, range_id):
         """Return URL of Product Range."""
-        uri = ('Admin', 'ProductRange')
-        params = {'ProdRangeID': str(range_id)}
+        uri = ("Admin", "ProductRange")
+        params = {"ProdRangeID": str(range_id)}
         return cls.get_url(subdomain=subdomain, uri=uri, params=params)
 
     @classmethod
     def product_url(cls, subdomain, range_id, product_id, channel_id=0):
         """Return URL of Product."""
-        uri = ('Admin', 'Product')
+        uri = ("Admin", "Product")
         params = {
-            'ProdRangeID': range_id,
-            'ProductID': product_id,
-            'ChannelID': channel_id
+            "ProdRangeID": range_id,
+            "ProductID": product_id,
+            "ChannelID": channel_id,
         }
         return cls.get_url(subdomain=subdomain, uri=uri, params=params)
 
     @classmethod
     def order_url(cls, subdomain, order_id, customer_id):
         """Return URL of Order."""
-        uri = ('Admin', 'OrderDetails')
-        params = {'OrderID': order_id, 'CustomerID': customer_id}
+        uri = ("Admin", "OrderDetails")
+        params = {"OrderID": order_id, "CustomerID": customer_id}
         return cls.get_url(subdomain=subdomain, uri=uri, params=params)

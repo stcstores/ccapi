@@ -3,7 +3,7 @@
 from ccapi import ccapi
 
 
-class Warehouses():
+class Warehouses:
     """Class for working with groups of warehouses."""
 
     def __init__(self, warehouses):
@@ -14,8 +14,7 @@ class Warehouses():
         """
         self.warehouses = warehouses
         self.warehouse_names = {
-            warehouse.name: warehouse
-            for warehouse in self.warehouses
+            warehouse.name: warehouse for warehouse in self.warehouses
         }
 
     def __iter__(self):
@@ -26,12 +25,11 @@ class Warehouses():
         return self.warehouse_names[index]
 
     def __repr__(self):
-        return '{} Warehouses'.format(len(self.warehouses))
+        return "{} Warehouses".format(len(self.warehouses))
 
     def get_bay(self, warehouse_name, bay_name, create=False):
         """Get Warehouse Bay by warehouse name and bay name."""
-        return self.warehouse_names[warehouse_name].get_bay(
-            bay_name, create=create)
+        return self.warehouse_names[warehouse_name].get_bay(bay_name, create=create)
 
     def items(self):
         """Return tuples of warehouse names and warehouses."""
@@ -52,19 +50,19 @@ class Warehouse:
             data: Cloud Commerce Warehouse JSON object.
         """
         self.json = data
-        self.id = data['ID']
-        self.name = data['Name']
-        if 'ShortDescription' in data:
-            self.description = data['ShortDescription']
-        self.date_created = data['DateCreated']
-        self.date_updated = data['DateUpdated']
-        self.warehouse_type_enum = data['WarehouseTypeEnum']
-        self.sales_channel_inbound_links = data['SalesChannelInboundLinks']
-        self.sales_channel_outbound_links = data['SalesChannelOutboundLinks']
-        self.warehouse_type = data['WarehouseType']
-        self.brand_details_id = data['BrandDetailsId']
-        self.status_id = data['StatusId']
-        self.address_id = data['AddressId']
+        self.id = data["ID"]
+        self.name = data["Name"]
+        if "ShortDescription" in data:
+            self.description = data["ShortDescription"]
+        self.date_created = data["DateCreated"]
+        self.date_updated = data["DateUpdated"]
+        self.warehouse_type_enum = data["WarehouseTypeEnum"]
+        self.sales_channel_inbound_links = data["SalesChannelInboundLinks"]
+        self.sales_channel_outbound_links = data["SalesChannelOutboundLinks"]
+        self.warehouse_type = data["WarehouseType"]
+        self.brand_details_id = data["BrandDetailsId"]
+        self.status_id = data["StatusId"]
+        self.address_id = data["AddressId"]
 
     def __repr__(self):
         return self.name
@@ -104,12 +102,8 @@ class Warehouse:
         self._bay_names = self.load_bay_names()
 
     def add_bay(
-            self,
-            bay,
-            bay_number=0,
-            aisle='',
-            shelf='',
-            warehouse_bay_type='Default'):
+        self, bay, bay_number=0, aisle="", shelf="", warehouse_bay_type="Default"
+    ):
         """
         Create Warehouse Bay for this Warehouse.
 
@@ -121,15 +115,16 @@ class Warehouse:
         """
         if bay in self.bay_names:
             raise Exception(
-                'Warehouse Bay {} already exists in Warehouse {}'.format(
-                    bay, self.name))
+                "Warehouse Bay {} already exists in Warehouse {}".format(bay, self.name)
+            )
         ccapi.CCAPI.add_bay_to_warehouse(
             self.id,
             bay,
             bay_number=bay_number,
             aisle=aisle,
             shelf=shelf,
-            warehouse_bay_type=warehouse_bay_type)
+            warehouse_bay_type=warehouse_bay_type,
+        )
         self.reload_bays()
         return self.bay_names[bay].id
 
@@ -154,8 +149,8 @@ class Warehouse:
             self.reload_bays()
             return self.bay_names[bay]
         raise Exception(
-            'Warehouse Bay {}  does not exist for Warehouse {}'.format(
-                bay, self.name))
+            "Warehouse Bay {}  does not exist for Warehouse {}".format(bay, self.name)
+        )
 
 
 class WarehouseBay:
@@ -173,28 +168,29 @@ class WarehouseBay:
     def load_json(self, data):
         """Load data from dict."""
         self.json = data
-        self.id = data.get('ID', None)
-        self.name = data.get('Name', None)
-        self.warehouse_id = data.get('WarehouseID', None)
-        self.bay_number = data.get('BayNumber', None)
-        self.aisle = data.get('Aisle', None)
-        self.shelf = data.get('Shelf', None)
-        self.available_stock = data.get('AvailableStock', None)
-        self.warehouse_bay_type = data.get('WarehouseBayType', None)
-        self.warehouse_bay_type_enum = data.get('WarehouseBayTypeEnum', None)
-        self.status_id = data.get('StatusId', None)
-        self.statud_id_enum = data.get('StatusIdEnum', None)
-        if 'Products' in data and data['Products'] is not None:
+        self.id = data.get("ID", None)
+        self.name = data.get("Name", None)
+        self.warehouse_id = data.get("WarehouseID", None)
+        self.bay_number = data.get("BayNumber", None)
+        self.aisle = data.get("Aisle", None)
+        self.shelf = data.get("Shelf", None)
+        self.available_stock = data.get("AvailableStock", None)
+        self.warehouse_bay_type = data.get("WarehouseBayType", None)
+        self.warehouse_bay_type_enum = data.get("WarehouseBayTypeEnum", None)
+        self.status_id = data.get("StatusId", None)
+        self.statud_id_enum = data.get("StatusIdEnum", None)
+        if "Products" in data and data["Products"] is not None:
             self.too_many_products = False
             self.products = []
-            products = data['Products']
+            products = data["Products"]
             if len(products) > 0:
-                if products[0]['ManufacturerSKU'] == 'Warning':
+                if products[0]["ManufacturerSKU"] == "Warning":
                     self.too_many_products = True
                 else:
                     self.products = [
-                        BayProduct(d) for d in products
-                        if d['ManufacturerSKU'] != 'Warning'
+                        BayProduct(d)
+                        for d in products
+                        if d["ManufacturerSKU"] != "Warning"
                     ]
 
     def __repr__(self):
@@ -220,11 +216,11 @@ class BayProduct:
     def load_json(self, data):
         """Load product data from API."""
         self.json = data
-        self.image_url = data['ProductImage']
-        self.id = data['ID']
-        self.end_of_line = bool(data['EndOfLine'])
-        self.sku = data['ManufacturerSKU']
-        self.name = data['Name']
+        self.image_url = data["ProductImage"]
+        self.id = data["ID"]
+        self.end_of_line = bool(data["EndOfLine"])
+        self.sku = data["ManufacturerSKU"]
+        self.name = data["Name"]
 
     def __repr__(self):
-        return '{} - {}'.format(self.sku, self.name)
+        return "{} - {}".format(self.sku, self.name)

@@ -10,7 +10,7 @@ from ..apirequest import APIRequest
 class SetOptionSelect(APIRequest):
     """setOptionSelect request."""
 
-    uri = 'Handlers/Range/setOptionSelect.ashx'
+    uri = "Handlers/Range/setOptionSelect.ashx"
 
     def __new__(self, *, range_id, option_id, drop_down):
         """Create setOptionSelect request.
@@ -28,15 +28,19 @@ class SetOptionSelect(APIRequest):
     def get_data(self):
         """Get data for request."""
         data = {
-            'prdid': self.range_id,
-            'optid': self.option_id,
-            'onoff': int(self.drop_down),
+            "prdid": self.range_id,
+            "optid": self.option_id,
+            "onoff": int(self.drop_down),
         }
         return data
 
     def process_response(self, response):
         """Handle request response."""
         self.raise_for_non_200(
-            self, response, (
-                'Product Option drop down setting was not set for Product '
-                f'Range with ID "{self.range_id}".'))
+            self,
+            response,
+            (
+                "Product Option drop down setting was not set for Product "
+                f'Range with ID "{self.range_id}".'
+            ),
+        )

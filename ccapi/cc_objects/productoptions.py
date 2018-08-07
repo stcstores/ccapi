@@ -16,10 +16,7 @@ class ProductOptions:
             options: list containg ProductOption objects.
         """
         self.options = options
-        self.option_names = {
-            option.option_name: option
-            for option in self.options
-        }
+        self.option_names = {option.option_name: option for option in self.options}
 
     def __iter__(self):
         for option in self.options:
@@ -31,7 +28,7 @@ class ProductOptions:
         return self.options[index]
 
     def __repr__(self):
-        return '{} product options'.format(len(self.options))
+        return "{} product options".format(len(self.options))
 
 
 class ProductOption:
@@ -48,35 +45,35 @@ class ProductOption:
             result: Cloud Commerce Product Option JSON object.
         """
         self.json = result
-        self.id = result['ID']
-        self.option_name = result['OptionName']
+        self.id = result["ID"]
+        self.option_name = result["OptionName"]
         self.option_names = {
-            'ebay': result['OptionEbayName'],
-            'amazon': result['OptionAmazonName'],
-            'pretty': result['OptionPrettyName'],
-            'web': result['OptionWebName'],
+            "ebay": result["OptionEbayName"],
+            "amazon": result["OptionAmazonName"],
+            "pretty": result["OptionPrettyName"],
+            "web": result["OptionWebName"],
         }
-        self.option_type = result['OptionType']
-        self.master = result['Master']
-        self.hidden = result['Hidden']
-        self.pre_selected = result['PreSelectOnCreateRange']
-        self.status = result['Statusw']
+        self.option_type = result["OptionType"]
+        self.master = result["Master"]
+        self.hidden = result["Hidden"]
+        self.pre_selected = result["PreSelectOnCreateRange"]
+        self.status = result["Statusw"]
         self.exclusions = {
-            'amazon': result['excludeAmazon'],
-            'ebay': result['excludeEbay'],
-            'market_place': result['excludeMarketPlace'],
-            'epos': result['excludeEpos'],
-            'magento': result['excludeMagento'],
-            'woo_commerce': result['excludeWooCommerce'],
-            'shopify': result['excludeShopify'],
-            'tesco': result['excludeTesco'],
-            'google': result['excludeGoogle']
+            "amazon": result["excludeAmazon"],
+            "ebay": result["excludeEbay"],
+            "market_place": result["excludeMarketPlace"],
+            "epos": result["excludeEpos"],
+            "magento": result["excludeMagento"],
+            "woo_commerce": result["excludeWooCommerce"],
+            "shopify": result["excludeShopify"],
+            "tesco": result["excludeTesco"],
+            "google": result["excludeGoogle"],
         }
-        self.selected = result['Selected']
+        self.selected = result["Selected"]
 
     def set_value(self, result):
         """Set Option Values."""
-        if 'optionValues' in result:
+        if "optionValues" in result:
             self.reload_values(values=result)
 
     def __repr__(self):
@@ -110,7 +107,7 @@ class ProductOption:
         """Get Product Option Values for this Product Option."""
         if values:
             self._values = [
-                ProductOptionValue(value) for value in values['optionValues']
+                ProductOptionValue(value) for value in values["optionValues"]
             ]
         else:
             self._values = ccapi.CCAPI.get_option_values(self.id)
@@ -128,8 +125,10 @@ class ProductOption:
         """
         if ccapi.CCAPI.get_option_value_id(self.id, value) is not None:
             raise Exception(
-                'Option Value {} already exists for product option {}'.format(
-                    self.option_name, value))
+                "Option Value {} already exists for product option {}".format(
+                    self.option_name, value
+                )
+            )
         ccapi.CCAPI.create_option_value(self.id, value)
         self.reload_values()
         return ccapi.CCAPI.get_product_option_id(value)
@@ -155,8 +154,10 @@ class ProductOption:
             self.reload_values()
             return self._value_names[value]
         raise Exception(
-            'Option value {} does not exist for product option {}'.format(
-                value, self.option_name))
+            "Option value {} does not exist for product option {}".format(
+                value, self.option_name
+            )
+        )
 
 
 class ProductOptionValue:
@@ -170,15 +171,15 @@ class ProductOptionValue:
             result: Cloud Commerce Product Option Value JSON object.
         """
         self.json = result
-        self.id = result['ID']
-        self.value = result['OptionValue']
-        self.brand_id = result['BrandID']
-        self.option_id = result['OptionID']
-        self.value_trans = result['OptionValueTrans']
-        self.sort_order = result['OptionsortOrder']
-        self.selected = result['Selected']
-        self.product_count = result['ProductCount']
-        self.option_name = result['OptionName']
+        self.id = result["ID"]
+        self.value = result["OptionValue"]
+        self.brand_id = result["BrandID"]
+        self.option_id = result["OptionID"]
+        self.value_trans = result["OptionValueTrans"]
+        self.sort_order = result["OptionsortOrder"]
+        self.selected = result["Selected"]
+        self.product_count = result["ProductCount"]
+        self.option_name = result["OptionName"]
 
     def __repr__(self):
         return self.value
@@ -198,16 +199,11 @@ class AppliedProductOptions(ProductOptions):
         Args:
             options: list containg ProductOption objects.
         """
-        self.options = [
-            AppliedProductOption(option_data) for option_data in options
-        ]
-        self.option_names = {
-            option.option_name: option
-            for option in self.options
-        }
+        self.options = [AppliedProductOption(option_data) for option_data in options]
+        self.option_names = {option.option_name: option for option in self.options}
 
     def __repr__(self):
-        return (str(self.options))
+        return str(self.options)
 
     def __len__(self):
         return len(self.options)
@@ -223,14 +219,13 @@ class AppliedProductOption(ProductOption):
 
     def set_value(self, option_data):
         """Set Option Values."""
-        if len(option_data['optionValues']) > 0:
-            self.value = AppliedProductOptionValue(
-                option_data['optionValues'][0])
+        if len(option_data["optionValues"]) > 0:
+            self.value = AppliedProductOptionValue(option_data["optionValues"][0])
         else:
             self.value = None
 
     def __repr__(self):
-        return '{}: {}'.format(self.option_name, self.value)
+        return "{}: {}".format(self.option_name, self.value)
 
 
 class AppliedProductOptionValue(ProductOptionValue):

@@ -12,7 +12,7 @@ from ..apirequest import APIRequest
 class CheckRangesOnSalesChannel(APIRequest):
     """checkRangesOnSalesChannel request."""
 
-    uri = 'Handlers/Range/checkRangesOnSalesChannel.ashx'
+    uri = "Handlers/Range/checkRangesOnSalesChannel.ashx"
 
     def __new__(self, range_id):
         """Create checkRangesOnSalesChannel request.
@@ -25,16 +25,17 @@ class CheckRangesOnSalesChannel(APIRequest):
 
     def get_data(self):
         """Get data for request."""
-        data = {
-            'brandid': 341,
-            'rangeid': self.range_id,
-        }
+        data = {"brandid": 341, "rangeid": self.range_id}
         return data
 
     def process_response(self, response):
         """Handle request response."""
         self.raise_for_non_200(
-            self, response, (
-                f'Error getting sales channels for product range with '
-                'ID "{self.range_id}"'))
+            self,
+            response,
+            (
+                f"Error getting sales channels for product range with "
+                'ID "{self.range_id}"'
+            ),
+        )
         return [SalesChannel(channel) for channel in response.json()]

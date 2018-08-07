@@ -10,17 +10,11 @@ from ..apirequest import APIRequest
 class UpdateRangeOnSalesChannel(APIRequest):
     """setOptionSelect request."""
 
-    uri = 'Handlers/Range/updateOnSalesChannel.ashx'
+    uri = "Handlers/Range/updateOnSalesChannel.ashx"
 
     def __new__(
-            self,
-            *,
-            range_id,
-            request_type,
-            act,
-            value=None,
-            option_id=None,
-            channel_ids=[]):
+        self, *, range_id, request_type, act, value=None, option_id=None, channel_ids=[]
+    ):
         """Create updateOnSalesChannel request.
 
         Args:
@@ -44,20 +38,23 @@ class UpdateRangeOnSalesChannel(APIRequest):
     def get_data(self):
         """Get data for request."""
         data = {
-            'brandid': 341,
-            'rangeid': self.range_id,
-            'type': self.request_type,
-            'act': self.act,
-            'val': self.value,
-            'optid': self.option_id,
-            'chans': ','.join(
-                (str(channel_id) for channel_id in self.channel_ids))
+            "brandid": 341,
+            "rangeid": self.range_id,
+            "type": self.request_type,
+            "act": self.act,
+            "val": self.value,
+            "optid": self.option_id,
+            "chans": ",".join((str(channel_id) for channel_id in self.channel_ids)),
         }
         return data
 
     def process_response(self, response):
         """Handle request response."""
         self.raise_for_non_200(
-            self, response, (
-                'Sales channel not updated for Product Range with '
-                f'ID "{self.range_id}".'))
+            self,
+            response,
+            (
+                "Sales channel not updated for Product Range with "
+                f'ID "{self.range_id}".'
+            ),
+        )

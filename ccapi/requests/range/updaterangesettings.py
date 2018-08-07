@@ -12,23 +12,24 @@ from ..apirequest import APIRequest
 class UpdateRangeSettings(APIRequest):
     """updateRangeSettings request."""
 
-    uri = 'Handlers/Range/updateRangeSettings.ashx'
+    uri = "Handlers/Range/updateRangeSettings.ashx"
 
     def __new__(
-            self,
-            *,
-            range_id,
-            current_name,
-            current_sku,
-            current_end_of_line,
-            current_pre_order,
-            current_group_items,
-            new_name,
-            new_sku,
-            new_end_of_line,
-            new_pre_order,
-            new_group_items,
-            channels=[]):
+        self,
+        *,
+        range_id,
+        current_name,
+        current_sku,
+        current_end_of_line,
+        current_pre_order,
+        current_group_items,
+        new_name,
+        new_sku,
+        new_end_of_line,
+        new_pre_order,
+        new_group_items,
+        channels=[],
+    ):
         """Create updateRangeSettings request.
 
         Args:
@@ -64,26 +65,29 @@ class UpdateRangeSettings(APIRequest):
     def get_data(self):
         """Get data for request."""
         data = {
-            'brandID': 341,
-            'rangeID': str(self.range_id),
-            'currName': str(self.current_name),
-            'currSKU': str(self.current_sku),
-            'currEoL': int(self.current_end_of_line),
-            'currPreO': int(self.current_pre_order),
-            'currGBy': str(int(self.current_pre_order)),
-            'newName': str(self.new_name),
-            'newSKU': str(self.new_sku),
-            'newEoL': str(int(self.new_end_of_line)),
-            'newPreO': str(int(self.new_pre_order)),
-            'newGBy': str(int(self.new_group_items)),
-            'channels': ','.join(
-                [str(channel_id) for channel_id in self.channels])
+            "brandID": 341,
+            "rangeID": str(self.range_id),
+            "currName": str(self.current_name),
+            "currSKU": str(self.current_sku),
+            "currEoL": int(self.current_end_of_line),
+            "currPreO": int(self.current_pre_order),
+            "currGBy": str(int(self.current_pre_order)),
+            "newName": str(self.new_name),
+            "newSKU": str(self.new_sku),
+            "newEoL": str(int(self.new_end_of_line)),
+            "newPreO": str(int(self.new_pre_order)),
+            "newGBy": str(int(self.new_group_items)),
+            "channels": ",".join([str(channel_id) for channel_id in self.channels]),
         }
         return json.dumps(data)
 
     def process_response(self, response):
         """Handle request response."""
         self.raise_for_non_200(
-            self, response, (
-                'Range settings not updated for Product Range with '
-                f'ID "{self.range_id}"'))
+            self,
+            response,
+            (
+                "Range settings not updated for Product Range with "
+                f'ID "{self.range_id}"'
+            ),
+        )
