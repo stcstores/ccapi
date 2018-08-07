@@ -10,18 +10,19 @@ class UpdateProductOnSalesChannel(APIRequest):
     Update product settings on sales channel.
     """
 
-    uri = 'Handlers/Products/updateOnSalesChannel.ashx'
+    uri = "Handlers/Products/updateOnSalesChannel.ashx"
 
     def __new__(
-            self,
-            *,
-            request_type,
-            range_id,
-            product_ids=[],
-            act='',
-            value_1='',
-            value_2='',
-            channels=[]):
+        self,
+        *,
+        request_type,
+        range_id,
+        product_ids=[],
+        act="",
+        value_1="",
+        value_2="",
+        channels=[],
+    ):
         """
         Create updateOnSalesChannel request.
 
@@ -48,24 +49,28 @@ class UpdateProductOnSalesChannel(APIRequest):
     def process_response(self, response):
         """Handle request response."""
         self.raise_for_non_200(
-            self, response, (
-                'Sales Channel not updated for product'
-                f'ID(s) {", ".join(self.product_ids)}'))
+            self,
+            response,
+            (
+                "Sales Channel not updated for product"
+                f'ID(s) {", ".join(self.product_ids)}'
+            ),
+        )
         return response.json()
 
     def get_data(self):
         """Get data for request."""
         return {
-            'brandid': 341,
-            'rangeid': self.range_id,
-            'prodids': ','.join(self.product_ids),
-            'type': self.request_type,
-            'act': self.act,
-            'val1': self.value_1,
-            'val2': self.value_2,
-            'chans': ','.join([str(x) for x in self.channels])
+            "brandid": 341,
+            "rangeid": self.range_id,
+            "prodids": ",".join(self.product_ids),
+            "type": self.request_type,
+            "act": self.act,
+            "val1": self.value_1,
+            "val2": self.value_2,
+            "chans": ",".join([str(x) for x in self.channels]),
         }
 
     def get_params(self):
         """Get parameters for get request."""
-        return {'d': '917'}
+        return {"d": "917"}

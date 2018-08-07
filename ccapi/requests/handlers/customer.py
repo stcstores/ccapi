@@ -10,7 +10,7 @@ from ccapi.requests import APIRequest
 class Customer(APIRequest):
     """Customer request."""
 
-    uri = 'Handlers/Customer.ashx'
+    uri = "Handlers/Customer.ashx"
 
     def __new__(self, program_type, **kwargs):
         """Create addCustomer request."""
@@ -20,7 +20,7 @@ class Customer(APIRequest):
 
     def get_data(self):
         """Get data for get request."""
-        data = {'ProgType': self.program_type}
+        data = {"ProgType": self.program_type}
         data.update(self.kwargs)
         return data
 

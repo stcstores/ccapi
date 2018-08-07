@@ -11,7 +11,7 @@ from ccapi.requests import APIRequest
 class GetProductsForRange(APIRequest):
     """GetProductsForRange request."""
 
-    uri = 'Handlers/getProductsForRange.ashx'
+    uri = "Handlers/getProductsForRange.ashx"
 
     def __new__(self, product_id):
         """Create GetProductsForRange request.
@@ -28,8 +28,8 @@ class GetProductsForRange(APIRequest):
 
     def get_data(self):
         """Get data for request."""
-        return {'ProdRangeID': self.product_id, 'salesChannelID': "0"}
+        return {"ProdRangeID": self.product_id, "salesChannelID": "0"}
 
     def get_params(self):
         """Get parameters for get request."""
-        return {'d': '155'}
+        return {"d": "155"}

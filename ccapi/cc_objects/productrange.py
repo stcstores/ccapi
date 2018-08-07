@@ -19,37 +19,37 @@ class ProductRange:
             result: Cloud Commerce Product Range JSON object.
         """
         self.json = result
-        self.id = result['ID']
-        self.name = result['Name']
-        self.sku = result['ManufacturerSKU']
-        self.products = [Product(data) for data in result['Products']]
-        self.child_id = result['ChildID']
-        self.brand_id = result['BrandID']
-        self.brand_company_name = result['BrandCompanyName']
-        self.brand_trading_name = result['BrandTradingName']
-        self.neck_shape = result['NeckShape']
-        self.pre_order = bool(result['PreOrder'])
-        self.end_of_line = bool(result['EndOfLine'])
-        self.last_stock_check = result['LastStockCheck']
-        self.thumb_nail = result['ThumbNail']
-        self.linked = result['Linked']
-        self.grouped = bool(result['Grouped'])
-        self.on_sales_channel = result['OnSalesChannel']
-        self.season_id = result['SeasonID']
-        self.season_name = result['SeasonName']
-        self.status_id = result['StatusID']
-        self.edit_url = result['EditUrl']
-        self.base_url = result['BaseUrl']
-        self.product_ids = result['ProductIDs']
-        self.shop_id = result['ShopID']
-        self.item_count = result['ItemCount']
-        self.listing_errors = result['ListingErrors']
-        self.listings_pending = result['ListingsPending']
-        self.listed_count = result['ListedCount']
-        self.multi_listings_count = result['MultiListingsCount']
-        self.single_listings_count = result['SingleListingsCount']
-        self.pseudo_stock_level_type = result['PseudoStockLevelType']
-        self.cdiscout_listings = result['cdiscountListings']
+        self.id = result["ID"]
+        self.name = result["Name"]
+        self.sku = result["ManufacturerSKU"]
+        self.products = [Product(data) for data in result["Products"]]
+        self.child_id = result["ChildID"]
+        self.brand_id = result["BrandID"]
+        self.brand_company_name = result["BrandCompanyName"]
+        self.brand_trading_name = result["BrandTradingName"]
+        self.neck_shape = result["NeckShape"]
+        self.pre_order = bool(result["PreOrder"])
+        self.end_of_line = bool(result["EndOfLine"])
+        self.last_stock_check = result["LastStockCheck"]
+        self.thumb_nail = result["ThumbNail"]
+        self.linked = result["Linked"]
+        self.grouped = bool(result["Grouped"])
+        self.on_sales_channel = result["OnSalesChannel"]
+        self.season_id = result["SeasonID"]
+        self.season_name = result["SeasonName"]
+        self.status_id = result["StatusID"]
+        self.edit_url = result["EditUrl"]
+        self.base_url = result["BaseUrl"]
+        self.product_ids = result["ProductIDs"]
+        self.shop_id = result["ShopID"]
+        self.item_count = result["ItemCount"]
+        self.listing_errors = result["ListingErrors"]
+        self.listings_pending = result["ListingsPending"]
+        self.listed_count = result["ListedCount"]
+        self.multi_listings_count = result["MultiListingsCount"]
+        self.single_listings_count = result["SingleListingsCount"]
+        self.pseudo_stock_level_type = result["PseudoStockLevelType"]
+        self.cdiscout_listings = result["cdiscountListings"]
 
     def __repr__(self):
         return self.name
@@ -62,8 +62,7 @@ class ProductRange:
         """Get IDs of Sales Channels on which this Product Range is listed."""
         return [channel.id for channel in self.get_sales_channels()]
 
-    def add_product_option(
-            self, option, drop_down=False, update_channels=True):
+    def add_product_option(self, option, drop_down=False, update_channels=True):
         """
         Add Product Option to Product Range.
 
@@ -78,14 +77,14 @@ class ProductRange:
             option_id = option.id
         else:
             option_id = ProductOptions[option].id
-        ccapi.CCAPI.add_option_to_product(
-            range_id=self.id, option_id=option_id)
+        ccapi.CCAPI.add_option_to_product(range_id=self.id, option_id=option_id)
         if drop_down is True:
             self.set_option_drop_down(option_id, True)
         self._options = None
         if update_channels:
             self.update_on_sales_channel(
-                option_id=option_id, request_type='option', act='add')
+                option_id=option_id, request_type="option", act="add"
+            )
 
     def remove_product_option(self, option, update_channels=True):
         """
@@ -98,12 +97,12 @@ class ProductRange:
             option_id = option.id
         else:
             option_id = self.options[option].id
-        ccapi.CCAPI.remove_option_from_product(
-            range_id=self.id, option_id=option_id)
+        ccapi.CCAPI.remove_option_from_product(range_id=self.id, option_id=option_id)
         self._options = None
         if update_channels:
             self.update_on_sales_channel(
-                option_id=option_id, request_type='option', act='remove')
+                option_id=option_id, request_type="option", act="remove"
+            )
 
     def set_option_drop_down(self, option, value, update_channels=True):
         """
@@ -120,13 +119,10 @@ class ProductRange:
         ccapi.CCAPI.set_range_option_drop_down(self.id, option_id, value)
         if update_channels is True:
             self.update_on_sales_channel(
-                option_id=option_id,
-                request_type='option',
-                act='remove',
-                value=value)
+                option_id=option_id, request_type="option", act="remove", value=value
+            )
 
-    def update_on_sales_channel(
-            self, *, option_id, request_type, act, value=''):
+    def update_on_sales_channel(self, *, option_id, request_type, act, value=""):
         """Update this range's info on selling channels."""
         channel_ids = self.get_sales_channel_ids()
         ccapi.CCAPI.update_range_on_sales_channel(
@@ -135,7 +131,8 @@ class ProductRange:
             act=act,
             value=value,
             option_id=option_id,
-            channel_ids=channel_ids)
+            channel_ids=channel_ids,
+        )
 
     @property
     def options(self):
@@ -149,8 +146,7 @@ class ProductRange:
             self._options = ccapi.CCAPI.get_options_for_range(self.id)
         return self._options
 
-    def add_product(
-            self, name, barcode, sku=None, description=None, vat_rate=20):
+    def add_product(self, name, barcode, sku=None, description=None, vat_rate=20):
         """
         Add new Product to this Product Range.
 
@@ -169,12 +165,8 @@ class ProductRange:
 
         """
         product_id = ccapi.CCAPI.create_product(
-            self.id,
-            name,
-            barcode,
-            sku=sku,
-            description=description,
-            vat_rate=vat_rate)
+            self.id, name, barcode, sku=sku, description=description, vat_rate=vat_rate
+        )
         return ccapi.CCAPI.get_product(product_id)
 
     def delete(self):
@@ -182,13 +174,14 @@ class ProductRange:
         ccapi.CCAPI.delete_range(self.id)
 
     def update_range_settings(
-            self,
-            name=None,
-            sku=None,
-            end_of_line=None,
-            pre_order=None,
-            grouped=None,
-            channels=True):
+        self,
+        name=None,
+        sku=None,
+        end_of_line=None,
+        pre_order=None,
+        grouped=None,
+        channels=True,
+    ):
         """
         Update Range Settings.
 
@@ -221,7 +214,8 @@ class ProductRange:
             new_end_of_line=end_of_line,
             new_pre_order=pre_order,
             new_group_items=grouped,
-            channels=channels)
+            channels=channels,
+        )
         self.name = name
         self.sku = sku
         self.end_of_line = end_of_line
@@ -250,8 +244,9 @@ class ProductRange:
         ccapi.CCAPI.set_product_description(description, product_ids)
         if update_channels is True:
             ccapi.CCAPI.update_product_on_sales_channel(
-                'desc',
+                "desc",
                 self.id,
                 product_ids=[p.id for p in self.products],
                 value_1=description,
-                channels=self.get_sales_channel_ids())
+                channels=self.get_sales_channel_ids(),
+            )

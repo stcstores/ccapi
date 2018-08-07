@@ -1,101 +1,54 @@
 """Example response data for findProductSelectedOptionsOnly requests."""
 
 FIND_PRODUCT_SELECTED_OPTIONS_ONLY_TEST_RESLULT = {
-    "StockLevel":
-    5,
-    "FBAStockLevel":
-    0,
-    "FBAInTransitStockLevel":
-    0,
-    "PurchaseOrderIncomingStock":
-    0,
-    "PurchaseOrderBuildUpStock":
-    0,
+    "StockLevel": 5,
+    "FBAStockLevel": 0,
+    "FBAInTransitStockLevel": 0,
+    "PurchaseOrderIncomingStock": 0,
+    "PurchaseOrderBuildUpStock": 0,
     "product": {
-        "isChecked":
-        False,
-        "isListed":
-        False,
-        "SupplierSKU":
-        None,
-        "ID":
-        6909316,
-        "UniqueID":
-        0,
-        "Name":
-        "Product Editor Test Variations Updated Title",
-        "FullName":
-        "Product Editor Test Variations Updated Title  - 4XL",
-        "Options":
-        None,
-        "Description":
-        "Test Description",
-        "ManufacturerSKU":
-        "WUA-DU7-W6W",
-        "BasePrice":
-        "5.00",
-        "VatRateID":
-        5,
-        "VatRate":
-        "20%",
-        "Barcode":
-        "8944896293653",
-        "RangeID":
-        4347654,
-        "RangeName":
-        "Product Editor Test Variations Updated Title",
-        "PreOrder":
-        0,
-        "EndOfLine":
-        0,
-        "StockLevel":
-        0,
-        "PseudoStockType":
-        0,
-        "PseudoStockLevel":
-        0,
-        "StatusID":
-        1,
-        "SChanLinkID":
-        0,
-        "SChanPrice":
-        None,
-        "SChanGrossPrice":
-        None,
-        "SChanVatRateID":
-        0,
-        "ProductType":
-        0,
-        "SupplierPrice":
-        None,
-        "LengthMM":
-        0,
-        "WidthMM":
-        0,
-        "HeightMM":
-        0,
-        "LengthCM":
-        0.0,
-        "WidthCM":
-        0.0,
-        "HeightCM":
-        0.0,
-        "WeightGM":
-        50,
-        "LargeLetterCompatible":
-        0,
-        "ExternalProductId":
-        "",
-        "AdditionalShippingLabel":
-        0,
-        "defaultImageUrl":
-        None,
-        "DeliveryLeadTimeDays":
-        1,
-        "ProductTemplateId":
-        0,
-        "ProductTemplateMode":
-        0,
+        "isChecked": False,
+        "isListed": False,
+        "SupplierSKU": None,
+        "ID": 6909316,
+        "UniqueID": 0,
+        "Name": "Product Editor Test Variations Updated Title",
+        "FullName": "Product Editor Test Variations Updated Title  - 4XL",
+        "Options": None,
+        "Description": "Test Description",
+        "ManufacturerSKU": "WUA-DU7-W6W",
+        "BasePrice": "5.00",
+        "VatRateID": 5,
+        "VatRate": "20%",
+        "Barcode": "8944896293653",
+        "RangeID": 4347654,
+        "RangeName": "Product Editor Test Variations Updated Title",
+        "PreOrder": 0,
+        "EndOfLine": 0,
+        "StockLevel": 0,
+        "PseudoStockType": 0,
+        "PseudoStockLevel": 0,
+        "StatusID": 1,
+        "SChanLinkID": 0,
+        "SChanPrice": None,
+        "SChanGrossPrice": None,
+        "SChanVatRateID": 0,
+        "ProductType": 0,
+        "SupplierPrice": None,
+        "LengthMM": 0,
+        "WidthMM": 0,
+        "HeightMM": 0,
+        "LengthCM": 0.0,
+        "WidthCM": 0.0,
+        "HeightCM": 0.0,
+        "WeightGM": 50,
+        "LargeLetterCompatible": 0,
+        "ExternalProductId": "",
+        "AdditionalShippingLabel": 0,
+        "defaultImageUrl": None,
+        "DeliveryLeadTimeDays": 1,
+        "ProductTemplateId": 0,
+        "ProductTemplateMode": 0,
         "AdditionalBarcodes": [],
         "Locations": [
             {
@@ -112,7 +65,7 @@ FIND_PRODUCT_SELECTED_OPTIONS_ONLY_TEST_RESLULT = {
                 "Shelf": "",
                 "WarehouseBayType": 0,
                 "StatusId": 1,
-                "StatusIdEnum": 1
+                "StatusIdEnum": 1,
             }
         ],
         "Dimensions": {
@@ -124,65 +77,38 @@ FIND_PRODUCT_SELECTED_OPTIONS_ONLY_TEST_RESLULT = {
             "Labels": 0,
             "DimensionType": 0,
             "WeightType": 0,
-            "HasPrecision": False
+            "HasPrecision": False,
         },
-        "saveWeightChecked":
-        False,
-        "saveDimsChecked":
-        False,
-        "UseDispatchIdentifiers":
-        False,
-        "DispatchIdentifierOption":
-        "Disabled",
-        "DispatchIdentifierOptionID":
-        0
+        "saveWeightChecked": False,
+        "saveDimsChecked": False,
+        "UseDispatchIdentifiers": False,
+        "DispatchIdentifierOption": "Disabled",
+        "DispatchIdentifierOptionID": 0,
     },
     "options": [
         {
-            "ID":
-            32131,
-            "OptionName":
-            "Size",
-            "OptionEbayName":
-            None,
-            "OptionAmazonName":
-            None,
-            "OptionPrettyName":
-            None,
-            "OptionWebName":
-            None,
-            "OptionSortOrder":
-            0,
-            "OptionType":
-            None,
-            "Master":
-            0,
-            "Hidden":
-            0,
-            "PreSelectOnCreateRange":
-            0,
-            "Statusw":
-            0,
-            "excludeAmazon":
-            False,
-            "excludeEbay":
-            False,
-            "excludeMarketPlace":
-            False,
-            "excludeEpos":
-            False,
-            "excludeMagento":
-            False,
-            "excludeWooCommerce":
-            False,
-            "excludeShopify":
-            False,
-            "excludeTesco":
-            False,
-            "excludeGoogle":
-            False,
-            "Selected":
-            True,
+            "ID": 32131,
+            "OptionName": "Size",
+            "OptionEbayName": None,
+            "OptionAmazonName": None,
+            "OptionPrettyName": None,
+            "OptionWebName": None,
+            "OptionSortOrder": 0,
+            "OptionType": None,
+            "Master": 0,
+            "Hidden": 0,
+            "PreSelectOnCreateRange": 0,
+            "Statusw": 0,
+            "excludeAmazon": False,
+            "excludeEbay": False,
+            "excludeMarketPlace": False,
+            "excludeEpos": False,
+            "excludeMagento": False,
+            "excludeWooCommerce": False,
+            "excludeShopify": False,
+            "excludeTesco": False,
+            "excludeGoogle": False,
+            "Selected": True,
             "optionValues": [
                 {
                     "ID": 3040682,
@@ -193,54 +119,33 @@ FIND_PRODUCT_SELECTED_OPTIONS_ONLY_TEST_RESLULT = {
                     "OptionsortOrder": 0,
                     "Selected": True,
                     "ProductCount": 0,
-                    "OptionName": None
+                    "OptionName": None,
                 }
-            ]
-        }, {
-            "ID":
-            34322,
-            "OptionName":
-            "Manufacturer",
-            "OptionEbayName":
-            None,
-            "OptionAmazonName":
-            None,
-            "OptionPrettyName":
-            None,
-            "OptionWebName":
-            None,
-            "OptionSortOrder":
-            0,
-            "OptionType":
-            None,
-            "Master":
-            0,
-            "Hidden":
-            0,
-            "PreSelectOnCreateRange":
-            0,
-            "Statusw":
-            0,
-            "excludeAmazon":
-            False,
-            "excludeEbay":
-            False,
-            "excludeMarketPlace":
-            False,
-            "excludeEpos":
-            False,
-            "excludeMagento":
-            False,
-            "excludeWooCommerce":
-            False,
-            "excludeShopify":
-            False,
-            "excludeTesco":
-            False,
-            "excludeGoogle":
-            False,
-            "Selected":
-            True,
+            ],
+        },
+        {
+            "ID": 34322,
+            "OptionName": "Manufacturer",
+            "OptionEbayName": None,
+            "OptionAmazonName": None,
+            "OptionPrettyName": None,
+            "OptionWebName": None,
+            "OptionSortOrder": 0,
+            "OptionType": None,
+            "Master": 0,
+            "Hidden": 0,
+            "PreSelectOnCreateRange": 0,
+            "Statusw": 0,
+            "excludeAmazon": False,
+            "excludeEbay": False,
+            "excludeMarketPlace": False,
+            "excludeEpos": False,
+            "excludeMagento": False,
+            "excludeWooCommerce": False,
+            "excludeShopify": False,
+            "excludeTesco": False,
+            "excludeGoogle": False,
+            "Selected": True,
             "optionValues": [
                 {
                     "ID": 5451421,
@@ -251,54 +156,33 @@ FIND_PRODUCT_SELECTED_OPTIONS_ONLY_TEST_RESLULT = {
                     "OptionsortOrder": 0,
                     "Selected": True,
                     "ProductCount": 0,
-                    "OptionName": None
+                    "OptionName": None,
                 }
-            ]
-        }, {
-            "ID":
-            34321,
-            "OptionName":
-            "Brand",
-            "OptionEbayName":
-            None,
-            "OptionAmazonName":
-            None,
-            "OptionPrettyName":
-            None,
-            "OptionWebName":
-            None,
-            "OptionSortOrder":
-            0,
-            "OptionType":
-            None,
-            "Master":
-            0,
-            "Hidden":
-            0,
-            "PreSelectOnCreateRange":
-            0,
-            "Statusw":
-            0,
-            "excludeAmazon":
-            False,
-            "excludeEbay":
-            False,
-            "excludeMarketPlace":
-            False,
-            "excludeEpos":
-            False,
-            "excludeMagento":
-            False,
-            "excludeWooCommerce":
-            False,
-            "excludeShopify":
-            False,
-            "excludeTesco":
-            False,
-            "excludeGoogle":
-            False,
-            "Selected":
-            True,
+            ],
+        },
+        {
+            "ID": 34321,
+            "OptionName": "Brand",
+            "OptionEbayName": None,
+            "OptionAmazonName": None,
+            "OptionPrettyName": None,
+            "OptionWebName": None,
+            "OptionSortOrder": 0,
+            "OptionType": None,
+            "Master": 0,
+            "Hidden": 0,
+            "PreSelectOnCreateRange": 0,
+            "Statusw": 0,
+            "excludeAmazon": False,
+            "excludeEbay": False,
+            "excludeMarketPlace": False,
+            "excludeEpos": False,
+            "excludeMagento": False,
+            "excludeWooCommerce": False,
+            "excludeShopify": False,
+            "excludeTesco": False,
+            "excludeGoogle": False,
+            "Selected": True,
             "optionValues": [
                 {
                     "ID": 5128950,
@@ -309,54 +193,33 @@ FIND_PRODUCT_SELECTED_OPTIONS_ONLY_TEST_RESLULT = {
                     "OptionsortOrder": 0,
                     "Selected": True,
                     "ProductCount": 0,
-                    "OptionName": None
+                    "OptionName": None,
                 }
-            ]
-        }, {
-            "ID":
-            34325,
-            "OptionName":
-            "Department",
-            "OptionEbayName":
-            None,
-            "OptionAmazonName":
-            None,
-            "OptionPrettyName":
-            None,
-            "OptionWebName":
-            None,
-            "OptionSortOrder":
-            0,
-            "OptionType":
-            None,
-            "Master":
-            1,
-            "Hidden":
-            0,
-            "PreSelectOnCreateRange":
-            0,
-            "Statusw":
-            0,
-            "excludeAmazon":
-            False,
-            "excludeEbay":
-            False,
-            "excludeMarketPlace":
-            False,
-            "excludeEpos":
-            False,
-            "excludeMagento":
-            False,
-            "excludeWooCommerce":
-            False,
-            "excludeShopify":
-            False,
-            "excludeTesco":
-            False,
-            "excludeGoogle":
-            False,
-            "Selected":
-            True,
+            ],
+        },
+        {
+            "ID": 34325,
+            "OptionName": "Department",
+            "OptionEbayName": None,
+            "OptionAmazonName": None,
+            "OptionPrettyName": None,
+            "OptionWebName": None,
+            "OptionSortOrder": 0,
+            "OptionType": None,
+            "Master": 1,
+            "Hidden": 0,
+            "PreSelectOnCreateRange": 0,
+            "Statusw": 0,
+            "excludeAmazon": False,
+            "excludeEbay": False,
+            "excludeMarketPlace": False,
+            "excludeEpos": False,
+            "excludeMagento": False,
+            "excludeWooCommerce": False,
+            "excludeShopify": False,
+            "excludeTesco": False,
+            "excludeGoogle": False,
+            "Selected": True,
             "optionValues": [
                 {
                     "ID": 3329960,
@@ -367,54 +230,33 @@ FIND_PRODUCT_SELECTED_OPTIONS_ONLY_TEST_RESLULT = {
                     "OptionsortOrder": 0,
                     "Selected": True,
                     "ProductCount": 0,
-                    "OptionName": None
+                    "OptionName": None,
                 }
-            ]
-        }, {
-            "ID":
-            35131,
-            "OptionName":
-            "Supplier",
-            "OptionEbayName":
-            None,
-            "OptionAmazonName":
-            None,
-            "OptionPrettyName":
-            None,
-            "OptionWebName":
-            None,
-            "OptionSortOrder":
-            0,
-            "OptionType":
-            None,
-            "Master":
-            0,
-            "Hidden":
-            0,
-            "PreSelectOnCreateRange":
-            0,
-            "Statusw":
-            0,
-            "excludeAmazon":
-            False,
-            "excludeEbay":
-            False,
-            "excludeMarketPlace":
-            False,
-            "excludeEpos":
-            False,
-            "excludeMagento":
-            False,
-            "excludeWooCommerce":
-            False,
-            "excludeShopify":
-            False,
-            "excludeTesco":
-            False,
-            "excludeGoogle":
-            False,
-            "Selected":
-            True,
+            ],
+        },
+        {
+            "ID": 35131,
+            "OptionName": "Supplier",
+            "OptionEbayName": None,
+            "OptionAmazonName": None,
+            "OptionPrettyName": None,
+            "OptionWebName": None,
+            "OptionSortOrder": 0,
+            "OptionType": None,
+            "Master": 0,
+            "Hidden": 0,
+            "PreSelectOnCreateRange": 0,
+            "Statusw": 0,
+            "excludeAmazon": False,
+            "excludeEbay": False,
+            "excludeMarketPlace": False,
+            "excludeEpos": False,
+            "excludeMagento": False,
+            "excludeWooCommerce": False,
+            "excludeShopify": False,
+            "excludeTesco": False,
+            "excludeGoogle": False,
+            "Selected": True,
             "optionValues": [
                 {
                     "ID": 5451409,
@@ -425,54 +267,33 @@ FIND_PRODUCT_SELECTED_OPTIONS_ONLY_TEST_RESLULT = {
                     "OptionsortOrder": 0,
                     "Selected": True,
                     "ProductCount": 0,
-                    "OptionName": None
+                    "OptionName": None,
                 }
-            ]
-        }, {
-            "ID":
-            35132,
-            "OptionName":
-            "Purchase Price",
-            "OptionEbayName":
-            None,
-            "OptionAmazonName":
-            None,
-            "OptionPrettyName":
-            None,
-            "OptionWebName":
-            None,
-            "OptionSortOrder":
-            0,
-            "OptionType":
-            None,
-            "Master":
-            0,
-            "Hidden":
-            0,
-            "PreSelectOnCreateRange":
-            0,
-            "Statusw":
-            0,
-            "excludeAmazon":
-            False,
-            "excludeEbay":
-            False,
-            "excludeMarketPlace":
-            False,
-            "excludeEpos":
-            False,
-            "excludeMagento":
-            False,
-            "excludeWooCommerce":
-            False,
-            "excludeShopify":
-            False,
-            "excludeTesco":
-            False,
-            "excludeGoogle":
-            False,
-            "Selected":
-            True,
+            ],
+        },
+        {
+            "ID": 35132,
+            "OptionName": "Purchase Price",
+            "OptionEbayName": None,
+            "OptionAmazonName": None,
+            "OptionPrettyName": None,
+            "OptionWebName": None,
+            "OptionSortOrder": 0,
+            "OptionType": None,
+            "Master": 0,
+            "Hidden": 0,
+            "PreSelectOnCreateRange": 0,
+            "Statusw": 0,
+            "excludeAmazon": False,
+            "excludeEbay": False,
+            "excludeMarketPlace": False,
+            "excludeEpos": False,
+            "excludeMagento": False,
+            "excludeWooCommerce": False,
+            "excludeShopify": False,
+            "excludeTesco": False,
+            "excludeGoogle": False,
+            "Selected": True,
             "optionValues": [
                 {
                     "ID": 4831848,
@@ -483,54 +304,33 @@ FIND_PRODUCT_SELECTED_OPTIONS_ONLY_TEST_RESLULT = {
                     "OptionsortOrder": 0,
                     "Selected": True,
                     "ProductCount": 0,
-                    "OptionName": None
+                    "OptionName": None,
                 }
-            ]
-        }, {
-            "ID":
-            37272,
-            "OptionName":
-            "International Shipping",
-            "OptionEbayName":
-            None,
-            "OptionAmazonName":
-            None,
-            "OptionPrettyName":
-            None,
-            "OptionWebName":
-            None,
-            "OptionSortOrder":
-            0,
-            "OptionType":
-            None,
-            "Master":
-            0,
-            "Hidden":
-            0,
-            "PreSelectOnCreateRange":
-            0,
-            "Statusw":
-            0,
-            "excludeAmazon":
-            False,
-            "excludeEbay":
-            False,
-            "excludeMarketPlace":
-            False,
-            "excludeEpos":
-            False,
-            "excludeMagento":
-            False,
-            "excludeWooCommerce":
-            False,
-            "excludeShopify":
-            False,
-            "excludeTesco":
-            False,
-            "excludeGoogle":
-            False,
-            "Selected":
-            True,
+            ],
+        },
+        {
+            "ID": 37272,
+            "OptionName": "International Shipping",
+            "OptionEbayName": None,
+            "OptionAmazonName": None,
+            "OptionPrettyName": None,
+            "OptionWebName": None,
+            "OptionSortOrder": 0,
+            "OptionType": None,
+            "Master": 0,
+            "Hidden": 0,
+            "PreSelectOnCreateRange": 0,
+            "Statusw": 0,
+            "excludeAmazon": False,
+            "excludeEbay": False,
+            "excludeMarketPlace": False,
+            "excludeEpos": False,
+            "excludeMagento": False,
+            "excludeWooCommerce": False,
+            "excludeShopify": False,
+            "excludeTesco": False,
+            "excludeGoogle": False,
+            "Selected": True,
             "optionValues": [
                 {
                     "ID": 4895069,
@@ -541,54 +341,33 @@ FIND_PRODUCT_SELECTED_OPTIONS_ONLY_TEST_RESLULT = {
                     "OptionsortOrder": 0,
                     "Selected": True,
                     "ProductCount": 0,
-                    "OptionName": None
+                    "OptionName": None,
                 }
-            ]
-        }, {
-            "ID":
-            33852,
-            "OptionName":
-            "Package Type",
-            "OptionEbayName":
-            None,
-            "OptionAmazonName":
-            None,
-            "OptionPrettyName":
-            None,
-            "OptionWebName":
-            None,
-            "OptionSortOrder":
-            0,
-            "OptionType":
-            None,
-            "Master":
-            0,
-            "Hidden":
-            0,
-            "PreSelectOnCreateRange":
-            0,
-            "Statusw":
-            0,
-            "excludeAmazon":
-            False,
-            "excludeEbay":
-            False,
-            "excludeMarketPlace":
-            False,
-            "excludeEpos":
-            False,
-            "excludeMagento":
-            False,
-            "excludeWooCommerce":
-            False,
-            "excludeShopify":
-            False,
-            "excludeTesco":
-            False,
-            "excludeGoogle":
-            False,
-            "Selected":
-            True,
+            ],
+        },
+        {
+            "ID": 33852,
+            "OptionName": "Package Type",
+            "OptionEbayName": None,
+            "OptionAmazonName": None,
+            "OptionPrettyName": None,
+            "OptionWebName": None,
+            "OptionSortOrder": 0,
+            "OptionType": None,
+            "Master": 0,
+            "Hidden": 0,
+            "PreSelectOnCreateRange": 0,
+            "Statusw": 0,
+            "excludeAmazon": False,
+            "excludeEbay": False,
+            "excludeMarketPlace": False,
+            "excludeEpos": False,
+            "excludeMagento": False,
+            "excludeWooCommerce": False,
+            "excludeShopify": False,
+            "excludeTesco": False,
+            "excludeGoogle": False,
+            "Selected": True,
             "optionValues": [
                 {
                     "ID": 3309864,
@@ -599,54 +378,33 @@ FIND_PRODUCT_SELECTED_OPTIONS_ONLY_TEST_RESLULT = {
                     "OptionsortOrder": 0,
                     "Selected": True,
                     "ProductCount": 0,
-                    "OptionName": None
+                    "OptionName": None,
                 }
-            ]
-        }, {
-            "ID":
-            41023,
-            "OptionName":
-            "Date Created",
-            "OptionEbayName":
-            None,
-            "OptionAmazonName":
-            None,
-            "OptionPrettyName":
-            None,
-            "OptionWebName":
-            None,
-            "OptionSortOrder":
-            0,
-            "OptionType":
-            None,
-            "Master":
-            0,
-            "Hidden":
-            0,
-            "PreSelectOnCreateRange":
-            0,
-            "Statusw":
-            0,
-            "excludeAmazon":
-            False,
-            "excludeEbay":
-            False,
-            "excludeMarketPlace":
-            False,
-            "excludeEpos":
-            False,
-            "excludeMagento":
-            False,
-            "excludeWooCommerce":
-            False,
-            "excludeShopify":
-            False,
-            "excludeTesco":
-            False,
-            "excludeGoogle":
-            False,
-            "Selected":
-            True,
+            ],
+        },
+        {
+            "ID": 41023,
+            "OptionName": "Date Created",
+            "OptionEbayName": None,
+            "OptionAmazonName": None,
+            "OptionPrettyName": None,
+            "OptionWebName": None,
+            "OptionSortOrder": 0,
+            "OptionType": None,
+            "Master": 0,
+            "Hidden": 0,
+            "PreSelectOnCreateRange": 0,
+            "Statusw": 0,
+            "excludeAmazon": False,
+            "excludeEbay": False,
+            "excludeMarketPlace": False,
+            "excludeEpos": False,
+            "excludeMagento": False,
+            "excludeWooCommerce": False,
+            "excludeShopify": False,
+            "excludeTesco": False,
+            "excludeGoogle": False,
+            "Selected": True,
             "optionValues": [
                 {
                     "ID": 7246097,
@@ -657,54 +415,33 @@ FIND_PRODUCT_SELECTED_OPTIONS_ONLY_TEST_RESLULT = {
                     "OptionsortOrder": 0,
                     "Selected": True,
                     "ProductCount": 0,
-                    "OptionName": None
+                    "OptionName": None,
                 }
-            ]
-        }, {
-            "ID":
-            41238,
-            "OptionName":
-            "Amazon Bullets",
-            "OptionEbayName":
-            None,
-            "OptionAmazonName":
-            None,
-            "OptionPrettyName":
-            None,
-            "OptionWebName":
-            None,
-            "OptionSortOrder":
-            0,
-            "OptionType":
-            None,
-            "Master":
-            0,
-            "Hidden":
-            0,
-            "PreSelectOnCreateRange":
-            0,
-            "Statusw":
-            0,
-            "excludeAmazon":
-            False,
-            "excludeEbay":
-            False,
-            "excludeMarketPlace":
-            False,
-            "excludeEpos":
-            False,
-            "excludeMagento":
-            False,
-            "excludeWooCommerce":
-            False,
-            "excludeShopify":
-            False,
-            "excludeTesco":
-            False,
-            "excludeGoogle":
-            False,
-            "Selected":
-            True,
+            ],
+        },
+        {
+            "ID": 41238,
+            "OptionName": "Amazon Bullets",
+            "OptionEbayName": None,
+            "OptionAmazonName": None,
+            "OptionPrettyName": None,
+            "OptionWebName": None,
+            "OptionSortOrder": 0,
+            "OptionType": None,
+            "Master": 0,
+            "Hidden": 0,
+            "PreSelectOnCreateRange": 0,
+            "Statusw": 0,
+            "excludeAmazon": False,
+            "excludeEbay": False,
+            "excludeMarketPlace": False,
+            "excludeEpos": False,
+            "excludeMagento": False,
+            "excludeWooCommerce": False,
+            "excludeShopify": False,
+            "excludeTesco": False,
+            "excludeGoogle": False,
+            "Selected": True,
             "optionValues": [
                 {
                     "ID": 6807576,
@@ -715,54 +452,33 @@ FIND_PRODUCT_SELECTED_OPTIONS_ONLY_TEST_RESLULT = {
                     "OptionsortOrder": 0,
                     "Selected": True,
                     "ProductCount": 0,
-                    "OptionName": None
+                    "OptionName": None,
                 }
-            ]
-        }, {
-            "ID":
-            41285,
-            "OptionName":
-            "Amazon Search Terms",
-            "OptionEbayName":
-            None,
-            "OptionAmazonName":
-            None,
-            "OptionPrettyName":
-            None,
-            "OptionWebName":
-            None,
-            "OptionSortOrder":
-            0,
-            "OptionType":
-            None,
-            "Master":
-            0,
-            "Hidden":
-            0,
-            "PreSelectOnCreateRange":
-            0,
-            "Statusw":
-            0,
-            "excludeAmazon":
-            False,
-            "excludeEbay":
-            False,
-            "excludeMarketPlace":
-            False,
-            "excludeEpos":
-            False,
-            "excludeMagento":
-            False,
-            "excludeWooCommerce":
-            False,
-            "excludeShopify":
-            False,
-            "excludeTesco":
-            False,
-            "excludeGoogle":
-            False,
-            "Selected":
-            True,
+            ],
+        },
+        {
+            "ID": 41285,
+            "OptionName": "Amazon Search Terms",
+            "OptionEbayName": None,
+            "OptionAmazonName": None,
+            "OptionPrettyName": None,
+            "OptionWebName": None,
+            "OptionSortOrder": 0,
+            "OptionType": None,
+            "Master": 0,
+            "Hidden": 0,
+            "PreSelectOnCreateRange": 0,
+            "Statusw": 0,
+            "excludeAmazon": False,
+            "excludeEbay": False,
+            "excludeMarketPlace": False,
+            "excludeEpos": False,
+            "excludeMagento": False,
+            "excludeWooCommerce": False,
+            "excludeShopify": False,
+            "excludeTesco": False,
+            "excludeGoogle": False,
+            "Selected": True,
             "optionValues": [
                 {
                     "ID": 6807577,
@@ -773,54 +489,33 @@ FIND_PRODUCT_SELECTED_OPTIONS_ONLY_TEST_RESLULT = {
                     "OptionsortOrder": 0,
                     "Selected": True,
                     "ProductCount": 0,
-                    "OptionName": None
+                    "OptionName": None,
                 }
-            ]
-        }, {
-            "ID":
-            54879,
-            "OptionName":
-            "Retail Price",
-            "OptionEbayName":
-            None,
-            "OptionAmazonName":
-            None,
-            "OptionPrettyName":
-            None,
-            "OptionWebName":
-            None,
-            "OptionSortOrder":
-            0,
-            "OptionType":
-            None,
-            "Master":
-            0,
-            "Hidden":
-            0,
-            "PreSelectOnCreateRange":
-            0,
-            "Statusw":
-            0,
-            "excludeAmazon":
-            False,
-            "excludeEbay":
-            False,
-            "excludeMarketPlace":
-            False,
-            "excludeEpos":
-            False,
-            "excludeMagento":
-            False,
-            "excludeWooCommerce":
-            False,
-            "excludeShopify":
-            False,
-            "excludeTesco":
-            False,
-            "excludeGoogle":
-            False,
-            "Selected":
-            True,
+            ],
+        },
+        {
+            "ID": 54879,
+            "OptionName": "Retail Price",
+            "OptionEbayName": None,
+            "OptionAmazonName": None,
+            "OptionPrettyName": None,
+            "OptionWebName": None,
+            "OptionSortOrder": 0,
+            "OptionType": None,
+            "Master": 0,
+            "Hidden": 0,
+            "PreSelectOnCreateRange": 0,
+            "Statusw": 0,
+            "excludeAmazon": False,
+            "excludeEbay": False,
+            "excludeMarketPlace": False,
+            "excludeEpos": False,
+            "excludeMagento": False,
+            "excludeWooCommerce": False,
+            "excludeShopify": False,
+            "excludeTesco": False,
+            "excludeGoogle": False,
+            "Selected": True,
             "optionValues": [
                 {
                     "ID": 7185225,
@@ -831,22 +526,16 @@ FIND_PRODUCT_SELECTED_OPTIONS_ONLY_TEST_RESLULT = {
                     "OptionsortOrder": 0,
                     "Selected": True,
                     "ProductCount": 0,
-                    "OptionName": None
+                    "OptionName": None,
                 }
-            ]
-        }
+            ],
+        },
     ],
-    "AutoPurchaseOrderTypeId":
-    0,
-    "PurchaseOrderAtStockQuantity":
-    0,
-    "PurchaseOrderMaxStock":
-    0,
-    "PurchaseOrderStockType":
-    0,
-    "PurchaseOrderBoxQuantity":
-    0,
+    "AutoPurchaseOrderTypeId": 0,
+    "PurchaseOrderAtStockQuantity": 0,
+    "PurchaseOrderMaxStock": 0,
+    "PurchaseOrderStockType": 0,
+    "PurchaseOrderBoxQuantity": 0,
     "ItemsInThisMultipack": [],
-    "StockBreakdown":
-    None
+    "StockBreakdown": None,
 }

@@ -23,8 +23,9 @@ CHECK_RANGES_ON_SALES_CHANNEL_RESULT = [
         "LoyaltyValuePerPoint": 0.0,
         "disabled": False,
         "deleted": False,
-        "Note": ""
-    }, {
+        "Note": "",
+    },
+    {
         "ID": 3557,
         "Name": "Sales Channel 1",
         "Domain": None,
@@ -46,6 +47,6 @@ CHECK_RANGES_ON_SALES_CHANNEL_RESULT = [
         "LoyaltyValuePerPoint": 0.0,
         "disabled": False,
         "deleted": False,
-        "Note": ""
-    }
+        "Note": "",
+    },
 ]

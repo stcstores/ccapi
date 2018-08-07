@@ -9,7 +9,7 @@ from ..apirequest import APIRequest
 class ProductBarcodeInUse(APIRequest):
     """saveBarcode request class."""
 
-    uri = 'Handlers/ProductBarcode/ProductBarcodeInUse.ashx'
+    uri = "Handlers/ProductBarcode/ProductBarcodeInUse.ashx"
 
     def __new__(self, barcode):
         """Create saveBarcode request.
@@ -22,10 +22,8 @@ class ProductBarcodeInUse(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
-        return response.json()['Success']
+        return response.json()["Success"]
 
     def get_data(self):
         """Get data for request."""
-        return {
-            'BarcodeNumber': self.barcode,
-        }
+        return {"BarcodeNumber": self.barcode}

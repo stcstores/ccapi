@@ -12,24 +12,25 @@ from ...apirequest import APIRequest
 class CreatePayment(APIRequest):
     """CreatePayment request."""
 
-    uri = '/Handlers/Accounts/Payment/CreatePayment.ashx'
+    uri = "/Handlers/Accounts/Payment/CreatePayment.ashx"
 
     def __new__(
-            self,
-            customer_id=None,
-            invoice_id=None,
-            login_id=None,
-            transaction_type_id='12',
-            bank_nominal_code='',
-            transaction_date=None,
-            bank_account_id='0',
-            amount=0,
-            proforma_id='0',
-            gateway_id='0',
-            currency_code_id='1',
-            currency_code='GBP',
-            exchange_rate='1',
-            brand_id='341'):
+        self,
+        customer_id=None,
+        invoice_id=None,
+        login_id=None,
+        transaction_type_id="12",
+        bank_nominal_code="",
+        transaction_date=None,
+        bank_account_id="0",
+        amount=0,
+        proforma_id="0",
+        gateway_id="0",
+        currency_code_id="1",
+        currency_code="GBP",
+        exchange_rate="1",
+        brand_id="341",
+    ):
         """Create CreatePayment request."""
         self.customer_id = customer_id
         self.invoice_id = invoice_id
@@ -50,24 +51,24 @@ class CreatePayment(APIRequest):
     def get_data(self):
         """Get data for get request."""
         data = {
-            'brandId': self.brand_id,
-            'customerId': self.customer_id,
-            'loginId': self.login_id,
-            'transactionTypeId': self.transaction_type_id,
-            'bankNominalCode': self.bank_nominal_code,
-            'transactionDate': self.transaction_date.strftime('%d/%m/%Y'),
-            'bankAccountId': self.bank_account_id,
-            'amount': self.amount,
-            'invoiceId': self.invoice_id,
-            'proformaId': self.proforma_id,
-            'gatewayId': self.gateway_id,
-            'CurrencyCodeId': self.currency_code_id,
-            'CurrencyCode': self.currency_code,
-            'exchangeRate': self.exchange_rate,
+            "brandId": self.brand_id,
+            "customerId": self.customer_id,
+            "loginId": self.login_id,
+            "transactionTypeId": self.transaction_type_id,
+            "bankNominalCode": self.bank_nominal_code,
+            "transactionDate": self.transaction_date.strftime("%d/%m/%Y"),
+            "bankAccountId": self.bank_account_id,
+            "amount": self.amount,
+            "invoiceId": self.invoice_id,
+            "proformaId": self.proforma_id,
+            "gatewayId": self.gateway_id,
+            "CurrencyCodeId": self.currency_code_id,
+            "CurrencyCode": self.currency_code,
+            "exchangeRate": self.exchange_rate,
         }
         return data
 
     def process_response(self, response):
         """Handle request response."""
         response.raise_for_status()
-        return response.text == 'success'
+        return response.text == "success"

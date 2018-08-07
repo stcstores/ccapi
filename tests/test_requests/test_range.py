@@ -12,16 +12,17 @@ class TestAddNewRange(TestRequest):
 
     request_class = range.AddNewRange
 
-    RESPONSE = '4940634'
-    RANGE_NAME = 'New Product Range'
-    SKU = 'WUA-DU7-W6W'
+    RESPONSE = "4940634"
+    RANGE_NAME = "New Product Range"
+    SKU = "WUA-DU7-W6W"
 
     def setUp(self):
         """Register request URI."""
         super().setUp()
         self.register(text=self.RESPONSE)
         self.returned_value = self.mock_request(
-            range_name=self.RANGE_NAME, sku=self.SKU)
+            range_name=self.RANGE_NAME, sku=self.SKU
+        )
 
     def test_AddNewRange_request_returns_range_ID(self):
         """Test the AddNewRange request returns a range ID."""
@@ -29,58 +30,56 @@ class TestAddNewRange(TestRequest):
 
     def test_AddNewRange_sends_range_ID(self):
         """Test the AddNewRange request sends a range ID."""
-        self.assertDataSent('ProdRangeID', 0)
+        self.assertDataSent("ProdRangeID", 0)
 
     def test_AddNewRange_sends_end_of_line(self):
         """Test the AddNewRange request sends the end of line argument."""
-        self.assertDataSent('EndOfLine', 0)
+        self.assertDataSent("EndOfLine", 0)
 
     def test_AddNewRange_sends_pre_order(self):
         """Test the AddNewRange request sends the pre order argument."""
-        self.assertDataSent('PreOrder', 0)
+        self.assertDataSent("PreOrder", 0)
 
     def test_AddNewRange_sends_group_all_items(self):
         """Test the AddNewRange request sends the group all items argument."""
-        self.assertDataSent('GroupAllItems', 0)
+        self.assertDataSent("GroupAllItems", 0)
 
     def test_AddNewRange_sends_range_name(self):
         """Test the AddNewRange request sends a range name."""
-        self.assertDataSent('RangeName', self.RANGE_NAME)
+        self.assertDataSent("RangeName", self.RANGE_NAME)
 
     def test_AddNewRange_sends_SKU(self):
         """Test the AddNewRange request sends a SKU."""
-        self.assertDataSent('SKUCode', self.SKU)
+        self.assertDataSent("SKUCode", self.SKU)
 
     def test_AddNewRange_sends_brand_ID(self):
         """Test the AddNewRange request sends brand ID."""
-        self.assertDataSent('BrandID', '341')
+        self.assertDataSent("BrandID", "341")
 
     def test_end_of_line_argument(self):
         """Test the AddNewRange request with the end_of_line argument."""
-        self.mock_request(
-            range_name=self.RANGE_NAME, sku=self.SKU, end_of_line=True)
-        self.assertDataSent('EndOfLine', 1)
-        self.mock_request(
-            range_name=self.RANGE_NAME, sku=self.SKU, end_of_line=False)
-        self.assertDataSent('EndOfLine', 0)
+        self.mock_request(range_name=self.RANGE_NAME, sku=self.SKU, end_of_line=True)
+        self.assertDataSent("EndOfLine", 1)
+        self.mock_request(range_name=self.RANGE_NAME, sku=self.SKU, end_of_line=False)
+        self.assertDataSent("EndOfLine", 0)
 
     def test_pre_order_agument(self):
         """Test the AddNewRange request with the pre_order argument."""
-        self.mock_request(
-            range_name=self.RANGE_NAME, sku=self.SKU, pre_order=True)
-        self.assertDataSent('PreOrder', 1)
-        self.mock_request(
-            range_name=self.RANGE_NAME, sku=self.SKU, pre_order=False)
-        self.assertDataSent('PreOrder', 0)
+        self.mock_request(range_name=self.RANGE_NAME, sku=self.SKU, pre_order=True)
+        self.assertDataSent("PreOrder", 1)
+        self.mock_request(range_name=self.RANGE_NAME, sku=self.SKU, pre_order=False)
+        self.assertDataSent("PreOrder", 0)
 
     def test_group_all_items_agument(self):
         """Test the AddNewRange request with the group_all_items argument."""
         self.mock_request(
-            range_name=self.RANGE_NAME, sku=self.SKU, group_all_items=True)
-        self.assertDataSent('GroupAllItems', 1)
+            range_name=self.RANGE_NAME, sku=self.SKU, group_all_items=True
+        )
+        self.assertDataSent("GroupAllItems", 1)
         self.mock_request(
-            range_name=self.RANGE_NAME, sku=self.SKU, group_all_items=False)
-        self.assertDataSent('GroupAllItems', 0)
+            range_name=self.RANGE_NAME, sku=self.SKU, group_all_items=False
+        )
+        self.assertDataSent("GroupAllItems", 0)
 
     def test_AddNewRange_raises_for_non_200(self):
         """Test the AddNewRange request raises for non 200 responses."""
@@ -94,9 +93,9 @@ class TestAddRemProductOption(TestRequest):
 
     request_class = range.AddRemProductOption
 
-    RESPONSE = ''
-    RANGE_ID = '4462752'
-    OPTION_ID = '32129'
+    RESPONSE = ""
+    RANGE_ID = "4462752"
+    OPTION_ID = "32129"
 
     def setUp(self):
         """Register request URI."""
@@ -110,48 +109,47 @@ class TestAddRemProductOptionAddAction(TestAddRemProductOption):
     def setUp(self):
         """Make request."""
         super().setUp()
-        self.mock_request(
-            range_id=self.RANGE_ID, option_id=self.OPTION_ID, add=True)
+        self.mock_request(range_id=self.RANGE_ID, option_id=self.OPTION_ID, add=True)
 
     def test_add_action_sends_range_ID(self):
         """Test the add action sends a range ID."""
-        self.assertDataSent('prdid', self.RANGE_ID)
+        self.assertDataSent("prdid", self.RANGE_ID)
 
     def test_add_action_sends_option_ID(self):
         """Test the add action sends anoption ID."""
-        self.assertDataSent('optid', self.OPTION_ID)
+        self.assertDataSent("optid", self.OPTION_ID)
 
     def test_add_action_sends_action(self):
         """Test the add action sends an action."""
-        self.assertDataSent('act', 'add')
+        self.assertDataSent("act", "add")
 
     def test_add_action_sends_ebay_option(self):
         """Test the add action sends an ebay option."""
-        self.assertDataSent('ebyopt', 0)
+        self.assertDataSent("ebyopt", 0)
 
     def test_add_action_sends_ebay_image(self):
         """Test the add action sends an ebay image."""
-        self.assertDataSent('ebyimg', 0)
+        self.assertDataSent("ebyimg", 0)
 
     def test_add_action_sends_amazon_option(self):
         """Test the add action sends an amazon option."""
-        self.assertDataSent('amaopt', 0)
+        self.assertDataSent("amaopt", 0)
 
     def test_add_action_sends_amazon_image(self):
         """Test the add action sends an amazon image."""
-        self.assertDataSent('amaimg', 0)
+        self.assertDataSent("amaimg", 0)
 
     def test_add_action_sends_shpfil(self):
         """Test the add action sends the shpfil argument."""
-        self.assertDataSent('shpfil', 0)
+        self.assertDataSent("shpfil", 0)
 
     def test_add_action_sends_shpgrp(self):
         """Test the add action sends the shpgrp argument."""
-        self.assertDataSent('shpgrp', 0)
+        self.assertDataSent("shpgrp", 0)
 
     def test_add_action_sends_shpsel(self):
         """Test the add action sends the shpsel argument."""
-        self.assertDataSent('shpsel', 0)
+        self.assertDataSent("shpsel", 0)
 
 
 class TestAddRemProductOptionRemAction(TestAddRemProductOption):
@@ -160,20 +158,19 @@ class TestAddRemProductOptionRemAction(TestAddRemProductOption):
     def setUp(self):
         """Make request."""
         super().setUp()
-        self.mock_request(
-            range_id=self.RANGE_ID, option_id=self.OPTION_ID, remove=True)
+        self.mock_request(range_id=self.RANGE_ID, option_id=self.OPTION_ID, remove=True)
 
     def test_rem_action_sends_range_ID(self):
         """Test the rem action sends a range ID."""
-        self.assertDataSent('prdid', self.RANGE_ID)
+        self.assertDataSent("prdid", self.RANGE_ID)
 
     def test_rem_action_sends_option_ID(self):
         """Test the rem action sends a option ID."""
-        self.assertDataSent('optid', self.OPTION_ID)
+        self.assertDataSent("optid", self.OPTION_ID)
 
     def test_rem_action_sends_action(self):
         """Test the rem action sends an action."""
-        self.assertDataSent('act', 'rem')
+        self.assertDataSent("act", "rem")
 
 
 class TestAddRemProductOptionAnyAction(TestAddRemProductOption):
@@ -184,16 +181,15 @@ class TestAddRemProductOptionAnyAction(TestAddRemProductOption):
         self.register(text=self.RESPONSE, status_code=500)
         with self.assertRaises(exceptions.CloudCommerceResponseError):
             self.mock_request(
-                range_id=self.RANGE_ID, option_id=self.OPTION_ID, add=True)
+                range_id=self.RANGE_ID, option_id=self.OPTION_ID, add=True
+            )
 
     def test_add_and_remove_both_True(self):
         """Test the request with both add and remove arguments True."""
         with self.assertRaises(ValueError):
             self.mock_request(
-                range_id=self.RANGE_ID,
-                option_id=self.OPTION_ID,
-                add=True,
-                remove=True)
+                range_id=self.RANGE_ID, option_id=self.OPTION_ID, add=True, remove=True
+            )
 
     def test_add_and_remove_both_False(self):
         """Test the request with both add and remove arguments False."""
@@ -202,7 +198,8 @@ class TestAddRemProductOptionAnyAction(TestAddRemProductOption):
                 range_id=self.RANGE_ID,
                 option_id=self.OPTION_ID,
                 add=False,
-                remove=False)
+                remove=False,
+            )
 
 
 class TestCheckRangesOnSalesChannel(TestRequest):
@@ -212,7 +209,7 @@ class TestCheckRangesOnSalesChannel(TestRequest):
 
     RESPONSE = test_data.CHECK_RANGES_ON_SALES_CHANNEL_RESULT
     EMPTY_RESPONSE = []
-    RANGE_ID = '4462752'
+    RANGE_ID = "4462752"
 
     def setUp(self):
         """Register request URI."""
@@ -222,11 +219,11 @@ class TestCheckRangesOnSalesChannel(TestRequest):
 
     def test_sends_range_id(self):
         """Test the CheckRangesOnSalesChannel sends the passed range ID."""
-        self.assertDataSent('rangeid', self.RANGE_ID)
+        self.assertDataSent("rangeid", self.RANGE_ID)
 
     def test_sends_brand_id(self):
         """Test the CheckRangesOnSalesChannel sends the passed brand ID."""
-        self.assertDataSent('brandid', 341)
+        self.assertDataSent("brandid", 341)
 
     def test_returns_list(self):
         """Test the CheckRangesOnSalesChannel request returns a list."""
@@ -254,8 +251,8 @@ class TestDeleteProductRange(TestRequest):
 
     request_class = range.DeleteProductRange
 
-    RESPONSE = 'Deleted^^0Deleted^^0'
-    RANGE_ID = '4462752'
+    RESPONSE = "Deleted^^0Deleted^^0"
+    RANGE_ID = "4462752"
 
     def setUp(self):
         """Register request URI."""
@@ -265,15 +262,15 @@ class TestDeleteProductRange(TestRequest):
 
     def test_DeleteProductRange_request_sends_range_ID(self):
         """Test the DeleteProductRangeRequest sends a range ID."""
-        self.assertDataSent('ProdRangeID', self.RANGE_ID)
+        self.assertDataSent("ProdRangeID", self.RANGE_ID)
 
     def test_DeleteProductRange_request_sends_program_type(self):
         """Test the DeleteProductRangeRequest sends a program type."""
-        self.assertDataSent('ProgType', 'DeleteProductRange')
+        self.assertDataSent("ProgType", "DeleteProductRange")
 
     def test_DeleteProductRange_request_sends_brand_ID(self):
         """Test the DeleteProductRangeRequest sends a brand ID."""
-        self.assertDataSent('BrandID', 341)
+        self.assertDataSent("BrandID", 341)
 
     def test_DeleteProductRange_raises_for_non_200(self):
         """Test the DeleteProductRange request raises for non 200 responses."""
@@ -287,32 +284,31 @@ class TestSetOptionSelect(TestRequest):
 
     request_class = range.SetOptionSelect
 
-    RANGE_ID = '4355752'
-    OPTION_ID = '32129'
+    RANGE_ID = "4355752"
+    OPTION_ID = "32129"
     DROP_DOWN = True
 
-    RESPONSE = 'ok'
+    RESPONSE = "ok"
 
     def setUp(self):
         """Register request URI."""
         super().setUp()
         self.register(text=self.RESPONSE)
         self.mock_request(
-            range_id=self.RANGE_ID,
-            option_id=self.OPTION_ID,
-            drop_down=self.DROP_DOWN)
+            range_id=self.RANGE_ID, option_id=self.OPTION_ID, drop_down=self.DROP_DOWN
+        )
 
     def test_SetOptionSelect_request_sends_range_ID(self):
         """Test the SetOptionSelect request sends a rangd ID."""
-        self.assertDataSent('prdid', self.RANGE_ID)
+        self.assertDataSent("prdid", self.RANGE_ID)
 
     def test_SetOptionSelect_request_sends_option_ID(self):
         """Test the SetOptionSelect request sends an option ID."""
-        self.assertDataSent('optid', self.OPTION_ID)
+        self.assertDataSent("optid", self.OPTION_ID)
 
     def test_SetOptionSelect_request_sends_drop_down_status(self):
         """Test the SetOptionSelect request sends a drop down status."""
-        self.assertDataSent('onoff', int(self.DROP_DOWN))
+        self.assertDataSent("onoff", int(self.DROP_DOWN))
 
     def test_SetOptionSelect_raises_for_non_200(self):
         """Test the request raises for a non 200 response."""
@@ -321,7 +317,8 @@ class TestSetOptionSelect(TestRequest):
             self.mock_request(
                 range_id=self.RANGE_ID,
                 option_id=self.OPTION_ID,
-                drop_down=self.DROP_DOWN)
+                drop_down=self.DROP_DOWN,
+            )
 
 
 class TestUpdateOnSalesChannel(TestRequest):
@@ -331,12 +328,12 @@ class TestUpdateOnSalesChannel(TestRequest):
 
     RESPONSE = []
 
-    RANGE_ID = '4355752'
-    REQUEST_TYPE = 'select'
-    ACT = 'update'
-    VALUE = 'Test Value'
-    OPTION_ID = '32129'
-    CHANNEL_IDS = ['3541', '3557']
+    RANGE_ID = "4355752"
+    REQUEST_TYPE = "select"
+    ACT = "update"
+    VALUE = "Test Value"
+    OPTION_ID = "32129"
+    CHANNEL_IDS = ["3541", "3557"]
 
     def setUp(self):
         """Register request URI."""
@@ -348,35 +345,36 @@ class TestUpdateOnSalesChannel(TestRequest):
             act=self.ACT,
             value=self.VALUE,
             option_id=self.OPTION_ID,
-            channel_ids=self.CHANNEL_IDS)
+            channel_ids=self.CHANNEL_IDS,
+        )
 
     def test_UpdateRangeOnSalesChannel_request_sends_range_ID(self):
         """Test the UpdateRangeOnSalesChannel request sends a range ID."""
-        self.assertDataSent('rangeid', self.RANGE_ID)
+        self.assertDataSent("rangeid", self.RANGE_ID)
 
     def test_UpdateRangeOnSalesChannel_request_sends_request_type(self):
         """Test the UpdateRangeOnSalesChannel request sends a request type."""
-        self.assertDataSent('type', self.REQUEST_TYPE)
+        self.assertDataSent("type", self.REQUEST_TYPE)
 
     def test_UpdateRangeOnSalesChannel_request_sends_act(self):
         """Test the UpdateRangeOnSalesChannel request sends an act."""
-        self.assertDataSent('act', self.ACT)
+        self.assertDataSent("act", self.ACT)
 
     def test_UpdateRangeOnSalesChannel_request_sends_value(self):
         """Test the UpdateRangeOnSalesChannel request sends a value."""
-        self.assertDataSent('val', self.VALUE)
+        self.assertDataSent("val", self.VALUE)
 
     def test_UpdateRangeOnSalesChannel_request_sends_option_ID(self):
         """Test the UpdateRangeOnSalesChannel request sends an option ID."""
-        self.assertDataSent('optid', self.OPTION_ID)
+        self.assertDataSent("optid", self.OPTION_ID)
 
     def test_UpdateRangeOnSalesChannel_request_sends_channel_IDs(self):
         """Test the UpdateRangeOnSalesChannel request sends channel IDs."""
-        self.assertDataSent('chans', self.CHANNEL_IDS)
+        self.assertDataSent("chans", self.CHANNEL_IDS)
 
     def test_UpdateRangeOnSalesChannel_request_sends_brand_ID(self):
         """Test the UpdateRangeOnSalesChannel request sends a brand ID."""
-        self.assertDataSent('brandid', 341)
+        self.assertDataSent("brandid", 341)
 
     def test_UpdateRangeOnSalesChannel_raises_for_non_200(self):
         """Test UpdateRangeOnSalesChannel raies for non 200 responses."""
@@ -388,7 +386,8 @@ class TestUpdateOnSalesChannel(TestRequest):
                 act=self.ACT,
                 value=self.VALUE,
                 option_id=self.OPTION_ID,
-                channel_ids=self.CHANNEL_IDS)
+                channel_ids=self.CHANNEL_IDS,
+            )
 
 
 class TestUpdateRangeSettings(TestRequest):
@@ -398,7 +397,7 @@ class TestUpdateRangeSettings(TestRequest):
 
     RESPONSE = '"OK"'
 
-    RANGE_ID = '4355752'
+    RANGE_ID = "4355752"
     CURRENT_NAME = "Test Move Department 2"
     CURRENT_SKU = "RNG_UYV-3SP-W60"
     CURRENT_END_OF_LINE = False
@@ -409,7 +408,7 @@ class TestUpdateRangeSettings(TestRequest):
     NEW_END_OF_LINE = "0"
     NEW_PRE_ORDER = False
     NEW_GROUP_ITEMS = False
-    CHANNELS = ['3541', '3557']
+    CHANNELS = ["3541", "3557"]
 
     def setUp(self):
         """Register request URI."""
@@ -427,59 +426,60 @@ class TestUpdateRangeSettings(TestRequest):
             new_end_of_line=self.NEW_END_OF_LINE,
             new_pre_order=self.NEW_PRE_ORDER,
             new_group_items=self.NEW_GROUP_ITEMS,
-            channels=self.CHANNELS)
+            channels=self.CHANNELS,
+        )
 
     def test_UpdateRangeSettings_sends_range_id(self):
         """Test the request sends the passed range ID."""
-        self.assertJsonValueSent('rangeID', self.RANGE_ID)
+        self.assertJsonValueSent("rangeID", self.RANGE_ID)
 
     def test_UpdateRangeSettings_sends_current_name(self):
         """Test the request sends the passed current name."""
-        self.assertJsonValueSent('currName', self.CURRENT_NAME)
+        self.assertJsonValueSent("currName", self.CURRENT_NAME)
 
     def test_UpdateRangeSettings_sends_current_sku(self):
         """Test the request sends the passed current SKU."""
-        self.assertJsonValueSent('currSKU', self.CURRENT_SKU)
+        self.assertJsonValueSent("currSKU", self.CURRENT_SKU)
 
     def test_UpdateRangeSettings_sends_current_end_of_line(self):
         """Test the request sends the passed current end of line."""
-        self.assertJsonValueSent('currEoL', int(self.CURRENT_END_OF_LINE))
+        self.assertJsonValueSent("currEoL", int(self.CURRENT_END_OF_LINE))
 
     def test_UpdateRangeSettings_sends_current_pre_order(self):
         """Test the request sends the passed current pre order."""
-        self.assertJsonValueSent('currPreO', int(self.CURRENT_PRE_ORDER))
+        self.assertJsonValueSent("currPreO", int(self.CURRENT_PRE_ORDER))
 
     def test_UpdateRangeSettings_sends_current_group_items(self):
         """Test the request sends the passed current group items."""
-        self.assertJsonValueSent('currGBy', str(int(self.CURRENT_GROUP_ITEMS)))
+        self.assertJsonValueSent("currGBy", str(int(self.CURRENT_GROUP_ITEMS)))
 
     def test_UpdateRangeSettings_sends_new_name(self):
         """Test the request sends the passed new name."""
-        self.assertJsonValueSent('newName', self.NEW_NAME)
+        self.assertJsonValueSent("newName", self.NEW_NAME)
 
     def test_UpdateRangeSettings_sends_new_sku(self):
         """Test the request sends the passed new SKU."""
-        self.assertJsonValueSent('newSKU', self.NEW_SKU)
+        self.assertJsonValueSent("newSKU", self.NEW_SKU)
 
     def test_UpdateRangeSettings_sends_new_end_of_line(self):
         """Test the request sends the passed new end of line."""
-        self.assertJsonValueSent('newEoL', str(int(self.NEW_END_OF_LINE)))
+        self.assertJsonValueSent("newEoL", str(int(self.NEW_END_OF_LINE)))
 
     def test_UpdateRangeSettings_sends_new_pre_order(self):
         """Test the request sends the passed new pre order."""
-        self.assertJsonValueSent('newPreO', str(int(self.NEW_PRE_ORDER)))
+        self.assertJsonValueSent("newPreO", str(int(self.NEW_PRE_ORDER)))
 
     def test_UpdateRangeSettings_sends_new_group_items(self):
         """Test the request sends the passed new group items."""
-        self.assertJsonValueSent('newGBy', str(int(self.NEW_GROUP_ITEMS)))
+        self.assertJsonValueSent("newGBy", str(int(self.NEW_GROUP_ITEMS)))
 
     def test_UpdateRangeSettings_sends_channels(self):
         """Test the request sends the passed channels."""
-        self.assertJsonValueSent('channels', self.CHANNELS)
+        self.assertJsonValueSent("channels", self.CHANNELS)
 
     def test_UpdateRangeSettings_sends_brand_id(self):
         """Test the request sends the passed brand ID."""
-        self.assertJsonValueSent('brandID', 341)
+        self.assertJsonValueSent("brandID", 341)
 
     def test_UpdateRangeSettings_raises_for_non_200_response(self):
         """Test UpdateRangeSettings rasies for non 200 responses."""
@@ -497,4 +497,5 @@ class TestUpdateRangeSettings(TestRequest):
                 new_end_of_line=self.NEW_END_OF_LINE,
                 new_pre_order=self.NEW_PRE_ORDER,
                 new_group_items=self.NEW_GROUP_ITEMS,
-                channels=self.CHANNELS)
+                channels=self.CHANNELS,
+            )

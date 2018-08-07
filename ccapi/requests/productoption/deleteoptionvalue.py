@@ -10,7 +10,7 @@ from ..apirequest import APIRequest
 class DeleteOptionValue(APIRequest):
     """deleteOptionValue request."""
 
-    uri = 'Handlers/ProductOption/deleteOptionValue.ashx'
+    uri = "Handlers/ProductOption/deleteOptionValue.ashx"
 
     def __new__(self, value_id):
         """Create deleteOptionValue request.
@@ -27,9 +27,8 @@ class DeleteOptionValue(APIRequest):
 
     def get_data(self):
         """Get data for request."""
-        return {
-            'valid': self.value_id}
+        return {"valid": self.value_id}
 
     def get_params(self):
         """Get parameters for get request."""
-        return {'d': '155'}
+        return {"d": "155"}

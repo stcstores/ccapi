@@ -21,51 +21,51 @@ class Product:
             data: Cloud Commerce Product JSON object.
         """
         self.json = data
-        self.is_checked = data['isChecked']
-        self.is_listed = data['isListed']
-        self.supplier_sku = data['SupplierSKU']
-        self.id = data['ID']
-        self.name = data['Name']
-        self.full_name = data['FullName']
-        self.description = data['Description']
-        self.sku = data['ManufacturerSKU']
-        self.base_price = data['BasePrice']
-        if int(data['VatRateID']) == 0:
+        self.is_checked = data["isChecked"]
+        self.is_listed = data["isListed"]
+        self.supplier_sku = data["SupplierSKU"]
+        self.id = data["ID"]
+        self.name = data["Name"]
+        self.full_name = data["FullName"]
+        self.description = data["Description"]
+        self.sku = data["ManufacturerSKU"]
+        self.base_price = data["BasePrice"]
+        if int(data["VatRateID"]) == 0:
             self.vat_rate_id = None
         else:
-            self.vat_rate_id = int(data['VatRateID'])
+            self.vat_rate_id = int(data["VatRateID"])
         if self.vat_rate_id is not None:
             self.vat_rate = VatRates.get_vat_rate_by_id(self.vat_rate_id)
         else:
             self.vat_rate = None
-        self.barcode = data['Barcode']
-        self.range_id = data['RangeID']
-        self.range_name = data['RangeName']
-        self.pre_order = data['PreOrder']
-        self.end_of_line = data['EndOfLine']
-        self.stock_level = data['StockLevel']
-        self.pseudo_stock_type = data['PseudoStockType']
-        self.pseudo_stock_level = data['PseudoStockLevel']
-        self.status_id = data['StatusID']
-        self.product_type = data['ProductType']
-        self.length_mm = data['LengthMM']
-        self.width_mm = data['WidthMM']
-        self.height_mm = data['HeightMM']
-        self.length_cm = data['LengthCM']
-        self.width_cm = data['WidthCM']
-        self.height_cm = data['HeightCM']
-        self.large_letter_compatible = data['LargeLetterCompatible']
-        self.external_product_id = data['ExternalProductId']
-        self.additional_shipping_label = data['AdditionalShippingLabel']
-        self.default_image_url = data['defaultImageUrl']
-        self.delivery_lead_time = data['DeliveryLeadTimeDays']
-        self.product_template_id = data['ProductTemplateId']
-        self.product_template_mode = data['ProductTemplateMode']
-        self.additional_barcodes = data['AdditionalBarcodes']
-        self.weight = data['WeightGM']
-        if data['Locations'] is not None:
-            self.bays = [WarehouseBay(bay) for bay in data['Locations']]
-        self.dimensions = data['Dimensions']
+        self.barcode = data["Barcode"]
+        self.range_id = data["RangeID"]
+        self.range_name = data["RangeName"]
+        self.pre_order = data["PreOrder"]
+        self.end_of_line = data["EndOfLine"]
+        self.stock_level = data["StockLevel"]
+        self.pseudo_stock_type = data["PseudoStockType"]
+        self.pseudo_stock_level = data["PseudoStockLevel"]
+        self.status_id = data["StatusID"]
+        self.product_type = data["ProductType"]
+        self.length_mm = data["LengthMM"]
+        self.width_mm = data["WidthMM"]
+        self.height_mm = data["HeightMM"]
+        self.length_cm = data["LengthCM"]
+        self.width_cm = data["WidthCM"]
+        self.height_cm = data["HeightCM"]
+        self.large_letter_compatible = data["LargeLetterCompatible"]
+        self.external_product_id = data["ExternalProductId"]
+        self.additional_shipping_label = data["AdditionalShippingLabel"]
+        self.default_image_url = data["defaultImageUrl"]
+        self.delivery_lead_time = data["DeliveryLeadTimeDays"]
+        self.product_template_id = data["ProductTemplateId"]
+        self.product_template_mode = data["ProductTemplateMode"]
+        self.additional_barcodes = data["AdditionalBarcodes"]
+        self.weight = data["WeightGM"]
+        if data["Locations"] is not None:
+            self.bays = [WarehouseBay(bay) for bay in data["Locations"]]
+        self.dimensions = data["Dimensions"]
 
     def __repr__(self):
         return self.full_name
@@ -119,20 +119,20 @@ class Product:
                 value_id = option[value].id
             except KeyError:
                 if create is True:
-                    value_id = ccapi.CCAPI.create_option_value(
-                        option_id, value)
+                    value_id = ccapi.CCAPI.create_option_value(option_id, value)
                 else:
-                    raise Exception('Product Option Value does not exist.')
+                    raise Exception("Product Option Value does not exist.")
         ccapi.CCAPI.set_product_option_value([self.id], option_id, value_id)
 
     def set_product_scope(
-            self,
-            weight=None,
-            height=None,
-            length=None,
-            width=None,
-            large_letter_compatible=None,
-            external_id=None):
+        self,
+        weight=None,
+        height=None,
+        length=None,
+        width=None,
+        large_letter_compatible=None,
+        external_id=None,
+    ):
         """
         Set several attributes for Product.
 
@@ -167,7 +167,8 @@ class Product:
             length=self.length_mm,
             width=self.width_mm,
             large_letter_compatible=self.large_letter_compatible,
-            external_id=self.external_product_id)
+            external_id=self.external_product_id,
+        )
 
     def set_weight(self, weight):
         """Set weight for Product in grams."""
@@ -192,7 +193,8 @@ class Product:
     def set_vat_rate(self, vat_rate):
         """Set VAT rate for product."""
         return ccapi.CCAPI.set_product_vat_rate(
-            product_ids=[self.id], vat_rate=vat_rate)
+            product_ids=[self.id], vat_rate=vat_rate
+        )
 
     def set_handling_time(self, handling_time, update_channels=True):
         """
@@ -208,7 +210,8 @@ class Product:
         ccapi.CCAPI.set_product_handling_time(
             product_id=self.id,
             handling_time=handling_time,
-            update_channels=update_channels)
+            update_channels=update_channels,
+        )
 
     def set_stock_level(self, new_stock_level, old_stock_level=None):
         """
@@ -226,7 +229,8 @@ class Product:
         ccapi.CCAPI.update_product_stock_level(
             product_id=self.id,
             new_stock_level=new_stock_level,
-            old_stock_level=old_stock_level)
+            old_stock_level=old_stock_level,
+        )
 
     def set_name(self, name):
         """Set name of Product."""
@@ -235,14 +239,16 @@ class Product:
         ccapi.CCAPI.update_product_on_sales_channel(
             range_id=self.range_id,
             product_ids=[self.id],
-            request_type='name',
+            request_type="name",
             value_1=name,
-            channels=sales_channels)
+            channels=sales_channels,
+        )
 
     def set_description(self, description):
         """Set description for Product."""
         ccapi.CCAPI.set_product_description(
-            product_ids=[self.id], description=description)
+            product_ids=[self.id], description=description
+        )
 
     def add_bay(self, bay):
         """Add product to Warehouse Bay."""
@@ -267,23 +273,23 @@ class Product:
     def add_image(self, image, channel_ids=[]):
         """Add image to Product."""
         return ccapi.CCAPI.upload_image(
-            product_ids=[self.id], channel_ids=channel_ids, image_file=image)
+            product_ids=[self.id], channel_ids=channel_ids, image_file=image
+        )
 
     def set_image_order(self, image_ids=[]):
         """Set order of Product Images."""
-        return ccapi.CCAPI.set_image_order(
-            product_id=self.id, image_ids=image_ids)
+        return ccapi.CCAPI.set_image_order(product_id=self.id, image_ids=image_ids)
 
     def get_factory_links(self):
         """Get factory links."""
         return ccapi.CCAPI.get_product_factory_links(self.id)
 
-    def update_factory_link(
-            self, factory_id, dropship=False, supplier_sku='', price=0):
+    def update_factory_link(self, factory_id, dropship=False, supplier_sku="", price=0):
         """Update or create Factory link."""
         return ccapi.CCAPI.update_product_factory_link(
             product_id=self.id,
             factory_id=factory_id,
             dropship=dropship,
             supplier_sku=supplier_sku,
-            price=price)
+            price=price,
+        )

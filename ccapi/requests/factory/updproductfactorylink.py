@@ -10,15 +10,11 @@ from ..apirequest import APIRequest
 class UpdProductFactoryLink(APIRequest):
     """UpdProductFactoryLink request."""
 
-    uri = '/Handlers/Factory/UpdProductFactoryLink.ashx'
+    uri = "/Handlers/Factory/UpdProductFactoryLink.ashx"
 
     def __new__(
-            self,
-            product_id=None,
-            factory_id=None,
-            dropship=False,
-            supplier_sku='',
-            price=0):
+        self, product_id=None, factory_id=None, dropship=False, supplier_sku="", price=0
+    ):
         """Make UpdProductFactoryLink request."""
         self.product_id = product_id
         self.factory_id = factory_id
@@ -30,11 +26,11 @@ class UpdProductFactoryLink(APIRequest):
     def get_data(self):
         """Get data for request."""
         return {
-            'dropship': self.dropship,
-            'FactoryID': self.factory_id,
-            'Price': self.price,
-            'ProductID': self.product_id,
-            'SupplierSKU': self.supplier_sku
+            "dropship": self.dropship,
+            "FactoryID": self.factory_id,
+            "Price": self.price,
+            "ProductID": self.product_id,
+            "SupplierSKU": self.supplier_sku,
         }
 
     def process_response(self, response):
