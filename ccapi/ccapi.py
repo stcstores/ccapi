@@ -529,23 +529,16 @@ class CCAPI:
         """
         kwargs["skip_records"] = 0
         range_ids = []
-        product_ids = []
         while True:
-            request = requests.GetProducts(*args, **kwargs)
-            for product in request:
+            response = requests.GetProducts(*args, **kwargs)
+            for product in response:
                 range_id = product["RangeId"]
-                product_id = product["VariationId"]
-                if product_id in product_ids:
-                    ranges = []
-                    for range_id in range_ids:
-                        rng = cls.get_range(range_id)
-                        if rng.id != 0:
-                            ranges.append(rng)
-                    return ranges
-                product_ids.append(product_id)
                 if range_id not in range_ids:
                     range_ids.append(range_id)
-            kwargs["skip_records"] = len(product_ids)
+            if len(response) > 0:
+                kwargs["skip_records"] += len(response)
+                continue
+            return [cls.get_range(range_id) for range_id in range_ids]
 
     @staticmethod
     def delete_bay(bay_id):
