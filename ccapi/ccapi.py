@@ -805,6 +805,22 @@ class CCAPI:
         return requests.AddCustomer(*args, **kwargs)
 
     @staticmethod
+    def get_payment_terms():
+        """
+        Return payment term options.
+
+        Returns dict: {payment term name: payment term ID}
+        """
+        response = requests.handlers.Customer("GetPaymentTerms", PayTermID=0)
+        response_list = response.text.split("^^")[2:]
+        payment_terms = {}
+        while len(response_list) > 0:
+            payment_term_ID = response_list.pop()
+            payment_term_name = response_list.pop()
+            payment_terms[payment_term_name] = payment_term_ID
+        return payment_terms
+
+    @staticmethod
     def create_order(*args, **kwargs):
         """Create a new order."""
         return requests.CreateOrder(*args, **kwargs)
