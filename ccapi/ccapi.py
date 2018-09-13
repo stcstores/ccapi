@@ -801,8 +801,73 @@ class CCAPI:
 
     @staticmethod
     def add_customer(*args, **kwargs):
-        """Add a customer to Cloud Commerce."""
+        """
+        Add a customer to Cloud Commerce.
+
+        Kwargs:
+            customer_name (Required) (str): The new customer's name.
+            address_1 (Required) (str): The first line of the customer's address.
+            country (Required) (str): The country of the customer's address.
+            selling_channel_id (Required) (str): The ID of the selling channel used by
+                the customer.
+            account_name (str or None): The name of the customer's accound.
+                Default: None.
+            address_2 (str or None): The second line of the customer's address.
+                Default: None.
+            agent_id (int): The ID of the agent creating the customer.
+                Use 0 to not specify an agent. Default: 0.
+            company_fax (str or None): The customer's company fax number.
+                Default: None.
+            company_mobile (str or None): The customer's company mobile number.
+                Default: None.
+            company_telephone (str or None): The customer's company telephone number.
+                Default: None.
+            contact_email (str or None): The customer's contact email address.
+                Default: None.
+            contact_fax (str or None): The customer's contact fax number.
+                Default: None.
+            contact_name (str or None): The customer's contact name. Default: None.
+            contact_phone (str or None): The customer's contact phone number.
+                Default: None.
+            contact_mobile (str or None): The customer's contact phone number.
+                Default: None.
+            county (str or None): The county or region of the customer's address.
+                Default: None.
+            customer_type (int): The ID of the type of the customer. Default: 8.
+            eu_vat (bool): True if the customer is charged EU VAT. Default: True.
+            post_code (str or None): The customer's postal or zip code. Default: None.
+            payment_terms (int): ID of the payment terms for the customer. A list of
+                payment term IDs can be found by calling CCAPI.get_payment_terms().
+                Default: 1 (Full Payment Before Dispatch).
+            town (str or None): The town in the customer's address. Default: None.
+            trade_name (str or None): The customer's trading name. If None customer_name
+                will be used. Default: None.
+            vat_number (str or None): The customer's VAT number. Default: None.
+            special_instructions (str or None): Special instructions for the customer.
+                Default: None.
+            credit_limit (int): The customer's credit limit. Default 0.
+
+            Returns:
+                (str) The ID of the newly created customer.
+
+        """
         return requests.AddCustomer(*args, **kwargs)
+
+    @staticmethod
+    def get_payment_terms():
+        """
+        Return payment term options.
+
+        Returns dict: {payment term name: payment term ID}
+        """
+        response = requests.handlers.Customer("GetPaymentTerms", PayTermID=0)
+        response_list = response.split("^^")[2:]
+        payment_terms = {}
+        while len(response_list) > 0:
+            payment_term_ID = response_list.pop()
+            payment_term_name = response_list.pop()
+            payment_terms[payment_term_name] = payment_term_ID
+        return payment_terms
 
     @staticmethod
     def create_order(*args, **kwargs):
@@ -853,7 +918,7 @@ class CCAPI:
             "MobNo": mobile_number,
         }
         response = requests.Customer("UpdCustAddr", **kwargs)
-        return response.text.split("^^")[2]
+        return response.split("^^")[2]
 
     @staticmethod
     def barcode_is_in_use(barcode):

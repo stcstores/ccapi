@@ -26,4 +26,4 @@ class Customer(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
-        return response
+        return response.text
