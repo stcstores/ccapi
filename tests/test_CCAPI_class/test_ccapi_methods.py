@@ -1004,3 +1004,172 @@ class Testupdate_range_settings_method(TestCCAPIMethod):
     def test_update_range_settings_sends_brand_id(self):
         """Test the method sends the passed brand ID."""
         self.assertJsonValueSent("brandID", 341)
+
+
+class Test_add_customer_Method(TestCCAPIMethod):
+    """Test the ccapi.add_customer_method."""
+
+    CUSTOMER_ID = test_requests.test_handlers.TestAddCustomer.CUSTOMER_ID
+    RESPONSE = test_requests.test_handlers.TestAddCustomer.RESPONSE
+
+    ACCOUNT_NAME = "Account 001"
+    ADDRESS_1 = "1 Way Street"
+    ADDRESS_2 = "Villageton"
+    AGENT_ID = 3
+    COMPANY_FAX = "02135 465135"
+    COMPANY_MOBILE = "09135 453 901"
+    COMPANY_TELEPHONE = "132485 63156"
+    CONTACT_EMAIL = "contact@nowhere.com"
+    CONTACT_FAX = "15441 8464 6541"
+    CONTACT_MOBILE = "09874 751 665"
+    CONTACT_NAME = "Contact Test Customer"
+    CONTACT_PHONE = "01324 164861"
+    COUNTRY = "United Kingdom"
+    COUNTY = "Townshire"
+    CUSTOMER_NAME = "Test Customer"
+    CUSTOMER_TYPE = 6
+    EU_VAT = False
+    POST_CODE = "ES23 5LN"
+    PAYMENT_TERMS = 3
+    SELLING_CHANNEL_ID = "3541"
+    SPECIAL_INSTRUCTIONS_NOTE = "Leave packages in Porch."
+    TOWN = "Townsville"
+    TRADE_NAME = "Shop Co."
+    VAT_NUMBER = "8759453"
+    CREDIT_LIMIT = 7
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register_request(requests.handlers.AddCustomer, text=self.RESPONSE)
+        self.returned_value = CCAPI.add_customer(
+            customer_name=self.CUSTOMER_NAME,
+            address_1=self.ADDRESS_1,
+            country=self.COUNTRY,
+            selling_channel_id=self.SELLING_CHANNEL_ID,
+            address_2=self.ADDRESS_2,
+            town=self.TOWN,
+            post_code=self.POST_CODE,
+            account_name=self.ACCOUNT_NAME,
+            agent_id=self.AGENT_ID,
+            company_fax=self.COMPANY_FAX,
+            company_mobile=self.COMPANY_MOBILE,
+            company_telephone=self.COMPANY_TELEPHONE,
+            contact_email=self.CONTACT_EMAIL,
+            contact_fax=self.CONTACT_FAX,
+            contact_name=self.CONTACT_NAME,
+            contact_phone=self.CONTACT_PHONE,
+            contact_mobile=self.CONTACT_MOBILE,
+            county=self.COUNTY,
+            customer_type=self.CUSTOMER_TYPE,
+            eu_vat=self.EU_VAT,
+            payment_terms=self.PAYMENT_TERMS,
+            trade_name=self.TRADE_NAME,
+            vat_number=self.VAT_NUMBER,
+            special_instructions=self.SPECIAL_INSTRUCTIONS_NOTE,
+            credit_limit=self.CREDIT_LIMIT,
+        )
+
+    def test_add_customer_returns_customer_ID(self):
+        """Test the add_customer method of CCAPI returns a customer ID."""
+        self.assertEqual(self.returned_value, self.CUSTOMER_ID)
+
+    def test_add_customer_sends_account_name(self):
+        """Test the add_customer method sends an account name."""
+        self.assertDataSent("AcctName", self.ACCOUNT_NAME)
+
+    def test_add_customer_sends_address_1(self):
+        """Test the add_customer method sends the first line of the address."""
+        self.assertDataSent("addr1", self.ADDRESS_1)
+
+    def test_add_customer_sends_address_2(self):
+        """Test the add_customer method sends the second line of the address."""
+        self.assertDataSent("addr2", self.ADDRESS_2)
+
+    def test_add_customer_sends_agent_ID(self):
+        """Test the add_customer method sends the agent ID."""
+        self.assertDataSent("agentID", self.AGENT_ID)
+
+    def test_add_customer_sends_company_fax(self):
+        """Test the add_customer method sends the company fax."""
+        self.assertDataSent("compFax", self.COMPANY_FAX)
+
+    def test_add_customer_sends_company_mobile(self):
+        """Test the add_customer method sends the company mobile."""
+        self.assertDataSent("compMob", self.COMPANY_MOBILE)
+
+    def test_add_customer_sends_company_telephone(self):
+        """Test the add_customer method sends the company telephone."""
+        self.assertDataSent("compTel", self.COMPANY_TELEPHONE)
+
+    def test_add_customer_sends_contact_email(self):
+        """Test the add_customer method sends the contact email."""
+        self.assertDataSent("contEmail", self.CONTACT_EMAIL)
+
+    def test_add_customer_sends_contact_fax(self):
+        """Test the add_customer method sends the contact fax."""
+        self.assertDataSent("contFax", self.CONTACT_FAX)
+
+    def test_add_customer_sends_contact_mobile(self):
+        """Test the add_customer method sends the contact mobile."""
+        self.assertDataSent("contMob", self.CONTACT_MOBILE)
+
+    def test_add_customer_sends_contact_name(self):
+        """Test the add_customer method sends the contact name."""
+        self.assertDataSent("contName", self.CONTACT_NAME)
+
+    def test_add_customer_sends_contact_phone(self):
+        """Test the add_customer method sends the contact phone."""
+        self.assertDataSent("contPhone", self.CONTACT_PHONE)
+
+    def test_add_customer_sends_country(self):
+        """Test the add_customer method sends the country."""
+        self.assertDataSent("country", self.COUNTRY)
+
+    def test_add_customer_sends_county(self):
+        """Test the add_customer method sends the county."""
+        self.assertDataSent("county", self.COUNTY)
+
+    def test_add_customer_sends_customer_name(self):
+        """Test the add_customer method sends the customer name."""
+        self.assertDataSent("CustName", self.CUSTOMER_NAME)
+
+    def test_add_customer_sends_customer_type(self):
+        """Test the add_customer method sends the customer type."""
+        self.assertDataSent("CustType", self.CUSTOMER_TYPE)
+
+    def test_add_customer_sends_EU_VAT(self):
+        """Test the add_customer method sends the EU VAT."""
+        self.assertDataSent("EUVAT", int(bool(self.EU_VAT)))
+
+    def test_add_customer_sends_post_code(self):
+        """Test the add_customer method sends the post code."""
+        self.assertDataSent("pcode", self.POST_CODE)
+
+    def test_add_customer_sends_payment_terms(self):
+        """Test the add_customer method sends the payment terms."""
+        self.assertDataSent("pterms", self.PAYMENT_TERMS)
+
+    def test_add_customer_sends_selling_channel_ID(self):
+        """Test the add_customer method sends the selling channel ID."""
+        self.assertDataSent("scID", self.SELLING_CHANNEL_ID)
+
+    def test_add_customer_sends_special_instruction_note(self):
+        """Test the add_customer method sends the special instruction note."""
+        self.assertDataSent("SpecInstrNote", self.SPECIAL_INSTRUCTIONS_NOTE)
+
+    def test_add_customer_sends_town(self):
+        """Test the add_customer method sends the town."""
+        self.assertDataSent("town", self.TOWN)
+
+    def test_add_customer_sends_trade_name(self):
+        """Test the add_customer method sends the trade name."""
+        self.assertDataSent("TradName", self.TRADE_NAME)
+
+    def test_add_customer_sends_VAT_number(self):
+        """Test the add_customer method sends the VAT number."""
+        self.assertDataSent("VATNo", self.VAT_NUMBER)
+
+    def test_add_customer_sends_credit_limit(self):
+        """Test the add_customer method sends the credit_limit."""
+        self.assertDataSent("CreditLimit", self.CREDIT_LIMIT)
