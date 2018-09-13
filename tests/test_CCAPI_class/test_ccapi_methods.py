@@ -1173,3 +1173,45 @@ class Test_add_customer_Method(TestCCAPIMethod):
     def test_add_customer_sends_credit_limit(self):
         """Test the add_customer method sends the credit_limit."""
         self.assertDataSent("CreditLimit", self.CREDIT_LIMIT)
+
+
+class Test_get_payment_terms_Method(TestCCAPIMethod):
+    """Test the CCAPi.get_payment_terms method."""
+
+    RESPONSE = (
+        "RecFound^^11^^10^^14 Days Credit^^2^^28 Days Credit^^8^^30 Days Credit"
+        "^^6^^30% Deposit - Balance on Delivery^^5^^50% Upfront Balance in 30 Days"
+        "^^3^^60 Days Credit^^9^^7 Days Credit^^39^^Cash On Delivery^^7^^Direct debit"
+        "^^1^^Full Payment Before Dispatch^^4^^"
+        "Full Payment With 10% Early Payment Discount"
+    )
+
+    PAYMENT_TERMS = {
+        "4": "Full Payment With 10% Early Payment Discount",
+        "1": "Full Payment Before Dispatch",
+        "7": "Direct debit",
+        "39": "Cash On Delivery",
+        "9": "7 Days Credit",
+        "3": "60 Days Credit",
+        "5": "50% Upfront Balance in 30 Days",
+        "6": "30% Deposit - Balance on Delivery",
+        "8": "30 Days Credit",
+        "2": "28 Days Credit",
+        "10": "14 Days Credit",
+    }
+
+    PROGRAM_TYPE = "GetPaymentTerms"
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register_request(requests.handlers.Customer, text=self.RESPONSE)
+        self.returned_value = CCAPI.get_payment_terms()
+
+    def test_get_payment_terms_sends_program_type(self):
+        """Test the get_payment_terms method sends the correct program type."""
+        self.assertDataSent("ProgType", self.PROGRAM_TYPE)
+
+    def test_get_payment_terms_method_returns_payment_terms(self):
+        """Test the method returns parsed payment terms."""
+        self.assertEqual(self.returned_value, self.PAYMENT_TERMS)
