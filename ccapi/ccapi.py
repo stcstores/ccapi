@@ -861,7 +861,7 @@ class CCAPI:
         Returns dict: {payment term name: payment term ID}
         """
         response = requests.handlers.Customer("GetPaymentTerms", PayTermID=0)
-        response_list = response.text.split("^^")[2:]
+        response_list = response.split("^^")[2:]
         payment_terms = {}
         while len(response_list) > 0:
             payment_term_ID = response_list.pop()
@@ -918,7 +918,7 @@ class CCAPI:
             "MobNo": mobile_number,
         }
         response = requests.Customer("UpdCustAddr", **kwargs)
-        return response.text.split("^^")[2]
+        return response.split("^^")[2]
 
     @staticmethod
     def barcode_is_in_use(barcode):
