@@ -1176,15 +1176,9 @@ class Test_add_customer_Method(TestCCAPIMethod):
 
 
 class Test_get_payment_terms_Method(TestCCAPIMethod):
-    """Test the CCAPi.get_payment_terms method."""
+    """Test the CCAPI.get_payment_terms method."""
 
-    RESPONSE = (
-        "RecFound^^11^^10^^14 Days Credit^^2^^28 Days Credit^^8^^30 Days Credit"
-        "^^6^^30% Deposit - Balance on Delivery^^5^^50% Upfront Balance in 30 Days"
-        "^^3^^60 Days Credit^^9^^7 Days Credit^^39^^Cash On Delivery^^7^^Direct debit"
-        "^^1^^Full Payment Before Dispatch^^4^^"
-        "Full Payment With 10% Early Payment Discount"
-    )
+    RESPONSE = test_requests.test_program_type_requests.TestGetPaymentTerms.RESPONSE
 
     PAYMENT_TERMS = {
         "4": "Full Payment With 10% Early Payment Discount",
@@ -1205,7 +1199,9 @@ class Test_get_payment_terms_Method(TestCCAPIMethod):
     def setUp(self):
         """Register request URI."""
         super().setUp()
-        self.register_request(requests.handlers.Customer, text=self.RESPONSE)
+        self.register_request(
+            requests.program_type_requests.Customer, text=self.RESPONSE
+        )
         self.returned_value = CCAPI.get_payment_terms()
 
     def test_get_payment_terms_sends_program_type(self):

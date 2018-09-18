@@ -851,7 +851,7 @@ class CCAPI:
                 (str) The ID of the newly created customer.
 
         """
-        return requests.AddCustomer(*args, **kwargs)
+        return requests.handlers.AddCustomer(*args, **kwargs)
 
     @staticmethod
     def get_payment_terms():
@@ -860,7 +860,7 @@ class CCAPI:
 
         Returns dict: {payment term name: payment term ID}
         """
-        response = requests.handlers.Customer("GetPaymentTerms", PayTermID=0)
+        response = requests.program_type_requests.GetPaymentTerms()
         response_list = response.split("^^")[2:]
         payment_terms = {}
         while len(response_list) > 0:
