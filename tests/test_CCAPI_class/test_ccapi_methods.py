@@ -1,5 +1,7 @@
 """Tests for CCAPI's methods."""
 
+import datetime
+
 from ccapi import CCAPI, VatRates, cc_objects, requests
 
 from .. import test_data, test_requests
@@ -1211,3 +1213,99 @@ class Test_get_payment_terms_Method(TestCCAPIMethod):
     def test_get_payment_terms_method_returns_payment_terms(self):
         """Test the method returns parsed payment terms."""
         self.assertEqual(self.returned_value, self.PAYMENT_TERMS)
+
+
+class Test_create_payment_Method(TestCCAPIMethod):
+    """Test the CCAPI.create_payment method."""
+
+    RESPONSE = test_requests.test_accounts.TestCreatePayment.RESPONSE
+
+    CUSTOMER_ID = "18495409"
+    INVOICE_ID = "17249270"
+    AMOUNT = 17.99
+    LOGIN_ID = "1321483154"
+    TRANSACTION_TYPE_ID = "12"
+    BANK_ACCOUNT_ID = "13248121"
+    PROFORMA_ID = "4513032413"
+    GATEWAY_ID = "1651138443"
+    CURRENCY_CODE_ID = "12"
+    EXCHANGE_RATE = "1.25"
+    TRANSACTION_DATE = datetime.datetime(day=1, month=1, year=1970)
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register_request(requests.accounts.CreatePayment, text=self.RESPONSE)
+        CCAPI.create_payment(
+            customer_id=self.CUSTOMER_ID,
+            invoice_id=self.INVOICE_ID,
+            amount=self.AMOUNT,
+            login_id=self.LOGIN_ID,
+            transaction_type_id=self.TRANSACTION_TYPE_ID,
+            bank_account_id=self.BANK_ACCOUNT_ID,
+            proforma_id=self.PROFORMA_ID,
+            gateway_id=self.GATEWAY_ID,
+            currency_code_id=self.CURRENCY_CODE_ID,
+            exchange_rate=self.EXCHANGE_RATE,
+            transaction_date=self.TRANSACTION_DATE,
+        )
+
+    def test_create_payment_sends_customer_ID(self):
+        """Test the create_payment method sends a customer ID."""
+        self.assertDataSent(
+            requests.accounts.CreatePayment.CUSTOMER_ID, self.CUSTOMER_ID
+        )
+
+    def test_create_payment_sends_invoice_ID(self):
+        """Test the create_payment method sends an invoice ID."""
+        self.assertDataSent(requests.accounts.CreatePayment.INVOICE_ID, self.INVOICE_ID)
+
+    def test_create_payment_sends_amount(self):
+        """Test the create_payment method sends an amount."""
+        self.assertDataSent(requests.accounts.CreatePayment.AMOUNT, self.AMOUNT)
+
+    def test_create_payment_sends_login_ID(self):
+        """Test the create_payment method sends a login ID."""
+        self.assertDataSent(requests.accounts.CreatePayment.LOGIN_ID, self.LOGIN_ID)
+
+    def test_create_payment_sends_transaction_type_ID(self):
+        """Test the create_payment method sends a transaction_type ID."""
+        self.assertDataSent(
+            requests.accounts.CreatePayment.TRANSACTION_TYPE_ID,
+            self.TRANSACTION_TYPE_ID,
+        )
+
+    def test_create_payment_sends_bank_account_ID(self):
+        """Test the create_payment method sends a bank account ID."""
+        self.assertDataSent(
+            requests.accounts.CreatePayment.BANK_ACCOUNT_ID, self.BANK_ACCOUNT_ID
+        )
+
+    def test_create_payment_sends_proforma_account_ID(self):
+        """Test the create_payment method sends a bank proforma ID."""
+        self.assertDataSent(
+            requests.accounts.CreatePayment.PROFORMA_ID, self.PROFORMA_ID
+        )
+
+    def test_create_payment_sends_gateway_ID(self):
+        """Test the create_payment method sends a gateway ID."""
+        self.assertDataSent(requests.accounts.CreatePayment.GATEWAY_ID, self.GATEWAY_ID)
+
+    def test_create_payment_sends_currency_code_ID(self):
+        """Test the create_payment method sends a currency code ID."""
+        self.assertDataSent(
+            requests.accounts.CreatePayment.CURRENCY_CODE_ID, self.CURRENCY_CODE_ID
+        )
+
+    def test_create_payment_sends_exchange_rate(self):
+        """Test the create_payment method sends an exchange rate."""
+        self.assertDataSent(
+            requests.accounts.CreatePayment.EXCHANGE_RATE, self.EXCHANGE_RATE
+        )
+
+    def test_create_payment_sends_transaction_type(self):
+        """Test the create_payment method sends an transaction date."""
+        self.assertDataSent(
+            requests.accounts.CreatePayment.TRANSACTION_DATE,
+            self.TRANSACTION_DATE.strftime("%d/%m/%Y"),
+        )
