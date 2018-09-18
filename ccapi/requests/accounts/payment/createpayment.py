@@ -35,17 +35,17 @@ class CreatePayment(APIRequest):
         customer_id,
         invoice_id,
         amount,
-        transaction_type_id="12",
-        bank_nominal_code="",
+        transaction_type_id=12,
+        bank_nominal_code=None,
         transaction_date=None,
-        bank_account_id="0",
-        proforma_id="0",
-        gateway_id="0",
-        currency_code_id="1",
-        currency_code="",
-        exchange_rate="1",
-        brand_id="",
-        login_id=0,
+        bank_account_id=0,
+        proforma_id=None,
+        gateway_id=0,
+        currency_code_id=1,
+        currency_code=None,
+        exchange_rate=1,
+        brand_id=None,
+        login_id=None,
     ):
         """
         Create CreatePayment request.
@@ -53,27 +53,27 @@ class CreatePayment(APIRequest):
         This request is used to mark an order as paied.
 
         Kwargs:
-            customer_id (str) (required): The ID of the customer that originated the
+            customer_id (int) (required): The ID of the customer that originated the
                 payment.
-            invoice_id (str) (required): The ID of the invoice being paid.
+            invoice_id (int) (required): The ID of the invoice being paid.
             amount (float) (required): The amount paid.
-            transaction_type_id (str): The ID of the transaction type. Default: 12.
+            transaction_type_id (int): The ID of the transaction type. Default: 12.
             bank_nominal_code (int):
             transaction_date (datetime.datetime or None): The date of the transaction.
                 If None, the current date will be used.
-            bank_account_id (str): The ID of the customer's bank account. "0" is used
-                when no bank account is to be indicated. Default: "0".
-            proforma_id (str): The ID of the transaction proforma. "0" is used
-                when no proforma is to be indicated. Default: "0".
-            gateway_id: "0" is used when no gateway ID is to be indicated. Default: "0".
-            currency_code_id (str): The ID of the currency used for the transaction.
-                Default "1" (GBP).
-            currency_code (str): Three letter code for the currency of the transaction.
-                Not required. Default: empty string.
-            exchange_rate (str): The rate of exchange between the transaction currency
+            bank_account_id (int): The ID of the customer's bank account. 0 is used
+                when no bank account is to be indicated. Default: 0.
+            proforma_id (int or None): The ID of the transaction proforma. "0" is used
+                when no proforma is to be indicated. Default: None.
+            gateway_id: 0 is used when no gateway ID is to be indicated. Default: 0.
+            currency_code_id (int or None): The ID of the currency used for the
+                transaction. Default: 1 (GBP).
+            currency_code (int or None): Three letter code for the currency of the
+                transaction. Not required. Default: None.
+            exchange_rate (int): The rate of exchange between the transaction currency
                 and GBP. Default: "1".
-            brand_id (str): Not required.
-            login_id (str): Not required.
+            brand_id (int or None): Not required. Default: None
+            login_id (int or None): Not required. Default: None
         """
         self.customer_id = customer_id
         self.invoice_id = invoice_id
