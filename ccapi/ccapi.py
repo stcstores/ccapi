@@ -912,6 +912,8 @@ class CCAPI:
             kwargs["exchange_rate"] = exchange_rate
         if login_id is not None:
             kwargs["login_id"] = login_id
+        if transaction_date is not None:
+            kwargs["transaction_date"] = transaction_date
         return requests.CreatePayment(**kwargs)
 
     @staticmethod
