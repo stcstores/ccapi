@@ -349,7 +349,7 @@ class CCAPI:
         length,
         width,
         large_letter_compatible,
-        external_id=None
+        external_id=None,
     ):
         """
         Set the scope of a product.
@@ -875,9 +875,44 @@ class CCAPI:
         return requests.CreateOrder(*args, **kwargs)
 
     @staticmethod
-    def create_payment(*args, **kwargs):
+    def create_payment(
+        *,
+        customer_id,
+        invoice_id,
+        amount,
+        transaction_type_id=None,
+        bank_nominal_code=None,
+        transaction_date=None,
+        bank_account_id=None,
+        proforma_id=None,
+        gateway_id=None,
+        currency_code_id=None,
+        exchange_rate=None,
+        login_id=None,
+    ):
         """Create a payment for an order."""
-        return requests.CreatePayment(*args, **kwargs)
+        kwargs = {
+            "customer_id": customer_id,
+            "invoice_id": invoice_id,
+            "amount": amount,
+        }
+        if transaction_type_id is not None:
+            kwargs["transaction_type_id"] = transaction_type_id
+        if bank_nominal_code is not None:
+            kwargs["bank_nominal_code"] = bank_nominal_code
+        if bank_account_id is not None:
+            kwargs["bank_account_id"] = bank_account_id
+        if proforma_id is not None:
+            kwargs["proforma_id"] = proforma_id
+        if gateway_id is not None:
+            kwargs["gateway_id"] = gateway_id
+        if currency_code_id is not None:
+            kwargs["currency_code_id"] = currency_code_id
+        if exchange_rate is not None:
+            kwargs["exchange_rate"] = exchange_rate
+        if login_id is not None:
+            kwargs["login_id"] = login_id
+        return requests.CreatePayment(**kwargs)
 
     @staticmethod
     def add_address(
