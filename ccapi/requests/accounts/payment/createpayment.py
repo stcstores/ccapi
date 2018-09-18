@@ -47,7 +47,34 @@ class CreatePayment(APIRequest):
         brand_id="",
         login_id=0,
     ):
-        """Create CreatePayment request."""
+        """
+        Create CreatePayment request.
+
+        This request is used to mark an order as paied.
+
+        Kwargs:
+            customer_id (str) (required): The ID of the customer that originated the
+                payment.
+            invoice_id (str) (required): The ID of the invoice being paid.
+            amount (float) (required): The amount paid.
+            transaction_type_id (str): The ID of the transaction type. Default: 12.
+            bank_nominal_code (int):
+            transaction_date (datetime.datetime or None): The date of the transaction.
+                If None, the current date will be used.
+            bank_account_id (str): The ID of the customer's bank account. "0" is used
+                when no bank account is to be indicated. Default: "0".
+            proforma_id (str): The ID of the transaction proforma. "0" is used
+                when no proforma is to be indicated. Default: "0".
+            gateway_id: "0" is used when no gateway ID is to be indicated. Default: "0".
+            currency_code_id (str): The ID of the currency used for the transaction.
+                Default "1" (GBP).
+            currency_code (str): Three letter code for the currency of the transaction.
+                Not required. Default: empty string.
+            exchange_rate (str): The rate of exchange between the transaction currency
+                and GBP. Default: "1".
+            brand_id (str): Not required.
+            login_id (str): Not required.
+        """
         self.customer_id = customer_id
         self.invoice_id = invoice_id
         self.login_id = login_id
