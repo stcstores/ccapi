@@ -890,7 +890,30 @@ class CCAPI:
         exchange_rate=None,
         login_id=None,
     ):
-        """Create a payment for an order."""
+        """
+        Create a payment for an order.
+
+        Kwargs:
+            customer_id (int) (required): The ID of the customer that originated the
+                payment.
+            invoice_id (int) (required): The ID of the invoice being paid.
+            amount (float) (required): The amount paid.
+            transaction_type_id (int or None): The ID of the transaction type. Default: None.
+            transaction_date (datetime.datetime or None): The date of the transaction.
+                If None, the current date will be used.
+            bank_account_id (int or None): The ID of the customer's bank account. 0 is used
+                when no bank account is to be indicated. Default: None.
+            proforma_id (int or None): The ID of the transaction proforma. "0" is used
+                when no proforma is to be indicated. Default: None.
+            gateway_id: 0 is used when no gateway ID is to be indicated. Default: 0.
+            currency_code_id (int or None): The ID of the currency used for the
+                transaction. Default: 1 (GBP).
+            currency_code (int or None): Three letter code for the currency of the
+                transaction. Not required. Default: None.
+            exchange_rate (int or None): The rate of exchange between the transaction currency
+                and GBP. Default: None.
+            login_id (int or None): Not required. Default: None
+        """
         kwargs = {
             "customer_id": customer_id,
             "invoice_id": invoice_id,
