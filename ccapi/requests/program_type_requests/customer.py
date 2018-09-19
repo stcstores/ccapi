@@ -76,7 +76,7 @@ class UpdateCustomerAddress(Customer):
         """
         Add or update a customer address.
 
-        kwargs:
+        Kwargs:
             customer_id (int): The customer ID of the customer to which the address
                 belongs.
             address_type (str): The type of the address. Available options
@@ -104,6 +104,9 @@ class UpdateCustomerAddress(Customer):
             mobile_number (str): A contact mobile phone number for the address.
                 Default: Empty string.
             customer_add_link_id: Use "0" for a null value. Default "0".
+
+        Returns:
+            (str) Body text from the HTTP response.
 
         """
         self.kwargs[self.CUSTOMER_ID] = customer_id
