@@ -16,30 +16,31 @@ class CreateOrder(APIRequest):
 
     def __new__(
         self,
+        *,
+        customer_id,
         items,
-        customer_id=None,
-        login_id=None,
+        delivery_address_id,
+        billing_address_id,
+        delivery_date,
         season_id=0,
-        channel_id=None,
+        channel_id="",
         reference="",
         order_id=0,
         prep="0",
-        delivery_date=None,
         order_note="",
-        send_email="0",
+        send_email=0,
         postage_override="",
         carriage_net=0,
         carriage_vat=0,
-        total_net=None,
-        total_vat=None,
-        total_gross=None,
-        discount_net=None,
+        total_net=0,
+        total_vat=0,
+        total_gross=0,
+        discount_net=0,
         free_of_charge=False,
-        delivery_address_id=None,
-        billing_address_id=None,
         shipping_rule_id=None,
+        login_id=None,
     ):
-        """Create CreateOrder request."""
+        """Create a CreateOrder request."""
         self.items = items
         self.customer_id = customer_id
         self.login_id = login_id
@@ -68,7 +69,7 @@ class CreateOrder(APIRequest):
         """Get data for get request."""
         data = {
             "cusID": str(self.customer_id),
-            "loginID": str(self.login_id),
+            "loginID": self.login_id or 0,
             "seasID": str(self.season_id),
             "items": json.dumps([i.to_dict() for i in self.items]),
             "chanID": str(self.channel_id),
@@ -154,7 +155,7 @@ class NewOrderItem:
 
 
 class CreateOrderResponse:
-    """Container for CreateOrder request responses."""
+    """Wrapper for CreateOrder request responses."""
 
     def __init__(self, response_data):
         """Set attributes from CreateOrder request response."""

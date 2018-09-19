@@ -16,3 +16,4 @@ from .printqueue import *  # NOQA
 from .orderdetails import *  # NOQA
 from .orderhandlers import *  # NOQA
 from .handlers import *  # NOQA
+from .program_type_requests import *  # NOQA

@@ -377,35 +377,3 @@ class TestAddCustomer(TestRequest):
             credit_limit=self.CREDIT_LIMIT,
         )
         self.assertDataSent("CreditLimit", self.CREDIT_LIMIT)
-
-
-class TestCustomer(TestRequest):
-    """Tests for the Customer request."""
-
-    request_class = handlers.Customer
-
-    RESPONSE = "RESPONSE TEXT"
-    TEST_KWARG = "Kwarg"
-    TEST_KWARG_VALUE = "Value"
-    PROGRAM_TYPE = "GetPaymentTerms"
-
-    def setUp(self):
-        """Register request URI."""
-        super().setUp()
-        self.register(text=self.RESPONSE)
-
-    def test_Customer_returns_response_text(self):
-        """Test the Customer request returns the response text."""
-        response = self.mock_request(program_type=self.PROGRAM_TYPE)
-        self.assertEqual(response, self.RESPONSE)
-
-    def test_Customer_sends_program_type(self):
-        """Test the Customer request sends a program type."""
-        self.mock_request(program_type=self.PROGRAM_TYPE)
-        self.assertDataSent("ProgType", self.PROGRAM_TYPE)
-
-    def test_Customer_sends_kwargs(self):
-        """Test the Customer request sends kwargs."""
-        kwargs = {self.TEST_KWARG: self.TEST_KWARG_VALUE}
-        self.mock_request(program_type=self.PROGRAM_TYPE, **kwargs)
-        self.assertDataSent(self.TEST_KWARG, self.TEST_KWARG_VALUE)

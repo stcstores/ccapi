@@ -1,5 +1,7 @@
 """Tests for CCAPI's methods."""
 
+import datetime
+
 from ccapi import CCAPI, VatRates, cc_objects, requests
 
 from .. import test_data, test_requests
@@ -1176,15 +1178,9 @@ class Test_add_customer_Method(TestCCAPIMethod):
 
 
 class Test_get_payment_terms_Method(TestCCAPIMethod):
-    """Test the CCAPi.get_payment_terms method."""
+    """Test the CCAPI.get_payment_terms method."""
 
-    RESPONSE = (
-        "RecFound^^11^^10^^14 Days Credit^^2^^28 Days Credit^^8^^30 Days Credit"
-        "^^6^^30% Deposit - Balance on Delivery^^5^^50% Upfront Balance in 30 Days"
-        "^^3^^60 Days Credit^^9^^7 Days Credit^^39^^Cash On Delivery^^7^^Direct debit"
-        "^^1^^Full Payment Before Dispatch^^4^^"
-        "Full Payment With 10% Early Payment Discount"
-    )
+    RESPONSE = test_requests.test_program_type_requests.TestGetPaymentTerms.RESPONSE
 
     PAYMENT_TERMS = {
         "4": "Full Payment With 10% Early Payment Discount",
@@ -1205,7 +1201,9 @@ class Test_get_payment_terms_Method(TestCCAPIMethod):
     def setUp(self):
         """Register request URI."""
         super().setUp()
-        self.register_request(requests.handlers.Customer, text=self.RESPONSE)
+        self.register_request(
+            requests.program_type_requests.Customer, text=self.RESPONSE
+        )
         self.returned_value = CCAPI.get_payment_terms()
 
     def test_get_payment_terms_sends_program_type(self):
@@ -1215,3 +1213,253 @@ class Test_get_payment_terms_Method(TestCCAPIMethod):
     def test_get_payment_terms_method_returns_payment_terms(self):
         """Test the method returns parsed payment terms."""
         self.assertEqual(self.returned_value, self.PAYMENT_TERMS)
+
+
+class Test_create_payment_Method(TestCCAPIMethod):
+    """Test the CCAPI.create_payment method."""
+
+    RESPONSE = test_requests.test_accounts.TestCreatePayment.RESPONSE
+
+    CUSTOMER_ID = "18495409"
+    INVOICE_ID = "17249270"
+    AMOUNT = 17.99
+    LOGIN_ID = "1321483154"
+    TRANSACTION_TYPE_ID = "12"
+    BANK_ACCOUNT_ID = "13248121"
+    PROFORMA_ID = "4513032413"
+    GATEWAY_ID = "1651138443"
+    CURRENCY_CODE_ID = "12"
+    EXCHANGE_RATE = "1.25"
+    TRANSACTION_DATE = datetime.datetime(day=1, month=1, year=1970)
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register_request(requests.accounts.CreatePayment, text=self.RESPONSE)
+        CCAPI.create_payment(
+            customer_id=self.CUSTOMER_ID,
+            invoice_id=self.INVOICE_ID,
+            amount=self.AMOUNT,
+            login_id=self.LOGIN_ID,
+            transaction_type_id=self.TRANSACTION_TYPE_ID,
+            bank_account_id=self.BANK_ACCOUNT_ID,
+            proforma_id=self.PROFORMA_ID,
+            gateway_id=self.GATEWAY_ID,
+            currency_code_id=self.CURRENCY_CODE_ID,
+            exchange_rate=self.EXCHANGE_RATE,
+            transaction_date=self.TRANSACTION_DATE,
+        )
+
+    def test_create_payment_sends_customer_ID(self):
+        """Test the create_payment method sends a customer ID."""
+        self.assertDataSent(
+            requests.accounts.CreatePayment.CUSTOMER_ID, self.CUSTOMER_ID
+        )
+
+    def test_create_payment_sends_invoice_ID(self):
+        """Test the create_payment method sends an invoice ID."""
+        self.assertDataSent(requests.accounts.CreatePayment.INVOICE_ID, self.INVOICE_ID)
+
+    def test_create_payment_sends_amount(self):
+        """Test the create_payment method sends an amount."""
+        self.assertDataSent(requests.accounts.CreatePayment.AMOUNT, self.AMOUNT)
+
+    def test_create_payment_sends_login_ID(self):
+        """Test the create_payment method sends a login ID."""
+        self.assertDataSent(requests.accounts.CreatePayment.LOGIN_ID, self.LOGIN_ID)
+
+    def test_create_payment_sends_transaction_type_ID(self):
+        """Test the create_payment method sends a transaction_type ID."""
+        self.assertDataSent(
+            requests.accounts.CreatePayment.TRANSACTION_TYPE_ID,
+            self.TRANSACTION_TYPE_ID,
+        )
+
+    def test_create_payment_sends_bank_account_ID(self):
+        """Test the create_payment method sends a bank account ID."""
+        self.assertDataSent(
+            requests.accounts.CreatePayment.BANK_ACCOUNT_ID, self.BANK_ACCOUNT_ID
+        )
+
+    def test_create_payment_sends_proforma_account_ID(self):
+        """Test the create_payment method sends a bank proforma ID."""
+        self.assertDataSent(
+            requests.accounts.CreatePayment.PROFORMA_ID, self.PROFORMA_ID
+        )
+
+    def test_create_payment_sends_gateway_ID(self):
+        """Test the create_payment method sends a gateway ID."""
+        self.assertDataSent(requests.accounts.CreatePayment.GATEWAY_ID, self.GATEWAY_ID)
+
+    def test_create_payment_sends_currency_code_ID(self):
+        """Test the create_payment method sends a currency code ID."""
+        self.assertDataSent(
+            requests.accounts.CreatePayment.CURRENCY_CODE_ID, self.CURRENCY_CODE_ID
+        )
+
+    def test_create_payment_sends_exchange_rate(self):
+        """Test the create_payment method sends an exchange rate."""
+        self.assertDataSent(
+            requests.accounts.CreatePayment.EXCHANGE_RATE, self.EXCHANGE_RATE
+        )
+
+    def test_create_payment_sends_transaction_type(self):
+        """Test the create_payment method sends an transaction date."""
+        self.assertDataSent(
+            requests.accounts.CreatePayment.TRANSACTION_DATE,
+            self.TRANSACTION_DATE.strftime("%d/%m/%Y"),
+        )
+
+
+class Test_add_address_Method(TestCCAPIMethod):
+    """Test the CCAPI.add_address method."""
+
+    NEW_ADDRESS_ID = (
+        test_requests.test_program_type_requests.TestUpdateCustomerAddress.NEW_ADDRESS_ID
+    )
+    RESPONSE = (
+        test_requests.test_program_type_requests.TestUpdateCustomerAddress.RESPONSE
+    )
+
+    CUSTOMER_ID = 18748142
+    ADDRESS_TYPE = (
+        requests.program_type_requests.customer.UpdateCustomerAddress.DELIVERY
+    )
+    COMPANY_NAME = "Joe's Blogs"
+    FIRST_NAME = "Joe"
+    LAST_NAME = "Blog"
+    ADDRESS_1 = "1 The Street"
+    ADDRESS_2 = "Churchford"
+    POST_CODE = "L17 THX"
+    TOWN = "Towningsville"
+    REGION = "Southwestshire"
+    COUNTRY = "United Kingdom"
+    TELEPHONE_NUMBER = "04845 16815"
+    FAX_NUMBER = "04813 541864"
+    MOBILE_NUMBER = "07954 415 638"
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register_request(
+            requests.program_type_requests.customer.UpdateCustomerAddress,
+            text=self.RESPONSE,
+        )
+        self.response = CCAPI.add_address(
+            customer_id=self.CUSTOMER_ID,
+            address_type=self.ADDRESS_TYPE,
+            company_name=self.COMPANY_NAME,
+            first_name=self.FIRST_NAME,
+            last_name=self.LAST_NAME,
+            address_1=self.ADDRESS_1,
+            address_2=self.ADDRESS_2,
+            post_code=self.POST_CODE,
+            town=self.TOWN,
+            region=self.REGION,
+            country=self.COUNTRY,
+            telephone_number=self.TELEPHONE_NUMBER,
+            fax_number=self.FAX_NUMBER,
+            mobile_number=self.MOBILE_NUMBER,
+        )
+
+    def test_add_address_returns_address_ID(self):
+        """Test the CCAPI.add_address method returns the new address ID."""
+        self.assertEqual(self.response, self.NEW_ADDRESS_ID)
+
+    def test_add_address_sends_customer_ID(self):
+        """Test the CCAPI.add_address method sends a customer ID."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.CUSTOMER_ID,
+            self.CUSTOMER_ID,
+        )
+
+    def test_add_address_sends_address_type(self):
+        """Test the CCAPI.add_address method sends an address type."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.ADDRESS_TYPE,
+            self.ADDRESS_TYPE,
+        )
+
+    def test_add_address_sends_company_name(self):
+        """Test the CCAPI.add_address method sends a company name."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.COMPANY_NAME,
+            self.COMPANY_NAME,
+        )
+
+    def test_add_address_sends_first_name(self):
+        """Test the CCAPI.add_address method sends a first name."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.FIRST_NAME,
+            self.FIRST_NAME,
+        )
+
+    def test_add_address_sends_last_name(self):
+        """Test the CCAPI.add_address method sends a last name."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.LAST_NAME,
+            self.LAST_NAME,
+        )
+
+    def test_add_address_sends_address_1(self):
+        """Test the CCAPI.add_address method sends a first address line."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.ADDRESS_1,
+            self.ADDRESS_1,
+        )
+
+    def test_add_address_sends_address_2(self):
+        """Test the CCAPI.add_address method sends a second address line."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.ADDRESS_2,
+            self.ADDRESS_2,
+        )
+
+    def test_add_address_sends_post_code(self):
+        """Test the CCAPI.add_address method sends a post code."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.POST_CODE,
+            self.POST_CODE,
+        )
+
+    def test_add_address_sends_town(self):
+        """Test the CCAPI.add_address method sends a town."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.TOWN,
+            self.TOWN,
+        )
+
+    def test_add_address_sends_region(self):
+        """Test the CCAPI.add_address method sends a region."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.REGION,
+            self.REGION,
+        )
+
+    def test_add_address_sends_country(self):
+        """Test the CCAPI.add_address method sends a country."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.COUNTRY,
+            self.COUNTRY,
+        )
+
+    def test_add_address_sends_telephone_number(self):
+        """Test the CCAPI.add_address method sends a telephone number."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.TELEPHONE_NUMBER,
+            self.TELEPHONE_NUMBER,
+        )
+
+    def test_add_address_sends_fax_number(self):
+        """Test the CCAPI.add_address method sends a fax number."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.FAX_NUMBER,
+            self.FAX_NUMBER,
+        )
+
+    def test_add_address_sends_mobile_number(self):
+        """Test the CCAPI.add_address method sends a mobile number."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.MOBILE_NUMBER,
+            self.MOBILE_NUMBER,
+        )
