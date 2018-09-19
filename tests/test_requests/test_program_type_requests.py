@@ -68,7 +68,7 @@ class ProgramTypeRequestSubclass(TestRequest):
 class TestGetPaymentTerms(ProgramTypeRequestSubclass):
     """Test the GetPaymentTerms request."""
 
-    request_class = program_type_requests.GetPaymentTerms
+    request_class = program_type_requests.customer.GetPaymentTerms
 
     RESPONSE = (
         "RecFound^^11^^10^^14 Days Credit^^2^^28 Days Credit^^8^^30 Days Credit"
@@ -77,3 +77,50 @@ class TestGetPaymentTerms(ProgramTypeRequestSubclass):
         "^^1^^Full Payment Before Dispatch^^4^^"
         "Full Payment With 10% Early Payment Discount"
     )
+
+
+class TestUpdateCustomerAddress(ProgramTypeRequestSubclass):
+    """Test the UpdateCustomerAddress request."""
+
+    request_class = program_type_requests.customer.UpdateCustomerAddress
+
+    ADDRESS_ID = "56664022"
+    RESPONSE = f"Updated^^0Inserted^^{ADDRESS_ID}^^57706408"
+
+    CUSTOMER_ID = 18748142
+    ADDRESS_TYPE = request_class.DELIVERY
+    COMPANY_NAME = "Joe's Blogs"
+    FIRST_NAME = "Joe"
+    LAST_NAME = "Blog"
+    ADDRESS_1 = "1 The Street"
+    ADDRESS_2 = "Churchford"
+    POST_CODE = "L17 THX"
+    TOWN = "Towningsville"
+    REGION = "Southwestshire"
+    COUNTRY = "United Kingdom"
+    TELEPHONE_NUMBER = "04845 16815"
+    FAX_NUMBER = "04813 541864"
+    MOBILE_NUMBER = "07954 415 638"
+    ADDRESS_ID = "96664037"
+    CUSTOMER_ADD_LINK_ID = "0"
+
+    def mock_request(self):
+        """Make a mock request with self.request_class."""
+        return super().mock_request(
+            customer_id=self.CUSTOMER_ID,
+            address_type=self.ADDRESS_TYPE,
+            company_name=self.COMPANY_NAME,
+            first_name=self.FIRST_NAME,
+            last_name=self.LAST_NAME,
+            address_1=self.ADDRESS_1,
+            address_2=self.ADDRESS_2,
+            post_code=self.POST_CODE,
+            town=self.TOWN,
+            region=self.REGION,
+            country=self.COUNTRY,
+            telephone_number=self.TELEPHONE_NUMBER,
+            fax_number=self.FAX_NUMBER,
+            mobile_number=self.MOBILE_NUMBER,
+            address_id=self.ADDRESS_ID,
+            customer_add_link_id=self.CUSTOMER_ADD_LINK_ID,
+        )
