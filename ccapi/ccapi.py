@@ -933,7 +933,6 @@ class CCAPI:
         telephone_number=None,
         fax_number=None,
         mobile_number=None,
-        customer_add_link_id=None,
     ):
         """Add address to customer and return it's ID."""
         kwargs = {key: value for key, value in locals().items() if value is not None}
