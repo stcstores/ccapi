@@ -914,70 +914,32 @@ class CCAPI:
                 and GBP. Default: None.
             login_id (int or None): Not required. Default: None
         """
-        kwargs = {
-            "customer_id": customer_id,
-            "invoice_id": invoice_id,
-            "amount": amount,
-        }
-        if transaction_type_id is not None:
-            kwargs["transaction_type_id"] = transaction_type_id
-        if bank_nominal_code is not None:
-            kwargs["bank_nominal_code"] = bank_nominal_code
-        if bank_account_id is not None:
-            kwargs["bank_account_id"] = bank_account_id
-        if proforma_id is not None:
-            kwargs["proforma_id"] = proforma_id
-        if gateway_id is not None:
-            kwargs["gateway_id"] = gateway_id
-        if currency_code_id is not None:
-            kwargs["currency_code_id"] = currency_code_id
-        if exchange_rate is not None:
-            kwargs["exchange_rate"] = exchange_rate
-        if login_id is not None:
-            kwargs["login_id"] = login_id
-        if transaction_date is not None:
-            kwargs["transaction_date"] = transaction_date
+        kwargs = {key: value for key, value in locals().items() if value is not None}
         return requests.CreatePayment(**kwargs)
 
     @staticmethod
     def add_address(
         customer_id,
-        address_type="Delivery",
-        company_name="",
-        first_name="",
-        last_name="",
-        address_1="",
-        address_2="",
-        post_code="",
-        town="",
-        region="",
-        country="",
-        telephone_number="",
-        fax_number="",
-        mobile_number="",
-        address_id="0",
-        customer_add_link_id="0",
+        address_type,
+        company_name=None,
+        first_name=None,
+        last_name=None,
+        address_1=None,
+        address_2=None,
+        post_code=None,
+        town=None,
+        region=None,
+        country=None,
+        telephone_number=None,
+        fax_number=None,
+        mobile_number=None,
+        customer_add_link_id=None,
     ):
         """Add address to customer and return it's ID."""
-        kwargs = {
-            "CustID": customer_id,
-            "CustAddLinkID": customer_add_link_id,
-            "AddressID": address_id,
-            "AddTitle": address_type,
-            "CompanyName": company_name,
-            "FirstName": first_name,
-            "LastName": last_name,
-            "Address1": address_1,
-            "Address2": address_2,
-            "Postcode": post_code,
-            "Town": town,
-            "Region": region,
-            "Country": country,
-            "TelNo": telephone_number,
-            "FaxNo": fax_number,
-            "MobNo": mobile_number,
-        }
-        response = requests.Customer("UpdCustAddr", **kwargs)
+        kwargs = {key: value for key, value in locals().items() if value is not None}
+        response = requests.program_type_requests.customer.UpdateCustomerAddress(
+            **kwargs
+        )
         return response.split("^^")[2]
 
     @staticmethod
