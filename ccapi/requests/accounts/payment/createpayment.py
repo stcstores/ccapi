@@ -72,8 +72,8 @@ class CreatePayment(APIRequest):
                 transaction. Not required. Default: None.
             exchange_rate (int): The rate of exchange between the transaction currency
                 and GBP. Default: "1".
-            brand_id (int or None): Not required. Default: None
-            login_id (int or None): Not required. Default: None
+            brand_id (int or None): Not required. Default: None.
+            login_id (int or None): Not required. Default: None.
         """
         self.customer_id = customer_id
         self.invoice_id = invoice_id
