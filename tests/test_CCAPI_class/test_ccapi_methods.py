@@ -1463,3 +1463,166 @@ class Test_add_address_Method(TestCCAPIMethod):
             requests.program_type_requests.customer.UpdateCustomerAddress.MOBILE_NUMBER,
             self.MOBILE_NUMBER,
         )
+
+
+class Test_update_address_Method(TestCCAPIMethod):
+    """Test the CCAPI.update_address method."""
+
+    NEW_ADDRESS_ID = (
+        test_requests.test_program_type_requests.TestUpdateCustomerAddress.NEW_ADDRESS_ID
+    )
+    RESPONSE = (
+        test_requests.test_program_type_requests.TestUpdateCustomerAddress.RESPONSE
+    )
+
+    CUSTOMER_ID = 18748142
+    ADDRESS_ID = 98748152
+    ADDRESS_TYPE = (
+        requests.program_type_requests.customer.UpdateCustomerAddress.DELIVERY
+    )
+    COMPANY_NAME = "Joe's Blogs"
+    FIRST_NAME = "Joe"
+    LAST_NAME = "Blog"
+    ADDRESS_1 = "1 The Street"
+    ADDRESS_2 = "Churchford"
+    POST_CODE = "L17 THX"
+    TOWN = "Towningsville"
+    REGION = "Southwestshire"
+    COUNTRY = "United Kingdom"
+    TELEPHONE_NUMBER = "04845 16815"
+    FAX_NUMBER = "04813 541864"
+    MOBILE_NUMBER = "07954 415 638"
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register_request(
+            requests.program_type_requests.customer.UpdateCustomerAddress,
+            text=self.RESPONSE,
+        )
+        self.response = CCAPI.update_address(
+            customer_id=self.CUSTOMER_ID,
+            address_id=self.ADDRESS_ID,
+            address_type=self.ADDRESS_TYPE,
+            company_name=self.COMPANY_NAME,
+            first_name=self.FIRST_NAME,
+            last_name=self.LAST_NAME,
+            address_1=self.ADDRESS_1,
+            address_2=self.ADDRESS_2,
+            post_code=self.POST_CODE,
+            town=self.TOWN,
+            region=self.REGION,
+            country=self.COUNTRY,
+            telephone_number=self.TELEPHONE_NUMBER,
+            fax_number=self.FAX_NUMBER,
+            mobile_number=self.MOBILE_NUMBER,
+        )
+
+    def test_update_address_returns_address_ID(self):
+        """Test the CCAPI.update_address method returns the new address ID."""
+        self.assertIsNone(self.response)
+
+    def test_update_address_sends_customer_ID(self):
+        """Test the CCAPI.update_address method sends a customer ID."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.CUSTOMER_ID,
+            self.CUSTOMER_ID,
+        )
+
+    def test_update_address_sends_address_ID(self):
+        """Test the CCAPI.update_address method sends an address ID."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.ADDRESS_ID,
+            self.ADDRESS_ID,
+        )
+
+    def test_update_address_sends_address_type(self):
+        """Test the CCAPI.update_address method sends an address type."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.ADDRESS_TYPE,
+            self.ADDRESS_TYPE,
+        )
+
+    def test_update_address_sends_company_name(self):
+        """Test the CCAPI.update_address method sends a company name."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.COMPANY_NAME,
+            self.COMPANY_NAME,
+        )
+
+    def test_update_address_sends_first_name(self):
+        """Test the CCAPI.update_address method sends a first name."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.FIRST_NAME,
+            self.FIRST_NAME,
+        )
+
+    def test_update_address_sends_last_name(self):
+        """Test the CCAPI.update_address method sends a last name."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.LAST_NAME,
+            self.LAST_NAME,
+        )
+
+    def test_update_address_sends_address_1(self):
+        """Test the CCAPI.update_address method sends a first address line."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.ADDRESS_1,
+            self.ADDRESS_1,
+        )
+
+    def test_update_address_sends_address_2(self):
+        """Test the CCAPI.update_address method sends a second address line."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.ADDRESS_2,
+            self.ADDRESS_2,
+        )
+
+    def test_update_address_sends_post_code(self):
+        """Test the CCAPI.update_address method sends a post code."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.POST_CODE,
+            self.POST_CODE,
+        )
+
+    def test_update_address_sends_town(self):
+        """Test the CCAPI.update_address method sends a town."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.TOWN,
+            self.TOWN,
+        )
+
+    def test_update_address_sends_region(self):
+        """Test the CCAPI.update_address method sends a region."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.REGION,
+            self.REGION,
+        )
+
+    def test_update_address_sends_country(self):
+        """Test the CCAPI.update_address method sends a country."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.COUNTRY,
+            self.COUNTRY,
+        )
+
+    def test_update_address_sends_telephone_number(self):
+        """Test the CCAPI.update_address method sends a telephone number."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.TELEPHONE_NUMBER,
+            self.TELEPHONE_NUMBER,
+        )
+
+    def test_update_address_sends_fax_number(self):
+        """Test the CCAPI.update_address method sends a fax number."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.FAX_NUMBER,
+            self.FAX_NUMBER,
+        )
+
+    def test_update_address_sends_mobile_number(self):
+        """Test the CCAPI.update_address method sends a mobile number."""
+        self.assertDataSent(
+            requests.program_type_requests.customer.UpdateCustomerAddress.MOBILE_NUMBER,
+            self.MOBILE_NUMBER,
+        )

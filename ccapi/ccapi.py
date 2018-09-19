@@ -974,6 +974,61 @@ class CCAPI:
         return response.split("^^")[2]
 
     @staticmethod
+    def update_address(
+        customer_id,
+        address_id,
+        address_type,
+        company_name=None,
+        first_name=None,
+        last_name=None,
+        address_1=None,
+        address_2=None,
+        post_code=None,
+        town=None,
+        region=None,
+        country=None,
+        telephone_number=None,
+        fax_number=None,
+        mobile_number=None,
+    ):
+        """
+        Add an address for a customer and return it's ID.
+
+        Kwargs:
+            customer_id (int): The customer ID of the customer to which the address
+                belongs. (Required)
+            address_id (str): The ID of the address to be updated. (Required)
+            address_type (str): The type of the address. Available options
+                are "Admin", "Delivery" and "Billing". Optionally use
+                UpdateCustomerAddress.ADMIN, UpdateCustomerAddress.DELIVERY or
+                UpdateCustomerAddress.BILLING. (Required)
+            company_name (str or None): The addresee's company name. Use an empty string if
+                this is not applicable. Default: None.
+            first_name (str or None): The addresee's first name. Default: None.
+            last_name (str or None): The addresee's last name. Default: None.
+            address_1 (str or None): The first line of the address. Default: None.
+            address_2 (str or None): The second line of the address. Default: None.
+            post_code (str or None): The postal or zip code of the address.
+                Default: None.
+            town (str or None): The adress's town. Default: None.
+            region (str or None): The county, region or province of the address.
+                Default: None.
+            country (str or None): The country the address is in. Default: None.
+            telephone_number (str or None): A contact telephone number for the address.
+                Default: None.
+            fax_number (str or None): A contact fax number for the address.
+            Default: None.
+            mobile_number (str or None): A contact mobile phone number for the address.
+                Default: None.
+
+        Returns:
+            (str) ID of the created address.
+
+        """
+        kwargs = {key: value for key, value in locals().items() if value is not None}
+        requests.program_type_requests.customer.UpdateCustomerAddress(**kwargs)
+
+    @staticmethod
     def barcode_is_in_use(barcode):
         """Return True if barcode is in use, otherwise False."""
         return requests.ProductBarcodeInUse(barcode)
