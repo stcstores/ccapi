@@ -84,8 +84,8 @@ class TestUpdateCustomerAddress(ProgramTypeRequestSubclass):
 
     request_class = program_type_requests.customer.UpdateCustomerAddress
 
-    ADDRESS_ID = "56664022"
-    RESPONSE = f"Updated^^0Inserted^^{ADDRESS_ID}^^57706408"
+    NEW_ADDRESS_ID = "56664022"
+    RESPONSE = f"Updated^^0Inserted^^{NEW_ADDRESS_ID}^^57706408"
 
     CUSTOMER_ID = 18748142
     ADDRESS_TYPE = request_class.DELIVERY
