@@ -1,5 +1,7 @@
 """This module contains the main CCAPI class for ccapi."""
 
+import datetime
+
 from . import requests
 from .cc_objects import VatRates
 from .requests import CloudCommerceAPISession
@@ -876,7 +878,7 @@ class CCAPI:
         items,
         delivery_address_id,
         billing_address_id,
-        delivery_date,
+        delivery_date=None,
         season_id=None,
         channel_id=None,
         reference=None,
@@ -896,7 +898,9 @@ class CCAPI:
     ):
         """Create a new order."""
         kwargs = {key: value for key, value in locals().items() if value is not None}
-        kwargs["free_of_charge"] = sum([item.total_gross for item in items]) > 0
+        if "delivery_date" not in kwargs:
+            kwargs["delivery_date"] = datetime.datetime.now()
+        kwargs["free_of_charge"] = sum([item.total_gross for item in items]) == 0
         return requests.handlers.CreateOrder(**kwargs)
 
     @staticmethod
