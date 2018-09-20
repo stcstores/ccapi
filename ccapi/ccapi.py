@@ -892,7 +892,33 @@ class CCAPI:
         discount_net=None,
         shipping_rule_id=None,
     ):
-        """Create a new order."""
+        """
+        Add a customer order to Cloud Commerce.
+
+        Kwargs:
+            customer_id (int): The ID of the customer making the order.
+            items (list[ccapi.requests.handlers.createorder.NewOrderItem]): List of
+                NewOrderItem instances for each item ordered.
+            delivery_address_id (int): ID of the address to deliver to.
+            billing_address_id (int): ID of the customer's billing address for this
+                order.
+            delivery_date (datetime.datetime or None): The date by which the order
+                should be delivered. If None is passed, the current date will be used.
+                Default: None
+            channel_id (int): The ID of the channel on which the order was placed.
+                (Not required)
+            order_note (str): Add a note to the order.
+            send_email (bool): Use True to send confirmation email, otherwise
+                no email will be sent.
+            carriage_net (float): The net value of the carriage cost.
+            carriage_vat (float): The VAT charged on carriage.
+            total_net (float): The total net value of the order.
+            total_vat (float): The VAT charged on the order.
+            total_gross (float): The total gross value of the order.
+            discount_net (float): The discount applied to the order. (Default: 0)
+            shipping_rule_id (int or None): ID of the shipping rule to be used for the
+                order. Use None to not specify a shipping rule. (Default: None)
+        """
         kwargs = {key: value for key, value in locals().items() if value is not None}
         if "delivery_date" not in kwargs:
             kwargs["delivery_date"] = datetime.datetime.now()
