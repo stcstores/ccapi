@@ -12,6 +12,42 @@ class AddCustomer(APIRequest):
 
     uri = "Handlers/addCustomer.ashx"
 
+    ACCOUNT_NAME = "AcctName"
+    ADDRESS_1 = "addr1"
+    ADDRESS_2 = "addr2"
+    AGENT_ID = "agentID"
+    COMPANY_FAX = "compFax"
+    COMPANY_MOBILE = "compMob"
+    COMPANY_TELEPHONE = "compTel"
+    CONTACT_EMAIL = "contEmail"
+    CONTACT_FAX = "contFax"
+    CONTACT_MOBILE = "contMob"
+    CONTACT_NAME = "contName"
+    CONTACT_PHONE = "contPhone"
+    COUNTRY = "country"
+    COUNTY = "county"
+    CUSTOMER_NAME = "CustName"
+    CUSTOMER_TYPE = "CustType"
+    EU_VAT = "EUVAT"
+    POST_CODE = "pcode"
+    PAYMENT_TERMS = "pterms"
+    SELLING_CHANNEL_ID = "scID"
+    SPECIAL_INSTRUCTIONS = "SpecInstr"
+    SPECIAL_INSTRUCTIONS_NOTE = "SpecInstrNote"
+    TOWN = "town"
+    TRADE_NAME = "TradName"
+    VAT_NUMBER = "VATNo"
+    CREDIT_LIMIT = "CreditLimit"
+    ACCOUNT_ID = "AccountID"
+    CREATE = "create"
+    LINK_TO = "linkTo"
+    OSCID = "oSCID"
+
+    ACCOUNT_ID_VALUE = None
+    CREATE_VALUE = 0
+    LINK_TO_VALUE = 0
+    OSCID_VALUE = 0
+
     def __new__(
         self,
         *,
@@ -123,43 +159,42 @@ class AddCustomer(APIRequest):
     def get_data(self):
         """Get data for get request."""
         data = {
-            "AccountID": None,
-            "AcctName": self.account_name,
-            "addr1": self.address_1,
-            "addr2": self.address_2,
-            "agentID": self.agent_id,
-            "compFax": self.company_fax,
-            "compMob": self.company_mobile,
-            "compTel": self.company_telephone,
-            "contEmail": self.contact_email,
-            "contFax": self.contact_fax,
-            "contMob": self.contact_mobile,
-            "contName": self.contact_name,
-            "contPhone": self.contact_phone,
-            "country": self.country,
-            "county": self.county,
-            "create": 0,
-            "CustName": self.customer_name,
-            "CustType": self.customer_type,
-            "EUVAT": int(bool(self.eu_vat)),
-            "linkTo": 0,
-            "oSCID": 0,
-            "pcode": self.post_code,
-            "pterms": self.payment_terms,
-            "scID": self.selling_channel_id,
-            "SpecInstr": int(bool(self.special_instructions)),
-            "SpecInstrNote": self.special_instructions,
-            "town": self.town,
-            "TradName": self.trade_name,
-            "VATNo": self.vat_number,
-            "CreditLimit": self.credit_limit,
+            self.ACCOUNT_ID: None,
+            self.ACCOUNT_NAME: self.account_name,
+            self.ADDRESS_1: self.address_1,
+            self.ADDRESS_2: self.address_2,
+            self.AGENT_ID: self.agent_id,
+            self.COMPANY_FAX: self.company_fax,
+            self.COMPANY_MOBILE: self.company_mobile,
+            self.COMPANY_TELEPHONE: self.company_telephone,
+            self.CONTACT_EMAIL: self.contact_email,
+            self.CONTACT_FAX: self.contact_fax,
+            self.CONTACT_MOBILE: self.contact_mobile,
+            self.CONTACT_NAME: self.contact_name,
+            self.CONTACT_PHONE: self.contact_phone,
+            self.COUNTRY: self.country,
+            self.COUNTY: self.county,
+            self.CREATE: 0,
+            self.CUSTOMER_NAME: self.customer_name,
+            self.CUSTOMER_TYPE: self.customer_type,
+            self.EU_VAT: int(bool(self.eu_vat)),
+            self.LINK_TO: 0,
+            self.OSCID: 0,
+            self.POST_CODE: self.post_code,
+            self.PAYMENT_TERMS: self.payment_terms,
+            self.SELLING_CHANNEL_ID: self.selling_channel_id,
+            self.SPECIAL_INSTRUCTIONS: int(bool(self.special_instructions)),
+            self.SPECIAL_INSTRUCTIONS_NOTE: self.special_instructions,
+            self.TOWN: self.town,
+            self.TRADE_NAME: self.trade_name,
+            self.VAT_NUMBER: self.vat_number,
+            self.CREDIT_LIMIT: self.credit_limit,
         }
         return data
 
     def process_response(self, response):
         """Handle request response."""
-        try:
-            response.raise_for_status()
-        except Exception:
-            raise Exception(response.text)
+        self.raise_for_non_200(
+            self, response, f"Failed to add customer {self.customer_name}."
+        )
         return response.text.split("^^")[1]
