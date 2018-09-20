@@ -870,9 +870,34 @@ class CCAPI:
         return payment_terms
 
     @staticmethod
-    def create_order(*args, **kwargs):
+    def create_order(
+        *,
+        customer_id,
+        items,
+        delivery_address_id,
+        billing_address_id,
+        delivery_date,
+        season_id=None,
+        channel_id=None,
+        reference=None,
+        order_id=None,
+        prep=None,
+        order_note=None,
+        send_email=None,
+        postage_override=None,
+        carriage_net=None,
+        carriage_vat=None,
+        total_net=None,
+        total_vat=None,
+        total_gross=None,
+        discount_net=None,
+        shipping_rule_id=None,
+        login_id=None,
+    ):
         """Create a new order."""
-        return requests.CreateOrder(*args, **kwargs)
+        kwargs = {key: value for key, value in locals().items() if value is not None}
+        kwargs["free_of_charge"] = sum([item.total_gross for item in items]) > 0
+        return requests.handlers.CreateOrder(**kwargs)
 
     @staticmethod
     def create_payment(
