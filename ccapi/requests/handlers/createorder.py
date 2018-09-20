@@ -66,7 +66,42 @@ class CreateOrder(APIRequest):
         shipping_rule_id=None,
         login_id=None,
     ):
-        """Create a CreateOrder request."""
+        """
+        Create a CreateOrder request.
+
+        The CreateOrder request is used to add a customer order to Cloud Commerce.
+
+        Kwargs:
+            customer_id (int): The ID of the customer making the order.
+            items (list[ccapi.requests.handlers.createorder.NewOrderItem]): List of
+                NewOrderItem instances for each item ordered.
+            delivery_address_id (int): ID of the address to deliver to.
+            billing_address_id (int): ID of the customer's billing address for this
+                order.
+            delivery_date (datetime.datetime): The date by which the order should be
+                delivered.
+            season_id (int): The ID of the order season. (Not required)
+            channel_id (int): The ID of the channel on which the order was placed.
+                (Not required)
+            reference (str): (Not required)
+            order_id (int): ID of the order. (Not required)
+            prep (str): (Not required)
+            order_note (str): Add a note to the order.
+            send_email (int): Use a Truthy value to send confirmation email, otherwise
+                no email will be sent.
+            postage_override (str): (Not required)
+            carriage_net (float): The net value of the carriage cost.
+            carriage_vat (float): The VAT charged on carriage.
+            total_net (float): The total net value of the order.
+            total_vat (float): The VAT charged on the order.
+            total_gross (float): The total gross value of the order.
+            discount_net (float): The discount applied to the order. (Default: 0)
+            free_of_charge (bool): Set to True if the item(s) are sent for free,
+                otherwise False. (Default: False)
+            shipping_rule_id (int or None): ID of the shipping rule to be used for the
+                order. Use None to not specify a shipping rule. (Default: None)
+            login_id (int or None): (Not required)
+        """
         self.items = items
         self.customer_id = customer_id
         self.login_id = login_id
