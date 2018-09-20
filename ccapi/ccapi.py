@@ -1,5 +1,7 @@
 """This module contains the main CCAPI class for ccapi."""
 
+import datetime
+
 from . import requests
 from .cc_objects import VatRates
 from .requests import CloudCommerceAPISession
@@ -349,7 +351,7 @@ class CCAPI:
         length,
         width,
         large_letter_compatible,
-        external_id=None
+        external_id=None,
     ):
         """
         Set the scope of a product.
@@ -529,23 +531,16 @@ class CCAPI:
         """
         kwargs["skip_records"] = 0
         range_ids = []
-        product_ids = []
         while True:
-            request = requests.GetProducts(*args, **kwargs)
-            for product in request:
+            response = requests.GetProducts(*args, **kwargs)
+            for product in response:
                 range_id = product["RangeId"]
-                product_id = product["VariationId"]
-                if product_id in product_ids:
-                    ranges = []
-                    for range_id in range_ids:
-                        rng = cls.get_range(range_id)
-                        if rng.id != 0:
-                            ranges.append(rng)
-                    return ranges
-                product_ids.append(product_id)
                 if range_id not in range_ids:
                     range_ids.append(range_id)
-            kwargs["skip_records"] = len(product_ids)
+            if len(response) > 0:
+                kwargs["skip_records"] += len(response)
+                continue
+            return [cls.get_range(range_id) for range_id in range_ids]
 
     @staticmethod
     def delete_bay(bay_id):
@@ -717,7 +712,7 @@ class CCAPI:
 
     @staticmethod
     def delete_image(image_id):
-        """Delete Product Image.
+        """Delete a product image.
 
         Args:
             image_id: ID of Product Image to delete.
@@ -726,7 +721,7 @@ class CCAPI:
 
     @staticmethod
     def upload_image(*, product_ids, channel_ids=[], image_file=None):
-        """Add image to products.
+        """Add an image to a product or products.
 
         Kwargs:
             product_ids: IDs of products to add image to.
@@ -754,12 +749,12 @@ class CCAPI:
 
     @staticmethod
     def get_dispatch_methods_for_order(order_id, analyse=True):
-        """Return dispatch methods for order."""
+        """Return dispatch methods for an order."""
         return requests.GetDispatchMethodsForOrder(order_id, analyse=analyse)
 
     @staticmethod
     def get_factories():
-        """Get factories list."""
+        """Return a list of existing Factories."""
         return requests.FindFactories()
 
     @classmethod
@@ -803,64 +798,286 @@ class CCAPI:
 
     @staticmethod
     def delete_product_factory_link(factory_link_id):
-        """Delete Product Facotry link."""
+        """Delete Product Factory link."""
         return requests.DeleteProductFactoryLink(factory_link_id)
 
     @staticmethod
     def add_customer(*args, **kwargs):
-        """Add a customer to Cloud Commerce."""
-        return requests.AddCustomer(*args, **kwargs)
+        """
+        Add a customer to Cloud Commerce.
+
+        Kwargs:
+            customer_name (Required) (str): The new customer's name.
+            address_1 (Required) (str): The first line of the customer's address.
+            country (Required) (str): The country of the customer's address.
+            selling_channel_id (Required) (str): The ID of the selling channel used by
+                the customer.
+            account_name (str or None): The name of the customer's accound.
+                Default: None.
+            address_2 (str or None): The second line of the customer's address.
+                Default: None.
+            agent_id (int): The ID of the agent creating the customer.
+                Use 0 to not specify an agent. Default: 0.
+            company_fax (str or None): The customer's company fax number.
+                Default: None.
+            company_mobile (str or None): The customer's company mobile number.
+                Default: None.
+            company_telephone (str or None): The customer's company telephone number.
+                Default: None.
+            contact_email (str or None): The customer's contact email address.
+                Default: None.
+            contact_fax (str or None): The customer's contact fax number.
+                Default: None.
+            contact_name (str or None): The customer's contact name. Default: None.
+            contact_phone (str or None): The customer's contact phone number.
+                Default: None.
+            contact_mobile (str or None): The customer's contact phone number.
+                Default: None.
+            county (str or None): The county or region of the customer's address.
+                Default: None.
+            customer_type (int): The ID of the type of the customer. Default: 8.
+            eu_vat (bool): True if the customer is charged EU VAT. Default: True.
+            post_code (str or None): The customer's postal or zip code. Default: None.
+            payment_terms (int): ID of the payment terms for the customer. A list of
+                payment term IDs can be found by calling CCAPI.get_payment_terms().
+                Default: 1 (Full Payment Before Dispatch).
+            town (str or None): The town in the customer's address. Default: None.
+            trade_name (str or None): The customer's trading name. If None customer_name
+                will be used. Default: None.
+            vat_number (str or None): The customer's VAT number. Default: None.
+            special_instructions (str or None): Special instructions for the customer.
+                Default: None.
+            credit_limit (int): The customer's credit limit. Default 0.
+
+            Returns:
+                (str) The ID of the newly created customer.
+
+        """
+        return requests.handlers.AddCustomer(*args, **kwargs)
 
     @staticmethod
-    def create_order(*args, **kwargs):
-        """Create a new order."""
-        return requests.CreateOrder(*args, **kwargs)
+    def get_payment_terms():
+        """
+        Return payment term options.
+
+        Returns dict: {payment term name: payment term ID}
+        """
+        response = requests.program_type_requests.GetPaymentTerms()
+        response_list = response.split("^^")[2:]
+        payment_terms = {}
+        while len(response_list) > 0:
+            payment_term_ID = response_list.pop()
+            payment_term_name = response_list.pop()
+            payment_terms[payment_term_name] = payment_term_ID
+        return payment_terms
 
     @staticmethod
-    def create_payment(*args, **kwargs):
-        """Create a payment for an order."""
-        return requests.CreatePayment(*args, **kwargs)
+    def create_order(
+        *,
+        customer_id,
+        items,
+        delivery_address_id,
+        billing_address_id,
+        delivery_date=None,
+        season_id=None,
+        channel_id=None,
+        order_id=None,
+        order_note=None,
+        send_email=None,
+        carriage_net=None,
+        carriage_vat=None,
+        total_net=None,
+        total_vat=None,
+        total_gross=None,
+        discount_net=None,
+        shipping_rule_id=None,
+    ):
+        """
+        Add a customer order to Cloud Commerce.
+
+        Kwargs:
+            customer_id (int): The ID of the customer making the order.
+            items (list[ccapi.requests.handlers.createorder.NewOrderItem]): List of
+                NewOrderItem instances for each item ordered.
+            delivery_address_id (int): ID of the address to deliver to.
+            billing_address_id (int): ID of the customer's billing address for this
+                order.
+            delivery_date (datetime.datetime or None): The date by which the order
+                should be delivered. If None is passed, the current date will be used.
+                Default: None
+            channel_id (int): The ID of the channel on which the order was placed.
+                (Not required)
+            order_note (str): Add a note to the order.
+            send_email (bool): Use True to send confirmation email, otherwise
+                no email will be sent.
+            carriage_net (float): The net value of the carriage cost.
+            carriage_vat (float): The VAT charged on carriage.
+            total_net (float): The total net value of the order.
+            total_vat (float): The VAT charged on the order.
+            total_gross (float): The total gross value of the order.
+            discount_net (float): The discount applied to the order. (Default: 0)
+            shipping_rule_id (int or None): ID of the shipping rule to be used for the
+                order. Use None to not specify a shipping rule. (Default: None)
+        """
+        kwargs = {key: value for key, value in locals().items() if value is not None}
+        if "delivery_date" not in kwargs:
+            kwargs["delivery_date"] = datetime.datetime.now()
+        kwargs["free_of_charge"] = sum([item.total_gross for item in items]) == 0
+        return requests.handlers.CreateOrder(**kwargs)
+
+    @staticmethod
+    def create_payment(
+        *,
+        customer_id,
+        invoice_id,
+        amount,
+        transaction_type_id=None,
+        bank_nominal_code=None,
+        transaction_date=None,
+        bank_account_id=None,
+        proforma_id=None,
+        gateway_id=None,
+        currency_code_id=None,
+        exchange_rate=None,
+        login_id=None,
+    ):
+        """
+        Create a payment for an order.
+
+        Kwargs:
+            customer_id (int) (required): The ID of the customer that originated the
+                payment.
+            invoice_id (int) (required): The ID of the invoice being paid.
+            amount (float) (required): The amount paid.
+            transaction_type_id (int or None): The ID of the transaction type. Default: None.
+            transaction_date (datetime.datetime or None): The date of the transaction.
+                If None, the current date will be used.
+            bank_account_id (int or None): The ID of the customer's bank account. 0 is used
+                when no bank account is to be indicated. Default: None.
+            proforma_id (int or None): The ID of the transaction proforma. "0" is used
+                when no proforma is to be indicated. Default: None.
+            gateway_id: 0 is used when no gateway ID is to be indicated. Default: 0.
+            currency_code_id (int or None): The ID of the currency used for the
+                transaction. Default: 1 (GBP).
+            currency_code (int or None): Three letter code for the currency of the
+                transaction. Not required. Default: None.
+            exchange_rate (int or None): The rate of exchange between the transaction currency
+                and GBP. Default: None.
+            login_id (int or None): Not required. Default: None
+        """
+        kwargs = {key: value for key, value in locals().items() if value is not None}
+        return requests.CreatePayment(**kwargs)
 
     @staticmethod
     def add_address(
         customer_id,
-        address_type="Delivery",
-        company_name="",
-        first_name="",
-        last_name="",
-        address_1="",
-        address_2="",
-        post_code="",
-        town="",
-        region="",
-        country="",
-        telephone_number="",
-        fax_number="",
-        mobile_number="",
-        address_id="0",
-        customer_add_link_id="0",
+        address_type,
+        company_name=None,
+        first_name=None,
+        last_name=None,
+        address_1=None,
+        address_2=None,
+        post_code=None,
+        town=None,
+        region=None,
+        country=None,
+        telephone_number=None,
+        fax_number=None,
+        mobile_number=None,
     ):
-        """Add address to customer and return it's ID."""
-        kwargs = {
-            "CustID": customer_id,
-            "CustAddLinkID": customer_add_link_id,
-            "AddressID": address_id,
-            "AddTitle": address_type,
-            "CompanyName": company_name,
-            "FirstName": first_name,
-            "LastName": last_name,
-            "Address1": address_1,
-            "Address2": address_2,
-            "Postcode": post_code,
-            "Town": town,
-            "Region": region,
-            "Country": country,
-            "TelNo": telephone_number,
-            "FaxNo": fax_number,
-            "MobNo": mobile_number,
-        }
-        response = requests.Customer("UpdCustAddr", **kwargs)
-        return response.text.split("^^")[2]
+        """
+        Add an address for a customer and return it's ID.
+
+        Kwargs:
+            customer_id (int): The customer ID of the customer to which the address
+                belongs. (Required)
+            address_type (str): The type of the address. Available options
+                are "Admin", "Delivery" and "Billing". Optionally use
+                UpdateCustomerAddress.ADMIN, UpdateCustomerAddress.DELIVERY or
+                UpdateCustomerAddress.BILLING. (Required)
+            company_name (str or None): The addresee's company name. Use an empty
+                string if this is not applicable. Default: None.
+            first_name (str or None): The addresee's first name. Default: None.
+            last_name (str or None): The addresee's last name. Default: None.
+            address_1 (str or None): The first line of the address. Default: None.
+            address_2 (str or None): The second line of the address. Default: None.
+            post_code (str or None): The postal or zip code of the address.
+                Default: None.
+            town (str or None): The adress's town. Default: None.
+            region (str or None): The county, region or province of the address.
+                Default: None.
+            country (str or None): The country the address is in. Default: None.
+            telephone_number (str or None): A contact telephone number for the address.
+                Default: None.
+            fax_number (str or None): A contact fax number for the address.
+            Default: None.
+            mobile_number (str or None): A contact mobile phone number for the address.
+                Default: None.
+
+        Returns:
+            (str) ID of the created address.
+
+        """
+        kwargs = {key: value for key, value in locals().items() if value is not None}
+        response = requests.program_type_requests.customer.UpdateCustomerAddress(
+            **kwargs
+        )
+        return response.split("^^")[2]
+
+    @staticmethod
+    def update_address(
+        customer_id,
+        address_id,
+        address_type,
+        company_name=None,
+        first_name=None,
+        last_name=None,
+        address_1=None,
+        address_2=None,
+        post_code=None,
+        town=None,
+        region=None,
+        country=None,
+        telephone_number=None,
+        fax_number=None,
+        mobile_number=None,
+    ):
+        """
+        Add an address for a customer and return it's ID.
+
+        Kwargs:
+            customer_id (int): The customer ID of the customer to which the address
+                belongs. (Required)
+            address_id (str): The ID of the address to be updated. (Required)
+            address_type (str): The type of the address. Available options
+                are "Admin", "Delivery" and "Billing". Optionally use
+                UpdateCustomerAddress.ADMIN, UpdateCustomerAddress.DELIVERY or
+                UpdateCustomerAddress.BILLING. (Required)
+            company_name (str or None): The addresee's company name. Use an empty string if
+                this is not applicable. Default: None.
+            first_name (str or None): The addresee's first name. Default: None.
+            last_name (str or None): The addresee's last name. Default: None.
+            address_1 (str or None): The first line of the address. Default: None.
+            address_2 (str or None): The second line of the address. Default: None.
+            post_code (str or None): The postal or zip code of the address.
+                Default: None.
+            town (str or None): The adress's town. Default: None.
+            region (str or None): The county, region or province of the address.
+                Default: None.
+            country (str or None): The country the address is in. Default: None.
+            telephone_number (str or None): A contact telephone number for the address.
+                Default: None.
+            fax_number (str or None): A contact fax number for the address.
+            Default: None.
+            mobile_number (str or None): A contact mobile phone number for the address.
+                Default: None.
+
+        Returns:
+            (str) ID of the created address.
+
+        """
+        kwargs = {key: value for key, value in locals().items() if value is not None}
+        requests.program_type_requests.customer.UpdateCustomerAddress(**kwargs)
 
     @staticmethod
     def barcode_is_in_use(barcode):

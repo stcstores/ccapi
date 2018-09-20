@@ -9,7 +9,7 @@ import requests
 import yaml
 
 logger = logging.getLogger(__name__)
-error_logger = logging.getLogger("errors")
+error_logger = logging.getLogger("ccapi_errors")
 
 
 class CloudCommerceAPISession:
@@ -113,9 +113,9 @@ class CloudCommerceAPISession:
         """Perform API request."""
         cls.check_login()
         url = urljoin(cls.domain_url(), request.uri)
-        logger.info("Request to {}.".format(request.uri))
+        logger.info("CCAPI Request to {}.".format(request.uri))
         logger.debug(
-            "Request to {} with headers: {}, params: {}, data:{}, files: {}".format(
+            "CCAPI Request to {} with headers: {}, params: {}, data:{}, files: {}".format(
                 request.uri,
                 request.headers,
                 request.params,
@@ -140,7 +140,7 @@ class CloudCommerceAPISession:
         """Check current session is valid."""
         if cls.last_login:
             login_expires = cls.last_login + cls.timeout
-            logger.info(
+            logger.debug(
                 f"Last Login: {cls.last_login} Timeout: {cls.timeout} Expires: {login_expires} Current: {datetime.now()}"
             )
             if datetime.now() < login_expires:
