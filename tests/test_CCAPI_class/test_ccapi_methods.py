@@ -1,8 +1,9 @@
 """Tests for CCAPI's methods."""
 
 import datetime
+import json
 
-from ccapi import CCAPI, VatRates, cc_objects, requests
+from ccapi import CCAPI, NewOrderItem, VatRates, cc_objects, requests
 
 from .. import test_data, test_requests
 from .test_CCAPI_class import TestCCAPIMethod
@@ -1625,4 +1626,216 @@ class Test_update_address_Method(TestCCAPIMethod):
         self.assertDataSent(
             requests.program_type_requests.customer.UpdateCustomerAddress.MOBILE_NUMBER,
             self.MOBILE_NUMBER,
+        )
+
+
+class Test_create_order_Method(TestCCAPIMethod):
+    """Test the CCAPI.creat_order method."""
+
+    RESPONSE = test_requests.test_handlers.TestCreateOrderRequest.RESPONSE
+
+    ITEMS = [
+        NewOrderItem(
+            product_id=4176861,
+            item_net=12.5,
+            item_gross=15,
+            total_net=12.5,
+            total_gross=15,
+        ),
+        NewOrderItem(
+            product_id=3176869,
+            item_net=13.12,
+            item_gross=19,
+            total_net=22.5,
+            total_gross=18,
+        ),
+    ]
+
+    CUSTOMER_ID = 18495409
+    DELIVERY_ADDRESS_ID = 134864315
+    BILLING_ADDRESS_ID = 786315135
+    DELIVERY_DATE = datetime.datetime.now()
+    LOGIN_ID = 134876131
+    SEASON_ID = 5
+    CHANNEL_ID = 3151
+    ORDER_NOTE = "Order Note text"
+    SEND_EMAIL = 1
+    CARRIAGE_NET = 3.65
+    CARRIAGE_VAT = 15.87
+    TOTAL_NET = 15.84
+    TOTAL_VAT = 12.80
+    TOTAL_GROSS = 2.90
+    DISCOUNT_NET = 1.50
+    FREE_OF_CHARGE = True
+    SHIPPING_RULE_ID = 487315
+    REFERENCE = "reference value"
+    PREP = "prep value"
+    POSTAGE_OVERRIDE = "postage override value"
+    ORDER_ID = 154313143
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register_request(
+            requests.handlers.createorder.CreateOrder, json=self.RESPONSE
+        )
+
+    def test_returns_CreateOrder_response(self):
+        """Test the method returns an instance of CreateOrderResponse."""
+        response = CCAPI.create_order(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+        )
+        self.assertIsInstance(
+            response, requests.handlers.createorder.CreateOrderResponse
+        )
+
+    def test_sends_parameters(self):
+        """Test all passed parameters are sent to Cloud Commerce."""
+        CCAPI.create_order(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+            login_id=self.LOGIN_ID,
+            season_id=self.SEASON_ID,
+            channel_id=self.CHANNEL_ID,
+            reference=self.REFERENCE,
+            order_id=self.ORDER_ID,
+            prep=self.PREP,
+            order_note=self.ORDER_NOTE,
+            send_email=self.SEND_EMAIL,
+            postage_override=self.POSTAGE_OVERRIDE,
+            carriage_net=self.CARRIAGE_NET,
+            carriage_vat=self.CARRIAGE_VAT,
+            total_net=self.TOTAL_NET,
+            total_vat=self.TOTAL_VAT,
+            total_gross=self.TOTAL_GROSS,
+            discount_net=self.DISCOUNT_NET,
+            shipping_rule_id=self.SHIPPING_RULE_ID,
+        )
+        """Test the method sends all passed parameters to Cloud Commerce."""
+        self.assertDataSent(
+            requests.handlers.createorder.CreateOrder.CUSTOMER_ID, self.CUSTOMER_ID
+        )
+        self.assertDataSent(
+            requests.handlers.createorder.CreateOrder.ITEMS,
+            json.dumps([i.to_dict() for i in self.ITEMS]),
+        )
+        self.assertDataSent(
+            requests.handlers.createorder.CreateOrder.DELIVERY_ADDRESS_ID,
+            self.DELIVERY_ADDRESS_ID,
+        )
+        self.assertDataSent(
+            requests.handlers.createorder.CreateOrder.BILLING_ADDRESS_ID,
+            self.BILLING_ADDRESS_ID,
+        )
+        self.assertDataSent(
+            requests.handlers.createorder.CreateOrder.DELIVERY_DATE,
+            self.DELIVERY_DATE.strftime("%d/%m/%Y"),
+        )
+        self.assertDataSent(
+            requests.handlers.createorder.CreateOrder.LOGIN_ID, self.LOGIN_ID
+        )
+        self.assertDataSent(
+            requests.handlers.createorder.CreateOrder.SEASON_ID, self.SEASON_ID
+        )
+        self.assertDataSent(
+            requests.handlers.createorder.CreateOrder.CHANNEL_ID, self.CHANNEL_ID
+        )
+        self.assertDataSent(
+            requests.handlers.createorder.CreateOrder.REFERENCE, self.REFERENCE
+        )
+        self.assertDataSent(
+            requests.handlers.createorder.CreateOrder.ORDER_ID, self.ORDER_ID
+        )
+        self.assertDataSent(requests.handlers.createorder.CreateOrder.PREP, self.PREP)
+        self.assertDataSent(
+            requests.handlers.createorder.CreateOrder.ORDER_NOTE, self.ORDER_NOTE
+        )
+        self.assertDataSent(
+            requests.handlers.createorder.CreateOrder.SEND_EMAIL, self.SEND_EMAIL
+        )
+        self.assertDataSent(
+            requests.handlers.createorder.CreateOrder.POSTAGE_OVERRIDE,
+            self.POSTAGE_OVERRIDE,
+        )
+        self.assertDataSent(
+            requests.handlers.createorder.CreateOrder.CARRIAGE_NET, self.CARRIAGE_NET
+        )
+        self.assertDataSent(
+            requests.handlers.createorder.CreateOrder.CARRIAGE_VAT, self.CARRIAGE_VAT
+        )
+        self.assertDataSent(
+            requests.handlers.createorder.CreateOrder.TOTAL_NET, self.TOTAL_NET
+        )
+        self.assertDataSent(
+            requests.handlers.createorder.CreateOrder.TOTAL_VAT, self.TOTAL_VAT
+        )
+        self.assertDataSent(
+            requests.handlers.createorder.CreateOrder.TOTAL_GROSS, self.TOTAL_GROSS
+        )
+        self.assertDataSent(
+            requests.handlers.createorder.CreateOrder.DISCOUNT_NET, self.DISCOUNT_NET
+        )
+        self.assertDataSent(
+            requests.handlers.createorder.CreateOrder.SHIPPING_RULE_ID,
+            self.SHIPPING_RULE_ID,
+        )
+
+    def test_sends_free_of_charge_for_free_orders(self):
+        """Test that free of charge is sent as True if the order is free."""
+        items = [
+            NewOrderItem(
+                product_id=4176861, item_net=0, item_gross=0, total_net=0, total_gross=0
+            ),
+            NewOrderItem(
+                product_id=3176869, item_net=0, item_gross=0, total_net=0, total_gross=0
+            ),
+        ]
+        CCAPI.create_order(
+            items=items,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+        )
+        self.assertDataSent(
+            requests.handlers.createorder.CreateOrder.FREE_OF_CHARGE, "true"
+        )
+
+    def test_sends_free_of_charge_for_non_free_orders(self):
+        """Test that free of charge is sent as True if the order is not free."""
+        items = [
+            NewOrderItem(
+                product_id=4176861, item_net=0, item_gross=0, total_net=0, total_gross=5
+            ),
+            NewOrderItem(
+                product_id=3176869, item_net=0, item_gross=0, total_net=0, total_gross=5
+            ),
+        ]
+        CCAPI.create_order(
+            items=items,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+        )
+        self.assertDataSent(
+            requests.handlers.createorder.CreateOrder.FREE_OF_CHARGE, "false"
+        )
+
+    def test_delivery_date_defaults_to_current_date(self):
+        """Test that the current date is sent if None is passed for delivery_date."""
+        CCAPI.create_order(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=None,
+        )
+        self.assertDataSent(
+            requests.handlers.createorder.CreateOrder.DELIVERY_DATE,
+            datetime.datetime.now().strftime("%d/%m/%Y"),
         )
