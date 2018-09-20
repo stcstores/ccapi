@@ -1,5 +1,9 @@
 """Tests for handler requests."""
 
+import datetime
+import json
+
+from ccapi import NewOrderItem, exceptions
 from ccapi.requests import handlers
 
 from .test_request import TestRequest
@@ -377,3 +381,481 @@ class TestAddCustomer(TestRequest):
             credit_limit=self.CREDIT_LIMIT,
         )
         self.assertDataSent("CreditLimit", self.CREDIT_LIMIT)
+
+
+class TestCreateOrderCustomer(TestRequest):
+    """Tests for the Create Order request."""
+
+    request_class = handlers.CreateOrder
+
+    RETURNED_ERROR = ""
+    RETURNED_ORDER_ID = 21232732
+    RETURNED_INVOICE_ID = 17288332
+    RETURNED_PAYMENT_TERM_ID = 1
+    RETURNED_GATEWAY_TYPE = "PayPal"
+    RETURNED_DAYS_OF_CREDIT = 0
+    RETURNED_REFERENCE = ""
+    RETURNED_TOTAL_GROSS = 17.15
+
+    ITEMS = [
+        NewOrderItem(
+            product_id=4176861,
+            item_net=12.5,
+            item_gross=15,
+            total_net=12.5,
+            total_gross=15,
+        ),
+        NewOrderItem(
+            product_id=3176869,
+            item_net=13.12,
+            item_gross=19,
+            total_net=22.5,
+            total_gross=18,
+        ),
+    ]
+
+    RESPONSE = {
+        handlers.createorder.CreateOrderResponse.ERROR: RETURNED_ERROR,
+        handlers.createorder.CreateOrderResponse.ORDER_ID: RETURNED_ORDER_ID,
+        handlers.createorder.CreateOrderResponse.INVOICE_ID: RETURNED_INVOICE_ID,
+        handlers.createorder.CreateOrderResponse.PAYMENT_TERM_ID: RETURNED_PAYMENT_TERM_ID,
+        handlers.createorder.CreateOrderResponse.GATEWAY_TYPE: RETURNED_GATEWAY_TYPE,
+        handlers.createorder.CreateOrderResponse.DAYS_OF_CREDIT: RETURNED_DAYS_OF_CREDIT,
+        handlers.createorder.CreateOrderResponse.REFERENCE: RETURNED_REFERENCE,
+        handlers.createorder.CreateOrderResponse.TOTAL_GROSS: RETURNED_TOTAL_GROSS,
+    }
+
+    CUSTOMER_ID = 18495409
+    DELIVERY_ADDRESS_ID = 134864315
+    BILLING_ADDRESS_ID = 786315135
+    DELIVERY_DATE = datetime.datetime.now()
+    LOGIN_ID = 134876131
+    SEASON_ID = 5
+    CHANNEL_ID = 3151
+    ORDER_NOTE = "Order Note text"
+    SEND_EMAIL = 1
+    CARRIAGE_NET = 3.65
+    CARRIAGE_VAT = 15.87
+    TOTAL_NET = 15.84
+    TOTAL_VAT = 12.80
+    TOTAL_GROSS = 2.90
+    DISCOUNT_NET = 1.50
+    FREE_OF_CHARGE = True
+    SHIPPING_RULE_ID = 487315
+    REFERENCE = "reference value"
+    PREP = "prep value"
+    POSTAGE_OVERRIDE = "postage override value"
+    ORDER_ID = 154313143
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register(json=self.RESPONSE)
+
+    def test_CreateOrder_returns_CreateOrderResponse(self):
+        """Test CreateOrder returns an instance of CreateOrderResponse."""
+        response = self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+        )
+        self.assertIsInstance(response, handlers.createorder.CreateOrderResponse)
+
+    def test_CreateOrder_returns_order_id(self):
+        """Test the returned object from CreateOrder contains an order ID."""
+        response = self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+        )
+        self.assertEqual(response.order_id, self.RETURNED_ORDER_ID)
+
+    def test_CreateOrder_returns_invoice_id(self):
+        """Test the returned object from CreateOrder contains an invoice ID."""
+        response = self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+        )
+        self.assertEqual(response.invoice_id, self.RETURNED_INVOICE_ID)
+
+    def test_CreateOrder_returns_payment_term_id(self):
+        """Test the returned object from CreateOrder contains a payment term ID."""
+        response = self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+        )
+        self.assertEqual(response.payment_term_id, self.RETURNED_PAYMENT_TERM_ID)
+
+    def test_CreateOrder_returns_gateway_type(self):
+        """Test the returned object from CreateOrder contains a gateway_type."""
+        response = self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+        )
+        self.assertEqual(response.gateway_type, self.RETURNED_GATEWAY_TYPE)
+
+    def test_CreateOrder_returns_days_of_credit(self):
+        """Test the returned object from CreateOrder contains the days of credit."""
+        response = self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+        )
+        self.assertEqual(response.days_of_credit, self.RETURNED_DAYS_OF_CREDIT)
+
+    def test_CreateOrder_returns_reference(self):
+        """Test the returned object from CreateOrder contains a reference."""
+        response = self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+        )
+        self.assertEqual(response.reference, self.RETURNED_REFERENCE)
+
+    def test_CreateOrder_returns_total_gross(self):
+        """Test the returned object from CreateOrder contains the total gross."""
+        response = self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+        )
+        self.assertEqual(response.total_gross, self.RETURNED_TOTAL_GROSS)
+
+    def test_CreateOrder_sends_customer_ID(self):
+        """Test the CreateOrder request sends a customer ID."""
+        self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+        )
+        self.assertDataSent(self.request_class.CUSTOMER_ID, self.CUSTOMER_ID)
+
+    def test_CreateOrder_sends_items(self):
+        """Test the CreateOrder request sends a dict of items."""
+        self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+        )
+        self.assertDataSent(
+            self.request_class.ITEMS, json.dumps([i.to_dict() for i in self.ITEMS])
+        )
+
+    def test_CreateOrder_sends_delivery_address_ID(self):
+        """Test the CreateOrder request sends a delivery address ID."""
+        self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+        )
+        self.assertDataSent(
+            self.request_class.DELIVERY_ADDRESS_ID, self.DELIVERY_ADDRESS_ID
+        )
+
+    def test_CreateOrder_sends_billing_address_ID(self):
+        """Test the CreateOrder request sends a billing address ID."""
+        self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+        )
+        self.assertDataSent(
+            self.request_class.BILLING_ADDRESS_ID, self.BILLING_ADDRESS_ID
+        )
+
+    def test_CreateOrder_sends_delivery_date(self):
+        """Test the CreateOrder request sends a delivery_date."""
+        self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+        )
+        self.assertDataSent(
+            self.request_class.DELIVERY_DATE, self.DELIVERY_DATE.strftime("%d/%m/%Y")
+        )
+
+    def test_CreateOrder_sends_login_ID(self):
+        """Test the CreateOrder request sends a login ID."""
+        self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+            login_id=self.LOGIN_ID,
+        )
+        self.assertDataSent(self.request_class.LOGIN_ID, self.LOGIN_ID)
+
+    def test_CreateOrder_sends_season_ID(self):
+        """Test the CreateOrder request sends a season ID."""
+        self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+            season_id=self.SEASON_ID,
+        )
+        self.assertDataSent(self.request_class.SEASON_ID, self.SEASON_ID)
+
+    def test_CreateOrder_sends_channel_ID(self):
+        """Test the CreateOrder request sends a channel ID."""
+        self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+            channel_id=self.CHANNEL_ID,
+        )
+        self.assertDataSent(self.request_class.CHANNEL_ID, self.CHANNEL_ID)
+
+    def test_CreateOrder_sends_reference(self):
+        """Test the CreateOrder request sends a reference."""
+        self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+            reference=self.REFERENCE,
+        )
+        self.assertDataSent(self.request_class.REFERENCE, self.REFERENCE)
+
+    def test_CreateOrder_sends_order_ID(self):
+        """Test the CreateOrder request sends an order ID."""
+        self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+            order_id=self.ORDER_ID,
+        )
+        self.assertDataSent(self.request_class.ORDER_ID, self.ORDER_ID)
+
+    def test_CreateOrder_sends_prep(self):
+        """Test the CreateOrder request sends prep."""
+        self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+            prep=self.PREP,
+        )
+        self.assertDataSent(self.request_class.PREP, self.PREP)
+
+    def test_CreateOrder_sends_order_note(self):
+        """Test the CreateOrder request sends order note."""
+        self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+            order_note=self.ORDER_NOTE,
+        )
+        self.assertDataSent(self.request_class.ORDER_NOTE, self.ORDER_NOTE)
+
+    def test_CreateOrder_sends_send_email(self):
+        """Test the CreateOrder request sends whether to send an email."""
+        self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+            send_email=self.SEND_EMAIL,
+        )
+        self.assertDataSent(self.request_class.SEND_EMAIL, self.SEND_EMAIL)
+
+    def test_CreateOrder_sends_postage_override(self):
+        """Test the CreateOrder request sends postage override."""
+        self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+            postage_override=self.POSTAGE_OVERRIDE,
+        )
+        self.assertDataSent(self.request_class.POSTAGE_OVERRIDE, self.POSTAGE_OVERRIDE)
+
+    def test_CreateOrder_sends_carriage_net(self):
+        """Test the CreateOrder request sends carriage net."""
+        self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+            carriage_net=self.CARRIAGE_NET,
+        )
+        self.assertDataSent(self.request_class.CARRIAGE_NET, self.CARRIAGE_NET)
+
+    def test_CreateOrder_sends_carriage_vat(self):
+        """Test the CreateOrder request sends carriage vat."""
+        self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+            carriage_vat=self.CARRIAGE_VAT,
+        )
+        self.assertDataSent(self.request_class.CARRIAGE_VAT, self.CARRIAGE_VAT)
+
+    def test_CreateOrder_sends_total_net(self):
+        """Test the CreateOrder request sends total net."""
+        self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+            total_net=self.TOTAL_NET,
+        )
+        self.assertDataSent(self.request_class.TOTAL_NET, self.TOTAL_NET)
+
+    def test_CreateOrder_sends_total_vat(self):
+        """Test the CreateOrder request sends total vat."""
+        self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+            total_vat=self.TOTAL_VAT,
+        )
+        self.assertDataSent(self.request_class.TOTAL_VAT, self.TOTAL_VAT)
+
+    def test_CreateOrder_sends_total_gross(self):
+        """Test the CreateOrder request sends total gross."""
+        self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+            total_gross=self.TOTAL_GROSS,
+        )
+        self.assertDataSent(self.request_class.TOTAL_GROSS, self.TOTAL_GROSS)
+
+    def test_CreateOrder_sends_discount_net(self):
+        """Test the CreateOrder request sends net discount."""
+        self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+            discount_net=self.DISCOUNT_NET,
+        )
+        self.assertDataSent(self.request_class.DISCOUNT_NET, self.DISCOUNT_NET)
+
+    def test_CreateOrder_sends_free_of_charge(self):
+        """Test the CreateOrder request sends free of charge."""
+        self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+            free_of_charge=self.FREE_OF_CHARGE,
+        )
+        self.assertDataSent(
+            self.request_class.FREE_OF_CHARGE, str(self.FREE_OF_CHARGE).lower()
+        )
+
+    def test_CreateOrder_sends_shipping_rule_ID(self):
+        """Test the CreateOrder request sends a channel ID."""
+        self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+            shipping_rule_id=self.SHIPPING_RULE_ID,
+        )
+        self.assertDataSent(self.request_class.SHIPPING_RULE_ID, self.SHIPPING_RULE_ID)
+
+    def test_CreateOrder_sends_CSRID(self):
+        """Test the CreateOrder request sends CSRID."""
+        self.mock_request(
+            items=self.ITEMS,
+            customer_id=self.CUSTOMER_ID,
+            delivery_address_id=self.DELIVERY_ADDRESS_ID,
+            billing_address_id=self.BILLING_ADDRESS_ID,
+            delivery_date=self.DELIVERY_DATE,
+        )
+        self.assertDataSent(self.request_class.CSRID, self.request_class.CSRID_VALUE)
+
+    def test_CreateOrder_raises_for_non_200_response(self):
+        """Test the CreateOrder request raises for non 200 responses."""
+        self.register(json=self.RESPONSE, status_code=500)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request(
+                items=self.ITEMS,
+                customer_id=self.CUSTOMER_ID,
+                delivery_address_id=self.DELIVERY_ADDRESS_ID,
+                billing_address_id=self.BILLING_ADDRESS_ID,
+                delivery_date=self.DELIVERY_DATE,
+            )
+
+    def test_CreatOrder_raises_when_response_contains_error(self):
+        """Test the request raises when the response error field is not empty."""
+        response = dict(self.RESPONSE)
+        response[handlers.createorder.CreateOrderResponse.ERROR] = "An Error occured"
+        self.register(json=response)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request(
+                items=self.ITEMS,
+                customer_id=self.CUSTOMER_ID,
+                delivery_address_id=self.DELIVERY_ADDRESS_ID,
+                billing_address_id=self.BILLING_ADDRESS_ID,
+                delivery_date=self.DELIVERY_DATE,
+            )
+
+    def test_CreatOrder_raises_when_response_order_id_is_zero(self):
+        """Test the request raises when the response error field is not empty."""
+        response = dict(self.RESPONSE)
+        response[handlers.createorder.CreateOrderResponse.ORDER_ID] = 0
+        self.register(json=response)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request(
+                items=self.ITEMS,
+                customer_id=self.CUSTOMER_ID,
+                delivery_address_id=self.DELIVERY_ADDRESS_ID,
+                billing_address_id=self.BILLING_ADDRESS_ID,
+                delivery_date=self.DELIVERY_DATE,
+            )
