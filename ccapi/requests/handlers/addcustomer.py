@@ -194,8 +194,7 @@ class AddCustomer(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
-        try:
-            response.raise_for_status()
-        except Exception:
-            raise Exception(response.text)
+        self.raise_for_non_200(
+            self, response, f"Failed to add customer {self.customer_name}."
+        )
         return response.text.split("^^")[1]
