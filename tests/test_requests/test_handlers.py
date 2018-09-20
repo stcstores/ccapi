@@ -68,13 +68,15 @@ class TestAddCustomer(TestRequest):
             selling_channel_id=self.SELLING_CHANNEL_ID,
         )
         self.assertDataValueIsNone("AccountID", None)
-        self.assertDataSent("CustName", self.CUSTOMER_NAME)
-        self.assertDataSent("addr1", self.ADDRESS_1)
-        self.assertDataSent("country", self.COUNTRY)
-        self.assertDataSent("scID", self.SELLING_CHANNEL_ID)
-        self.assertDataSent("create", 0)
-        self.assertDataSent("linkTo", 0)
-        self.assertDataSent("oSCID", 0)
+        self.assertDataSent(self.request_class.CUSTOMER_NAME, self.CUSTOMER_NAME)
+        self.assertDataSent(self.request_class.ADDRESS_1, self.ADDRESS_1)
+        self.assertDataSent(self.request_class.COUNTRY, self.COUNTRY)
+        self.assertDataSent(
+            self.request_class.SELLING_CHANNEL_ID, self.SELLING_CHANNEL_ID
+        )
+        self.assertDataSent(self.request_class.CREATE, 0)
+        self.assertDataSent(self.request_class.LINK_TO, 0)
+        self.assertDataSent(self.request_class.OSCID, 0)
 
     def test_AddCustomer_request_sends_optional_parameters(self):
         """Test the AddCustomer request sends optional parameters."""
@@ -104,26 +106,28 @@ class TestAddCustomer(TestRequest):
             vat_number=self.VAT_NUMBER,
             credit_limit=self.CREDIT_LIMIT,
         )
-        self.assertDataSent("AcctName", self.ACCOUNT_NAME)
-        self.assertDataSent("addr2", self.ADDRESS_2)
-        self.assertDataSent("agentID", self.AGENT_ID)
-        self.assertDataSent("compFax", self.COMPANY_FAX)
-        self.assertDataSent("compMob", self.COMPANY_MOBILE)
-        self.assertDataSent("compTel", self.COMPANY_TELEPHONE)
-        self.assertDataSent("contEmail", self.CONTACT_EMAIL)
-        self.assertDataSent("contFax", self.CONTACT_FAX)
-        self.assertDataSent("contMob", self.CONTACT_MOBILE)
-        self.assertDataSent("contName", self.CONTACT_NAME)
-        self.assertDataSent("contPhone", self.CONTACT_PHONE)
-        self.assertDataSent("county", self.COUNTY)
-        self.assertDataSent("CustType", self.CUSTOMER_TYPE)
-        self.assertDataSent("EUVAT", int(bool(self.EU_VAT)))
-        self.assertDataSent("pcode", self.POST_CODE)
-        self.assertDataSent("pterms", self.PAYMENT_TERMS)
-        self.assertDataSent("town", self.TOWN)
-        self.assertDataSent("TradName", self.TRADE_NAME)
-        self.assertDataSent("VATNo", self.VAT_NUMBER)
-        self.assertDataSent("CreditLimit", self.CREDIT_LIMIT)
+        self.assertDataSent(self.request_class.ACCOUNT_NAME, self.ACCOUNT_NAME)
+        self.assertDataSent(self.request_class.ADDRESS_2, self.ADDRESS_2)
+        self.assertDataSent(self.request_class.AGENT_ID, self.AGENT_ID)
+        self.assertDataSent(self.request_class.COMPANY_FAX, self.COMPANY_FAX)
+        self.assertDataSent(self.request_class.COMPANY_MOBILE, self.COMPANY_MOBILE)
+        self.assertDataSent(
+            self.request_class.COMPANY_TELEPHONE, self.COMPANY_TELEPHONE
+        )
+        self.assertDataSent(self.request_class.CONTACT_EMAIL, self.CONTACT_EMAIL)
+        self.assertDataSent(self.request_class.CONTACT_FAX, self.CONTACT_FAX)
+        self.assertDataSent(self.request_class.CONTACT_MOBILE, self.CONTACT_MOBILE)
+        self.assertDataSent(self.request_class.CONTACT_NAME, self.CONTACT_NAME)
+        self.assertDataSent(self.request_class.CONTACT_PHONE, self.CONTACT_PHONE)
+        self.assertDataSent(self.request_class.COUNTY, self.COUNTY)
+        self.assertDataSent(self.request_class.CUSTOMER_TYPE, self.CUSTOMER_TYPE)
+        self.assertDataSent(self.request_class.EU_VAT, int(bool(self.EU_VAT)))
+        self.assertDataSent(self.request_class.POST_CODE, self.POST_CODE)
+        self.assertDataSent(self.request_class.PAYMENT_TERMS, self.PAYMENT_TERMS)
+        self.assertDataSent(self.request_class.TOWN, self.TOWN)
+        self.assertDataSent(self.request_class.TRADE_NAME, self.TRADE_NAME)
+        self.assertDataSent(self.request_class.VAT_NUMBER, self.VAT_NUMBER)
+        self.assertDataSent(self.request_class.CREDIT_LIMIT, self.CREDIT_LIMIT)
 
     def test_AddCustomer_request_sends_special_instructions(self):
         """Test the AddCustomer request sends special instructions."""
@@ -134,8 +138,10 @@ class TestAddCustomer(TestRequest):
             selling_channel_id=self.SELLING_CHANNEL_ID,
             special_instructions=self.SPECIAL_INSTRUCTIONS_NOTE,
         )
-        self.assertDataSent("SpecInstr", 1)
-        self.assertDataSent("SpecInstrNote", self.SPECIAL_INSTRUCTIONS_NOTE)
+        self.assertDataSent(self.request_class.SPECIAL_INSTRUCTIONS, 1)
+        self.assertDataSent(
+            self.request_class.SPECIAL_INSTRUCTIONS_NOTE, self.SPECIAL_INSTRUCTIONS_NOTE
+        )
 
     def test_AddCustomer_request_without_special_instructions(self):
         """Test False is send for special instructions when no note is passed."""
@@ -146,8 +152,43 @@ class TestAddCustomer(TestRequest):
             selling_channel_id=self.SELLING_CHANNEL_ID,
             special_instructions=None,
         )
-        self.assertDataSent("SpecInstr", 0)
-        self.assertDataValueIsNone("SpecInstrNote", None)
+        self.assertDataSent(self.request_class.SPECIAL_INSTRUCTIONS, 0)
+        self.assertDataValueIsNone(self.request_class.SPECIAL_INSTRUCTIONS_NOTE, None)
+
+    def test_trade_name_defaults_to_customer_name(self):
+        """Test the trade_name parameter defaults to the customer name."""
+        self.mock_request(
+            customer_name=self.CUSTOMER_NAME,
+            address_1=self.ADDRESS_1,
+            country=self.COUNTRY,
+            selling_channel_id=self.SELLING_CHANNEL_ID,
+            trade_name=None,
+        )
+        self.assertDataSent(self.request_class.CUSTOMER_NAME, self.CUSTOMER_NAME)
+        self.assertDataSent(self.request_class.TRADE_NAME, self.CUSTOMER_NAME)
+
+    def test_contact_name_defaults_to_customer_name(self):
+        """Test the contact_name parameter defaults to the customer name."""
+        self.mock_request(
+            customer_name=self.CUSTOMER_NAME,
+            address_1=self.ADDRESS_1,
+            country=self.COUNTRY,
+            selling_channel_id=self.SELLING_CHANNEL_ID,
+            contact_name=None,
+        )
+        self.assertDataSent(self.request_class.CUSTOMER_NAME, self.CUSTOMER_NAME)
+        self.assertDataSent(self.request_class.CONTACT_NAME, self.CUSTOMER_NAME)
+
+    def test_AddCustomer_raises_for_non_200_response(self):
+        """Test the AddCustomer request raises for a non 200 response status code."""
+        self.register(text=self.RESPONSE, status_code=500)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request(
+                customer_name=self.CUSTOMER_NAME,
+                address_1=self.ADDRESS_1,
+                country=self.COUNTRY,
+                selling_channel_id=self.SELLING_CHANNEL_ID,
+            )
 
 
 class TestCreateOrderRequest(TestRequest):
