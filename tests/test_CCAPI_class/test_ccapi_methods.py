@@ -1659,7 +1659,7 @@ class Test_create_order_Method(TestCCAPIMethod):
     SEASON_ID = 5
     CHANNEL_ID = 3151
     ORDER_NOTE = "Order Note text"
-    SEND_EMAIL = 1
+    SEND_EMAIL = True
     CARRIAGE_NET = 3.65
     CARRIAGE_VAT = 15.87
     TOTAL_NET = 15.84
@@ -1700,15 +1700,10 @@ class Test_create_order_Method(TestCCAPIMethod):
             delivery_address_id=self.DELIVERY_ADDRESS_ID,
             billing_address_id=self.BILLING_ADDRESS_ID,
             delivery_date=self.DELIVERY_DATE,
-            login_id=self.LOGIN_ID,
             season_id=self.SEASON_ID,
             channel_id=self.CHANNEL_ID,
-            reference=self.REFERENCE,
-            order_id=self.ORDER_ID,
-            prep=self.PREP,
             order_note=self.ORDER_NOTE,
             send_email=self.SEND_EMAIL,
-            postage_override=self.POSTAGE_OVERRIDE,
             carriage_net=self.CARRIAGE_NET,
             carriage_vat=self.CARRIAGE_VAT,
             total_net=self.TOTAL_NET,
@@ -1738,30 +1733,13 @@ class Test_create_order_Method(TestCCAPIMethod):
             self.DELIVERY_DATE.strftime("%d/%m/%Y"),
         )
         self.assertDataSent(
-            requests.handlers.createorder.CreateOrder.LOGIN_ID, self.LOGIN_ID
-        )
-        self.assertDataSent(
-            requests.handlers.createorder.CreateOrder.SEASON_ID, self.SEASON_ID
-        )
-        self.assertDataSent(
             requests.handlers.createorder.CreateOrder.CHANNEL_ID, self.CHANNEL_ID
         )
-        self.assertDataSent(
-            requests.handlers.createorder.CreateOrder.REFERENCE, self.REFERENCE
-        )
-        self.assertDataSent(
-            requests.handlers.createorder.CreateOrder.ORDER_ID, self.ORDER_ID
-        )
-        self.assertDataSent(requests.handlers.createorder.CreateOrder.PREP, self.PREP)
         self.assertDataSent(
             requests.handlers.createorder.CreateOrder.ORDER_NOTE, self.ORDER_NOTE
         )
         self.assertDataSent(
-            requests.handlers.createorder.CreateOrder.SEND_EMAIL, self.SEND_EMAIL
-        )
-        self.assertDataSent(
-            requests.handlers.createorder.CreateOrder.POSTAGE_OVERRIDE,
-            self.POSTAGE_OVERRIDE,
+            requests.handlers.createorder.CreateOrder.SEND_EMAIL, int(self.SEND_EMAIL)
         )
         self.assertDataSent(
             requests.handlers.createorder.CreateOrder.CARRIAGE_NET, self.CARRIAGE_NET
