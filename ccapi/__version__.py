@@ -3,7 +3,7 @@
 __title__ = "ccapi"
 __description__ = "API integration for Cloud Commerce Pro."
 __url__ = "http://github.com/axevalley/ccapi.git"
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 __author__ = "Luke Shiner"
 __author_email__ = "luke@lukeshiner.com"
 __license__ = "MIT"
