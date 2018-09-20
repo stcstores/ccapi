@@ -712,7 +712,7 @@ class CCAPI:
 
     @staticmethod
     def delete_image(image_id):
-        """Delete Product Image.
+        """Delete a product image.
 
         Args:
             image_id: ID of Product Image to delete.
@@ -721,7 +721,7 @@ class CCAPI:
 
     @staticmethod
     def upload_image(*, product_ids, channel_ids=[], image_file=None):
-        """Add image to products.
+        """Add an image to a product or products.
 
         Kwargs:
             product_ids: IDs of products to add image to.
@@ -749,12 +749,12 @@ class CCAPI:
 
     @staticmethod
     def get_dispatch_methods_for_order(order_id, analyse=True):
-        """Return dispatch methods for order."""
+        """Return dispatch methods for an order."""
         return requests.GetDispatchMethodsForOrder(order_id, analyse=analyse)
 
     @staticmethod
     def get_factories():
-        """Get factories list."""
+        """Return a list of existing Factories."""
         return requests.FindFactories()
 
     @classmethod
@@ -798,7 +798,7 @@ class CCAPI:
 
     @staticmethod
     def delete_product_factory_link(factory_link_id):
-        """Delete Product Facotry link."""
+        """Delete Product Factory link."""
         return requests.DeleteProductFactoryLink(factory_link_id)
 
     @staticmethod
