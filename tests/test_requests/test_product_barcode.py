@@ -36,7 +36,7 @@ class TestProductBarcodeInUse(TestRequest):
         self.assertFalse(response)
 
     def test_with_used_barcode(self):
-        """Test reqeuest gives correct response for a used barcode."""
+        """Test request gives correct response for a used barcode."""
         self.register(json=self.USED_RESPONSE)
         response = self.mock_request(self.BARCODE)
         self.assertTrue(response)
