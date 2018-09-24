@@ -382,7 +382,7 @@ class TestCreateOrderRequest(TestRequest):
             )
 
 
-class TestCreatOrderResponse(unittest.TestCase):
+class TestCreateOrderResponse(unittest.TestCase):
     """Test the CreateOrderResponse class."""
 
     RETURNED_ORDER_ID = TestCreateOrderRequest.RETURNED_ORDER_ID
