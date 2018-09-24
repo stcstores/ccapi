@@ -6,8 +6,10 @@ from ccapi.requests import APIRequest
 class ProgramTypeRequest(APIRequest):
     """Base class for requests using the program type form."""
 
+    uri = ""
     PROGRAM_TYPE = None
     kwargs = {}
+    error_message = f"Error making request to {uri}"
 
     def __new__(self, program_type=None, **kwargs):
         """Create addCustomer request."""
@@ -23,4 +25,4 @@ class ProgramTypeRequest(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
-        raise NotImplementedError()
+        self.raise_for_non_200(self, response, self.error_message)

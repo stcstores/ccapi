@@ -1,6 +1,6 @@
 """Tests for Program Type requests."""
 
-from ccapi.requests import program_type_requests
+import ccapi
 
 from .test_request import TestRequest
 
@@ -8,7 +8,7 @@ from .test_request import TestRequest
 class TestProgramTypeRequest(TestRequest):
     """Tests for the Customer request."""
 
-    request_class = program_type_requests.Customer
+    request_class = ccapi.requests.program_type_requests.Customer
 
     RESPONSE = "RESPONSE TEXT"
     TEST_KWARG = "Kwarg"
@@ -40,7 +40,7 @@ class TestProgramTypeRequest(TestRequest):
 class ProgramTypeRequestSubclass(TestRequest):
     """Base class for testing Program Type requests."""
 
-    request_class = program_type_requests.GetPaymentTerms
+    request_class = ccapi.requests.program_type_requests.GetPaymentTerms
     RESPONSE = ""
 
     def setUp(self):
@@ -64,11 +64,17 @@ class ProgramTypeRequestSubclass(TestRequest):
         for key, value in self.request_class.kwargs.items():
             self.assertDataSent(key, value)
 
+    def test_raises_for_non_200(self):
+        """Test an exception is raised when a request recieved an error status code."""
+        self.register(text=self.RESPONSE, status_code=500)
+        with self.assertRaises(ccapi.exceptions.CloudCommerceResponseError):
+            self.mock_request()
+
 
 class TestGetPaymentTerms(ProgramTypeRequestSubclass):
     """Test the GetPaymentTerms request."""
 
-    request_class = program_type_requests.customer.GetPaymentTerms
+    request_class = ccapi.requests.program_type_requests.customer.GetPaymentTerms
 
     RESPONSE = (
         "RecFound^^11^^10^^14 Days Credit^^2^^28 Days Credit^^8^^30 Days Credit"
@@ -82,7 +88,7 @@ class TestGetPaymentTerms(ProgramTypeRequestSubclass):
 class TestUpdateCustomerAddress(ProgramTypeRequestSubclass):
     """Test the UpdateCustomerAddress request."""
 
-    request_class = program_type_requests.customer.UpdateCustomerAddress
+    request_class = ccapi.requests.program_type_requests.customer.UpdateCustomerAddress
 
     NEW_ADDRESS_ID = "56664022"
     RESPONSE = f"Updated^^0Inserted^^{NEW_ADDRESS_ID}^^57706408"
