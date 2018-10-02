@@ -451,7 +451,7 @@ class TestSaveProductName(TestRequest):
         self.mock_request(name="New Product Name", product_ids=self.PRODUCT_ID)
         self.assertDataSent("prodids", [self.PRODUCT_ID])
 
-    def test_SaveProductName_request_raises(self):
+    def test_SaveProductName_request_raises_for_non_200(self):
         """Test that the request raises an exception for non 200 responses."""
         self.register(text=self.RESPONSE, status_code=500)
         with self.assertRaises(exceptions.CloudCommerceResponseError):

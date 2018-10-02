@@ -1,6 +1,6 @@
 """Tests for product barcode requests."""
 
-from ccapi.requests import productbarcode
+import ccapi
 
 from .test_request import TestRequest
 
@@ -8,7 +8,7 @@ from .test_request import TestRequest
 class TestProductBarcodeInUse(TestRequest):
     """Tests for the ProductBarcodeInUse request."""
 
-    request_class = productbarcode.ProductBarcodeInUse
+    request_class = ccapi.requests.productbarcode.ProductBarcodeInUse
     BARCODE = "13245679812"
     UNUSED_RESPONSE = {
         "Success": False,
@@ -36,7 +36,13 @@ class TestProductBarcodeInUse(TestRequest):
         self.assertFalse(response)
 
     def test_with_used_barcode(self):
-        """Test reqeuest gives correct response for a used barcode."""
+        """Test request gives correct response for a used barcode."""
         self.register(json=self.USED_RESPONSE)
         response = self.mock_request(self.BARCODE)
         self.assertTrue(response)
+
+    def test_raises_for_non_200(self):
+        """Test request raises for non 200 response codes."""
+        self.register(json=self.USED_RESPONSE, status_code=500)
+        with self.assertRaises(ccapi.exceptions.CloudCommerceResponseError):
+            self.mock_request(self.BARCODE)

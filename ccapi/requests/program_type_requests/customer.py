@@ -14,6 +14,7 @@ class Customer(ProgramTypeRequest):
 
     def process_response(self, response):
         """Handle request response."""
+        super().process_response(self, response)
         return response.text
 
 
@@ -25,6 +26,8 @@ class GetPaymentTerms(Customer):
     PAY_TERM_ID = "PayTermID"
 
     kwargs = {PAY_TERM_ID: 0}
+
+    error_message = "Failed to get payment terms."
 
 
 class UpdateCustomerAddress(Customer):
@@ -52,6 +55,8 @@ class UpdateCustomerAddress(Customer):
     MOBILE_NUMBER = "MobNo"
     ADDRESS_ID = "AddressID"
     CUSTOMER_ADD_LINK_ID = "CustAddLinkID"
+
+    error_message = "Failed to add or update a customer address."
 
     def __new__(
         self,
