@@ -186,7 +186,7 @@ class NewOrderItem:
     PARENT_PRODUCT_ID = "ParentProductID"
     PRODUCT_TYPE = "ProductType"
     PARENT_PRODUCT_ID_VALUE = "0"
-    PRODUCT_TYPE_VALUE = "0"
+    PRICE_OVERRIDE = "PriceOverride"
 
     def __init__(
         self,
@@ -194,13 +194,15 @@ class NewOrderItem:
         product_id,
         quantity=1,
         currency="£",
-        item_net=0,
-        item_gross=0,
+        item_net=0.0,
+        item_gross=0.0,
         item_vat_rate=5,
-        item_discount_net=0,
-        item_discount_gross=0,
+        item_discount_net=0.0,
+        item_discount_gross=0.0,
         total_net=0,
         total_gross=0,
+        price_override=True,
+        product_type=0,
     ):
         """
         Create an item to be passed to a CreateOrder request.
@@ -219,6 +221,8 @@ class NewOrderItem:
             item_discount_gross (float): The gross discount per item.
             total_net (float): The net cost of all instances of this item ordered.
             total_gross (float): The gross cost of all instances of this item ordered.
+            price_override (bool): Override the inventory price for the item.
+
         """
         self.product_id = product_id
         self.quantity = quantity
@@ -230,22 +234,25 @@ class NewOrderItem:
         self.item_discount_gross = item_discount_gross
         self.total_net = total_net
         self.total_gross = total_gross
+        self.price_override = price_override
+        self.product_type = product_type
 
     def to_dict(self):
         """Return item data as a dict."""
         return {
             self.PRODUCT_ID: int(self.product_id),
-            self.QUANTITY: int(self.quantity),
+            self.QUANTITY: str(int(self.quantity)),
             self.CURRENCY: str(self.currency),
-            self.ITEM_NET: self.item_net,
-            self.ITEM_GROSS: self.item_gross,
-            self.ITEM_VAT_RATE: self.item_vat_rate,
-            self.ITEM_DISCOUNT_NET: self.item_discount_net,
-            self.ITEM_DISCOUNT_GROSS: self.item_discount_gross,
-            self.TOTAL_NET: self.total_net,
-            self.TOTAL_GROSS: self.total_gross,
-            self.PARENT_PRODUCT_ID: self.PARENT_PRODUCT_ID_VALUE,
-            self.PRODUCT_TYPE: self.PRODUCT_TYPE_VALUE,
+            self.ITEM_NET: str(float(self.item_net)),
+            self.ITEM_GROSS: str(float(self.item_gross)),
+            self.ITEM_VAT_RATE: int(self.item_vat_rate),
+            self.ITEM_DISCOUNT_NET: str(float(self.item_discount_net)),
+            self.ITEM_DISCOUNT_GROSS: str(float(self.item_discount_gross)),
+            self.TOTAL_NET: str(float(self.total_net)),
+            self.TOTAL_GROSS: str(float(self.total_gross)),
+            self.PARENT_PRODUCT_ID: str(self.PARENT_PRODUCT_ID_VALUE),
+            self.PRODUCT_TYPE: str(self.product_type),
+            self.PRICE_OVERRIDE: bool(self.price_override),
         }
 
     def to_json(self):
