@@ -4,6 +4,7 @@ from .ccapisession import CloudCommerceAPISession  # NOQA
 from .apirequest import APIRequest  # NOQA
 from .accounts import *  # NOQA
 from .configuration import *  # NOQA
+from .customers import *  # NOQA
 from .factory import *  # NOQA
 from .productbarcode import *  # NOQA
 from .productoption import *  # NOQA
