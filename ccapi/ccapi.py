@@ -1090,3 +1090,8 @@ class CCAPI:
         if cls.barcode_is_in_use(barcode) is False:
             return requests.SaveBarcode(barcode=barcode, product_id=product_id)
         raise Exception('Barcode "{}" is already in use'.format(barcode))
+
+    @staticmethod
+    def customer_logs(customer_id):
+        """Return the logs for a customer's orders."""
+        return requests.customers.GetLogs(customer_id)
