@@ -1817,3 +1817,21 @@ class Test_create_order_Method(TestCCAPIMethod):
             requests.handlers.createorder.CreateOrder.DELIVERY_DATE,
             datetime.datetime.now().strftime("%d/%m/%Y"),
         )
+
+
+class Test_customer_logs_Method(TestCCAPIMethod):
+    """Test the ccapi.CCAPI.customer_logs method."""
+
+    RESPONSE = test_requests.test_customers.TestGetLogs.RESPONSE
+    CUSTOMER_ID = "367033441"
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register_request(requests.customers.GetLogs, json=self.RESPONSE)
+
+    def test_customer_logs_return_a_list(self):
+        """Test the ccapi.CCAPI.customer_logs method returns a list of logs."""
+        returned_value = CCAPI.customer_logs(self.CUSTOMER_ID)
+        self.assertIsInstance(returned_value, list)
+        self.assertIsInstance(returned_value[0], requests.customers.getlogs.CustomerLog)
