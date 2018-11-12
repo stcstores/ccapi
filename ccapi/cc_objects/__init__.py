@@ -9,3 +9,4 @@ from .courierrule import CourierRule  # NOQA
 from .vatrates import VatRates  # NOQA
 from .factory import Factory, Factories, FactoryLink, FactoryLinks  # NOQA
 from .saleschannel import SalesChannel  # NOQA
+from .productexport import ProductExportUpdateResponse  # NOQA
