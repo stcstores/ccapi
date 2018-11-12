@@ -1835,3 +1835,21 @@ class Test_customer_logs_Method(TestCCAPIMethod):
         returned_value = CCAPI.customer_logs(self.CUSTOMER_ID)
         self.assertIsInstance(returned_value, list)
         self.assertIsInstance(returned_value[0], requests.customers.getlogs.CustomerLog)
+
+
+class Test_get_product_exports_Method(TestCCAPIMethod):
+    """Test the ccapi.CCAPI.get_product_exports method."""
+
+    RESPONSE = test_data.GET_PRODUCT_EXPORT_UPDATE_RESPONSE
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register_request(
+            requests.exports.GetProductExportUpdate, json=self.RESPONSE
+        )
+
+    def test_get_product_exports_returns_ProductExportUpdateResponse(self):
+        """Test the method returns an instance of ProductExportUpdateResponse."""
+        returned_value = CCAPI.get_product_exports()
+        self.assertIsInstance(returned_value, cc_objects.ProductExportUpdateResponse)
