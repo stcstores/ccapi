@@ -3,7 +3,7 @@
 import datetime
 
 from . import requests
-from .cc_objects import VatRates
+from .cc_objects import ProductExportUpdateResponse, VatRates
 from .requests import CloudCommerceAPISession
 
 
@@ -1095,3 +1095,9 @@ class CCAPI:
     def customer_logs(customer_id):
         """Return the logs for a customer's orders."""
         return requests.customers.GetLogs(customer_id)
+
+    @staticmethod
+    def get_product_exports():
+        """Return product export information."""
+        export_data = requests.exports.GetProductExportUpdate()
+        return ProductExportUpdateResponse(**export_data)
