@@ -45,6 +45,7 @@ class BaseProductExport:
     DATE_COMPLETED = "DateCompleted"
     SPREADSHEET = "spreadSheet"
     ZIP_FILE = "zipFile"
+    NULL_VALUE = "???"
 
     def __init__(self, **kwargs):
         """Load properties from export data."""
@@ -58,12 +59,15 @@ class BaseProductExport:
         self.file_name = kwargs[self.FILE_NAME]
         self.date_requested = self.parse_date(kwargs[self.DATE_REQUESTED])
         self.date_started = self.parse_date(kwargs[self.DATE_STARTED])
-        self.date_completed = self.parse_date(kwargs[self.DATE_COMPLETED])
+        if kwargs[self.DATE_COMPLETED] == self.NULL_VALUE:
+            self.date_completed = None
+        else:
+            self.date_completed = self.parse_date(kwargs[self.DATE_COMPLETED])
         self.spreadsheet = ExportFile(**kwargs[self.SPREADSHEET])
         self.zip_file = ExportFile(**kwargs[self.ZIP_FILE])
 
     def __gt__(self, other):
-        return self.date_completed > other.date_completed
+        return self.date_completed > other.date_requested
 
     @staticmethod
     def parse_date(date_string):
@@ -223,9 +227,20 @@ class ExportFile:
     FOUND = "found"
     SIZE = "size"
 
+    NULL_VALUE = "???"
+
     def __init__(self, **kwargs):
         """Load properties from export data."""
-        self.columns = kwargs[self.COLUMNS]
-        self.rows = kwargs[self.ROWS]
+        if kwargs[self.COLUMNS] == self.NULL_VALUE:
+            self.columns = None
+        else:
+            self.columns = kwargs[self.COLUMNS]
+        if kwargs[self.ROWS] == self.NULL_VALUE:
+            self.rows = None
+        else:
+            self.rows = kwargs[self.ROWS]
         self.found = kwargs[self.FOUND]
-        self.size = kwargs[self.SIZE]
+        if kwargs[self.SIZE] == self.NULL_VALUE:
+            self.size = None
+        else:
+            self.size = kwargs[self.SIZE]
