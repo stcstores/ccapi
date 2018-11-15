@@ -165,11 +165,11 @@ class TestBaseProductExport(TestProductExport):
         self.assertIsInstance(self.export.zip_file, cc_objects.productexport.ExportFile)
 
     def test_sorting(self):
-        """Test exports sort by date_completed."""
+        """Test exports sort by date_requested."""
         early_update = cc_objects.productexport.BaseProductExport(**self.EXPORT_DATA)
         late_update = cc_objects.productexport.BaseProductExport(**self.EXPORT_DATA)
-        early_update.date_completed = datetime.datetime(year=2016, day=1, month=1)
-        late_update.date_completed = datetime.datetime(year=2018, day=1, month=1)
+        early_update.date_requested = datetime.datetime(year=2016, day=1, month=1)
+        late_update.date_requested = datetime.datetime(year=2018, day=1, month=1)
         exports = sorted([late_update, early_update])
         self.assertEqual(exports[0], early_update)
         self.assertEqual(exports[1], late_update)
@@ -192,3 +192,36 @@ class TestProductExports(TestProductExport):
         self.assertIsInstance(
             self.exports.exports[0], cc_objects.productexport.ProductExport
         )
+
+    def test_null_date_completed(self):
+        """Test export can be instanciated when no date completed is provided."""
+        export_data = {
+            "ID": 3056,
+            "Channel": "Not Selected",
+            "CopyImages": False,
+            "ProductCount": 31,
+            "ProductsExported": 31,
+            "Status": "Complete",
+            "Error": "",
+            "FileName": "ProductsExport_636111775182718600",
+            "DateRequested": "04/10/2016 11:31",
+            "DateStarted": "04/10/2016 11:31",
+            "DateCompleted": "???",
+            "spreadSheet": {
+                "found": True,
+                "size": "11Kb",
+                "rows": "0",
+                "cols": "0",
+                "error": "",
+            },
+            "zipFile": {
+                "found": False,
+                "size": "???",
+                "rows": "???",
+                "cols": "???",
+                "error": "",
+            },
+        }
+
+        export = cc_objects.productexport.ProductExport(**export_data)
+        self.assertIsNone(export.date_completed)
