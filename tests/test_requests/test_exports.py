@@ -57,3 +57,29 @@ class TestRequestProductExport(TestRequest):
         self.register(text=self.RESPONSE, status_code=500)
         with self.assertRaises(ccapi.exceptions.CloudCommerceResponseError):
             self.mock_request()
+
+
+class TestViewFile(TestRequest):
+    """Tests for the ViewFile request."""
+
+    request_class = ccapi.requests.exports.ViewFile
+
+    RESPONSE = test_data.PRODUCT_EXPORT_FILE
+    FILE_NAME = "ProductExport9999"
+
+    def test_request(self):
+        """Test the ViewFile request."""
+        self.register(content=self.RESPONSE)
+        response = self.mock_request(self.FILE_NAME)
+        self.assertEqual(response.content, self.RESPONSE)
+        self.assertQuerySent(self.request_class.NAME, self.FILE_NAME)
+        self.assertQuerySent(self.request_class.DISP, self.request_class.DISP_VALUE)
+        self.assertQuerySent(
+            self.request_class.BRAND_ID, self.request_class.BRAND_ID_VALUE
+        )
+
+    def test_raises_for_non_200(self):
+        """Test request raises for non 200 response codes."""
+        self.register(content=self.RESPONSE, status_code=500)
+        with self.assertRaises(ccapi.exceptions.CloudCommerceResponseError):
+            self.mock_request(self.FILE_NAME)
