@@ -1101,3 +1101,17 @@ class CCAPI:
         """Return product export information."""
         export_data = requests.exports.GetProductExportUpdate()
         return ProductExportUpdateResponse(**export_data)
+
+    @staticmethod
+    def export_products(copy_images=False):
+        """
+        Trigger a product export.
+
+        Args:
+            copy_images (bool): Include images in export.
+
+        Returns:
+            True if successfull.
+
+        """
+        return requests.exports.RequestProductExport(copy_images=copy_images)
