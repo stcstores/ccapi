@@ -2,6 +2,9 @@
 
 import datetime
 import json
+import shutil
+import tempfile
+from pathlib import Path
 
 from ccapi import CCAPI, NewOrderItem, VatRates, cc_objects, requests
 
@@ -1835,3 +1838,77 @@ class Test_customer_logs_Method(TestCCAPIMethod):
         returned_value = CCAPI.customer_logs(self.CUSTOMER_ID)
         self.assertIsInstance(returned_value, list)
         self.assertIsInstance(returned_value[0], requests.customers.getlogs.CustomerLog)
+
+
+class Test_get_product_exports_Method(TestCCAPIMethod):
+    """Test the ccapi.CCAPI.get_product_exports method."""
+
+    RESPONSE = test_data.GET_PRODUCT_EXPORT_UPDATE_RESPONSE
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register_request(
+            requests.exports.GetProductExportUpdate, json=self.RESPONSE
+        )
+
+    def test_get_product_exports_returns_ProductExportUpdateResponse(self):
+        """Test the method returns an instance of ProductExportUpdateResponse."""
+        returned_value = CCAPI.get_product_exports()
+        self.assertIsInstance(returned_value, cc_objects.ProductExportUpdateResponse)
+
+
+class Test_export_products_Method(TestCCAPIMethod):
+    """Test the ccapi.CCAPI.export_products method."""
+
+    RESPONSE = test_requests.test_exports.TestRequestProductExport.RESPONSE
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register_request(requests.exports.RequestProductExport, text=self.RESPONSE)
+
+    def test_request_product_export_returns_True(self):
+        """Test export_products returns True after a successfull request."""
+        returned_value = CCAPI.export_products()
+        self.assertTrue(returned_value)
+
+    def test_copy_images_parameter(self):
+        """Test the copy_images parameter of export_products."""
+        CCAPI.export_products(copy_images=False)
+        self.assertDataSent(requests.exports.RequestProductExport.COPY, 0)
+
+
+class Test_save_product_export_file_Method(TestCCAPIMethod):
+    """Test the ccapi.CCAPI.export_products method."""
+
+    RESPONSE = test_requests.test_exports.TestViewFile.RESPONSE
+    FILE_NAME = "ProductExport9999"
+
+    def setUp(self):
+        """Create a temporary directory for saving export files."""
+        super().setUp()
+        self.target_dir = Path(tempfile.mkdtemp())
+        self.register_request(requests.exports.ViewFile, content=self.RESPONSE)
+
+    def tearDown(self):
+        """Remove temporary directory."""
+        shutil.rmtree(self.target_dir)
+        super().tearDown()
+
+    def test_save_export_file(self):
+        """Test the method saves an downloaded export file."""
+        save_name = "test_file.xlsx"
+        CCAPI.save_product_export_file(
+            self.FILE_NAME, self.target_dir, save_name="test_file.xlsx"
+        )
+        with open(str(self.target_dir / save_name), "rb") as f:
+            saved_content = f.read()
+        self.assertEqual(saved_content, self.RESPONSE)
+
+    def test_default_file_name(self):
+        """Test that the export name is used as a file name if none is provided."""
+        CCAPI.save_product_export_file(self.FILE_NAME, self.target_dir)
+        with open(str(self.target_dir / self.FILE_NAME) + ".xlsx", "rb") as f:
+            saved_content = f.read()
+        self.assertEqual(saved_content, self.RESPONSE)

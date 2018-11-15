@@ -3,7 +3,7 @@
 import datetime
 
 from . import requests
-from .cc_objects import VatRates
+from .cc_objects import ProductExportUpdateResponse, VatRates
 from .requests import CloudCommerceAPISession
 
 
@@ -1095,3 +1095,45 @@ class CCAPI:
     def customer_logs(customer_id):
         """Return the logs for a customer's orders."""
         return requests.customers.GetLogs(customer_id)
+
+    @staticmethod
+    def get_product_exports():
+        """Return product export information."""
+        export_data = requests.exports.GetProductExportUpdate()
+        return ProductExportUpdateResponse(**export_data)
+
+    @staticmethod
+    def export_products(copy_images=False):
+        """
+        Trigger a product export.
+
+        Args:
+            copy_images (bool): Include images in export.
+
+        Returns:
+            True if successfull.
+
+        """
+        return requests.exports.RequestProductExport(copy_images=copy_images)
+
+    @staticmethod
+    def save_product_export_file(export_file_name, target_directory, save_name=None):
+        """
+        Save a product export file.
+
+        Args:
+            export_file_name (str): The name of the file to retrieve.
+            target_directory (pathlib.Path or str): The directory in which the file will
+                be saved.
+            save_name (str or None): The name to save the export as. If None
+                export_file_name will be used.
+
+        """
+        response = requests.exports.ViewFile(export_file_name)
+        if save_name is None:
+            save_name = f"{export_file_name}.xlsx"
+        path = target_directory / save_name
+        with open(str(path), "wb") as f:
+            for chunk in response.iter_content(chunk_size=512):
+                if chunk:
+                    f.write(chunk)
