@@ -2,6 +2,9 @@
 
 import datetime
 import json
+import shutil
+import tempfile
+from pathlib import Path
 
 from ccapi import CCAPI, NewOrderItem, VatRates, cc_objects, requests
 
@@ -1874,3 +1877,38 @@ class Test_export_products_Method(TestCCAPIMethod):
         """Test the copy_images parameter of export_products."""
         CCAPI.export_products(copy_images=False)
         self.assertDataSent(requests.exports.RequestProductExport.COPY, 0)
+
+
+class Test_save_export_file_Method(TestCCAPIMethod):
+    """Test the ccapi.CCAPI.export_products method."""
+
+    RESPONSE = test_requests.test_exports.TestViewFile.RESPONSE
+    FILE_NAME = "ProductExport9999"
+
+    def setUp(self):
+        """Create a temporary directory for saving export files."""
+        super().setUp()
+        self.target_dir = Path(tempfile.mkdtemp())
+        self.register_request(requests.exports.ViewFile, content=self.RESPONSE)
+
+    def tearDown(self):
+        """Remove temporary directory."""
+        shutil.rmtree(self.target_dir)
+        super().tearDown()
+
+    def test_save_export_file(self):
+        """Test the method saves an downloaded export file."""
+        save_name = "test_file.xlsx"
+        CCAPI.save_export_file(
+            self.FILE_NAME, self.target_dir, save_name="test_file.xlsx"
+        )
+        with open(str(self.target_dir / save_name), "rb") as f:
+            saved_content = f.read()
+        self.assertEqual(saved_content, self.RESPONSE)
+
+    def test_default_file_name(self):
+        """Test that the export name is used as a file name if none is provided."""
+        CCAPI.save_export_file(self.FILE_NAME, self.target_dir)
+        with open(str(self.target_dir / self.FILE_NAME) + ".xlsx", "rb") as f:
+            saved_content = f.read()
+        self.assertEqual(saved_content, self.RESPONSE)
