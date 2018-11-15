@@ -1117,7 +1117,7 @@ class CCAPI:
         return requests.exports.RequestProductExport(copy_images=copy_images)
 
     @staticmethod
-    def save_export_file(export_file_name, target_directory, save_name=None):
+    def save_product_export_file(export_file_name, target_directory, save_name=None):
         """
         Save a product export file.
 

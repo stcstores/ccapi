@@ -1879,7 +1879,7 @@ class Test_export_products_Method(TestCCAPIMethod):
         self.assertDataSent(requests.exports.RequestProductExport.COPY, 0)
 
 
-class Test_save_export_file_Method(TestCCAPIMethod):
+class Test_save_product_export_file_Method(TestCCAPIMethod):
     """Test the ccapi.CCAPI.export_products method."""
 
     RESPONSE = test_requests.test_exports.TestViewFile.RESPONSE
@@ -1899,7 +1899,7 @@ class Test_save_export_file_Method(TestCCAPIMethod):
     def test_save_export_file(self):
         """Test the method saves an downloaded export file."""
         save_name = "test_file.xlsx"
-        CCAPI.save_export_file(
+        CCAPI.save_product_export_file(
             self.FILE_NAME, self.target_dir, save_name="test_file.xlsx"
         )
         with open(str(self.target_dir / save_name), "rb") as f:
@@ -1908,7 +1908,7 @@ class Test_save_export_file_Method(TestCCAPIMethod):
 
     def test_default_file_name(self):
         """Test that the export name is used as a file name if none is provided."""
-        CCAPI.save_export_file(self.FILE_NAME, self.target_dir)
+        CCAPI.save_product_export_file(self.FILE_NAME, self.target_dir)
         with open(str(self.target_dir / self.FILE_NAME) + ".xlsx", "rb") as f:
             saved_content = f.read()
         self.assertEqual(saved_content, self.RESPONSE)
