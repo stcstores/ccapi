@@ -93,7 +93,7 @@ class TestCCAPI(unittest.TestCase):
             request = self.get_sent_request()
         sent_data = self.get_sent_request_query(request=request)
         data_key = data_key.lower()
-        self.assertDataValueEqual(sent_data, data_key, expected_value)
+        self.assertQueryValueEqual(sent_data, data_key, expected_value)
 
     def assertDataValueIsNotNone(self, sent_data, data_key):
         """Raise AssertionError if sent value is None."""
@@ -116,17 +116,26 @@ class TestCCAPI(unittest.TestCase):
                 )
             )
 
+    def assertQueryValueEqual(self, sent_data, data_key, expected_value):
+        """Test that request parameter contains the correct data."""
+        if isinstance(expected_value, list):
+            self.assertListSent(sent_data, data_key, expected_value)
+        else:
+            self.assertDataValueEqual(
+                sent_data, str(data_key).lower(), str(expected_value.lower())
+            )
+
     def assertDataValueEqual(self, sent_data, data_key, expected_value):
         """Test that request data contains the correct data."""
         self.assertDataValueIsNotNone(sent_data, data_key)
         if isinstance(expected_value, list):
             self.assertListSent(sent_data, data_key, expected_value)
         else:
-            if sent_data[data_key][0] != [str(expected_value)][0]:
+            if sent_data[data_key][0] != str(expected_value):
                 raise AssertionError(
                     (
                         f'Value "{expected_value}" was not sent for data key '
-                        f'"{data_key}". "{sent_data[data_key]}" was sent.'
+                        f'"{data_key}". "{sent_data[data_key][0]}" was sent.'
                     )
                 )
 
