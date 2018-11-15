@@ -1853,3 +1853,24 @@ class Test_get_product_exports_Method(TestCCAPIMethod):
         """Test the method returns an instance of ProductExportUpdateResponse."""
         returned_value = CCAPI.get_product_exports()
         self.assertIsInstance(returned_value, cc_objects.ProductExportUpdateResponse)
+
+
+class Test_export_products_Method(TestCCAPIMethod):
+    """Test the ccapi.CCAPI.export_products method."""
+
+    RESPONSE = test_requests.test_exports.TestRequestProductExport.RESPONSE
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register_request(requests.exports.RequestProductExport, text=self.RESPONSE)
+
+    def test_request_product_export_returns_True(self):
+        """Test export_products returns True after a successfull request."""
+        returned_value = CCAPI.export_products()
+        self.assertTrue(returned_value)
+
+    def test_copy_images_parameter(self):
+        """Test the copy_images parameter of export_products."""
+        CCAPI.export_products(copy_images=False)
+        self.assertDataSent(requests.exports.RequestProductExport.COPY, 0)
