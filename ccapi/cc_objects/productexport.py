@@ -67,7 +67,7 @@ class BaseProductExport:
         self.zip_file = ExportFile(**kwargs[self.ZIP_FILE])
 
     def __gt__(self, other):
-        return self.date_completed > other.date_requested
+        return self.date_requested > other.date_requested
 
     @staticmethod
     def parse_date(date_string):
