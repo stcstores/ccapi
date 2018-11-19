@@ -151,6 +151,7 @@ class BaseProductExports:
     def __init__(self, exports):
         """Load with exports."""
         self.exports = sorted([self.export_class(**_) for _ in exports])
+        self.export_IDs = {export.export_ID: export for export in self.exports}
 
     def __iter__(self):
         for _ in self.exports:
@@ -161,6 +162,10 @@ class BaseProductExports:
 
     def __len__(self):
         return len(self.exports)
+
+    def get_by_ID(self, export_ID):
+        """Return the export with the ID export_ID."""
+        return self.export_IDs[export_ID]
 
 
 class PseudoExports(BaseProductExports):
