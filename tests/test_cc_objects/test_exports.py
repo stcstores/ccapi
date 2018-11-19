@@ -174,6 +174,15 @@ class TestBaseProductExport(TestProductExport):
         self.assertEqual(exports[0], early_update)
         self.assertEqual(exports[1], late_update)
 
+    def test_status_properties(self):
+        """Test export status properties."""
+        self.export.status = self.export.COMPLETE
+        self.assertTrue(self.export.complete)
+        self.export.status = self.export.RUNNING
+        self.assertTrue(self.export.running)
+        self.export.status = self.export.FAILED
+        self.assertTrue(self.export.failed)
+
 
 class TestProductExports(TestProductExport):
     """Tests for cc_objects.productexport.BaseProductExports and it's sublcasses."""
@@ -225,3 +234,10 @@ class TestProductExports(TestProductExport):
 
         export = cc_objects.productexport.ProductExport(**export_data)
         self.assertIsNone(export.date_completed)
+
+    def test_get_by_ID(self):
+        """Test the get_by_ID method."""
+        export_ID = 3056
+        export = self.exports.get_by_ID(export_ID)
+        self.assertIsInstance(export, cc_objects.productexport.ProductExport)
+        self.assertEqual(export.export_ID, export_ID)
