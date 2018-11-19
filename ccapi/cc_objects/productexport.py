@@ -47,6 +47,10 @@ class BaseProductExport:
     ZIP_FILE = "zipFile"
     NULL_VALUE = "???"
 
+    FAILED = "Failed"
+    RUNNING = "Running"
+    COMPLETE = "Complete"
+
     def __init__(self, **kwargs):
         """Load properties from export data."""
         self.export_ID = kwargs[self.ID]
@@ -82,6 +86,21 @@ class BaseProductExport:
             hour=int(hour),
             minute=int(minute),
         )
+
+    @property
+    def failed(self):
+        """Return True if the export failed, otherwise return False."""
+        return self.status == self.FAILED
+
+    @property
+    def complete(self):
+        """Return True if the export is complete, otherwise return False."""
+        return self.status == self.COMPLETE
+
+    @property
+    def running(self):
+        """Return True if the export is in progress, otherwise return False."""
+        return self.status == self.RUNNING
 
 
 class PseudoExport(BaseProductExport):
