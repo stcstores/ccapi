@@ -62,7 +62,10 @@ class BaseProductExport:
         self.error = kwargs[self.ERROR]
         self.file_name = kwargs[self.FILE_NAME]
         self.date_requested = self.parse_date(kwargs[self.DATE_REQUESTED])
-        self.date_started = self.parse_date(kwargs[self.DATE_STARTED])
+        if kwargs[self.DATE_STARTED] == self.NULL_VALUE:
+            self.date_started = None
+        else:
+            self.date_started = self.parse_date(kwargs[self.DATE_STARTED])
         if kwargs[self.DATE_COMPLETED] == self.NULL_VALUE:
             self.date_completed = None
         else:

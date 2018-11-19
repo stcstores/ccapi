@@ -183,6 +183,22 @@ class TestBaseProductExport(TestProductExport):
         self.export.status = self.export.FAILED
         self.assertTrue(self.export.failed)
 
+    def test_null_date_started(self):
+        """Test export.date_started is None if it is a null value in the export data."""
+        export_class = cc_objects.productexport.BaseProductExport
+        export_data = dict(self.EXPORT_DATA)
+        export_data[export_class.DATE_STARTED] = export_class.NULL_VALUE
+        export = cc_objects.productexport.BaseProductExport(**export_data)
+        self.assertIsNone(export.date_started)
+
+    def test_null_date_completed(self):
+        """Test export.date_started is None if it is a null value in the export data."""
+        export_class = cc_objects.productexport.BaseProductExport
+        export_data = dict(self.EXPORT_DATA)
+        export_data[export_class.DATE_COMPLETED] = export_class.NULL_VALUE
+        export = cc_objects.productexport.BaseProductExport(**export_data)
+        self.assertIsNone(export.date_completed)
+
 
 class TestProductExports(TestProductExport):
     """Tests for cc_objects.productexport.BaseProductExports and it's sublcasses."""
