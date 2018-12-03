@@ -1899,10 +1899,9 @@ class Test_save_product_export_file_Method(TestCCAPIMethod):
     def test_save_export_file(self):
         """Test the method saves an downloaded export file."""
         save_name = "test_file.xlsx"
-        CCAPI.save_product_export_file(
-            self.FILE_NAME, self.target_dir, save_name="test_file.xlsx"
-        )
-        with open(str(self.target_dir / save_name), "rb") as f:
+        save_path = self.target_dir / save_name
+        CCAPI.save_product_export_file(self.FILE_NAME, save_path)
+        with open(str(save_path), "rb") as f:
             saved_content = f.read()
         self.assertEqual(saved_content, self.RESPONSE)
 
