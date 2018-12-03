@@ -1117,22 +1117,21 @@ class CCAPI:
         return requests.exports.RequestProductExport(copy_images=copy_images)
 
     @staticmethod
-    def save_product_export_file(export_file_name, target_directory, save_name=None):
+    def save_product_export_file(export_file_name, path):
         """
         Save a product export file.
 
         Args:
             export_file_name (str): The name of the file to retrieve.
-            target_directory (pathlib.Path or str): The directory in which the file will
-                be saved.
-            save_name (str or None): The name to save the export as. If None
-                export_file_name will be used.
+            path (pathlib.Path): The path at which the export will be saved. If the path
+                is a directory export_file_name will be used as a filename.
 
         """
         response = requests.exports.ViewFile(export_file_name)
-        if save_name is None:
-            save_name = f"{export_file_name}.xlsx"
-        path = target_directory / save_name
+        path = path.absolute()
+        if path.is_dir():
+            filename = export_file_name + ".xlsx"
+            path = path / filename
         with open(str(path), "wb") as f:
             for chunk in response.iter_content(chunk_size=512):
                 if chunk:
