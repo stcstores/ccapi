@@ -4,9 +4,10 @@ import datetime
 import json
 import unittest
 
-from ccapi import NewOrderItem, exceptions
+from ccapi import NewOrderItem, cc_objects, exceptions
 from ccapi.requests import handlers
 
+from .. import test_data
 from .test_request import TestRequest
 
 
@@ -197,8 +198,8 @@ class TestCreateOrderRequest(TestRequest):
     request_class = handlers.CreateOrder
 
     RETURNED_ERROR = ""
-    RETURNED_ORDER_ID = 21232732
-    RETURNED_INVOICE_ID = 17288332
+    RETURNED_ORDER_ID = 21_232_732
+    RETURNED_INVOICE_ID = 17_288_332
     RETURNED_PAYMENT_TERM_ID = 1
     RETURNED_GATEWAY_TYPE = "PayPal"
     RETURNED_DAYS_OF_CREDIT = 0
@@ -207,14 +208,14 @@ class TestCreateOrderRequest(TestRequest):
 
     ITEMS = [
         NewOrderItem(
-            product_id=4176861,
+            product_id=4_176_861,
             item_net=12.5,
             item_gross=15,
             total_net=12.5,
             total_gross=15,
         ),
         NewOrderItem(
-            product_id=3176869,
+            product_id=3_176_869,
             item_net=13.12,
             item_gross=19,
             total_net=22.5,
@@ -233,11 +234,11 @@ class TestCreateOrderRequest(TestRequest):
         handlers.createorder.CreateOrderResponse.TOTAL_GROSS: RETURNED_TOTAL_GROSS,
     }
 
-    CUSTOMER_ID = 18495409
-    DELIVERY_ADDRESS_ID = 134864315
-    BILLING_ADDRESS_ID = 786315135
+    CUSTOMER_ID = 18_495_409
+    DELIVERY_ADDRESS_ID = 134_864_315
+    BILLING_ADDRESS_ID = 786_315_135
     DELIVERY_DATE = datetime.datetime.now()
-    LOGIN_ID = 134876131
+    LOGIN_ID = 134_876_131
     SEASON_ID = 5
     CHANNEL_ID = 3151
     ORDER_NOTE = "Order Note text"
@@ -249,11 +250,11 @@ class TestCreateOrderRequest(TestRequest):
     TOTAL_GROSS = 2.90
     DISCOUNT_NET = 1.50
     FREE_OF_CHARGE = True
-    SHIPPING_RULE_ID = 487315
+    SHIPPING_RULE_ID = 487_315
     REFERENCE = "reference value"
     PREP = "prep value"
     POSTAGE_OVERRIDE = "postage override value"
-    ORDER_ID = 154313143
+    ORDER_ID = 154_313_143
 
     def setUp(self):
         """Register request URI."""
@@ -405,3 +406,47 @@ class TestCreateOrderResponse(unittest.TestCase):
         self.assertEqual(response.days_of_credit, self.RETURNED_DAYS_OF_CREDIT)
         self.assertEqual(response.reference, self.RETURNED_REFERENCE)
         self.assertEqual(response.total_gross, self.RETURNED_TOTAL_GROSS)
+
+
+class TestGetProductsForRangeRequest(TestRequest):
+    """Tests for the GetProductsForRange request."""
+
+    request_class = handlers.GetProductsForRange
+    RANGE_ID = 3_537_227
+    RESPONSE = test_data.GET_PRODUCTS_FOR_RANGE_RESPONSE
+
+    def test_request_sends_parameters(self):
+        """Test the request sends the necessary parameters."""
+        self.register(json=self.RESPONSE)
+        self.mock_request(self.RANGE_ID)
+        self.assertDataSent(self.request_class.PRODUCT_RANGE_ID, self.RANGE_ID)
+        self.assertDataSent(
+            self.request_class.SALES_CHANNEL_ID,
+            self.request_class.SALES_CHANNEL_ID_VALUE,
+        )
+
+    def test_request_returns_product_range(self):
+        """Test a successfull request returns a ProductRange instance."""
+        self.register(json=self.RESPONSE)
+        response = self.mock_request(self.RANGE_ID)
+        self.assertIsInstance(response, cc_objects.productrange.ProductRange)
+
+    def test_request_raises_for_non_200(self):
+        """
+        Test an exception is raised for non 200 status codes.
+
+        Also test that the exception message contains the request body text.
+        """
+        response_text = "THIS IS NOT JSON"
+        self.register(text=response_text, status_code=500)
+        with self.assertRaises(exceptions.CloudCommerceResponseError) as e:
+            self.mock_request(self.RANGE_ID)
+        self.assertIn(response_text, str(e.exception))
+
+    def test_invalid_json_message(self):
+        """Test an exception containing the response body is raised if it is not JSON."""
+        response_text = "THIS IS NOT JSON"
+        self.register(text=response_text)
+        with self.assertRaises(exceptions.CloudCommerceResponseError) as e:
+            self.mock_request(self.RANGE_ID)
+        self.assertIn(response_text, str(e.exception))

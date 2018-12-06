@@ -8,3 +8,4 @@ from .find_product_selected_options_only_test_data import (  # NOQA
 )  # NOQA
 from .product_export_update import GET_PRODUCT_EXPORT_UPDATE_RESPONSE  # NOQA
 from .product_export_file import PRODUCT_EXPORT_FILE  # NOQA
+from .get_products_for_range_response import GET_PRODUCTS_FOR_RANGE_RESPONSE  # NOQA
