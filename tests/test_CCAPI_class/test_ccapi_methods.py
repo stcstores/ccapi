@@ -227,7 +227,7 @@ class Test_search_products_Method(TestCCAPIMethod):
 class Test_get_product_factory_links_Method(TestCCAPIMethod):
     """Test the CCAPI.get_product_factory_links method."""
 
-    PRODUCT_ID = 6909316
+    PRODUCT_ID = 6_909_316
     RESPONSE = [test_requests.TestFindProductFactoryLinks.RESPONSE]
 
     def setUp(self):
@@ -248,7 +248,7 @@ class Test_get_product_factory_links_Method(TestCCAPIMethod):
 class Test_get_product_Method(TestCCAPIMethod):
     """Test the CCAPI.get_product method."""
 
-    PRODUCT_ID = 6909316
+    PRODUCT_ID = 6_909_316
     RESPONSE = test_data.FIND_PRODUCT_SELECTED_OPTIONS_ONLY_TEST_RESLULT
 
     def setUp(self):
@@ -271,7 +271,7 @@ class Test_get_product_Method(TestCCAPIMethod):
 class Test_get_options_for_product_Method(TestCCAPIMethod):
     """Test the CCAPI.get_options_for_product method."""
 
-    PRODUCT_ID = 6909316
+    PRODUCT_ID = 6_909_316
     RESPONSE = test_data.FIND_PRODUCT_SELECTED_OPTIONS_ONLY_TEST_RESLULT
 
     def setUp(self):
@@ -1325,7 +1325,7 @@ class Test_add_address_Method(TestCCAPIMethod):
         test_requests.test_program_type_requests.TestUpdateCustomerAddress.RESPONSE
     )
 
-    CUSTOMER_ID = 18748142
+    CUSTOMER_ID = 18_748_142
     ADDRESS_TYPE = (
         requests.program_type_requests.customer.UpdateCustomerAddress.DELIVERY
     )
@@ -1479,8 +1479,8 @@ class Test_update_address_Method(TestCCAPIMethod):
         test_requests.test_program_type_requests.TestUpdateCustomerAddress.RESPONSE
     )
 
-    CUSTOMER_ID = 18748142
-    ADDRESS_ID = 98748152
+    CUSTOMER_ID = 18_748_142
+    ADDRESS_ID = 98_748_152
     ADDRESS_TYPE = (
         requests.program_type_requests.customer.UpdateCustomerAddress.DELIVERY
     )
@@ -1639,14 +1639,14 @@ class Test_create_order_Method(TestCCAPIMethod):
 
     ITEMS = [
         NewOrderItem(
-            product_id=4176861,
+            product_id=4_176_861,
             item_net=12.5,
             item_gross=15,
             total_net=12.5,
             total_gross=15,
         ),
         NewOrderItem(
-            product_id=3176869,
+            product_id=3_176_869,
             item_net=13.12,
             item_gross=19,
             total_net=22.5,
@@ -1654,11 +1654,11 @@ class Test_create_order_Method(TestCCAPIMethod):
         ),
     ]
 
-    CUSTOMER_ID = 18495409
-    DELIVERY_ADDRESS_ID = 134864315
-    BILLING_ADDRESS_ID = 786315135
+    CUSTOMER_ID = 18_495_409
+    DELIVERY_ADDRESS_ID = 134_864_315
+    BILLING_ADDRESS_ID = 786_315_135
     DELIVERY_DATE = datetime.datetime.now()
-    LOGIN_ID = 134876131
+    LOGIN_ID = 134_876_131
     SEASON_ID = 5
     CHANNEL_ID = 3151
     ORDER_NOTE = "Order Note text"
@@ -1670,11 +1670,11 @@ class Test_create_order_Method(TestCCAPIMethod):
     TOTAL_GROSS = 2.90
     DISCOUNT_NET = 1.50
     FREE_OF_CHARGE = True
-    SHIPPING_RULE_ID = 487315
+    SHIPPING_RULE_ID = 487_315
     REFERENCE = "reference value"
     PREP = "prep value"
     POSTAGE_OVERRIDE = "postage override value"
-    ORDER_ID = 154313143
+    ORDER_ID = 154_313_143
 
     def setUp(self):
         """Register request URI."""
@@ -1771,10 +1771,18 @@ class Test_create_order_Method(TestCCAPIMethod):
         """Test that free of charge is sent as True if the order is free."""
         items = [
             NewOrderItem(
-                product_id=4176861, item_net=0, item_gross=0, total_net=0, total_gross=0
+                product_id=4_176_861,
+                item_net=0,
+                item_gross=0,
+                total_net=0,
+                total_gross=0,
             ),
             NewOrderItem(
-                product_id=3176869, item_net=0, item_gross=0, total_net=0, total_gross=0
+                product_id=3_176_869,
+                item_net=0,
+                item_gross=0,
+                total_net=0,
+                total_gross=0,
             ),
         ]
         CCAPI.create_order(
@@ -1791,10 +1799,18 @@ class Test_create_order_Method(TestCCAPIMethod):
         """Test that free of charge is sent as True if the order is not free."""
         items = [
             NewOrderItem(
-                product_id=4176861, item_net=0, item_gross=0, total_net=0, total_gross=5
+                product_id=4_176_861,
+                item_net=0,
+                item_gross=0,
+                total_net=0,
+                total_gross=5,
             ),
             NewOrderItem(
-                product_id=3176869, item_net=0, item_gross=0, total_net=0, total_gross=5
+                product_id=3_176_869,
+                item_net=0,
+                item_gross=0,
+                total_net=0,
+                total_gross=5,
             ),
         ]
         CCAPI.create_order(
@@ -1911,3 +1927,27 @@ class Test_save_product_export_file_Method(TestCCAPIMethod):
         with open(str(self.target_dir / self.FILE_NAME) + ".xlsx", "rb") as f:
             saved_content = f.read()
         self.assertEqual(saved_content, self.RESPONSE)
+
+
+class Test_get_range_Method(TestCCAPIMethod):
+    """Test the ccapi.CCAPI.get_range method."""
+
+    RESPONSE = test_data.GET_PRODUCTS_FOR_RANGE_RESPONSE
+    RANGE_ID = 3_537_227
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register_request(requests.handlers.GetProductsForRange, json=self.RESPONSE)
+
+    def test_range_id_is_sent(self):
+        """Test that the provided range ID is sent."""
+        CCAPI.get_range(self.RANGE_ID)
+        self.assertDataSent(
+            requests.handlers.GetProductsForRange.PRODUCT_RANGE_ID, self.RANGE_ID
+        )
+
+    def test_returns_a_product_range(self):
+        """Test that the method returns an instance of cc_objects.ProductRange."""
+        returned_value = CCAPI.get_range(self.RANGE_ID)
+        self.assertIsInstance(returned_value, cc_objects.ProductRange)
