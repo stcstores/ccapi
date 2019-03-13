@@ -114,25 +114,40 @@ class CloudCommerceAPISession:
         cls.check_login()
         url = urljoin(cls.domain_url(), request.uri)
         logger.info("CCAPI Request to {}.".format(request.uri))
-        logger.debug(
-            "CCAPI Request to {} with headers: {}, params: {}, data:{}, files: {}".format(
-                request.uri,
-                request.headers,
-                request.params,
-                request.data,
-                request.files,
+        try:
+            response = cls.session.post(
+                url,
+                headers=request.headers,
+                params=request.params,
+                data=request.data,
+                files=request.files,
             )
-        )
-        response = cls.session.post(
-            url,
-            headers=request.headers,
-            params=request.params,
-            data=request.data,
-            files=request.files,
-        )
-        logger.debug(
-            "Response from {} with text: {}".format(request.uri, response.text)
-        )
+        except Exception as e:
+            logger.exception(e)
+            raise e
+        try:
+            response.raise_for_status()
+        except Exception:
+            logger.error(
+                (
+                    f"CCAPI Failed Request to {request.uri} with headers: "
+                    f"{request.headers}, params: {request.params}, data:{request.data}, "
+                    f"files: {request.files}"
+                )
+            )
+            logger.error(
+                (
+                    f"CCAPI Response from Request to {request.uri} returned with response "
+                    f"{response.status_code}: {response.text}"
+                )
+            )
+        else:
+            logger.debug(
+                (
+                    f"CCAPI Response from request to {request.uri} returned with "
+                    f"{response.status_code}."
+                )
+            )
         return response
 
     @classmethod
