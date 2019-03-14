@@ -7,8 +7,7 @@ name = "pypi"
 "beautifulsoup4" = "*"
 requests = "*"
 e1839a8 = {path = ".",editable = true}
-pyaml = "*"
-pyyaml = {version="==5.1", pre="true"} # CVE-2017-18342 Remove pyyaml after release of 4.2 or greater
+pyyaml = "*"
 
 [dev-packages]
 pytest = "*"
