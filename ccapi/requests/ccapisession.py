@@ -76,7 +76,7 @@ class CloudCommerceAPISession:
         yaml_config_path = cls.find_yaml()
         if yaml_config_path is not None:
             with open(yaml_config_path, "r") as yaml_file:
-                config = yaml.load(yaml_file)
+                config = yaml.load(yaml_file, Loader=yaml.FullLoader)
             try:
                 cls.add_credentials(**config)
             except Exception as e:
