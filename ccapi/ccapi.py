@@ -292,7 +292,15 @@ class CCAPI:
 
     @classmethod
     def create_product(
-        cls, *, range_id, name, barcode, sku=None, description=None, vat_rate=20
+        cls,
+        *,
+        range_id,
+        name,
+        barcode,
+        sku=None,
+        description=None,
+        vat_rate=20,
+        vat_rate_id=None,
     ):
         """
         Add new Product to a Product Range.
@@ -307,7 +315,10 @@ class CCAPI:
                 Default: None.
             description: Description of new product. If None name will be used.
                 Default: None.
-            vat_rate: Percentage of VAT. Default: 20.
+            vat_rate: VAT percentage. This will be ignored if vat_rate_id is not None.
+                Default: 20.
+            vat_rate_id: The Cloud Commerce ID of the product's VAT rate. If None, the
+                vat_rate kwarg will be used instead. Default: None.
 
         Returns: (str) ID of new Product.
 
@@ -316,7 +327,8 @@ class CCAPI:
             sku = cls.get_sku(range_sku=False)
         if description is None:
             description = name
-        vat_rate_id = VatRates.get_vat_rate_id_by_rate(vat_rate)
+        if vat_rate_id is None:
+            vat_rate_id = VatRates.get_vat_rate_id_by_rate(vat_rate)
         return requests.AddProduct(
             range_id=range_id,
             name=name,
