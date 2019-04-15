@@ -713,6 +713,13 @@ class CCAPI:
         )
 
     @staticmethod
+    def set_product_vat_rate_by_id(*, product_ids, vat_rate_id):
+        """Set VAT rate for products."""
+        return requests.UpdateProductVatRate(
+            product_ids=product_ids, vat_rate_id=vat_rate_id
+        )
+
+    @staticmethod
     def get_product_images(range_id, product_id):
         """Get images for product.
 
