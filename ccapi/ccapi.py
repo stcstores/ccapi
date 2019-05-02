@@ -1155,3 +1155,37 @@ class CCAPI:
             for chunk in response.iter_content(chunk_size=512):
                 if chunk:
                     f.write(chunk)
+
+    @staticmethod
+    def insert_payment(
+        *,
+        customer_ID,
+        login_ID,
+        amount,
+        bank_account_ID,
+        invoice_ID,
+        channel_ID,
+        payment_date=None,
+    ):
+        """Add a payment to a customer invoice.
+
+        Kwargs:
+            customer_ID (int): The ID of the customer to apply the payment to.
+            login_ID (int): The ID of the user creating the payment.
+            amount (float): The amount paid.
+            bank_account_ID (int): The ID of the bank account into which the payment was
+                made.
+            invoice_ID (int): The ID of the invoice that has been paid.
+            channel_ID (int): The ID of the channel from which the invoice was created.
+            payment_date (optional datetime.datetime) The date of the payment.
+        """
+        return requests.handlers.CustomerAccounts(
+            prog_type=requests.handlers.CustomerAccounts.INSERT_PAYMENT,
+            customer_ID=customer_ID,
+            login_ID=login_ID,
+            currency=amount,
+            bank_account_ID=bank_account_ID,
+            invoice_ID=invoice_ID,
+            channel_ID=channel_ID,
+            payment_date=payment_date,
+        )

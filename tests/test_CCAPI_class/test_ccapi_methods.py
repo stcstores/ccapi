@@ -1951,3 +1951,70 @@ class Test_get_range_Method(TestCCAPIMethod):
         """Test that the method returns an instance of cc_objects.ProductRange."""
         returned_value = CCAPI.get_range(self.RANGE_ID)
         self.assertIsInstance(returned_value, cc_objects.ProductRange)
+
+
+class Test_insert_payment_Method(TestCCAPIMethod):
+    """Test the ccapi.CCAPI.get_range method."""
+
+    RESPONSE = test_requests.test_handlers.TestCustomerAccountsInsertPayment.RESPONSE
+
+    CUSTOMER_ID = "29796764"
+    LOGIN_ID = "15186"
+    AMOUNT = 9.99
+    PAYMENT_DATE = datetime.datetime(year=2019, month=2, day=14)
+    BANK_ACCOUNT_ID = 822
+    INVOICE_ID = "4156168445"
+    CHANNEL_ID = "3157"
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register_request(requests.handlers.CustomerAccounts, json=self.RESPONSE)
+
+    def test_date_is_sent(self):
+        """Test that the provided range ID is sent."""
+        CCAPI.insert_payment(
+            customer_ID=self.CUSTOMER_ID,
+            login_ID=self.LOGIN_ID,
+            amount=self.AMOUNT,
+            bank_account_ID=self.BANK_ACCOUNT_ID,
+            invoice_ID=self.INVOICE_ID,
+            channel_ID=self.CHANNEL_ID,
+            payment_date=self.PAYMENT_DATE,
+        )
+        self.assertDataSent(
+            requests.handlers.CustomerAccounts.PROG_TYPE,
+            requests.handlers.CustomerAccounts.INSERT_PAYMENT,
+        )
+        self.assertDataSent(
+            requests.handlers.CustomerAccounts.CUSTOMER_ID, int(self.CUSTOMER_ID)
+        )
+        self.assertDataSent(
+            requests.handlers.CustomerAccounts.LOGIN_ID, int(self.LOGIN_ID)
+        )
+        self.assertDataSent(
+            requests.handlers.CustomerAccounts.CURRENCY, float(self.AMOUNT)
+        )
+        self.assertDataSent(
+            requests.handlers.CustomerAccounts.BANK_ACCOUNT_ID,
+            int(self.BANK_ACCOUNT_ID),
+        )
+        self.assertDataSent(
+            requests.handlers.CustomerAccounts.INVOICE_ID, int(self.INVOICE_ID)
+        )
+        self.assertDataSent(
+            requests.handlers.CustomerAccounts.CHANNEL_ID, int(self.CHANNEL_ID)
+        )
+
+    def test_returns_a_product_range(self):
+        """Test that the method returns an instance of cc_objects.ProductRange."""
+        returned_value = CCAPI.insert_payment(
+            customer_ID=self.CUSTOMER_ID,
+            login_ID=self.LOGIN_ID,
+            amount=self.AMOUNT,
+            bank_account_ID=self.BANK_ACCOUNT_ID,
+            invoice_ID=self.INVOICE_ID,
+            channel_ID=self.CHANNEL_ID,
+            payment_date=self.PAYMENT_DATE,
+        )
+        self.assertTrue(returned_value)
