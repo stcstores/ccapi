@@ -575,7 +575,7 @@ class Test_set_base_price_Method(TestProduct):
 
     def test_product_id_is_sent(self):
         """Test the product's product ID is sent."""
-        self.assertDataSent("prodid", self.PRODUCT_ID)
+        self.assertDataSent("ProductIDs", [self.PRODUCT_ID])
 
     def test_price_is_sent(self):
         """Test the new price is sent."""
