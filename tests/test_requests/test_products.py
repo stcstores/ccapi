@@ -659,7 +659,7 @@ class TestUpdateProductBasePrice(TestRequest):
         self.register(text=self.RESPONSE)
         response = self.mock_request(product_id=self.PRODUCT_ID, price=self.PRICE)
         self.assertEqual(response, self.RESPONSE)
-        self.assertDataSent("prodid", self.PRODUCT_ID)
+        self.assertDataSent("ProductIDs", [self.PRODUCT_ID])
         self.assertDataSent("price", self.PRICE)
 
     def test_UpdateProductBasePrice_raises_for_non_200(self):

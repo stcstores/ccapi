@@ -591,7 +591,7 @@ class Test_set_product_base_price_Method(TestCCAPIMethod):
 
     def test_passed_product_ID_is_sent(self):
         """Test the passed product ID is sent."""
-        self.assertDataSent("prodid", self.PRODUCT_ID)
+        self.assertDataSent("ProductIDs", [self.PRODUCT_ID])
 
     def test_passed_price_is_sent(self):
         """Test the passed price is sent."""

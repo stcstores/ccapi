@@ -37,7 +37,7 @@ class UpdateProductBasePrice(APIRequest):
 
     def get_data(self):
         """Get data for request."""
-        return {"prodid": self.product_id, "price": self.price}
+        return {"ProductIDs": [self.product_id], "price": self.price}
 
     def get_params(self):
         """Get parameters for get request."""
