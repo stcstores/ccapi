@@ -38,7 +38,7 @@ class SaveHandlingTime(APIRequest):
     def get_data(self):
         """Get data for request."""
         return {
-            "ProductID": self.product_id,
+            "ProductIDs": self.product_id,
             "handlingTime": self.handling_time,
             "updateChannels": self.update_channels,
         }

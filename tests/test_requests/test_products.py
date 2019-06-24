@@ -415,7 +415,7 @@ class TestSaveHandlingTime(TestRequest):
             product_id=self.PRODUCT_ID, handling_time=1, update_channels=False
         )
         self.assertEqual(response, self.RESPONSE)
-        self.assertDataSent("ProductID", self.PRODUCT_ID)
+        self.assertDataSent("ProductIDs", self.PRODUCT_ID)
         self.assertDataSent("handlingTime", "1")
         self.assertDataSent("updateChannels", "False")
 

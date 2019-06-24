@@ -620,7 +620,7 @@ class Test_set_handling_time_Method(TestProduct):
 
     def test_passed_product_ID_is_sent(self):
         """Test that the passed product ID is sent."""
-        self.assertDataSent("ProductID", self.PRODUCT_ID)
+        self.assertDataSent("ProductIDs", self.PRODUCT_ID)
 
     def test_passed_handling_time_is_sent(self):
         """Test that the passed handling_time is sent."""
