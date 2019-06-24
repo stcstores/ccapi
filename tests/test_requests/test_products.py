@@ -113,7 +113,7 @@ class TestDeleteProductFactoryLink(TestRequest):
         self.register(text=self.RESPONSE)
         response = self.mock_request(self.FACTORY_ID)
         self.assertEqual(response, self.RESPONSE)
-        self.assertDataSent("factoryLinkId", self.FACTORY_ID)
+        self.assertDataSent("factoryLinkIds", self.FACTORY_ID)
 
     def test_DeleteProductFactoryLink_raises_for_non_200(self):
         """Test DeleteProductFactoryLink raises for non 200 responses."""
