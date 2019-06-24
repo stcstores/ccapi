@@ -192,7 +192,7 @@ class Test_delete_product_factory_link_Method(TestCCAPIMethod):
 
     def test_sends_passed_factory_ID(self):
         """Test the passed factory ID is sent."""
-        self.assertDataSent("factoryLinkId", self.FACTORY_ID)
+        self.assertDataSent("factoryLinkIds", self.FACTORY_ID)
 
 
 class Test_search_products_Method(TestCCAPIMethod):
