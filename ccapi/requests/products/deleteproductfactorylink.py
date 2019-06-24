@@ -19,7 +19,7 @@ class DeleteProductFactoryLink(APIRequest):
 
     def get_data(self):
         """Get data for request."""
-        return {"factoryLinkId": self.factory_link_id}
+        return {"factoryLinkIds": self.factory_link_id}
 
     def process_response(self, response):
         """Handle request response."""
