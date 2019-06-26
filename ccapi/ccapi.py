@@ -1003,6 +1003,7 @@ class CCAPI:
         telephone_number=None,
         fax_number=None,
         mobile_number=None,
+        email=None,
     ):
         """
         Add an address for a customer and return it's ID.
@@ -1060,6 +1061,7 @@ class CCAPI:
         telephone_number=None,
         fax_number=None,
         mobile_number=None,
+        email=None,
     ):
         """
         Add an address for a customer and return it's ID.

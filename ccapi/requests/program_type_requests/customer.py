@@ -55,6 +55,7 @@ class UpdateCustomerAddress(Customer):
     MOBILE_NUMBER = "MobNo"
     ADDRESS_ID = "AddressID"
     CUSTOMER_ADD_LINK_ID = "CustAddLinkID"
+    EMAIL = "Email"
 
     error_message = "Failed to add or update a customer address."
 
@@ -77,6 +78,7 @@ class UpdateCustomerAddress(Customer):
         fax_number="",
         mobile_number="",
         customer_add_link_id="0",
+        email="",
     ):
         """
         Add or update a customer address.
@@ -130,4 +132,5 @@ class UpdateCustomerAddress(Customer):
         self.kwargs[self.MOBILE_NUMBER] = mobile_number
         self.kwargs[self.ADDRESS_ID] = address_id
         self.kwargs[self.CUSTOMER_ADD_LINK_ID] = customer_add_link_id
+        self.kwargs[self.EMAIL] = email
         return super().__new__(self)
