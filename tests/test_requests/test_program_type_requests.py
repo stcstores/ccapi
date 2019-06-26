@@ -109,6 +109,7 @@ class TestUpdateCustomerAddress(ProgramTypeRequestSubclass):
     MOBILE_NUMBER = "07954 415 638"
     ADDRESS_ID = "96664037"
     CUSTOMER_ADD_LINK_ID = "0"
+    EMAIL = "noone@example.com"
 
     def mock_request(self):
         """Make a mock request with self.request_class."""
@@ -129,4 +130,5 @@ class TestUpdateCustomerAddress(ProgramTypeRequestSubclass):
             mobile_number=self.MOBILE_NUMBER,
             address_id=self.ADDRESS_ID,
             customer_add_link_id=self.CUSTOMER_ADD_LINK_ID,
+            email=self.EMAIL,
         )
