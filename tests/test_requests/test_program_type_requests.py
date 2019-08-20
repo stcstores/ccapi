@@ -5,7 +5,40 @@ import ccapi
 from .test_request import TestRequest
 
 
-class TestProgramTypeRequest(TestRequest):
+class ProgramTypeRequestSubclass:
+    """Base class for testing Program Type requests."""
+
+    request_class = ccapi.requests.program_type_requests.GetPaymentTerms
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register(text=self.RESPONSE)
+
+    def test_returns_response_text(self):
+        """Test the Customer request returns the response text."""
+        response = self.mock_request()
+        self.assertEqual(response, self.RESPONSE)
+
+    def test_sends_program_type(self):
+        """Test the a program type is sent."""
+        self.mock_request()
+        self.assertDataSent("ProgType", self.request_class.PROGRAM_TYPE)
+
+    def test_sends_kwargs(self):
+        """Test the Customer request sends kwargs."""
+        self.mock_request()
+        for key, value in self.request_class.kwargs.items():
+            self.assertDataSent(key, value)
+
+    def test_raises_for_non_200(self):
+        """Test an exception is raised when a request recieved an error status code."""
+        self.register(text=self.RESPONSE, status_code=500)
+        with self.assertRaises(ccapi.exceptions.CloudCommerceResponseError):
+            self.mock_request()
+
+
+class TestCustomerRequest(TestRequest):
     """Tests for the Customer request."""
 
     request_class = ccapi.requests.program_type_requests.Customer
@@ -37,41 +70,7 @@ class TestProgramTypeRequest(TestRequest):
         self.assertDataSent(self.TEST_KWARG, self.TEST_KWARG_VALUE)
 
 
-class ProgramTypeRequestSubclass(TestRequest):
-    """Base class for testing Program Type requests."""
-
-    request_class = ccapi.requests.program_type_requests.GetPaymentTerms
-    RESPONSE = ""
-
-    def setUp(self):
-        """Register request URI."""
-        super().setUp()
-        self.register(text=self.RESPONSE)
-
-    def test_returns_response_text(self):
-        """Test the Customer request returns the response text."""
-        response = self.mock_request()
-        self.assertEqual(response, self.RESPONSE)
-
-    def test_sends_program_type(self):
-        """Test the Customer request sends a program type."""
-        self.mock_request()
-        self.assertDataSent("ProgType", self.request_class.PROGRAM_TYPE)
-
-    def test_sends_kwargs(self):
-        """Test the Customer request sends kwargs."""
-        self.mock_request()
-        for key, value in self.request_class.kwargs.items():
-            self.assertDataSent(key, value)
-
-    def test_raises_for_non_200(self):
-        """Test an exception is raised when a request recieved an error status code."""
-        self.register(text=self.RESPONSE, status_code=500)
-        with self.assertRaises(ccapi.exceptions.CloudCommerceResponseError):
-            self.mock_request()
-
-
-class TestGetPaymentTerms(ProgramTypeRequestSubclass):
+class TestGetPaymentTerms(ProgramTypeRequestSubclass, TestRequest):
     """Test the GetPaymentTerms request."""
 
     request_class = ccapi.requests.program_type_requests.customer.GetPaymentTerms
@@ -85,7 +84,7 @@ class TestGetPaymentTerms(ProgramTypeRequestSubclass):
     )
 
 
-class TestUpdateCustomerAddress(ProgramTypeRequestSubclass):
+class TestUpdateCustomerAddress(ProgramTypeRequestSubclass, TestRequest):
     """Test the UpdateCustomerAddress request."""
 
     request_class = ccapi.requests.program_type_requests.customer.UpdateCustomerAddress
@@ -132,3 +131,44 @@ class TestUpdateCustomerAddress(ProgramTypeRequestSubclass):
             customer_add_link_id=self.CUSTOMER_ADD_LINK_ID,
             email=self.EMAIL,
         )
+
+
+class TestSaveSimplePackage(ProgramTypeRequestSubclass, TestRequest):
+    """Test the UpdateCustomerAddress request."""
+
+    request_class = (
+        ccapi.requests.program_type_requests.getsimpleproductpackage.SaveSimplePackage
+    )
+
+    MULTIPACK_PRODUCT_ID = "135748313"
+    MULTIPACK_ITEM_PRODUCT_ID = "97643153"
+    PRICE_PERCENTAGE = 100
+    QUANTITY = 2
+
+    RESPONSE = {"html": "success"}
+
+    def setUp(self):
+        """Register request URI."""
+        super(TestRequest, self).setUp()
+        self.register(json=self.RESPONSE)
+
+    def mock_request(self):
+        return super().mock_request(
+            multipack_product_id=self.MULTIPACK_PRODUCT_ID,
+            multipack_item_product_id=self.MULTIPACK_ITEM_PRODUCT_ID,
+            price_percentage=self.PRICE_PERCENTAGE,
+            quantity=self.QUANTITY,
+        )
+
+    def test_request(self):
+        self.mock_request()
+        self.assertDataSent(
+            self.request_class.MULTIPACK_ITEM_PRODUCT_ID, self.MULTIPACK_ITEM_PRODUCT_ID
+        )
+        self.assertDataSent(self.request_class.DEFINITION, "^135748313~100~2")
+
+    def test_raises_for_non_200(self):
+        """Test an exception is raised when a request recieved an error status code."""
+        self.register(json=self.RESPONSE, status_code=500)
+        with self.assertRaises(ccapi.exceptions.CloudCommerceResponseError):
+            self.mock_request()
