@@ -2042,3 +2042,35 @@ class Test_set_multipack_Method(TestCCAPIMethod):
             requests.products.SetProductType.TYPE,
             requests.products.SetProductType.MULTIPACK,
         )
+
+
+class Test_add_multipack_item_Method(TestCCAPIMethod):
+
+    RESPONSE = test_requests.test_program_type_requests.TestSaveSimplePackage.RESPONSE
+
+    MULTIPACK_PRODUCT_ID = "135748313"
+    MULTIPACK_ITEM_PRODUCT_ID = "97643153"
+    PRICE_PERCENTAGE = 100
+    QUANTITY = 2
+
+    def setUp(self):
+        super().setUp()
+        self.register_request(
+            requests.program_type_requests.SaveSimplePackage, json=self.RESPONSE
+        )
+
+    def test_data_is_sent(self):
+        CCAPI.add_multipack_item(
+            multipack_product_id=self.MULTIPACK_PRODUCT_ID,
+            multipack_item_product_id=self.MULTIPACK_ITEM_PRODUCT_ID,
+            price_percentage=self.PRICE_PERCENTAGE,
+            quantity=self.QUANTITY,
+        )
+        self.assertDataSent(
+            requests.program_type_requests.SaveSimplePackage.MULTIPACK_ITEM_PRODUCT_ID,
+            self.MULTIPACK_ITEM_PRODUCT_ID,
+        )
+        self.assertDataSent(
+            requests.program_type_requests.SaveSimplePackage.DEFINITION,
+            "^135748313~100~2",
+        )
