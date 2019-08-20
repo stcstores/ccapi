@@ -2018,3 +2018,27 @@ class Test_insert_payment_Method(TestCCAPIMethod):
             payment_date=self.PAYMENT_DATE,
         )
         self.assertTrue(returned_value)
+
+
+class Test_set_multipack_Method(TestCCAPIMethod):
+    """Test the ccapi.CCAPI.set_multipack method."""
+
+    RESPONSE = test_requests.test_products.TestSetProductType.RESPONSE
+
+    PRODUCT_ID = "1357481"
+
+    def setUp(self):
+        """Register request URI."""
+        super().setUp()
+        self.register_request(requests.products.SetProductType, text=self.RESPONSE)
+
+    def test_data_is_sent(self):
+        """Test that the provided range ID is sent."""
+        CCAPI.set_multipack(self.PRODUCT_ID)
+        self.assertDataSent(
+            requests.products.SetProductType.PRODUCT_ID, self.PRODUCT_ID
+        )
+        self.assertDataSent(
+            requests.products.SetProductType.TYPE,
+            requests.products.SetProductType.MULTIPACK,
+        )

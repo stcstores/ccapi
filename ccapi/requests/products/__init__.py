@@ -15,8 +15,9 @@ from .saveproductname import SaveProductName  # NOQA
 from .setimageorder import SetImageOrder  # NOQA
 from .setproductoptionvalue import SetProductOptionValue  # NOQA
 from .setproductscope import SetProductScope  # NOQA
-from .updateproductbaseprice import UpdateProductBasePrice  # NOQA
+from .setproducttype import SetProductType  # NOQA
 from .updateonsaleschannel import UpdateProductOnSalesChannel  # NOQA
+from .updateproductbaseprice import UpdateProductBasePrice  # NOQA
 from .updateproductstocklevel import UpdateProductStockLevel  # NOQA
 from .updateproductvatrate import UpdateProductVatRate  # NOQA
 from .uploadimage import UploadImage  # NOQA

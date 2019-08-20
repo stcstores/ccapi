@@ -21,6 +21,7 @@ class CCAPI:
         Args:
             username: Login username.
             password: Login password.
+
         """
         self.create_session(username, password)
 
@@ -32,6 +33,7 @@ class CCAPI:
         Args:
             username: Login username.
             password: Login password.
+
         """
         return CloudCommerceAPISession.get_session(
             domain=domain, username=username, password=password
@@ -86,6 +88,7 @@ class CCAPI:
 
         Args:
             product_id: ID of Product.
+
         """
         response = requests.FindProductSelectedOptionsOnly(product_id)
         return response.product
@@ -261,6 +264,7 @@ class CCAPI:
         Args:
             product_id: ID of Range.
             option_id: ID of Product Option.
+
         """
         requests.AddRemProductOption(range_id=range_id, option_id=option_id, add=True)
 
@@ -272,6 +276,7 @@ class CCAPI:
         Args:
             range_id: ID of Range.
             option_id: ID of Product Option.
+
         """
         requests.AddRemProductOption(
             range_id=range_id, option_id=option_id, remove=True
@@ -347,6 +352,7 @@ class CCAPI:
             product_ids: Tuple of products to which the value will be applied.
             option_id: ID of Product Option to set.
             option_value_id: ID of Product Option Value to set.
+
         """
         return requests.SetProductOptionValue(
             product_ids=product_ids,
@@ -380,6 +386,7 @@ class CCAPI:
             large_letter_compatible: (bool) Item can be shipped as Large
                 Letter.
             external_id: External ID of product.
+
         """
         return requests.SetProductScope(
             product_id=product_id,
@@ -399,6 +406,7 @@ class CCAPI:
         Args:
             product_id: ID of Product to update.
             price: New base price for Product.
+
         """
         requests.UpdateProductBasePrice(product_id=product_id, price=price)
 
@@ -414,6 +422,7 @@ class CCAPI:
         Kwargs:
             update_channels: If True will update handling time on channels.
                 Default: True.
+
         """
         requests.SaveHandlingTime(
             product_id=product_id,
@@ -507,6 +516,7 @@ class CCAPI:
             range_id: ID of Product Range.
             option_id: ID of Product Option.
             drop_down: (Bool) Set Product Option as a drop down or not.
+
         """
         requests.SetOptionSelect(
             range_id=range_id, option_id=option_id, drop_down=drop_down
@@ -656,6 +666,7 @@ class CCAPI:
         Kwargs:
             option_id: ID of Product Option.
             value: (Bool) Product Option is a drop down.
+
         """
         return requests.UpdateRangeOnSalesChannel(
             range_id=range_id,
@@ -680,6 +691,7 @@ class CCAPI:
             value_1: First updated value.
             value_2: Second updated value.
             channels: List containing IDs of channels to be updated.
+
         """
         return requests.UpdateProductOnSalesChannel(*args, **kwargs)
 
@@ -689,6 +701,7 @@ class CCAPI:
 
         Args:
             range_id: ID of Product Range.
+
         """
         return requests.CheckRangesOnSalesChannel(range_id)
 
@@ -726,6 +739,7 @@ class CCAPI:
         Args:
             range_id: ID of Product Range.
             product_id: ID of Product.
+
         """
         return requests.GetImages(range_id=range_id, product_id=product_id)
 
@@ -735,6 +749,7 @@ class CCAPI:
 
         Args:
             image_id: ID of Product Image to delete.
+
         """
         return requests.DeleteImage(image_id)
 
@@ -746,6 +761,7 @@ class CCAPI:
             product_ids: IDs of products to add image to.
             channel_ids: IDs of channels to add image to.
             image_file: File object containing the image to upload.
+
         """
         return requests.UploadImage(
             product_ids=product_ids, channel_ids=channel_ids, image_file=image_file
@@ -1190,4 +1206,11 @@ class CCAPI:
             invoice_ID=invoice_ID,
             channel_ID=channel_ID,
             payment_date=payment_date,
+        )
+
+    @staticmethod
+    def set_multipack(product_ID):
+        """Set a product as a multipack item."""
+        return requests.products.SetProductType(
+            product_id=product_ID, type=requests.products.SetProductType.MULTIPACK
         )

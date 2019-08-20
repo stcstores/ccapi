@@ -777,3 +777,31 @@ class TestUploadImage(TestRequest):
         self.register(json=self.SUCCESSFUL_RESPONSE, status_code=500)
         with self.assertRaises(exceptions.CloudCommerceResponseError):
             self.mock_request(product_ids=[self.PRODUCT_ID], image_file=self.IMAGE)
+
+
+class TestSetProductType(TestRequest):
+    """Test for the SetProductType request."""
+
+    request_class = products.SetProductType
+
+    PRODUCT_ID = "6909316"
+    TYPE = request_class.MULTIPACK
+    RESPONSE = "Success"
+
+    def setUp(self):
+        """Get image to upload."""
+        super().setUp()
+        self.register(text=self.RESPONSE)
+
+    def test_SetProductTYpe_request(self):
+        """Test the SetProductType request."""
+        response = self.mock_request(product_id=self.PRODUCT_ID, type=self.TYPE)
+        self.assertEqual(response, self.RESPONSE)
+        self.assertDataSent(self.request_class.PRODUCT_ID, self.PRODUCT_ID)
+        self.assertDataSent(self.request_class.TYPE, self.TYPE)
+
+    def test_UploadImage_raises_for_non_200(self):
+        """Test UploadImage raises for non 200 responses."""
+        self.register(json=self.RESPONSE, status_code=500)
+        with self.assertRaises(exceptions.CloudCommerceResponseError):
+            self.mock_request(product_id=self.PRODUCT_ID, type=self.TYPE)
