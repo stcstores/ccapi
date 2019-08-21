@@ -15,7 +15,7 @@ class ProgramTypeRequestSubclass:
         super().setUp()
         self.register(text=self.RESPONSE)
 
-    def test_returns_response_text(self):
+    def test_response(self):
         """Test the Customer request returns the response text."""
         response = self.mock_request()
         self.assertEqual(response, self.RESPONSE)
@@ -169,6 +169,62 @@ class TestSaveSimplePackage(ProgramTypeRequestSubclass, TestRequest):
 
     def test_raises_for_non_200(self):
         """Test an exception is raised when a request recieved an error status code."""
+        self.register(json=self.RESPONSE, status_code=500)
+        with self.assertRaises(ccapi.exceptions.CloudCommerceResponseError):
+            self.mock_request()
+
+
+class TestGetSimplePackage(ProgramTypeRequestSubclass, TestRequest):
+    request_class = (
+        ccapi.requests.program_type_requests.getsimpleproductpackage.GetSimplePackage
+    )
+
+    RESPONSE = [
+        {
+            "CanEdit": True,
+            "type": 0,
+            "percent": 77,
+            "links": "12174169",
+            "quantity": 2,
+            "names": ["Test Multipack  - Single"],
+            "prices": ["5.00"],
+            "StatusID": 1,
+        },
+        {
+            "CanEdit": True,
+            "type": 0,
+            "percent": 23,
+            "links": "3752158",
+            "quantity": 3,
+            "names": ["10 Birth Announcements 20 Thank Yous and 20 Envelope "],
+            "prices": ["1.00"],
+            "StatusID": 1,
+        },
+    ]
+
+    MULTIPACK_PRODUCT_ID = "97643153"
+
+    def setUp(self):
+        """Register request URI."""
+        super(TestRequest, self).setUp()
+        self.register(json=self.RESPONSE)
+
+    def mock_request(self):
+        return super().mock_request(self.MULTIPACK_PRODUCT_ID)
+
+    def test_request(self):
+        self.mock_request()
+        self.assertDataSent(
+            self.request_class.MULTIPACK_PRODUCT_ID, self.MULTIPACK_PRODUCT_ID
+        )
+
+    def test_response(self):
+        response = self.mock_request()
+        self.assertIsInstance(response, ccapi.MultipackInfo)
+        self.assertEqual(response.product_id, self.MULTIPACK_PRODUCT_ID)
+        self.assertEqual(len(response), 2)
+
+    def test_raises_for_non_200(self):
         self.register(json=self.RESPONSE, status_code=500)
         with self.assertRaises(ccapi.exceptions.CloudCommerceResponseError):
             self.mock_request()

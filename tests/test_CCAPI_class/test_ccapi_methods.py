@@ -4,6 +4,7 @@ import datetime
 import json
 import shutil
 import tempfile
+from decimal import Decimal
 from pathlib import Path
 
 from ccapi import CCAPI, NewOrderItem, VatRates, cc_objects, requests
@@ -2074,3 +2075,63 @@ class Test_add_multipack_item_Method(TestCCAPIMethod):
             requests.program_type_requests.SaveSimplePackage.DEFINITION,
             "^135748313~100~2",
         )
+
+
+class Test_get_multipack_info_Method(TestCCAPIMethod):
+
+    RESPONSE = [
+        {
+            "CanEdit": True,
+            "type": 0,
+            "percent": 77,
+            "links": "12174169",
+            "quantity": 2,
+            "names": ["Test Multipack  - Single"],
+            "prices": ["5.00"],
+            "StatusID": 1,
+        },
+        {
+            "CanEdit": True,
+            "type": 0,
+            "percent": 23,
+            "links": "3752158",
+            "quantity": 3,
+            "names": ["10 Birth Announcements 20 Thank Yous and 20 Envelope "],
+            "prices": ["1.00"],
+            "StatusID": 1,
+        },
+    ]
+
+    PRODUCT_ID = "38367589"
+
+    def setUp(self):
+        super().setUp()
+        self.register_request(
+            requests.program_type_requests.getsimpleproductpackage.GetSimplePackage,
+            json=self.RESPONSE,
+        )
+
+    def test_data_is_sent(self):
+        CCAPI.get_multipack_info(self.PRODUCT_ID)
+        self.assertDataSent(
+            requests.program_type_requests.getsimpleproductpackage.GetSimplePackage.MULTIPACK_PRODUCT_ID,
+            self.PRODUCT_ID,
+        )
+
+    def test_response(self):
+        info = CCAPI.get_multipack_info(self.PRODUCT_ID)
+        self.assertIsInstance(info, cc_objects.MultipackInfo)
+        self.assertEqual(info.product_id, self.PRODUCT_ID)
+        self.assertEqual(len(info), 2)
+
+        self.assertIsInstance(info[0], cc_objects.MultipackItem)
+        self.assertEqual(info[0].product_id, "12174169")
+        self.assertEqual(info[0].quantity, 2)
+        self.assertEqual(info[0].percent, 77)
+        self.assertEqual(info[0].price, Decimal("5.00"))
+
+        self.assertIsInstance(info[1], cc_objects.MultipackItem)
+        self.assertEqual(info[1].product_id, "3752158")
+        self.assertEqual(info[1].quantity, 3)
+        self.assertEqual(info[1].percent, 23)
+        self.assertEqual(info[1].price, Decimal("1.00"))

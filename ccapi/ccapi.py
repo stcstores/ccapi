@@ -1236,3 +1236,10 @@ class CCAPI:
             price_percentage=price_percentage,
             quantity=quantity,
         )
+
+    @staticmethod
+    def get_multipack_info(multipack_product_ID):
+        """Return multipack information for a multipack product."""
+        return requests.program_type_requests.getsimpleproductpackage.GetSimplePackage(
+            multipack_product_ID
+        )

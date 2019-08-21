@@ -4,6 +4,8 @@ getSimpleProductPackage request.
 Handle customers.
 """
 
+from ccapi.cc_objects import MultipackInfo
+
 from .program_type_request import ProgramTypeRequest
 
 
@@ -60,3 +62,24 @@ class SaveSimplePackage(GetSimpleProductPackage):
     def create_definition(self):
         """Return a multipack item definition string."""
         return f"^{self.multipack_product_id}~{self.price_percentage}~{self.quantity}"
+
+
+class GetSimplePackage(GetSimpleProductPackage):
+    """Return multipack information for a multipack product."""
+
+    PROGRAM_TYPE = "GetSimplePackage"
+
+    error_message = "Failed to get multipack item information."
+
+    MULTIPACK_PRODUCT_ID = "ProductID"
+
+    def __new__(self, multipack_product_id):
+        """Return multipack information for a multipack product."""
+        self.multipack_product_id = multipack_product_id
+        self.kwargs = {self.MULTIPACK_PRODUCT_ID: self.multipack_product_id}
+        return super().__new__(self)
+
+    def process_response(self, response):
+        """Handle request response."""
+        super().process_response(self, response)
+        return MultipackInfo.load_json(self.multipack_product_id, response.json())
