@@ -1,5 +1,7 @@
 """Tests for Program Type requests."""
 
+from decimal import Decimal
+
 import ccapi
 
 from .test_request import TestRequest
@@ -15,7 +17,7 @@ class ProgramTypeRequestSubclass:
         super().setUp()
         self.register(text=self.RESPONSE)
 
-    def test_returns_response_text(self):
+    def test_response(self):
         """Test the Customer request returns the response text."""
         response = self.mock_request()
         self.assertEqual(response, self.RESPONSE)
@@ -134,16 +136,24 @@ class TestUpdateCustomerAddress(ProgramTypeRequestSubclass, TestRequest):
 
 
 class TestSaveSimplePackage(ProgramTypeRequestSubclass, TestRequest):
-    """Test the UpdateCustomerAddress request."""
+    """
+    Test the UpdateCustomerAddress request.
+
+    Note: This request puts swaps the ID of the multipack item and the first item being
+    added to it.
+    """
 
     request_class = (
         ccapi.requests.program_type_requests.getsimpleproductpackage.SaveSimplePackage
     )
 
+    ITEMS = [
+        ("97643153", 2, Decimal(7.89)),
+        ("12174169", 2, Decimal(5.00)),
+        ("3752158", 3, Decimal(1)),
+    ]
+
     MULTIPACK_PRODUCT_ID = "135748313"
-    MULTIPACK_ITEM_PRODUCT_ID = "97643153"
-    PRICE_PERCENTAGE = 100
-    QUANTITY = 2
 
     RESPONSE = {"html": "success"}
 
@@ -152,23 +162,81 @@ class TestSaveSimplePackage(ProgramTypeRequestSubclass, TestRequest):
         super(TestRequest, self).setUp()
         self.register(json=self.RESPONSE)
 
-    def mock_request(self):
-        return super().mock_request(
-            multipack_product_id=self.MULTIPACK_PRODUCT_ID,
-            multipack_item_product_id=self.MULTIPACK_ITEM_PRODUCT_ID,
-            price_percentage=self.PRICE_PERCENTAGE,
-            quantity=self.QUANTITY,
+    def mock_request(self, *args, **kwargs):
+        if not args and not kwargs:
+            return self.mock_request(self.MULTIPACK_PRODUCT_ID, self.ITEMS[0])
+        return super().mock_request(*args, **kwargs)
+
+    def test_request_with_single_item(self):
+        self.mock_request(self.MULTIPACK_PRODUCT_ID, self.ITEMS[0])
+        self.assertDataSent(self.request_class.MULTIPACK_PRODUCT_ID, "97643153")
+        self.assertDataSent(self.request_class.DEFINITION, "^135748313~100~2")
+
+    def test_request_with_multiple_items(self):
+        self.mock_request(self.MULTIPACK_PRODUCT_ID, self.ITEMS[1], self.ITEMS[2])
+        self.assertDataSent(self.request_class.MULTIPACK_PRODUCT_ID, "12174169")
+        self.assertDataSent(
+            self.request_class.DEFINITION, "^135748313~77~2^3752158~23~3"
         )
+
+    def test_raises_for_non_200(self):
+        """Test an exception is raised when a request recieved an error status code."""
+        self.register(json=self.RESPONSE, status_code=500)
+        with self.assertRaises(ccapi.exceptions.CloudCommerceResponseError):
+            self.mock_request(self.MULTIPACK_PRODUCT_ID, self.ITEMS[1], self.ITEMS[2])
+
+
+class TestGetSimplePackage(ProgramTypeRequestSubclass, TestRequest):
+    request_class = (
+        ccapi.requests.program_type_requests.getsimpleproductpackage.GetSimplePackage
+    )
+
+    RESPONSE = [
+        {
+            "CanEdit": True,
+            "type": 0,
+            "percent": 77,
+            "links": "12174169",
+            "quantity": 2,
+            "names": ["Test Multipack  - Single"],
+            "prices": ["5.00"],
+            "StatusID": 1,
+        },
+        {
+            "CanEdit": True,
+            "type": 0,
+            "percent": 23,
+            "links": "3752158",
+            "quantity": 3,
+            "names": ["10 Birth Announcements 20 Thank Yous and 20 Envelope "],
+            "prices": ["1.00"],
+            "StatusID": 1,
+        },
+    ]
+
+    MULTIPACK_PRODUCT_ID = "97643153"
+
+    def setUp(self):
+        """Register request URI."""
+        super(TestRequest, self).setUp()
+        self.register(json=self.RESPONSE)
+
+    def mock_request(self):
+        return super().mock_request(self.MULTIPACK_PRODUCT_ID)
 
     def test_request(self):
         self.mock_request()
         self.assertDataSent(
-            self.request_class.MULTIPACK_ITEM_PRODUCT_ID, self.MULTIPACK_ITEM_PRODUCT_ID
+            self.request_class.MULTIPACK_PRODUCT_ID, self.MULTIPACK_PRODUCT_ID
         )
-        self.assertDataSent(self.request_class.DEFINITION, "^135748313~100~2")
+
+    def test_response(self):
+        response = self.mock_request()
+        self.assertIsInstance(response, ccapi.MultipackInfo)
+        self.assertEqual(response.product_id, self.MULTIPACK_PRODUCT_ID)
+        self.assertEqual(len(response), 2)
 
     def test_raises_for_non_200(self):
-        """Test an exception is raised when a request recieved an error status code."""
         self.register(json=self.RESPONSE, status_code=500)
         with self.assertRaises(ccapi.exceptions.CloudCommerceResponseError):
             self.mock_request()

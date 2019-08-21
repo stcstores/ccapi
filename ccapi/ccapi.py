@@ -1216,23 +1216,23 @@ class CCAPI:
         )
 
     @staticmethod
-    def add_multipack_item(
-        *, multipack_product_id, multipack_item_product_id, price_percentage, quantity
-    ):
+    def set_multipack_items(*items, multipack_product_id):
         """
-        Add a multipack item to a multipack product.
+        Set multipack items for a multipack product.
 
-        Kwargs:
+        Args:
             multipack_product_id (str): Product ID of the multipack item to be added too.
-            multipack_item_product_id (str): Product ID of the item to be added.
-            price_percentage (str): The percentage of the item price to add to the
-                multipack price.
-            quantity (int): The number of the item that appears in the multipack.
+            *items (tuple): Tuple(multipack item ID, quantity, item_price) for each item
+                in the multipack.
 
         """
         return requests.program_type_requests.SaveSimplePackage(
-            multipack_product_id=multipack_product_id,
-            multipack_item_product_id=multipack_item_product_id,
-            price_percentage=price_percentage,
-            quantity=quantity,
+            multipack_product_id, *items
+        )
+
+    @staticmethod
+    def get_multipack_info(multipack_product_ID):
+        """Return multipack information for a multipack product."""
+        return requests.program_type_requests.getsimpleproductpackage.GetSimplePackage(
+            multipack_product_ID
         )
