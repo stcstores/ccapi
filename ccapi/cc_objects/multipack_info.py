@@ -61,7 +61,7 @@ class MultipackItem:
         self.multipack_info = None
         self.product_id = str(product_id)
         self.quantity = int(quantity)
-        self.price = Decimal(price)
+        self.price = round(Decimal(price), 2)
 
     @classmethod
     def load_json(cls, data):

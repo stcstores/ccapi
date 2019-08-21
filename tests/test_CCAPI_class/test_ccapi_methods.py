@@ -2045,14 +2045,20 @@ class Test_set_multipack_Method(TestCCAPIMethod):
         )
 
 
-class Test_add_multipack_item_Method(TestCCAPIMethod):
+class Test_set_multipack_items_Method(TestCCAPIMethod):
+    """
+    Note: This request puts swaps the ID of the multipack item and the first item being
+    added to it.
+    """
 
     RESPONSE = test_requests.test_program_type_requests.TestSaveSimplePackage.RESPONSE
 
     MULTIPACK_PRODUCT_ID = "135748313"
-    MULTIPACK_ITEM_PRODUCT_ID = "97643153"
-    PRICE_PERCENTAGE = 100
-    QUANTITY = 2
+    ITEMS = [
+        ("97643153", 2, Decimal(7.89)),
+        ("12174169", 2, Decimal(5.00)),
+        ("3752158", 3, Decimal(1)),
+    ]
 
     def setUp(self):
         super().setUp()
@@ -2061,19 +2067,29 @@ class Test_add_multipack_item_Method(TestCCAPIMethod):
         )
 
     def test_data_is_sent(self):
-        CCAPI.add_multipack_item(
-            multipack_product_id=self.MULTIPACK_PRODUCT_ID,
-            multipack_item_product_id=self.MULTIPACK_ITEM_PRODUCT_ID,
-            price_percentage=self.PRICE_PERCENTAGE,
-            quantity=self.QUANTITY,
+        CCAPI.set_multipack_items(
+            self.ITEMS[0], multipack_product_id=self.MULTIPACK_PRODUCT_ID
         )
         self.assertDataSent(
-            requests.program_type_requests.SaveSimplePackage.MULTIPACK_ITEM_PRODUCT_ID,
-            self.MULTIPACK_ITEM_PRODUCT_ID,
+            requests.program_type_requests.SaveSimplePackage.MULTIPACK_PRODUCT_ID,
+            "97643153",
         )
         self.assertDataSent(
             requests.program_type_requests.SaveSimplePackage.DEFINITION,
             "^135748313~100~2",
+        )
+
+    def test_multiple_items(self):
+        CCAPI.set_multipack_items(
+            self.ITEMS[1], self.ITEMS[2], multipack_product_id=self.MULTIPACK_PRODUCT_ID
+        )
+        self.assertDataSent(
+            requests.program_type_requests.SaveSimplePackage.MULTIPACK_PRODUCT_ID,
+            "12174169",
+        )
+        self.assertDataSent(
+            requests.program_type_requests.SaveSimplePackage.DEFINITION,
+            "^135748313~77~2^3752158~23~3",
         )
 
 
