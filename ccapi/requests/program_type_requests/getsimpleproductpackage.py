@@ -68,7 +68,6 @@ class SaveSimplePackage(GetSimpleProductPackage):
         definition = "".join(
             (SaveSimplePackage.create_item_definition(item) for item in items)
         )
-        print(definition)
         return definition
 
     @staticmethod
