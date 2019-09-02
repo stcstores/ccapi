@@ -1,8 +1,17 @@
 """Requests with no directory."""
 
-from .addcustomer import AddCustomer  # NOQA
-from .createorder import CreateOrder  # NOQA
-from .customeraccounts import CustomerAccounts  # NOQA
-from .getimages import GetImages  # NOQA
-from .getproductsforrange import GetProductsForRange  # NOQA
-from .preemployee import PreEmployee  # NOQA
+from .addcustomer import AddCustomer
+from .createorder import CreateOrder
+from .customeraccounts import CustomerAccounts
+from .getimages import GetImages
+from .getproductsforrange import GetProductsForRange
+from .preemployee import PreEmployee
+
+__all__ = [
+    "AddCustomer",
+    "CreateOrder",
+    "CustomerAccounts",
+    "GetImages",
+    "GetProductsForRange",
+    "PreEmployee",
+]
