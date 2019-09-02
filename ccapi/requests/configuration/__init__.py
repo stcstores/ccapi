@@ -1,3 +1,5 @@
 """Configuration API requests."""
 
-from .shippingrules import ShippingRules  # NOQA
+from .shippingrules import ShippingRules
+
+__all__ = ["ShippingRules"]

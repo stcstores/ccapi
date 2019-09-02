@@ -1,4 +1,6 @@
 """Order Handlers requests."""
 
-from .getordersfordispatch import GetOrdersForDispatch  # NOQA
-from .getdispatchmethodsfororder import GetDispatchMethodsForOrder  # NOQA
+from .getdispatchmethodsfororder import GetDispatchMethodsForOrder
+from .getordersfordispatch import GetOrdersForDispatch
+
+__all__ = ["GetOrdersForDispatch", "GetDispatchMethodsForOrder"]

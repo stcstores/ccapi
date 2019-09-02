@@ -1,3 +1,5 @@
 """Accounts requests."""
 
-from .payment import *  # NOQA
+from .payment import CreatePayment
+
+__all__ = ["CreatePayment"]

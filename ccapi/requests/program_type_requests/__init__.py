@@ -1,5 +1,12 @@
 """Requests using the program type form."""
 
-from .customer import *  # NOQA
-from .getsimpleproductpackage import *  # NOQA
-from .program_type_request import ProgramTypeRequest  # NOQA
+from .customer import Customer, GetPaymentTerms, UpdateCustomerAddress
+from .getsimpleproductpackage import GetSimplePackage, SaveSimplePackage
+
+__all__ = [
+    "Customer",
+    "GetPaymentTerms",
+    "UpdateCustomerAddress",
+    "SaveSimplePackage",
+    "GetSimplePackage",
+]
