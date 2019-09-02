@@ -60,7 +60,7 @@ class CCAPI:
         Returns: ccapi.requests.dosearch.DoSearchResult.
 
         """
-        return requests.DoSearch(search_text)
+        return requests.products.DoSearch(search_text)
 
     @staticmethod
     def get_sku(range_sku=False):
@@ -75,7 +75,7 @@ class CCAPI:
             product SKU.
 
         """
-        response = requests.ProductOperations("getgeneratedsku")
+        response = requests.products.ProductOperations("getgeneratedsku")
         sku = response.data
         if range_sku is True:
             sku = "RNG_{}".format(sku)
@@ -90,7 +90,7 @@ class CCAPI:
             product_id: ID of Product.
 
         """
-        response = requests.FindProductSelectedOptionsOnly(product_id)
+        response = requests.products.FindProductSelectedOptionsOnly(product_id)
         return response.product
 
     @staticmethod
@@ -104,13 +104,13 @@ class CCAPI:
         Returns ccapi.cc_objects.productoptions.ProductOptions.
 
         """
-        response = requests.FindProductSelectedOptionsOnly(product_id)
+        response = requests.products.FindProductSelectedOptionsOnly(product_id)
         return response.options
 
     @staticmethod
     def get_product_range_options(range_id):
         """Get product options and shop options for Product Range."""
-        response = requests.GetProductData(range_id)
+        response = requests.productoption.GetProductData(range_id)
         return response
 
     @staticmethod
@@ -124,7 +124,7 @@ class CCAPI:
         Returns ccapi.cc_objects.productoptions.ProductOptions.
 
         """
-        response = requests.GetProductData(range_id)
+        response = requests.productoption.GetProductData(range_id)
         return response.options
 
     @staticmethod
@@ -138,7 +138,7 @@ class CCAPI:
         Returns ccapi.cc_objects.productoptions.ShopOptions.
 
         """
-        response = requests.GetProductData(range_id)
+        response = requests.productoption.GetProductData(range_id)
         return response.shop_options
 
     @staticmethod
@@ -149,7 +149,7 @@ class CCAPI:
         Returns ccapi.cc_objects.productoptions.ProductOptions.
 
         """
-        return requests.GetOptions()
+        return requests.productoption.GetOptions()
 
     @staticmethod
     def get_option_values(option_id):
@@ -162,7 +162,7 @@ class CCAPI:
         Returns ccapi.cc_objects.productoptions.ProductOptions.
 
         """
-        return requests.GetOptionData(option_id)
+        return requests.productoption.GetOptionData(option_id)
 
     @staticmethod
     def update_product_stock_level(*, product_id, new_stock_level, old_stock_level):
@@ -175,7 +175,7 @@ class CCAPI:
             old_stock_level: Original stock level.
 
         """
-        requests.UpdateProductStockLevel(
+        requests.products.UpdateProductStockLevel(
             product_id=product_id,
             new_stock_level=new_stock_level,
             old_stock_level=old_stock_level,
@@ -198,7 +198,7 @@ class CCAPI:
         """
         if sku is None:
             sku = cls.get_sku(range_sku=True)
-        new_range_id = requests.AddNewRange(range_name=range_name, sku=sku)
+        new_range_id = requests.range.AddNewRange(range_name=range_name, sku=sku)
         return new_range_id
 
     @staticmethod
@@ -213,7 +213,7 @@ class CCAPI:
         Returns: (str) ID of new Product Option Value.
 
         """
-        return requests.AddOptionValue(option_id, value)
+        return requests.productoption.AddOptionValue(option_id, value)
 
     @classmethod
     def get_product_option_id(cls, option_name):
@@ -266,7 +266,9 @@ class CCAPI:
             option_id: ID of Product Option.
 
         """
-        requests.AddRemProductOption(range_id=range_id, option_id=option_id, add=True)
+        requests.range.AddRemProductOption(
+            range_id=range_id, option_id=option_id, add=True
+        )
 
     @staticmethod
     def remove_option_from_product(*, range_id, option_id):
@@ -278,7 +280,7 @@ class CCAPI:
             option_id: ID of Product Option.
 
         """
-        requests.AddRemProductOption(
+        requests.range.AddRemProductOption(
             range_id=range_id, option_id=option_id, remove=True
         )
 
@@ -293,7 +295,7 @@ class CCAPI:
         Returns ccapi.cc_objects.ProductRange.
 
         """
-        return requests.GetProductsForRange(range_id)
+        return requests.handlers.GetProductsForRange(range_id)
 
     @classmethod
     def create_product(
@@ -334,7 +336,7 @@ class CCAPI:
             description = name
         if vat_rate_id is None:
             vat_rate_id = VatRates.get_vat_rate_id_by_rate(vat_rate)
-        return requests.AddProduct(
+        return requests.products.AddProduct(
             range_id=range_id,
             name=name,
             barcode=barcode,
@@ -354,7 +356,7 @@ class CCAPI:
             option_value_id: ID of Product Option Value to set.
 
         """
-        return requests.SetProductOptionValue(
+        return requests.products.SetProductOptionValue(
             product_ids=product_ids,
             option_id=option_id,
             option_value_id=option_value_id,
@@ -388,7 +390,7 @@ class CCAPI:
             external_id: External ID of product.
 
         """
-        return requests.SetProductScope(
+        return requests.products.SetProductScope(
             product_id=product_id,
             weight=weight,
             height=height,
@@ -408,7 +410,7 @@ class CCAPI:
             price: New base price for Product.
 
         """
-        requests.UpdateProductBasePrice(product_id=product_id, price=price)
+        requests.products.UpdateProductBasePrice(product_id=product_id, price=price)
 
     @staticmethod
     def set_product_handling_time(*, product_id, handling_time, update_channels=True):
@@ -424,7 +426,7 @@ class CCAPI:
                 Default: True.
 
         """
-        requests.SaveHandlingTime(
+        requests.products.SaveHandlingTime(
             product_id=product_id,
             handling_time=handling_time,
             update_channels=update_channels,
@@ -433,13 +435,13 @@ class CCAPI:
     @staticmethod
     def get_warehouses():
         """Return Warehouses object containing all Warehouses."""
-        return requests.FindWarehouse()
+        return requests.warehouse.FindWarehouse()
 
     @staticmethod
     def get_bays_for_warehouse(warehouse_id, products=False):
         """Return list of Warehouse Bays for Warehouse."""
         if products is False:
-            return requests.FindWarehouseBay(
+            return requests.warehousebay.FindWarehouseBay(
                 warehouse_id=warehouse_id, prog_type="normal", products=False
             )
         skip_records = 0
@@ -449,8 +451,7 @@ class CCAPI:
         skip_records = 0
         request = 1
         while True:
-            print("Request: {}".format(request))
-            data = requests.FindWarehouseBay(
+            data = requests.warehousebay.FindWarehouseBay(
                 warehouse_id=warehouse_id,
                 prog_type="normal",
                 products=True,
@@ -468,19 +469,21 @@ class CCAPI:
     @staticmethod
     def get_bays_for_product(product_id):
         """Return list of Warehouse Bays for Product."""
-        return requests.FindWarehouseBay(product_id=product_id, operation="productbays")
+        return requests.warehousebay.FindWarehouseBay(
+            product_id=product_id, operation="productbays"
+        )
 
     @staticmethod
     def add_warehouse_bay_to_product(product_id, bay_id):
         """Add Warehouse Bay to Product."""
-        return requests.FindWarehouseBay(
+        return requests.warehousebay.FindWarehouseBay(
             product_id=product_id, warehouse_bay_id=bay_id, operation="addlocation"
         )
 
     @staticmethod
     def remove_warehouse_bay_from_product(product_id, bay_id):
         """Remove Warehouse Bay from Product."""
-        return requests.FindWarehouseBay(
+        return requests.warehousebay.FindWarehouseBay(
             product_id=product_id, warehouse_bay_id=bay_id, operation="removelocation"
         )
 
@@ -494,7 +497,7 @@ class CCAPI:
         warehouse_bay_type="Default",
     ):
         """Add bay to warehouse."""
-        return requests.SaveWarehouseBay(
+        return requests.warehousebay.SaveWarehouseBay(
             warehouse_id,
             bay,
             bay_number=bay_number,
@@ -506,7 +509,7 @@ class CCAPI:
     @staticmethod
     def delete_product_option_value(option_value_id):
         """Delete Product Option Value."""
-        requests.DeleteOptionValue(option_value_id)
+        requests.productoption.DeleteOptionValue(option_value_id)
 
     @staticmethod
     def set_range_option_drop_down(*, range_id, option_id, drop_down):
@@ -518,7 +521,7 @@ class CCAPI:
             drop_down: (Bool) Set Product Option as a drop down or not.
 
         """
-        requests.SetOptionSelect(
+        requests.range.SetOptionSelect(
             range_id=range_id, option_id=option_id, drop_down=drop_down
         )
 
@@ -554,7 +557,7 @@ class CCAPI:
         kwargs["skip_records"] = 0
         range_ids = []
         while True:
-            response = requests.GetProducts(*args, **kwargs)
+            response = requests.productmanager.GetProducts(*args, **kwargs)
             for product in response:
                 range_id = product["RangeId"]
                 if range_id not in range_ids:
@@ -567,7 +570,9 @@ class CCAPI:
     @staticmethod
     def delete_bay(bay_id):
         """Delete Warehouse Bay."""
-        return requests.FindWarehouseBay(warehouse_bay_id=bay_id, operation="removebay")
+        return requests.warehousebay.FindWarehouseBay(
+            warehouse_bay_id=bay_id, operation="removebay"
+        )
 
     @classmethod
     def get_bay_id(cls, bay_name, warehouse_name, create=False):
@@ -584,22 +589,22 @@ class CCAPI:
     @staticmethod
     def get_print_queue():
         """Return the current contents of the Print Queue."""
-        return requests.FindPrintQueue()
+        return requests.printqueue.FindPrintQueue()
 
     @staticmethod
     def get_users(search_string=""):
         """Return system users."""
-        return requests.PreEmployee(search_string=search_string)
+        return requests.handlers.PreEmployee(search_string=search_string)
 
     @staticmethod
     def delete_range(range_id):
         """Delete Product Range."""
-        return requests.DeleteProductRange(range_id)
+        return requests.range.DeleteProductRange(range_id)
 
     @staticmethod
     def get_order_addresses(order_id, customer_id):
         """Get addresses for order."""
-        return requests.GetOrderAddresses(order_id, customer_id)
+        return requests.orderdetails.GetOrderAddresses(order_id, customer_id)
 
     @staticmethod
     def get_orders_for_dispatch(*args, **kwargs):
@@ -608,7 +613,7 @@ class CCAPI:
         kwargs["take_limit"] = 200
         orders = []
         while True:
-            new_orders = requests.GetOrdersForDispatch(*args, **kwargs)
+            new_orders = requests.orderdetails.GetOrdersForDispatch(*args, **kwargs)
             new_orders = [
                 o for o in new_orders if o.order_id not in (o.order_id for o in orders)
             ]
@@ -639,7 +644,7 @@ class CCAPI:
         Update Name, SKU, End of Line, Pre Order and Group Items
         for Product Range.
         """
-        return requests.UpdateRangeSettings(
+        return requests.range.UpdateRangeSettings(
             range_id=range_id,
             current_name=current_name,
             current_sku=current_sku,
@@ -668,7 +673,7 @@ class CCAPI:
             value: (Bool) Product Option is a drop down.
 
         """
-        return requests.UpdateRangeOnSalesChannel(
+        return requests.range.UpdateRangeOnSalesChannel(
             range_id=range_id,
             request_type=request_type,
             act=act,
@@ -693,7 +698,7 @@ class CCAPI:
             channels: List containing IDs of channels to be updated.
 
         """
-        return requests.UpdateProductOnSalesChannel(*args, **kwargs)
+        return requests.products.UpdateProductOnSalesChannel(*args, **kwargs)
 
     @staticmethod
     def get_sales_channels_for_range(range_id):
@@ -703,32 +708,32 @@ class CCAPI:
             range_id: ID of Product Range.
 
         """
-        return requests.CheckRangesOnSalesChannel(range_id)
+        return requests.range.CheckRangesOnSalesChannel(range_id)
 
     @staticmethod
     def set_product_description(*, description, product_ids):
         """Set description for Product."""
-        return requests.SaveDescription(
+        return requests.products.SaveDescription(
             description=description, product_ids=product_ids
         )
 
     @staticmethod
     def set_product_name(*, name, product_ids):
         """Set name for Product."""
-        requests.SaveProductName(name=name, product_ids=product_ids)
+        requests.products.SaveProductName(name=name, product_ids=product_ids)
 
     @staticmethod
     def set_product_vat_rate(*, product_ids, vat_rate):
         """Set VAT rate for products."""
         vat_rate_id = VatRates.get_vat_rate_id_by_rate(vat_rate)
-        return requests.UpdateProductVatRate(
+        return requests.products.UpdateProductVatRate(
             product_ids=product_ids, vat_rate_id=vat_rate_id
         )
 
     @staticmethod
     def set_product_vat_rate_by_id(*, product_ids, vat_rate_id):
         """Set VAT rate for products."""
-        return requests.UpdateProductVatRate(
+        return requests.products.UpdateProductVatRate(
             product_ids=product_ids, vat_rate_id=vat_rate_id
         )
 
@@ -741,7 +746,7 @@ class CCAPI:
             product_id: ID of Product.
 
         """
-        return requests.GetImages(range_id=range_id, product_id=product_id)
+        return requests.handlers.GetImages(range_id=range_id, product_id=product_id)
 
     @staticmethod
     def delete_image(image_id):
@@ -751,7 +756,7 @@ class CCAPI:
             image_id: ID of Product Image to delete.
 
         """
-        return requests.DeleteImage(image_id)
+        return requests.products.DeleteImage(image_id)
 
     @staticmethod
     def upload_image(*, product_ids, channel_ids=[], image_file=None):
@@ -763,7 +768,7 @@ class CCAPI:
             image_file: File object containing the image to upload.
 
         """
-        return requests.UploadImage(
+        return requests.products.UploadImage(
             product_ids=product_ids, channel_ids=channel_ids, image_file=image_file
         )
 
@@ -775,27 +780,31 @@ class CCAPI:
             product_id: ID of Product for which Images will be ordered.
             image_order: List containing IDs of images in updated order.
         """
-        return requests.SetImageOrder(product_id=product_id, image_ids=image_ids)
+        return requests.products.SetImageOrder(
+            product_id=product_id, image_ids=image_ids
+        )
 
     @staticmethod
     def get_courier_rules():
         """Return shipping rules."""
-        return requests.ShippingRules()
+        return requests.configuration.ShippingRules()
 
     @staticmethod
     def get_dispatch_methods_for_order(order_id, analyse=True):
         """Return dispatch methods for an order."""
-        return requests.GetDispatchMethodsForOrder(order_id, analyse=analyse)
+        return requests.orderhandlers.GetDispatchMethodsForOrder(
+            order_id, analyse=analyse
+        )
 
     @staticmethod
     def get_factories():
         """Return a list of existing Factories."""
-        return requests.FindFactories()
+        return requests.factory.FindFactories()
 
     @classmethod
     def create_factory(cls, name):
         """Create new Factory."""
-        new_factory_id = requests.Factory(
+        new_factory_id = requests.factory.Factory(
             name=name, factory_id=0, prog_type=requests.Factory.UPDATE_FACTORY
         )
         factories = cls.get_factories()
@@ -804,26 +813,26 @@ class CCAPI:
     @staticmethod
     def delete_product_factory_links(factory_id):
         """Remove product links from factory."""
-        return requests.DeleteAllProductFactoryLink(factory_id)
+        return requests.products.DeleteAllProductFactoryLink(factory_id)
 
     @staticmethod
     def delete_factory(factory_id):
         """Delete Factory."""
-        return requests.Factory(
+        return requests.factory.Factory(
             prog_type=requests.Factory.DELETE_FACTORY, factory_id=factory_id
         )
 
     @staticmethod
     def get_product_factory_links(product_id):
         """Get factory links for product."""
-        return requests.FindProductFactoryLinks(product_id)
+        return requests.products.FindProductFactoryLinks(product_id)
 
     @staticmethod
     def update_product_factory_link(
         product_id=None, factory_id=None, dropship=False, supplier_sku="", price=0
     ):
         """Create or update Product Factory Link."""
-        return requests.UpdProductFactoryLink(
+        return requests.products.UpdProductFactoryLink(
             product_id=product_id,
             factory_id=factory_id,
             dropship=dropship,
@@ -834,7 +843,7 @@ class CCAPI:
     @staticmethod
     def delete_product_factory_link(factory_link_id):
         """Delete Product Factory link."""
-        return requests.DeleteProductFactoryLink(factory_link_id)
+        return requests.products.DeleteProductFactoryLink(factory_link_id)
 
     @staticmethod
     def add_customer(*args, **kwargs):
@@ -1001,7 +1010,7 @@ class CCAPI:
             login_id (int or None): Not required. Default: None
         """
         kwargs = {key: value for key, value in locals().items() if value is not None}
-        return requests.CreatePayment(**kwargs)
+        return requests.accounts.CreatePayment(**kwargs)
 
     @staticmethod
     def add_address(
@@ -1119,13 +1128,13 @@ class CCAPI:
     @staticmethod
     def barcode_is_in_use(barcode):
         """Return True if barcode is in use, otherwise False."""
-        return requests.ProductBarcodeInUse(barcode)
+        return requests.productbarcode.ProductBarcodeInUse(barcode)
 
     @classmethod
     def set_product_barcode(cls, *, barcode, product_id):
         """Set a product's barcode."""
         if cls.barcode_is_in_use(barcode) is False:
-            return requests.SaveBarcode(barcode=barcode, product_id=product_id)
+            return requests.products.SaveBarcode(barcode=barcode, product_id=product_id)
         raise Exception('Barcode "{}" is already in use'.format(barcode))
 
     @staticmethod
