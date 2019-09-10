@@ -613,7 +613,7 @@ class CCAPI:
         kwargs["take_limit"] = 200
         orders = []
         while True:
-            new_orders = requests.orderdetails.GetOrdersForDispatch(*args, **kwargs)
+            new_orders = requests.orderhandlers.GetOrdersForDispatch(*args, **kwargs)
             new_orders = [
                 o for o in new_orders if o.order_id not in (o.order_id for o in orders)
             ]
