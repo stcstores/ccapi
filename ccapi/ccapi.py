@@ -832,7 +832,7 @@ class CCAPI:
         product_id=None, factory_id=None, dropship=False, supplier_sku="", price=0
     ):
         """Create or update Product Factory Link."""
-        return requests.products.UpdProductFactoryLink(
+        return requests.factory.UpdProductFactoryLink(
             product_id=product_id,
             factory_id=factory_id,
             dropship=dropship,
