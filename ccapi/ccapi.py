@@ -42,7 +42,7 @@ class CCAPI:
     @staticmethod
     def is_logged_in():
         """Check current session is valid."""
-        return CloudCommerceAPISession.is_logged_in()
+        return CloudCommerceAPISession.check_login()
 
     @staticmethod
     def check_login():
