@@ -321,25 +321,70 @@ class TestProductOperations(TestRequest):
     request_class = products.ProductOperations
 
     SKU = "VSG-H3R-G0R"
-    RESPONSE = {"Success": None, "Message": None, "RecordCount": 1, "Data": SKU}
-
-    GETGENERATEDSKU = "getgeneratedsku"
+    GENERATE_SKU_RESPONSE = {
+        "Success": None,
+        "Message": None,
+        "RecordCount": 1,
+        "Data": SKU,
+    }
+    UPDATE_HS_CODE_RESPONSE = {
+        "Success": True,
+        "Message": "",
+        "RecordCount": 1,
+        "Data": "Operation completed successfully",
+        "Async": False,
+        "AsyncProcessHandle": None,
+    }
 
     def test_ProductOperations_get_generated_sku(self):
         """Test getgeneratedsku request mode."""
-        self.register(headers={"requestmode": self.GETGENERATEDSKU}, json=self.RESPONSE)
-        response = self.mock_request(self.GETGENERATEDSKU)
+        self.register(
+            headers={"requestmode": self.request_class.GET_GENERATED_SKU},
+            json=self.GENERATE_SKU_RESPONSE,
+        )
+        response = self.mock_request(self.request_class.GET_GENERATED_SKU)
         self.assertEqual(response.data, self.SKU)
 
     def test_ProductOperations_request_raises_for_non_200(self):
         """Test ProductOptions request raises for non 200 responses."""
         self.register(
-            headers={"requestmode": self.GETGENERATEDSKU},
-            json=self.RESPONSE,
+            headers={"requestmode": self.request_class.GET_GENERATED_SKU},
+            json=self.GENERATE_SKU_RESPONSE,
             status_code=500,
         )
         with self.assertRaises(exceptions.CloudCommerceResponseError):
-            self.mock_request(self.GETGENERATEDSKU)
+            self.mock_request(self.request_class.GET_GENERATED_SKU)
+
+    def test_ProductOperations_set_HS_code(self):
+        self.register(
+            headers={"requestmode": self.request_class.UPDATE_HS_CODE},
+            json=self.UPDATE_HS_CODE_RESPONSE,
+        )
+        response = self.mock_request(
+            self.request_class.UPDATE_HS_CODE,
+            product_IDs=["84392393", "28493823"],
+            HS_code="4865",
+        )
+        self.assertEqual(response.data, self.UPDATE_HS_CODE_RESPONSE["Data"])
+        self.assertDataSent(self.request_class.PRODUCT_IDS, ["84392393", "28493823"])
+        self.assertDataSent(self.request_class.HS_CODE, "4865")
+
+    def test_return_value(self):
+        self.register(
+            headers={"requestmode": self.request_class.UPDATE_HS_CODE},
+            json=self.UPDATE_HS_CODE_RESPONSE,
+        )
+        response = self.mock_request(
+            self.request_class.UPDATE_HS_CODE,
+            product_IDs=["84392393", "28493823"],
+            HS_code="4865",
+        )
+        self.assertEqual(self.UPDATE_HS_CODE_RESPONSE["Success"], response.success)
+        self.assertEqual(self.UPDATE_HS_CODE_RESPONSE["Message"], response.message)
+        self.assertEqual(
+            self.UPDATE_HS_CODE_RESPONSE["RecordCount"], response.record_count
+        )
+        self.assertEqual(self.UPDATE_HS_CODE_RESPONSE["Data"], response.data)
 
 
 class TestSaveBarcode(TestRequest):

@@ -1245,3 +1245,12 @@ class CCAPI:
         return requests.program_type_requests.getsimpleproductpackage.GetSimplePackage(
             multipack_product_ID
         )
+
+    @staticmethod
+    def set_hs_code(*, product_IDs, HS_code):
+        """Set the HS code for a list of products."""
+        return requests.products.ProductOperations(
+            requests.products.ProductOperations.UPDATE_HS_CODE,
+            product_IDs=product_IDs,
+            HS_code=HS_code,
+        )
