@@ -7,14 +7,22 @@ class ProductOperations(APIRequest):
     """ProductOperations request."""
 
     uri = "Handlers/Products/ProductOperations.ashx"
+    GET_GENERATED_SKU = "getgeneratedsku"
+    UPDATE_HS_CODE = "updatehscode"
 
-    def __new__(self, request_mode):
+    PRODUCT_IDS = "ProductIDs"
+    HS_CODE = "HSCode"
+
+    def __new__(self, request_mode, product_IDs=[], HS_code=None):
         """Create ProductOperations request.
 
         Args:
             request_mode: requestmode header
+
         """
         self.request_mode = request_mode
+        self.product_IDs = (product_IDs,)
+        self.HS_code = HS_code
         return super().__new__(self)
 
     def get_headers(self):
@@ -24,6 +32,13 @@ class ProductOperations(APIRequest):
     def get_params(self):
         """Get parameters for get request."""
         return {"d": "769"}
+
+    def get_data(self):
+        """Return request data."""
+        data = None
+        if self.request_mode == self.UPDATE_HS_CODE:
+            data = {self.PRODUCT_IDS: self.product_IDs, self.HS_CODE: self.HS_code}
+        return data
 
     def process_response(self, response):
         """Handle request response."""

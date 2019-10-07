@@ -17,7 +17,7 @@ class Test_get_sku_Method(TestCCAPIMethod):
     """Test the get_sku method of CCAPI."""
 
     SKU = test_requests.TestProductOperations.SKU
-    RESPONSE = test_requests.TestProductOperations.RESPONSE
+    RESPONSE = test_requests.TestProductOperations.GENERATE_SKU_RESPONSE
 
     def setUp(self):
         """Register request URI."""
@@ -698,7 +698,7 @@ class Test_create_range_Method(TestCCAPIMethod):
     """Test the CCAPI.create_range method."""
 
     RANGE_ID = "4940634"
-    GET_SKU_RESPONSE = test_requests.TestProductOperations.RESPONSE
+    GET_SKU_RESPONSE = test_requests.TestProductOperations.GENERATE_SKU_RESPONSE
 
     RANGE_NAME = "New Product Range"
     SKU = "JF8-98D-3KD"
@@ -2151,3 +2151,26 @@ class Test_get_multipack_info_Method(TestCCAPIMethod):
         self.assertEqual(info[1].quantity, 3)
         self.assertEqual(info[1].percent, 23)
         self.assertEqual(info[1].price, Decimal("1.00"))
+
+
+class Test_set_hs_code_Method(TestCCAPIMethod):
+    RESPONSE = test_requests.test_products.TestProductOperations.UPDATE_HS_CODE_RESPONSE
+
+    def setUp(self):
+        super().setUp()
+        self.register_request(requests.products.ProductOperations, json=self.RESPONSE)
+
+    def test_data_is_sent(self):
+        product_IDs = ["29403920", "284903840"]
+        HS_code = "38493"
+        CCAPI.set_hs_code(product_IDs=product_IDs, HS_code=HS_code)
+        self.assertDataSent(
+            requests.products.ProductOperations.PRODUCT_IDS, product_IDs
+        )
+        self.assertDataSent(requests.products.ProductOperations.HS_CODE, HS_code)
+
+    def test_resposne(self):
+        product_IDs = ["29403920", "284903840"]
+        HS_code = "38493"
+        return_value = CCAPI.set_hs_code(product_IDs=product_IDs, HS_code=HS_code)
+        self.assertEqual(self.RESPONSE["Data"], return_value.data)
