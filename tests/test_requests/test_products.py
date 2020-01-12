@@ -21,6 +21,7 @@ class TestAddProduct(TestRequest):
         "sku": "WUA-DU7-W6W",
         "description": "Product Description",
         "vat_rate_id": 20,
+        "hs_code": "898",
     }
 
     CREATED_PRODUCT_ID = "7286732"
@@ -39,6 +40,8 @@ class TestAddProduct(TestRequest):
         self.assertDataSent("SKUCode", self.REQUEST_KWARGS["sku"])
         self.assertDataSent("ProdDescription", self.REQUEST_KWARGS["description"])
         self.assertDataSent("VatRateID", self.REQUEST_KWARGS["vat_rate_id"])
+        self.assertDataSent("HSCode", self.REQUEST_KWARGS["hs_code"])
+        self.assertDataSent("ProductSource", "Manual")
         self.assertDataSent("CopyDesc", "0")
         self.assertDataSent("BrandID", "341")
 
@@ -47,6 +50,13 @@ class TestAddProduct(TestRequest):
         self.register(text=self.FAILED_RESPONSE)
         with self.assertRaises(exceptions.CloudCommerceResponseError):
             self.mock_request(**self.REQUEST_KWARGS)
+
+    def test_empty_hs_code(self):
+        request_kwargs = dict(self.REQUEST_KWARGS)
+        del request_kwargs["hs_code"]
+        self.register(text=self.SUCCESSFUL_RESPONSE)
+        self.mock_request(**self.REQUEST_KWARGS)
+        self.assertDataValueIsNone(self.REQUEST_KWARGS["hs_code"])
 
     def test_AddProduct_raises_for_non_200(self):
         """Test AddProduct request raises for non 200 response."""
