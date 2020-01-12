@@ -13,7 +13,9 @@ class AddProduct(APIRequest):
 
     uri = "Handlers/Products/AddProduct.ashx"
 
-    def __new__(self, *, range_id, name, barcode, sku, description, vat_rate_id):
+    def __new__(
+        self, *, range_id, name, barcode, sku, description, vat_rate_id, hs_code=""
+    ):
         """Create AddProduct request.
 
         Args:
@@ -30,6 +32,7 @@ class AddProduct(APIRequest):
         self.sku = sku
         self.description = description
         self.vat_rate_id = vat_rate_id
+        self.hs_code = hs_code
         return super().__new__(self)
 
     def process_response(self, response):
@@ -50,7 +53,9 @@ class AddProduct(APIRequest):
             "SKUCode": self.sku,
             "ProdDescription": self.description,
             "VatRateID": self.vat_rate_id,
+            "HSCode": self.hs_code,
             "CopyDesc": "0",
+            "ProductSource": "Manual",
             "BrandID": "341",
         }
 
