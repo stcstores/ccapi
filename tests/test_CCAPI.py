@@ -5,6 +5,7 @@ import unittest
 import urllib
 
 import requests_mock
+
 from ccapi.requests.ccapisession import CloudCommerceAPISession
 
 

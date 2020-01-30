@@ -1254,3 +1254,8 @@ class CCAPI:
             product_IDs=product_IDs,
             HS_code=HS_code,
         )
+
+    @staticmethod
+    def recent_orders_for_customer(customer_ID):
+        """Return recent orders for a customer."""
+        return requests.orderhandlers.GetRecentOrdersByCustomerID(customer_ID)

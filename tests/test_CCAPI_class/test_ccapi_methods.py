@@ -2174,3 +2174,22 @@ class Test_set_hs_code_Method(TestCCAPIMethod):
         HS_code = "38493"
         return_value = CCAPI.set_hs_code(product_IDs=product_IDs, HS_code=HS_code)
         self.assertEqual(self.RESPONSE["Data"], return_value.data)
+
+
+class Test_recent_orders_for_customer_Method(TestCCAPIMethod):
+    RESPONSE = (
+        test_requests.test_order_handlers.TestGetRecentOrdersByCustomerID.RESPONSE
+    )
+
+    def setUp(self):
+        super().setUp()
+        self.register_request(
+            requests.orderhandlers.GetRecentOrdersByCustomerID, json=self.RESPONSE
+        )
+
+    def test_data_is_sent(self):
+        customer_ID = "384938309"
+        CCAPI.recent_orders_for_customer(customer_ID)
+        self.assertDataSent(
+            requests.orderhandlers.GetRecentOrdersByCustomerID.CUSTOMER_ID, customer_ID
+        )
