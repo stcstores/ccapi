@@ -2189,7 +2189,12 @@ class Test_recent_orders_for_customer_Method(TestCCAPIMethod):
 
     def test_data_is_sent(self):
         customer_ID = "384938309"
-        CCAPI.recent_orders_for_customer(customer_ID)
+        return_value = CCAPI.recent_orders_for_customer(customer_ID)
         self.assertDataSent(
             requests.orderhandlers.GetRecentOrdersByCustomerID.CUSTOMER_ID, customer_ID
         )
+        self.assertIsInstance(return_value, dict)
+        for order in self.RESPONSE:
+            order_ID = str(order["ID"])
+            self.assertIn(order_ID, return_value)
+            self.assertEqual(return_value[order_ID].order_id, order_ID)

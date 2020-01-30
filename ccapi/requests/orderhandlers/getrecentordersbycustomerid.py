@@ -31,7 +31,7 @@ class GetRecentOrdersByCustomerID(APIRequest):
             response,
             f"Error retrieving recent orders for customer ID {self.customer_ID}.",
         )
-        return {order["ID"]: order for order in response.json()}
+        return {str(order["ID"]): RecentOrder(order) for order in response.json()}
 
 
 class RecentOrder:
@@ -56,7 +56,7 @@ class RecentOrder:
     def __init__(self, json):
         """Set properties."""
         self.json = json
-        self.order_id = json[self.ID]
+        self.order_id = str(json[self.ID])
         self.cost = json[self.COST]
         self.cost_GBP = json[self.COST_GBP]
         self.date = json[self.DATE]
