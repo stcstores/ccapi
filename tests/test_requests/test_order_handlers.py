@@ -50,8 +50,32 @@ class TestGetRecentOrdersByCustomerID(TestRequest):
     def test_GetRecentOrdersByCustomerID_request(self):
         self.register(json=self.RESPONSE)
         response = self.mock_request(self.CUSTOMER_ID)
-        self.assertEqual({order["ID"]: order for order in self.RESPONSE}, response)
         self.assertDataSent("intCustomerID", self.CUSTOMER_ID)
+        self.assertIsInstance(response, dict)
+        for order in self.RESPONSE:
+            self.assertIn(str(order["ID"]), response)
+            response_order = response[str(order["ID"])]
+            self.assertIsInstance(response_order, RecentOrder)
+            self.assertEqual(response_order.json, order)
+            self.assertEqual(response_order.order_id, str(order[RecentOrder.ID]))
+            self.assertEqual(response_order.cost, order[RecentOrder.COST])
+            self.assertEqual(response_order.cost_GBP, order[RecentOrder.COST_GBP])
+            self.assertEqual(response_order.date, order[RecentOrder.DATE])
+            self.assertEqual(
+                response_order.external_order_reference,
+                order[RecentOrder.EXTERNAL_ORDER_REFERENCE],
+            )
+            self.assertEqual(response_order.image_URL, order[RecentOrder.IMAGE_URL])
+            self.assertEqual(response_order.note, order[RecentOrder.NOTE])
+            self.assertEqual(response_order.quantity, order[RecentOrder.QUANTITY])
+            self.assertEqual(response_order.reference, order[RecentOrder.REFERENCE])
+            self.assertEqual(
+                response_order.returned_items, order[RecentOrder.RETURNED_ITEMS]
+            )
+            self.assertEqual(
+                response_order.sales_channel, order[RecentOrder.SALES_CHANNEL_NAME]
+            )
+            self.assertEqual(response_order.status, order[RecentOrder.STATUS])
 
     def test_raises_for_non_200(self):
         self.register(json=self.RESPONSE, status_code=500)
@@ -62,7 +86,7 @@ class TestGetRecentOrdersByCustomerID(TestRequest):
         data = self.RESPONSE[0]
         order = RecentOrder(data)
         self.assertEqual(order.json, data)
-        self.assertEqual(order.order_id, data[RecentOrder.ID])
+        self.assertEqual(order.order_id, str(data[RecentOrder.ID]))
         self.assertEqual(order.cost, data[RecentOrder.COST])
         self.assertEqual(order.cost_GBP, data[RecentOrder.COST_GBP])
         self.assertEqual(order.date, data[RecentOrder.DATE])
