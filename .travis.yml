@@ -2,15 +2,14 @@ sudo: required
 dist: xenial
 language: python
 python:
-  - "3.6"
-  - "3.7"
   - "3.8"
 # command to install dependencies
 install:
-  - make init
+  - pip install poetry
+  - poetry install
 # command to run tests
 script:
-  - make test
+  - poetry run pytest
   - coveralls
 notifications:
   email:
