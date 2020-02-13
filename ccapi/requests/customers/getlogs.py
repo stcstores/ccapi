@@ -14,11 +14,12 @@ class GetLogs(APIRequest):
 
     uri = "Handlers/Customers/GetLogs.ashx"
 
-    def __new__(self, customer_id, added_by=None, log_type=None, number_of_records=1):
+    def __new__(self, customer_id, added_by=None, log_type=None, number_of_records=100):
         """Create GetLogs request.
 
         args:
             customer_id: ID of customer.
+
         """
         self.customer_id = customer_id
         self.added_by = added_by or 0
