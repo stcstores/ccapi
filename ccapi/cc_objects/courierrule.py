@@ -1,6 +1,22 @@
 """Containers for Shipping Rules."""
 
 
+class CourierRules:
+    """Container for courier rules."""
+
+    def __init__(self, courier_rule_data):
+        """Add rules."""
+        self.json = courier_rule_data
+        self.rules = [CourierRule(rule) for rule in courier_rule_data]
+
+    def __iter__(self):
+        for rule in self.rules:
+            yield rule
+
+    def __getitem__(self, index):
+        return self.rules[index]
+
+
 class CourierRule:
     """Courier Rule."""
 
@@ -13,6 +29,9 @@ class CourierRule:
         """
         if data is not None:
             self.load_from_request(data)
+
+    def __str__(self):
+        return self.name
 
     def load_from_request(self, data):
         """Set attributes based on GetDispatchMethodsForOrder request."""

@@ -1,6 +1,6 @@
 """Container's for Cloud Commerce objects."""
 
-from .courierrule import CourierRule
+from .courierrule import CourierRule, CourierRules
 from .factory import Factories, Factory, FactoryLink, FactoryLinks
 from .multipack_info import MultipackInfo, MultipackItem
 from .product import Product
@@ -21,6 +21,7 @@ from .warehouse import Warehouse, WarehouseBay, Warehouses
 
 __all__ = [
     "CourierRule",
+    "CourierRules",
     "Factories",
     "Factory",
     "FactoryLink",
