@@ -39,7 +39,7 @@ class RecentOrder:
 
     DISPATCHED = "Dispatched"
     CANCELLED = "Cancelled"
-    IGNORED = "ignored"
+    IGNORED = "Ignored"
 
     ID = "ID"
     COST = "Cost"
