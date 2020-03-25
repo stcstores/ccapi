@@ -12,7 +12,7 @@ beautifulsoup4 = "^4.8.2"
 pyyaml = "^5.3"
 
 [tool.poetry.dev-dependencies]
-pytest = "^5.3.5"
+pytest = "^5.4.1"
 requests-mock = "^1.7.0"
 pytest-cov = "^2.8.1"
 flake8 = "^3.7.9"
