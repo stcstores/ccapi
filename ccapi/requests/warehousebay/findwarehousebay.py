@@ -4,6 +4,7 @@ FindWarehouseBay request.
 Creates a new product range.
 """
 from bs4 import BeautifulSoup
+
 from ccapi.cc_objects import WarehouseBay
 
 from ..apirequest import APIRequest

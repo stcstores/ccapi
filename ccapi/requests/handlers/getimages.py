@@ -4,6 +4,7 @@ getImages request.
 Gets images for a Product.
 """
 from bs4 import BeautifulSoup
+
 from ccapi.cc_objects import ProductImage
 from ccapi.requests import APIRequest
 

@@ -4,8 +4,9 @@ FindWarehouse request.
 Creates a new product range.
 """
 
+from ccapi.cc_objects import Warehouse, Warehouses
+
 from ..apirequest import APIRequest
-from ccapi.cc_objects import Warehouses, Warehouse
 
 
 class FindWarehouse(APIRequest):
