@@ -5,6 +5,7 @@ Get list of users.
 """
 
 from bs4 import BeautifulSoup
+
 from ccapi.requests import APIRequest
 
 
