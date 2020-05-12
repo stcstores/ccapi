@@ -135,7 +135,7 @@ class CustomerAccounts(APIRequest):
     def process_response(self, response):
         """Handle request response."""
         if self.prog_type == self.INSERT_PAYMENT:
-            self.raise_for_non_200(self, response, f"Failed to create payment.")
+            self.raise_for_non_200(self, response, "Failed to create payment.")
         if "Inserted" in response.text:
             return True
         else:

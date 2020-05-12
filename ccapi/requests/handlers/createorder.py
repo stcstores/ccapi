@@ -157,7 +157,7 @@ class CreateOrder(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
-        self.raise_for_non_200(self, response, f"Failed to create order.")
+        self.raise_for_non_200(self, response, "Failed to create order.")
         response = CreateOrderResponse(response.json())
         if response.error != "":
             raise CloudCommerceResponseError(

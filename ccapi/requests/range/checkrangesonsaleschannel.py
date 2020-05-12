@@ -34,8 +34,8 @@ class CheckRangesOnSalesChannel(APIRequest):
             self,
             response,
             (
-                f"Error getting sales channels for product range with "
-                'ID "{self.range_id}"'
+                "Error getting sales channels for product range with "
+                f'ID "{self.range_id}"'
             ),
         )
         return [SalesChannel(channel) for channel in response.json()]
