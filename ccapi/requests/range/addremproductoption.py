@@ -56,6 +56,6 @@ class AddRemProductOption(APIRequest):
     def process_response(self, response):
         """Handle request response."""
         error_message = (
-            f"Product Option not updated for product range with " 'ID "{self.range_id}"'
+            f'Product Option not updated for product range with ID "{self.range_id}"'
         )
         self.raise_for_non_200(self, response, error_message)

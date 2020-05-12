@@ -26,5 +26,5 @@ class ProductBarcodeInUse(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
-        self.raise_for_non_200(self, response, f"Error checking if barcode is in use.")
+        self.raise_for_non_200(self, response, "Error checking if barcode is in use.")
         return response.json()["Success"]
