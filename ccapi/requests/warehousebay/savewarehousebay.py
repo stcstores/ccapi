@@ -44,6 +44,7 @@ class SaveWarehouseBay(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
+        response.raise_for_status()
         return response.text
 
     def get_data(self):
