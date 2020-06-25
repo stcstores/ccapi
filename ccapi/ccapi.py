@@ -438,15 +438,11 @@ class CCAPI:
         return requests.warehouse.FindWarehouse()
 
     @staticmethod
-    def get_bays_for_warehouse(warehouse_id, products=False):
+    def get_bays_for_warehouse(warehouse_id):
         """Return list of Warehouse Bays for Warehouse."""
-        if products is False:
-            return requests.warehousebay.FindWarehouseBay(
-                warehouse_id=warehouse_id, prog_type="normal", products=False
-            )
         skip_records = 0
-        ids = []
         bays = []
+        ids = []
         take_limit = 100
         skip_records = 0
         request = 1
@@ -454,17 +450,17 @@ class CCAPI:
             data = requests.warehousebay.FindWarehouseBay(
                 warehouse_id=warehouse_id,
                 prog_type="normal",
-                products=True,
                 skip_records=skip_records,
                 take_limit=take_limit,
             )
+            if len(data) == 0:
+                return bays
+            for bay in data:
+                if bay.id not in ids:
+                    ids.append(bay.id)
+                    bays.append(bay)
             request += 1
             skip_records += take_limit
-            for bay in data:
-                if bay.id in ids:
-                    return bays
-                ids.append(bay.id)
-                bays.append(bay)
 
     @staticmethod
     def get_bays_for_product(product_id):
@@ -487,24 +483,29 @@ class CCAPI:
             product_id=product_id, warehouse_bay_id=bay_id, operation="removelocation"
         )
 
-    @staticmethod
+    @classmethod
     def add_bay_to_warehouse(
+        cls,
         warehouse_id,
-        bay,
+        bay_name,
         bay_number=0,
         aisle="",
         shelf="",
         warehouse_bay_type="Default",
     ):
         """Add bay to warehouse."""
-        return requests.warehousebay.SaveWarehouseBay(
+        requests.warehousebay.SaveWarehouseBay(
             warehouse_id,
-            bay,
+            bay_name,
             bay_number=bay_number,
             aisle=aisle,
             shelf=shelf,
             warehouse_bay_type=warehouse_bay_type,
         )
+        bays = cls.get_bays_for_warehouse(warehouse_id)
+        for bay in bays:
+            if bay.name == bay_name:
+                return bay.id
 
     @staticmethod
     def delete_product_option_value(option_value_id):

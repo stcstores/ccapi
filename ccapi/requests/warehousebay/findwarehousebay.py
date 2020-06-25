@@ -22,7 +22,6 @@ class FindWarehouseBay(APIRequest):
         warehouse_id=None,
         product_id=None,
         warehouse_bay_id=None,
-        products=False,
         skip_records=0,
         take_limit=100,
     ):
@@ -32,13 +31,14 @@ class FindWarehouseBay(APIRequest):
         self.warehouse_id = warehouse_id
         self.product_id = product_id
         self.warehouse_bay_id = warehouse_bay_id
-        self.products = products
         self.skip_records = skip_records
         self.take_limit = take_limit
         return super().__new__(self)
 
     def process_response(self, response):
         """Handle request response."""
+        response.raise_for_status()
+        return [WarehouseBay(bay) for bay in response.json()]
         if len(response.text) > 0:
             if self.operation is None and not self.products:
                 return self.parse_bay_html(self, response.text)
@@ -64,7 +64,10 @@ class FindWarehouseBay(APIRequest):
 
     def get_data(self):
         """Get data for request."""
-        data = {}
+        data = {
+            "TakeLimit": str(self.take_limit),
+            "SkipRecords": str(self.skip_records),
+        }
         if self.prog_type is not None:
             data["ProgType"] = self.prog_type
         if self.operation is not None:
@@ -76,17 +79,6 @@ class FindWarehouseBay(APIRequest):
         if self.warehouse_bay_id is not None:
             data["warehousebayid"] = self.warehouse_bay_id
         return data
-
-    def get_headers(self):
-        """Return headers for request."""
-        if self.products is False and self.operation is None:
-            return {"template": "WarehouseBay.List"}
-        if self.products is True:
-            return {
-                "TakeLimit": str(self.take_limit),
-                "SkipRecords": str(self.skip_records),
-            }
-        return {}
 
     def get_params(self):
         """Get parameters for get request."""
