@@ -50,6 +50,7 @@ FIND_PRODUCT_SELECTED_OPTIONS_ONLY_TEST_RESLULT = {
         "ProductTemplateId": 0,
         "ProductTemplateMode": 0,
         "AdditionalBarcodes": [],
+        "HSCode": "849389",
         "Locations": [
             {
                 "WarehouseBayTypeEnum": 0,

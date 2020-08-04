@@ -71,6 +71,7 @@ GET_PRODUCTS_FOR_RANGE_RESPONSE = {
             "UseDispatchIdentifiers": False,
             "DispatchIdentifierOption": None,
             "DispatchIdentifierOptionID": 0,
+            "HSCode": None,
         },
         {
             "isChecked": False,
@@ -126,6 +127,7 @@ GET_PRODUCTS_FOR_RANGE_RESPONSE = {
             "UseDispatchIdentifiers": False,
             "DispatchIdentifierOption": None,
             "DispatchIdentifierOptionID": 0,
+            "HSCode": None,
         },
         {
             "isChecked": False,
@@ -181,6 +183,7 @@ GET_PRODUCTS_FOR_RANGE_RESPONSE = {
             "UseDispatchIdentifiers": False,
             "DispatchIdentifierOption": None,
             "DispatchIdentifierOptionID": 0,
+            "HSCode": None,
         },
     ],
     "SeasonID": 0,
