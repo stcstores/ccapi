@@ -63,6 +63,7 @@ class Product:
         self.product_template_mode = data["ProductTemplateMode"]
         self.additional_barcodes = data["AdditionalBarcodes"]
         self.weight = data["WeightGM"]
+        self.hs_code = data["HSCode"]
         if data["Locations"] is not None:
             self.bays = [WarehouseBay(bay) for bay in data["Locations"]]
         self.dimensions = data["Dimensions"]
@@ -93,6 +94,11 @@ class Product:
     def get_range(self):
         """Return ProductRange for Range to which this Product belongs."""
         return ccapi.CCAPI.get_range(self.range_id)
+
+    def set_hs_code(self, hs_code):
+        """Set the product's HS Code."""
+        ccapi.CCAPI.set_hs_code(product_IDs=[self.id], HS_code=hs_code)
+        self.hs_code = hs_code
 
     def set_option_value(self, option, value, create=False):
         """
