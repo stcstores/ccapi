@@ -1260,3 +1260,8 @@ class CCAPI:
     def recent_orders_for_customer(customer_ID):
         """Return recent orders for a customer."""
         return requests.orderhandlers.GetRecentOrdersByCustomerID(customer_ID)
+
+    @staticmethod
+    def find_hs_code(search_term):
+        """Return a list of HS Codes matching the search term."""
+        return requests.handlers.CommonDataSource(search_term)
