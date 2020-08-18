@@ -9,6 +9,7 @@ from .exports import GetProductExportUpdate, RequestProductExport, ViewFile
 from .factory import Factory, FindFactories, UpdProductFactoryLink
 from .handlers import (
     AddCustomer,
+    CommonDataSource,
     CreateOrder,
     CustomerAccounts,
     GetImages,
@@ -80,6 +81,7 @@ __all__ = [
     "ViewFile" "FindFactories",
     "Factory",
     "UpdProductFactoryLink",
+    "CommonDataSource",
     "AddCustomer",
     "CreateOrder",
     "CustomerAccounts",
