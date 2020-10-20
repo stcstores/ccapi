@@ -1265,3 +1265,8 @@ class CCAPI:
     def find_hs_code(search_term):
         """Return a list of HS Codes matching the search term."""
         return requests.handlers.CommonDataSource(search_term)
+
+    @staticmethod
+    def delete_product_export(*, export_ID, export_name):
+        """Delete a product export."""
+        return requests.DeleteRequest(export_ID=export_ID, export_name=export_name)
