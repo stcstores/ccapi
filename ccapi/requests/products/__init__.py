@@ -16,6 +16,7 @@ from .setimageorder import SetImageOrder
 from .setproductoptionvalue import SetProductOptionValue
 from .setproductscope import SetProductScope
 from .setproducttype import SetProductType
+from .updatecountryoforigin import UpdateCountryOfOrigin
 from .updateonsaleschannel import UpdateProductOnSalesChannel
 from .updateproductbaseprice import UpdateProductBasePrice
 from .updateproductstocklevel import UpdateProductStockLevel
@@ -39,6 +40,7 @@ __all__ = [
     "SetProductOptionValue",
     "SetProductScope",
     "SetProductType",
+    "UpdateCountryOfOrigin",
     "UpdateProductOnSalesChannel",
     "UpdateProductBasePrice",
     "UpdateProductStockLevel",

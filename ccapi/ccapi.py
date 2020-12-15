@@ -1270,3 +1270,10 @@ class CCAPI:
     def delete_product_export(*, export_ID, export_name):
         """Delete a product export."""
         return requests.DeleteRequest(export_ID=export_ID, export_name=export_name)
+
+    @staticmethod
+    def set_country_of_origin(*, product_id, country_id):
+        """Set a product's country of origin."""
+        return requests.products.UpdateCountryOfOrigin(
+            product_id=product_id, country_id=country_id
+        )
