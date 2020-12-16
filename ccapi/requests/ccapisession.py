@@ -104,8 +104,8 @@ class CloudCommerceAPISession:
     def login_handler(cls, username, password):
         """Perform login handler request to set session parameters."""
         login_handler_url = f"{cls.domain_url()}{cls.login_handler_uri}"
-        params = {"uName": username, "pWord": password}
-        response = cls.session.get(login_handler_url, params=params)
+        params = {"Username": username, "Password": password}
+        response = cls.session.post(login_handler_url, data=params)
         response.raise_for_status()
 
     @classmethod

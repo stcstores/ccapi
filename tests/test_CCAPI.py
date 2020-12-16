@@ -45,7 +45,7 @@ class TestCCAPI(unittest.TestCase):
     def set_login_URIs(self):
         """Add login URIs to mock adapter."""
         self.register_uri("POST", f"http://{self.DOMAIN}", text="mock_text")
-        self.register_uri("GET", self.cloud_commerce_URI(self.LOGIN_HANDLER_URI))
+        self.register_uri("POST", self.cloud_commerce_URI(self.LOGIN_HANDLER_URI))
 
     def mock_login(self):
         """Mock the login process."""
