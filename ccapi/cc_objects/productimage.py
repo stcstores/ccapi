@@ -15,7 +15,7 @@ class ProductImage:
         """
         self.url = url
         self.filename = url.split("/")[-1]
-        self.id = int(self.filename.split(".")[0])
+        self.id = self.filename.split(".")[0]
         self.extension = self.filename.split(".")[-1]
 
     def delete(self):
