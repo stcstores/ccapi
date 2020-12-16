@@ -7,6 +7,7 @@ from .deleteproductfactorylink import DeleteProductFactoryLink
 from .dosearch import DoSearch
 from .findproductfactorylinks import FindProductFactoryLinks
 from .findproductselectedoptionsonly import FindProductSelectedOptionsOnly
+from .getpendingstock import GetPendingStock
 from .productoperations import ProductOperations
 from .savebarcode import SaveBarcode
 from .savedescription import SaveDescription
@@ -31,6 +32,7 @@ __all__ = [
     "DoSearch",
     "FindProductFactoryLinks",
     "FindProductSelectedOptionsOnly",
+    "GetPendingStock",
     "ProductOperations",
     "SaveBarcode",
     "SaveDescription",

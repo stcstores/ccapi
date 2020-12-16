@@ -1277,3 +1277,8 @@ class CCAPI:
         return requests.products.UpdateCountryOfOrigin(
             product_id=product_id, country_id=country_id
         )
+
+    @staticmethod
+    def get_pending_stock(product_id):
+        """Return the pending stock level for a product."""
+        return requests.products.GetPendingStock(product_id)
