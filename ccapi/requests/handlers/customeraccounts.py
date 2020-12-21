@@ -32,7 +32,7 @@ class CustomerAccounts(APIRequest):
     INVOICE_ID = "invoiceID"
     CHANNEL_ID = "chanid"
     EXCHANGE_RATE = "flTodaysExchangeRate"
-    S_NOMINAL = "sNominal"
+    BANK_NOMINAL = "BankNominal"
     GATEWAY_TYPE_ID = "gatewayTypeId"
 
     INSERT_PAYMENT = "InsertPayment"
@@ -41,24 +41,24 @@ class CustomerAccounts(APIRequest):
         self,
         *,
         prog_type,
-        customer_ID,
-        factory_ID=0,
-        brand_ID=0,
-        login_ID,
-        transaction_type=13,
-        credit_note_type=0,
-        currency,
-        gbp=None,
+        customer_id,
+        invoice_id,
+        amount,
+        channel_id,
+        factory_id="0",
+        brand_id="0",
+        login_id="0",
+        transaction_type="13",
+        credit_note_type="0",
         description=None,
         reference=None,
         payment_date=None,
-        bank_account_ID,
-        proforma_ID=None,
-        invoice_ID,
-        channel_ID,
+        bank_account_id="0",
+        proforma_id="",
         exchange_rate="",
-        s_nominal="",
-        gateway_type_ID=None,
+        bank_nominal="",
+        gateway_type_id="0",
+        gbp=None,
     ):
         """
         Create a CustomerAccounts request.
@@ -78,24 +78,24 @@ class CustomerAccounts(APIRequest):
             channel_ID (int): The ID of the channel from which the invoice was created.
         """
         self.prog_type = prog_type
-        self.customer_ID = int(customer_ID)
-        self.factory_ID = int(factory_ID)
-        self.brand_ID = int(brand_ID)
-        self.login_ID = int(login_ID)
+        self.customer_ID = customer_id
+        self.factory_ID = factory_id
+        self.brand_ID = brand_id
+        self.login_ID = login_id
         self.transaction_type = transaction_type
         self.credit_note_type = credit_note_type
-        self.currency = float(currency)
-        self.gbp = float(gbp) if gbp is not None else self.currency
-        self.invoice_ID = int(invoice_ID)
-        self.description = description or f"PAYMENT+INV{invoice_ID}"
-        self.reference = reference or f"PAYMENT+INV{invoice_ID}"
-        self.payment_date = payment_date
-        self.bank_account_ID = int(bank_account_ID)
-        self.proforma_ID = None if proforma_ID is None else int(proforma_ID)
-        self.channel_ID = int(channel_ID)
+        self.currency = amount
+        self.gbp = amount if gbp is not None else self.currency
+        self.invoice_ID = invoice_id
+        self.description = description or f"PAYMENT+INV{invoice_id}"
+        self.reference = reference or f"PAYMENT+INV{invoice_id}"
+        self.payment_date = payment_date or datetime.datetime.now()
+        self.bank_account_ID = bank_account_id
+        self.proforma_ID = proforma_id
+        self.channel_ID = channel_id
         self.exchange_rate = exchange_rate
-        self.s_nominal = s_nominal
-        self.gateway_type_ID = None if gateway_type_ID is None else int(gateway_type_ID)
+        self.bank_nominal = bank_nominal
+        self.gateway_type_ID = gateway_type_id
         return super().__new__(self)
 
     def get_data(self):
@@ -120,7 +120,7 @@ class CustomerAccounts(APIRequest):
                 self.INVOICE_ID: self.invoice_ID,
                 self.CHANNEL_ID: self.channel_ID,
                 self.EXCHANGE_RATE: self.exchange_rate,
-                self.S_NOMINAL: self.s_nominal,
+                self.BANK_NOMINAL: self.bank_nominal,
                 self.GATEWAY_TYPE_ID: self.gateway_type_ID,
             }
         else:

@@ -1011,7 +1011,7 @@ class CCAPI:
             login_id (int or None): Not required. Default: None
         """
         kwargs = {key: value for key, value in locals().items() if value is not None}
-        return requests.accounts.CreatePayment(**kwargs)
+        return requests.handlers.CreatePayment(**kwargs)
 
     @staticmethod
     def add_address(
@@ -1186,14 +1186,7 @@ class CCAPI:
 
     @staticmethod
     def insert_payment(
-        *,
-        customer_ID,
-        login_ID,
-        amount,
-        bank_account_ID,
-        invoice_ID,
-        channel_ID,
-        payment_date=None,
+        *, customer_id, amount, invoice_id, channel_id, payment_date=None
     ):
         """Add a payment to a customer invoice.
 
@@ -1209,12 +1202,10 @@ class CCAPI:
         """
         return requests.handlers.CustomerAccounts(
             prog_type=requests.handlers.CustomerAccounts.INSERT_PAYMENT,
-            customer_ID=customer_ID,
-            login_ID=login_ID,
-            currency=amount,
-            bank_account_ID=bank_account_ID,
-            invoice_ID=invoice_ID,
-            channel_ID=channel_ID,
+            customer_id=customer_id,
+            amount=amount,
+            invoice_id=invoice_id,
+            channel_id=channel_id,
             payment_date=payment_date,
         )
 

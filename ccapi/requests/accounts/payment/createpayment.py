@@ -117,4 +117,6 @@ class CreatePayment(APIRequest):
 
     def process_response(self, response):
         """Handle request response."""
+        print(response)
+        print(response.text)
         self.raise_for_non_200(self, response, "Failed to create payment.")

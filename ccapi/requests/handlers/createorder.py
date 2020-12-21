@@ -38,7 +38,9 @@ class CreateOrder(APIRequest):
     DELIVERY_ADDRESS_ID = "deliveryAddressID"
     BILLING_ADDRESS_ID = "billingAddressID"
     CSRID = "CSRID"
-    CSRID_VALUE = "411"
+    CSRID_VALUE = "3327"
+    EMAIL_RECIPIENT = "EmailRecipient"
+    ITEM_NET_2DP = "ItemNet2DP"
 
     def __new__(
         self,
@@ -63,8 +65,8 @@ class CreateOrder(APIRequest):
         total_gross=0,
         discount_net=0,
         free_of_charge=False,
-        shipping_rule_id=None,
-        login_id=None,
+        shipping_rule_id="0",
+        login_id="0",
     ):
         """
         Create a CreateOrder request.
@@ -152,6 +154,8 @@ class CreateOrder(APIRequest):
             self.DELIVERY_ADDRESS_ID: str(self.delivery_address_id),
             self.BILLING_ADDRESS_ID: str(self.billing_address_id),
             self.CSRID: self.CSRID_VALUE,
+            self.EMAIL_RECIPIENT: "account",
+            self.ITEM_NET_2DP: "false",
         }
         return data
 
@@ -201,7 +205,7 @@ class NewOrderItem:
         item_discount_gross=0.0,
         total_net=0,
         total_gross=0,
-        price_override=True,
+        price_override=False,
         product_type=0,
     ):
         """

@@ -463,7 +463,7 @@ class TestCustomerAccountsInsertPayment(TestRequest):
     LOGIN_ID = "15186"
     TRANSACTION_TYPE = 25
     CREDIT_NOTE_TYPE = 1
-    CURRENCY = 9.99
+    AMOUNT = 9.99
     GBP = 8.72
     DESCRIPTION = "Description"
     REFERENCE = "Reference"
@@ -473,7 +473,7 @@ class TestCustomerAccountsInsertPayment(TestRequest):
     INVOICE_ID = "4156168445"
     CHANNEL_ID = "3157"
     EXCHANGE_RATE = 2
-    S_NOMINAL = "test_s_nominal"
+    BANK_NOMINAL = "test_s_nominal"
     GATEWAY_TYPE_ID = "1894618964"
     RESPONSE = "Inserted^^25776840^^25778344"
 
@@ -482,22 +482,20 @@ class TestCustomerAccountsInsertPayment(TestRequest):
         self.register(text=self.RESPONSE)
         self.mock_request(
             prog_type=self.PROG_TYPE,
-            customer_ID=self.CUSTOMER_ID,
-            login_ID=self.LOGIN_ID,
-            currency=self.CURRENCY,
-            bank_account_ID=self.BANK_ACCOUNT_ID,
-            invoice_ID=self.INVOICE_ID,
-            channel_ID=self.CHANNEL_ID,
+            customer_id=self.CUSTOMER_ID,
+            amount=self.AMOUNT,
+            invoice_id=self.INVOICE_ID,
+            channel_id=self.CHANNEL_ID,
         )
         self.assertDataSent(self.request_class.PROG_TYPE, self.PROG_TYPE)
         self.assertDataSent(self.request_class.CUSTOMER_ID, self.CUSTOMER_ID)
         self.assertDataSent(self.request_class.FACTORY_ID, 0)
         self.assertDataSent(self.request_class.BRAND_ID, 0)
-        self.assertDataSent(self.request_class.LOGIN_ID, self.LOGIN_ID)
+        self.assertDataSent(self.request_class.LOGIN_ID, 0)
         self.assertDataSent(self.request_class.TRANSACTION_TYPE, 13)
         self.assertDataSent(self.request_class.CREDIT_NOTE_TYPE, 0)
-        self.assertDataSent(self.request_class.CURRENCY, self.CURRENCY)
-        self.assertDataSent(self.request_class.GBP, self.CURRENCY)
+        self.assertDataSent(self.request_class.CURRENCY, self.AMOUNT)
+        self.assertDataSent(self.request_class.GBP, self.AMOUNT)
         self.assertDataSent(
             self.request_class.DESCRIPTION, f"PAYMENT+INV{self.INVOICE_ID}"
         )
@@ -508,37 +506,37 @@ class TestCustomerAccountsInsertPayment(TestRequest):
             self.request_class.PAYMENT_DATE,
             datetime.datetime.now().strftime("%d/%m/%Y"),
         )
-        self.assertDataSent(self.request_class.BANK_ACCOUNT_ID, self.BANK_ACCOUNT_ID)
+        self.assertDataSent(self.request_class.BANK_ACCOUNT_ID, "0")
         self.assertDataValueIsNone(self.request_class.PROFORMA_ID)
         self.assertDataSent(self.request_class.INVOICE_ID, self.INVOICE_ID)
         self.assertDataSent(self.request_class.CHANNEL_ID, self.CHANNEL_ID)
         self.assertDataValueIsNone(self.request_class.EXCHANGE_RATE)
-        self.assertDataValueIsNone(self.request_class.S_NOMINAL)
-        self.assertDataValueIsNone(self.request_class.GATEWAY_TYPE_ID)
+        self.assertDataValueIsNone(self.request_class.BANK_NOMINAL)
+        self.assertDataSent(self.request_class.GATEWAY_TYPE_ID, "0")
 
     def test_CustomerAccounts_request_sends_optional_parameters(self):
         """Test the request sends the necessary parameters."""
         self.register(text=self.RESPONSE)
         self.mock_request(
             prog_type=self.PROG_TYPE,
-            customer_ID=self.CUSTOMER_ID,
-            factory_ID=self.FACTORY_ID,
-            brand_ID=self.BRAND_ID,
-            login_ID=self.LOGIN_ID,
+            customer_id=self.CUSTOMER_ID,
+            factory_id=self.FACTORY_ID,
+            brand_id=self.BRAND_ID,
+            login_id=self.LOGIN_ID,
             transaction_type=self.TRANSACTION_TYPE,
             credit_note_type=self.CREDIT_NOTE_TYPE,
-            currency=self.CURRENCY,
+            amount=self.AMOUNT,
             gbp=self.GBP,
             description=self.DESCRIPTION,
             reference=self.REFERENCE,
             payment_date=self.PAYMENT_DATE,
-            bank_account_ID=self.BANK_ACCOUNT_ID,
-            proforma_ID=self.PROFORMA_ID,
-            invoice_ID=self.INVOICE_ID,
-            channel_ID=self.CHANNEL_ID,
+            bank_account_id=self.BANK_ACCOUNT_ID,
+            proforma_id=self.PROFORMA_ID,
+            invoice_id=self.INVOICE_ID,
+            channel_id=self.CHANNEL_ID,
             exchange_rate=self.EXCHANGE_RATE,
-            s_nominal=self.S_NOMINAL,
-            gateway_type_ID=self.GATEWAY_TYPE_ID,
+            bank_nominal=self.BANK_NOMINAL,
+            gateway_type_id=self.GATEWAY_TYPE_ID,
         )
         self.assertDataSent(self.request_class.PROG_TYPE, self.PROG_TYPE)
         self.assertDataSent(self.request_class.CUSTOMER_ID, int(self.CUSTOMER_ID))
@@ -547,19 +545,17 @@ class TestCustomerAccountsInsertPayment(TestRequest):
         self.assertDataSent(self.request_class.LOGIN_ID, int(self.LOGIN_ID))
         self.assertDataSent(self.request_class.TRANSACTION_TYPE, self.TRANSACTION_TYPE)
         self.assertDataSent(self.request_class.CREDIT_NOTE_TYPE, self.CREDIT_NOTE_TYPE)
-        self.assertDataSent(self.request_class.CURRENCY, self.CURRENCY)
-        self.assertDataSent(self.request_class.GBP, self.GBP)
+        self.assertDataSent(self.request_class.CURRENCY, self.AMOUNT)
+        self.assertDataSent(self.request_class.GBP, self.AMOUNT)
         self.assertDataSent(self.request_class.DESCRIPTION, self.DESCRIPTION)
         self.assertDataSent(self.request_class.REFERENCE, self.REFERENCE)
         self.assertDataSent(self.request_class.PAYMENT_DATE, "14/02/2019")
-        self.assertDataSent(
-            self.request_class.BANK_ACCOUNT_ID, int(self.BANK_ACCOUNT_ID)
-        )
+        self.assertDataSent(self.request_class.BANK_ACCOUNT_ID, self.BANK_ACCOUNT_ID)
         self.assertDataSent(self.request_class.PROFORMA_ID, int(self.PROFORMA_ID))
         self.assertDataSent(self.request_class.INVOICE_ID, int(self.INVOICE_ID))
         self.assertDataSent(self.request_class.CHANNEL_ID, int(self.CHANNEL_ID))
         self.assertDataSent(self.request_class.EXCHANGE_RATE, self.EXCHANGE_RATE)
-        self.assertDataSent(self.request_class.S_NOMINAL, self.S_NOMINAL)
+        self.assertDataSent(self.request_class.BANK_NOMINAL, self.BANK_NOMINAL)
         self.assertDataSent(
             self.request_class.GATEWAY_TYPE_ID, int(self.GATEWAY_TYPE_ID)
         )
@@ -569,24 +565,24 @@ class TestCustomerAccountsInsertPayment(TestRequest):
         self.register(text=self.RESPONSE)
         response = self.mock_request(
             prog_type=self.PROG_TYPE,
-            customer_ID=self.CUSTOMER_ID,
-            factory_ID=self.FACTORY_ID,
-            brand_ID=self.BRAND_ID,
-            login_ID=self.LOGIN_ID,
+            customer_id=self.CUSTOMER_ID,
+            factory_id=self.FACTORY_ID,
+            brand_id=self.BRAND_ID,
+            login_id=self.LOGIN_ID,
             transaction_type=self.TRANSACTION_TYPE,
             credit_note_type=self.CREDIT_NOTE_TYPE,
-            currency=self.CURRENCY,
+            amount=self.AMOUNT,
             gbp=self.GBP,
             description=self.DESCRIPTION,
             reference=self.REFERENCE,
             payment_date=self.PAYMENT_DATE,
-            bank_account_ID=self.BANK_ACCOUNT_ID,
-            proforma_ID=self.PROFORMA_ID,
-            invoice_ID=self.INVOICE_ID,
-            channel_ID=self.CHANNEL_ID,
+            bank_account_id=self.BANK_ACCOUNT_ID,
+            proforma_id=self.PROFORMA_ID,
+            invoice_id=self.INVOICE_ID,
+            channel_id=self.CHANNEL_ID,
             exchange_rate=self.EXCHANGE_RATE,
-            s_nominal=self.S_NOMINAL,
-            gateway_type_ID=self.GATEWAY_TYPE_ID,
+            bank_nominal=self.BANK_NOMINAL,
+            gateway_type_id=self.GATEWAY_TYPE_ID,
         )
         self.assertTrue(response)
 
@@ -600,24 +596,24 @@ class TestCustomerAccountsInsertPayment(TestRequest):
         with self.assertRaises(exceptions.CloudCommerceResponseError) as e:
             self.mock_request(
                 prog_type=self.PROG_TYPE,
-                customer_ID=self.CUSTOMER_ID,
-                factory_ID=self.FACTORY_ID,
-                brand_ID=self.BRAND_ID,
-                login_ID=self.LOGIN_ID,
+                customer_id=self.CUSTOMER_ID,
+                factory_id=self.FACTORY_ID,
+                brand_id=self.BRAND_ID,
+                login_id=self.LOGIN_ID,
                 transaction_type=self.TRANSACTION_TYPE,
                 credit_note_type=self.CREDIT_NOTE_TYPE,
-                currency=self.CURRENCY,
+                amount=self.AMOUNT,
                 gbp=self.GBP,
                 description=self.DESCRIPTION,
                 reference=self.REFERENCE,
                 payment_date=self.PAYMENT_DATE,
-                bank_account_ID=self.BANK_ACCOUNT_ID,
-                proforma_ID=self.PROFORMA_ID,
-                invoice_ID=self.INVOICE_ID,
-                channel_ID=self.CHANNEL_ID,
+                bank_account_id=self.BANK_ACCOUNT_ID,
+                proforma_id=self.PROFORMA_ID,
+                invoice_id=self.INVOICE_ID,
+                channel_id=self.CHANNEL_ID,
                 exchange_rate=self.EXCHANGE_RATE,
-                s_nominal=self.S_NOMINAL,
-                gateway_type_ID=self.GATEWAY_TYPE_ID,
+                bank_nominal=self.BANK_NOMINAL,
+                gateway_type_id=self.GATEWAY_TYPE_ID,
             )
         self.assertIn("Failed to create payment", str(e.exception))
 
@@ -628,12 +624,12 @@ class TestCustomerAccountsInsertPayment(TestRequest):
             invalid_prog_type = "invalidProgType"
             self.mock_request(
                 prog_type=invalid_prog_type,
-                customer_ID=self.CUSTOMER_ID,
-                login_ID=self.LOGIN_ID,
-                currency=self.CURRENCY,
-                bank_account_ID=self.BANK_ACCOUNT_ID,
-                invoice_ID=self.INVOICE_ID,
-                channel_ID=self.CHANNEL_ID,
+                customer_id=self.CUSTOMER_ID,
+                login_id=self.LOGIN_ID,
+                amount=self.AMOUNT,
+                bank_account_id=self.BANK_ACCOUNT_ID,
+                invoice_id=self.INVOICE_ID,
+                channel_id=self.CHANNEL_ID,
             )
             self.assertIn(e, invalid_prog_type)
             self.assertIn(e, "not recognised")
@@ -646,11 +642,11 @@ class TestCustomerAccountsInsertPayment(TestRequest):
         with self.assertRaises(exceptions.CloudCommerceResponseError) as e:
             self.mock_request(
                 prog_type=self.PROG_TYPE,
-                customer_ID=self.CUSTOMER_ID,
-                login_ID=self.LOGIN_ID,
-                currency=self.CURRENCY,
-                bank_account_ID=self.BANK_ACCOUNT_ID,
-                invoice_ID=self.INVOICE_ID,
-                channel_ID=self.CHANNEL_ID,
+                customer_id=self.CUSTOMER_ID,
+                login_id=self.LOGIN_ID,
+                amount=self.AMOUNT,
+                bank_account_id=self.BANK_ACCOUNT_ID,
+                invoice_id=self.INVOICE_ID,
+                channel_id=self.CHANNEL_ID,
             )
             self.assertIn(e, "Payment not inserted.")
