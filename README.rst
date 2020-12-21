@@ -2,8 +2,8 @@
 CCAPI - Access Cloud Commerce Pro in Python
 ===========================================
 
-.. image:: https://travis-ci.org/stcstores/ccapi.svg?branch=master
-    :target: https://travis-ci.org/stcstores/ccapi
+.. image:: https://github.com/stcstores/ccapi/workflows/CI/badge.svg
+    :target: https://github.com/stcstores/ccapi/actions?query=workflow%3ACI
 
 
 CCAPI is a Python API integration for Cloud Commerce Pro.
