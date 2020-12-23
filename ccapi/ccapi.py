@@ -757,6 +757,7 @@ class CCAPI:
             image_id: ID of Product Image to delete.
 
         """
+        image_id = str(image_id).replace("bimage", "")
         return requests.products.DeleteImage(image_id)
 
     @staticmethod
@@ -781,8 +782,9 @@ class CCAPI:
             product_id: ID of Product for which Images will be ordered.
             image_order: List containing IDs of images in updated order.
         """
+        image_order = [str(image_id).replace("bimage", "") for image_id in image_ids]
         return requests.products.SetImageOrder(
-            product_id=product_id, image_ids=image_ids
+            product_id=product_id, image_ids=image_order
         )
 
     @staticmethod
