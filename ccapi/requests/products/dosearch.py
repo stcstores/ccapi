@@ -10,16 +10,29 @@ from ..apirequest import APIRequest
 class DoSearch(APIRequest):
     """DoSearch request."""
 
+    RANGE = "range"
+    PRODUCT_NAME = "productname"
+    SKU = "sku"
+
     uri = "Handlers/Products/doSearch.ashx"
 
-    def __new__(self, text):
+    def __new__(self, text, channel_id=None, search_type=RANGE):
         """
         Create Do Search request.
 
         Args:
             text: Text string to search
+
+        Kwargs:
+            channel_id: The ID of the sales channel
+            search_type: The type of search to do
+
+        Returns:
+            list(DoSearchResult)
         """
         self.text = text
+        self.channel_id = channel_id or ""
+        self.search_type = search_type
         return super().__new__(self)
 
     def process_response(self, response):
@@ -32,7 +45,14 @@ class DoSearch(APIRequest):
 
     def get_data(self):
         """Get data for request."""
-        return {"brandid": "341", "text": self.text, "type": "range"}
+        data = {
+            "brandid": "341",
+            "text": self.text,
+            "type": self.search_type,
+            "salesChannelID": self.channel_id,
+        }
+        print(data)
+        return data
 
 
 class DoSearchResult:

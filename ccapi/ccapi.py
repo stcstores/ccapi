@@ -60,7 +60,42 @@ class CCAPI:
         Returns: ccapi.requests.dosearch.DoSearchResult.
 
         """
-        return requests.products.DoSearch(search_text)
+        request_class = requests.products.DoSearch
+        return request_class(search_text, search_type=request_class.RANGE)
+
+    @staticmethod
+    def search_product_name(search_text, channel_id=None):
+        """
+        Perform text search for products based on product name.
+
+        Args:
+            search_text: Search string.
+            channel_id: The ID of the sales channel on which to search.
+
+        Returns: ccapi.requests.dosearch.DoSearchResult.
+
+        """
+        request_class = requests.products.DoSearch
+        return request_class(
+            search_text, channel_id=channel_id, search_type=request_class.PRODUCT_NAME
+        )
+
+    @staticmethod
+    def search_product_SKU(search_text, channel_id=None):
+        """
+        Perform text search for products based on product SKU.
+
+        Args:
+            search_text: Search string.
+            channel_id: The ID of the sales channel on which to search.
+
+        Returns: ccapi.requests.dosearch.DoSearchResult.
+
+        """
+        request_class = requests.products.DoSearch
+        return request_class(
+            search_text, channel_id=channel_id, search_type=request_class.SKU
+        )
 
     @staticmethod
     def get_sku(range_sku=False):
