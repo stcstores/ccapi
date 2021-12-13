@@ -1310,3 +1310,8 @@ class CCAPI:
     def get_pending_stock(product_id):
         """Return the pending stock level for a product."""
         return requests.products.GetPendingStock(product_id)
+
+    @staticmethod
+    def get_product_channel_links(product_id):
+        """Return information about product channel linking."""
+        return requests.sales_channels.GetProductChannelLinks(product_id)

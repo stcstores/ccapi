@@ -68,6 +68,7 @@ from .range import (
     UpdateRangeOnSalesChannel,
     UpdateRangeSettings,
 )
+from .sales_channels import GetProductChannelLinks
 from .warehouse import FindWarehouse
 from .warehousebay import FindWarehouseBay, SaveWarehouseBay
 
@@ -93,6 +94,7 @@ __all__ = [
     "GetOrderAddresses",
     "GetOrdersForDispatch",
     "GetDispatchMethodsForOrder",
+    "GetProductChannelLinks",
     "FindPrintQueue",
     "ProductBarcodeInUse",
     "GetProducts",
