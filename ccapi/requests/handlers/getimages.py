@@ -34,8 +34,10 @@ class GetImages(APIRequest):
         images = []
         image_divs = soup.findAll("div", {"class": "galleryImageContainer"})
         for image_div in image_divs:
+            image_name = image_div.find("div", {"class": "imageText"}).text
+            image_name = image_name.replace("Thumb_", "")
             url = image_div.find("img")["src"]
-            image = ProductImage(url)
+            image = ProductImage(url=url, image_name=image_name)
             images.append(image)
         return images
 
