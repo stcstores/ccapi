@@ -32,19 +32,19 @@ class GetImages(APIRequest):
             return []
         soup = BeautifulSoup(html, "html.parser")
         images = []
-        image_divs = soup.findAll("div", {"class": "galleryImageContainer"})
+        image_divs = soup.findAll("li", {"class": "ui-state-default"})
         for image_div in image_divs:
-            image_name = image_div.find("div", {"class": "imageText"}).text
-            image_name = image_name.replace("Thumb_", "")
+            image_id = image_div["id"]
+            image_name = image_div["data-masterid"]
             url = image_div.find("img")["src"]
-            image = ProductImage(url=url, image_name=image_name)
+            image = ProductImage(url=url, image_id=image_id, image_name=image_name)
             images.append(image)
         return images
 
     def get_data(self):
         """Get data for request."""
         return {
-            "ProgType": "GetImages",
+            "ProgType": "DisplaySortableImages",
             "ProductID": self.product_id,
             "rID": self.range_id,
             "cID": "",
