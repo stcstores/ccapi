@@ -68,6 +68,7 @@ from .range import (
     UpdateRangeOnSalesChannel,
     UpdateRangeSettings,
 )
+from .reports import StockControlCheck
 from .sales_channels import GetProductChannelLinks
 from .warehouse import FindWarehouse
 from .warehousebay import FindWarehouseBay, SaveWarehouseBay
@@ -145,4 +146,5 @@ __all__ = [
     "FindFactories",
     "Factory",
     "UpdProductFactoryLink",
+    "StockControlCheck",
 ]

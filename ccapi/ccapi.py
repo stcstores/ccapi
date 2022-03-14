@@ -1315,3 +1315,8 @@ class CCAPI:
     def get_product_channel_links(product_id):
         """Return information about product channel linking."""
         return requests.sales_channels.GetProductChannelLinks(product_id)
+
+    @staticmethod
+    def get_stock_control_check(range_id):
+        """Return a stock check report for a product range."""
+        return requests.reports.StockControlCheck(range_id=range_id)
