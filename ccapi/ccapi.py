@@ -1271,9 +1271,10 @@ class CCAPI:
     @staticmethod
     def get_multipack_info(multipack_product_ID):
         """Return multipack information for a multipack product."""
-        return requests.program_type_requests.getsimpleproductpackage.GetSimplePackage(
+        response = requests.products.FindProductSelectedOptionsOnly(
             multipack_product_ID
         )
+        return response.multipack_info
 
     @staticmethod
     def set_hs_code(*, product_IDs, HS_code):

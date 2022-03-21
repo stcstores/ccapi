@@ -4,7 +4,7 @@ FindSelectedOptionsOnly request.
 Gets selected product options for given product.
 """
 
-from ccapi.cc_objects import AppliedProductOptions, Product
+from ccapi.cc_objects import AppliedProductOptions, MultipackInfo, Product
 from ccapi.exceptions import ProductNotFoundError
 
 from ..apirequest import APIRequest
@@ -56,3 +56,4 @@ class FindProductSelectedOptionsOnlyResult:
             data["product"]["StockLevel"] = data["StockLevel"]
             self.product = Product(data["product"])
             self.options = AppliedProductOptions(data["options"])
+            self.multipack_info = MultipackInfo(data["ItemsInThisMultipack"])
